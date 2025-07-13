@@ -1,0 +1,68 @@
+📌 Context
+We’re working with the GSSN+ website, which contains outlet components such as:
+
+general-communication
+
+service-communication (which is working correctly)
+
+Each outlet form allows business users to add or update fields like name, phone, or email. These edits create a task that can later be approved or rejected by a market site user.
+
+⚙️ Current Flow (Working up to task creation)
+Business user submits a change in the general-communication component.
+
+A task is created successfully in the backend.
+
+Tasks API returns this task with a diff object:
+
+oldValue
+
+newValue
+
+However, future values (new values) are not showing in the UI under the general-communication component — even though they are displayed correctly in the service-communication component.
+
+🧠 What I Need You To Do
+You have access to the full GitHub repository.
+
+🔍 I want you to:
+Analyze the working flow in the service-communication component:
+
+How does the data flow from the Tasks API to the HTML UI?
+
+Which services, models, and component variables are used?
+
+Identify the methods involved in:
+
+Mapping oldValue and newValue from API
+
+Passing data to UI
+
+Rendering future values in the template
+
+Compare this flow with general-communication:
+
+Determine what is missing or different
+
+Pinpoint where the brandProductGroupsData in general-communication fails to get the mapped newValue
+
+Refer to the exact files, methods, and variables where the issue lies
+
+Explain in a clear sequence:
+
+Where does the data from Tasks API land first (e.g., task.service.ts)?
+
+How is it passed to the component (e.g., general-communication.component.ts)?
+
+How is it mapped to brandProductGroupsData or similar structure?
+
+How does it reach the template (e.g., via *ngFor, bindings like {{ field.futureValue }})?
+
+📌 Expected Output from You
+A step-by-step explanation of:
+
+The working flow in service-communication
+
+The broken/missing flow in general-communication
+
+Exact suggestions to fix general-communication by aligning it with the working flow
+
+Code-level references (e.g., lines or functions from .ts or .html files)
