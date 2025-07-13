@@ -1,0 +1,35 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.language-container {
+  outline: none;
+
+  &:hover {
+    background-color: mat.get-color-from-palette($accent, 100);
+
+    .delete-language-container button {
+      visibility: visible;
+
+      .gp-icon:hover {
+        color: mat.get-color-from-palette($accent, 500);
+      }
+    }
+  }
+
+  .language-name-container {
+    float: left;
+    margin-top: 12px;
+    max-width: 85%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .delete-language-container {
+    float: right;
+
+    .mat-mdc-icon-button {
+      visibility: hidden;
+    }
+  }
+}

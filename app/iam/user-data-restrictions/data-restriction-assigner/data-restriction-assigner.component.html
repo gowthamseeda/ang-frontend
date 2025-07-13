@@ -1,0 +1,20 @@
+<mat-chip-set>
+  <div *ngIf="assignedDataRestrictionValues?.length > 0; else dataRestrictionsEmpty">
+    <mat-basic-chip (removed)="remove(dataRestrictionValue)"
+                    *ngFor="let dataRestrictionValue of assignedDataRestrictionValues"
+                    [removable]="true">
+      <span>{{dataRestrictionValue}}</span>
+      <gp-icon matChipRemove
+               name="close"
+               size="small"></gp-icon>
+    </mat-basic-chip>
+  </div>
+  <button (click)="openDialog()"
+          mat-icon-button>
+    <gp-icon name="plus"></gp-icon>
+  </button>
+</mat-chip-set>
+
+<ng-template #dataRestrictionsEmpty>
+  {{ 'DATARESTRICTIONS_EMPTY' | translate}}
+</ng-template>

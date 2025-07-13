@@ -1,0 +1,78 @@
+<div [hidden]="localTasks.length === 0"
+     class="task-tile">
+  <ng-scrollbar class="message"
+                [autoHeightDisabled]="false">
+    <div class="contents">
+      <div gpFxLayout="row">
+        <gp-icon name="tasklist"
+                 size="medium"
+                 color="white"></gp-icon>
+        <div class="task-tile-header"> {{ 'TILE_TASKS_HEADER' | translate }}</div>
+      </div>
+
+      <div *ngIf="isBusinessSiteResponsible"
+           class="task-type">
+        {{ 'TILE_TASKS_VERIFY' | translate }}
+      </div>
+      <div *ngIf="isMarketTaskResponsible"
+           class="task-type">
+        {{ 'TILE_TASKS_DATA_UPDATED' | translate }}
+      </div>
+      <div *ngIf="isProductResponsible"
+           class="task-type">
+        {{ 'TILE_TASKS_DATA_VERIFICATIONS_UPDATED' | translate }}
+      </div>
+      <div>
+        <mat-table class="task-info"
+                   [dataSource]="localTasks"
+                   *ngIf="localTasks">
+          <ng-container matColumnDef="cluster">
+            <mat-header-cell *matHeaderCellDef
+                             gpFxFlex="30">
+              {{ 'DATA_CLUSTER' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let task"
+                      class="cell-icon"
+                      gpFxFlex="30">
+              {{
+                (!isBlank(task.aggregateField) ? task.aggregateField : task.dataCluster) | snakeCase | translate
+              }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="taskId">
+            <mat-header-cell *matHeaderCellDef
+                             gpFxFlex="20"
+                             class="center">
+              {{ 'TASK_ID' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let task"
+                      align="center"
+                      gpFxFlex="20">
+              {{ task.taskId }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="comment">
+            <mat-header-cell *matHeaderCellDef
+                             gpFxFlex="50">
+              {{ 'COMMENT' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let task"
+                      gpFxFlex="50">
+              <ng-container *ngIf="task.comments?.length">
+                <div *ngFor="let comment of task.comments;">
+                  {{ comment.user + ': ' + comment.comment }}
+                </div>
+              </ng-container>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+          <mat-row *matRowDef="let task; columns: columnsToDisplay"
+                   class="task-row"
+                   (click)="openLink(task)"></mat-row>
+        </mat-table>
+      </div>
+    </div>
+  </ng-scrollbar>
+</div>

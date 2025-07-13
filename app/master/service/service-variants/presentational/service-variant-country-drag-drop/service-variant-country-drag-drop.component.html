@@ -1,0 +1,91 @@
+<div cdkDropListGroup>
+  <div gpFxLayout="row">
+    {{ 'MASTER_DATA_SERVICE_VARIANT_COUNTRY_RESTRICTION' | translate }}
+    <gp-icon gpFxFlex="30px"
+             matTooltip="{{ 'MASTER_DATA_SERVICE_VARIANT_RESTRICTED_TOOLTIP' | translate }}"
+             matTooltipPosition="{{ 'position' | tooltipDefault }}"
+             name="hint-help"
+             size="small"></gp-icon>
+  </div>
+  <div gpFxLayout="row">
+    <div class="drop-container"
+         gpFxFlex>
+      <mat-form-field [formGroup]="searchFormGroup">
+        <mat-label>{{ 'MASTER_DATA_SERVICE_VARIANT_SEARCH_AVAILABLE' | translate }}</mat-label>
+        <gp-icon matPrefix
+                 name="search">
+        </gp-icon>
+        <input matInput
+               #input
+               formControlName="searchAvailable"
+               autocomplete="off"
+               (keyup)="onKeyUpAvailableCountries($event)">
+      </mat-form-field>
+
+      <div class="drop-list"
+           cdkDropList
+           [cdkDropListData]="displayAvailableCountries"
+           id="availableCountry"
+           cdkScrollable
+           (cdkDropListDropped)="drop($event);multiSelect.dropListDropped($event)">
+        <div class="drop-box"
+             *ngFor="let item of displayAvailableCountries"
+             cdkDrag
+             (pointerdown)="multiSelect.mouseDown($event)"
+             (pointerup)="multiSelect.mouseUp($event)"
+             (cdkDragStarted)="multiSelect.dragStarted();multiDrag.dragStarted($event)"
+             (cdkDragEnded)="multiSelect.dragEnded()">
+          {{item.name}}
+          <div>{{ 'MASTER_DATA_SERVICE_VARIANT_AVAILABLE' | translate  }}</div>
+        </div>
+      </div>
+      <button mat-button type="button"
+              (click)="selectAll($event,true)">
+        {{ 'MASTER_DATA_SERVICE_VARIANT_SELECT_ALL' | translate  }}</button>
+      <button mat-button type="button"
+              (click)="selectAll($event,false)">
+        {{ 'MASTER_DATA_SERVICE_VARIANT_DESELECT_ALL' | translate  }}</button>
+    </div>
+
+    <div class="drop-container"
+         gpFxFlex>
+
+      <mat-form-field [formGroup]="searchFormGroup">
+        <mat-label>{{ 'MASTER_DATA_SERVICE_VARIANT_SEARCH_RESTRICTED' | translate }}</mat-label>
+        <gp-icon matPrefix
+                 name="search">
+        </gp-icon>
+        <input matInput
+               #input
+               formControlName="searchRestrict"
+               autocomplete="off"
+               (keyup)="onKeyUpRestrictCountries($event)">
+      </mat-form-field>
+
+      <div class="drop-list"
+           cdkDropList
+           [cdkDropListData]="displayRestrictCountries"
+           id="restrictCountry"
+           cdkScrollable
+           (cdkDropListDropped)="drop($event);multiSelect.dropListDropped($event)">
+        <div class="drop-box"
+             *ngFor="let item of displayRestrictCountries"
+             cdkDrag
+             (pointerdown)="multiSelect.mouseDown($event)"
+             (pointerup)="multiSelect.mouseUp($event)"
+             (cdkDragStarted)="multiSelect.dragStarted();multiDrag.dragStarted($event)"
+             (cdkDragEnded)="multiSelect.dragEnded()">
+          {{item.name}}
+          <div> {{ 'MASTER_DATA_SERVICE_VARIANT_RESTRICTED' | translate  }}</div>
+        </div>
+      </div>
+
+      <button mat-button type="button"
+              (click)="selectAll($event,true)">
+        {{ 'MASTER_DATA_SERVICE_VARIANT_SELECT_ALL' | translate  }}</button>
+      <button mat-button type="button"
+              (click)="selectAll($event,false)">
+        {{ 'MASTER_DATA_SERVICE_VARIANT_DESELECT_ALL' | translate  }}</button>
+    </div>
+  </div>
+</div>

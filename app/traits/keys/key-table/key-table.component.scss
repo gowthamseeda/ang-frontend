@@ -1,0 +1,93 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.keys-table {
+  .mat-mdc-table {
+    width: 100%;
+    margin-bottom: 15px;
+
+    .mat-mdc-header-row {
+      position: sticky;
+      top: -1px;
+      z-index: 2;
+    }
+
+    .mat-mdc-row {
+      padding-bottom: 0;
+    }
+  }
+
+  .add-key {
+    margin-left: 25px;
+  }
+
+  .spacer {
+    width: 100%;
+    margin-bottom: 25px;
+  }
+
+  .buttons {
+    padding: 30px 0 20px 0;
+  }
+
+  .mat-mdc-table .mat-mdc-row {
+    margin: 0;
+    border-width: 0 0 1px 0;
+    min-height: 55px;
+
+    &:hover {
+      background-color: mat.get-color-from-palette($accent, 100);
+    }
+
+    .mat-column-actions button {
+      visibility: hidden;
+    }
+
+    &:hover .mat-column-actions button {
+      visibility: visible;
+
+      .gp-icon:hover {
+        color: mat.get-color-from-palette($accent, 500);
+      }
+    }
+
+    &.locked {
+      opacity: 0.5;
+
+      .mat-column-actions button {
+        visibility: visible;
+        cursor: default;
+
+        .gp-icon,
+        .gp-icon:hover {
+          color: mat.get-color-from-palette($accent, 600);
+        }
+      }
+    }
+
+    gp-brand-selection {
+      width: 100%;
+    }
+
+    gp-key-type-selection {
+      width: 100%;
+    }
+
+    gp-external-key-type {
+      width: 100%;
+    }
+
+    gp-product-group-selection {
+      width: 100%;
+    }
+  }
+}
+
+[loader] ::ng-deep svg {
+  height: 200px;
+  width: 100%;
+}
+
+// ::ng-deep .mat-mdc-form-field-error {
+//   margin-top: 18px;
+// }

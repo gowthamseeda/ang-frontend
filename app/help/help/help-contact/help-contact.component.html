@@ -1,0 +1,16 @@
+<div gpFxLayout="column" gpFxLayoutGap="20px">
+  <div><strong>{{contact?.role | translate}}</strong></div>
+  <ng-container *ngFor="let contactPoint of contact?.users">
+    <div gpFxLayout="column" gpFxLayoutGap="12px">
+      <div>{{contactPoint?.givenName | translate}} {{contactPoint?.familyName}}</div>
+      <div gpFxLayout="column" gpFxLayoutGap="4px">
+        <div *ngIf="contactPoint?.email" gpFxLayout="row" gpFxLayoutGap="8px">
+          <gp-icon
+            name="email"
+          ></gp-icon>
+          <span>{{contactPoint?.email | translate}}</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

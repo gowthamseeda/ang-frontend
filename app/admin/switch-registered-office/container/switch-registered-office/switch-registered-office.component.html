@@ -1,0 +1,36 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{ label: 'ADMIN' },
+                    { label: 'ADMIN_SWITCH_RO' }]">
+  </gp-header>
+  <gp-edit-layout title="{{'ADMIN_SWITCH_RO' | translate }}"
+                  marginalColumnDisabled="true">
+    <gp-edit-section>
+
+      <div gpFxFlexFill
+           gpFxFlex="70%"
+           style="display: block;">
+        <gp-outlet-details [description]="outletDescription"
+                           [disabledAllButton]="isResponded"
+                           [selectedOutlet]="selectedOutlet"
+                           (outletDetailsChanged)="changeOutletDetails($event)">
+        </gp-outlet-details>
+
+        <gp-summary-table *ngIf="isResponded || isLoading"
+                          [isLoading]="isLoading"
+                          [preconditions]="preconditions"
+                          [adminType]="adminType"></gp-summary-table>
+      </div>
+    </gp-edit-section>
+  </gp-edit-layout>
+
+  <gp-default-edit-actions footer-toolbar
+                           gpFxFill
+                           (save)="save()"
+                           (cancel)="cancel()"
+                           cancelButtonTranslationKey="RESET"
+                           [saveButtonDisabled]="isDisabledButton">
+  </gp-default-edit-actions>
+
+  <gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>
+</gp-default-layout>

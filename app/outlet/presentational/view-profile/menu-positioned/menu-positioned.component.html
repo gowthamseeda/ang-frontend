@@ -1,0 +1,13 @@
+<button [matMenuTriggerFor]="positionedMenu"
+        id="positionedMenuTriggerBtn"
+        style="display:none;"></button>
+<mat-menu #positionedMenu="matMenu"
+          overlapTrigger
+          (close)="menuClose()">
+  <ng-container *ngFor="let item of menuItems">
+    <button mat-menu-item
+            (click)="emitMenuItemClicked(item.actionUrl)">
+      {{ item.text | translate }}
+    </button>
+  </ng-container>
+</mat-menu>

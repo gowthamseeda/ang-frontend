@@ -1,0 +1,23 @@
+<div gpFxLayoutAlign="space-between">
+  <h1 mat-dialog-title>
+    {{ 'LEGAL_NOTICE' | translate }}
+  </h1>
+  <button mat-icon-button
+          mat-dialog-close
+          tabindex="-1"
+          gpFxFlexAlign="baseline"
+          (click)="dialogRef.close(false)">
+    <gp-icon name="close" size="small"></gp-icon>
+  </button>
+</div>
+<mat-dialog-content>
+  <mat-expansion-panel *ngFor="let licenseEntry of licenseEntries">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{licenseEntry.component.name}} {{licenseEntry.component.version}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <h3>{{licenseEntry.licenseName}}</h3>
+    <pre>{{licenseEntry.licenseText}}</pre>
+  </mat-expansion-panel>
+</mat-dialog-content>

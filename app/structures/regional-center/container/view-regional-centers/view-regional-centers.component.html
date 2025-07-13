@@ -1,0 +1,16 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{ label: 'STRUCTURE' }, { label: 'REGIONAL_CENTER' }]"
+  >
+  </gp-header>
+
+  <div class="page">
+    <h1>{{ 'REGIONAL_CENTER' | translate }}</h1>
+    <div class="content">
+      <gp-regional-center-table
+        [regionalCenters]="regionalCenters"
+        [languageId]="(userSettings | async)?.languageId">
+      </gp-regional-center-table>
+    </div>
+  </div>
+</gp-default-layout>

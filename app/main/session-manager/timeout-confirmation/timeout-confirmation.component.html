@@ -1,0 +1,9 @@
+<h2>{{'TIMEOUT_WARNING' | translate }}</h2>
+<p>{{'TIMEOUT_MESSAGE' | translate }} <span><b>{{timeoutTime}}</b></span> {{'TIMEOUT_MESSAGE2' |
+  translate }}</p>
+<p>{{'TIMEOUT_MESSAGE3' | translate }} <span><b>{{'STAY_LOGGED_IN' | translate}}</b></span></p>
+<div>
+<button (click)="close()"
+        mat-button
+        type="reset">{{'STAY_LOGGED_IN' | translate}}</button>
+</div>

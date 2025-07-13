@@ -1,0 +1,25 @@
+<ng-container *ngIf="position === 'remove'; else open">
+  <span class="opening-time__splitter"></span>
+  <gp-icon class="icon-close"
+           name="closed"
+           matTooltip="{{ 'OPENING_HOURS_CLOSE' | translate }}"
+           matTooltipPosition="above"
+           [actionable]="true"
+           (click)="removeAllOpeningHours()">
+
+  </gp-icon>
+</ng-container>
+<ng-template #open>
+  <div class="opening-time__closed-container">
+    <span class="opening-time__closed-text">{{ 'OPENING_HOURS_CLOSED' | translate }}</span>
+    <span class="opening-time__splitter"></span>
+    <gp-icon *ngIf="enabled"
+             class="icon-closed"
+             name="open"
+             matTooltip="{{ 'OPENING_HOURS_CLEAR' | translate }}"
+             matTooltipPosition="above"
+             [actionable]="true"
+             (click)="openOpeningHours()">
+    </gp-icon>
+  </div>
+</ng-template>

@@ -1,0 +1,36 @@
+<div gpFxFlexFill>
+  <div gpFxLayout>
+    <h1>{{'ADDRESS' | translate}}</h1>
+  </div>
+  <div gpFxLayout
+       gpFxLayoutGap="30px">
+    <gp-legal-name gpFxFlex
+                   [parentForm]="parentForm"
+                   [name]="company?.legalName"
+                   [required]="true"
+                   [registeredOffice]="true"></gp-legal-name>
+
+    <gp-name-addition gpFxFlex
+                      [parentForm]="parentForm"
+                      [name]="company?.nameAddition"></gp-name-addition>
+  </div>
+
+  <gp-address [parentForm]="parentForm"
+              [addressType]="mainAddress"
+              [addressStreetDataRequired]="addressStreetDataRequired()"
+              [addressCityDataRequired]="true"></gp-address>
+
+  <div gpFxLayout
+       gpFxLayoutGap="30px">
+    <gp-state gpFxFlex
+              [parentForm]="parentForm"
+              [state]="company?.state"></gp-state>
+    <gp-province gpFxFlex
+                 [parentForm]="parentForm"
+                 [province]="company?.province"></gp-province>
+  </div>
+
+  <gp-country-dropdown [parentForm]="parentForm"
+                       [countryId]="company?.countryId"
+                       (selectionChange)="calculateMapsData()"></gp-country-dropdown>
+</div>

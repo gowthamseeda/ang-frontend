@@ -1,0 +1,160 @@
+<ng-container *ngIf="currentExternalKeys && currentExternalKeys.length > 0; else showEmpty">
+  <ng-container *ngFor="let externalKey of currentExternalKeys">
+    <ng-container
+      *ngIf="
+        isFieldChangedCompareWholeData(externalKey) ||
+          (!isFieldChangedCompareWholeData(externalKey) && !showChangeOnlyToggleInput);
+        else showNothing
+      "
+    >
+      <ul>
+        <ng-container
+          *ngIf="{
+            isFieldChanged: isFieldChangedFromComparingData('keyType', externalKey),
+            keyType: 'keyType'
+          } as locals"
+        >
+          <li [class.changed]="locals.isFieldChanged">
+            {{ 'KEY_TYPE' | translate }} :
+            {{
+              locals.isFieldChanged && displayChangesToggleInput
+                ? '[' +
+                  (getFieldDataFromComparingData(locals.keyType, externalKey) | emptyValuePipe) +
+                  '] =>'
+                : ''
+            }}
+            <ng-container *ngIf="masterDataChangesFeatureToggle; else defaultKeyTypeId">
+              <a
+                *ngIf="externalKey?.keyType; else defaultKeyTypeId"
+                (click)="toggleMasterDataByKeyTypeId(externalKey.keyType)"
+                class="popupLink"
+              >
+                {{ externalKey?.keyType | emptyValuePipe }}
+              </a>
+            </ng-container>
+            <ng-template #defaultKeyTypeId>
+              {{ externalKey?.keyType | emptyValuePipe }}
+            </ng-template>
+          </li>
+        </ng-container>
+        <ng-container
+          *ngIf="{
+            isFieldChanged: isFieldChangedFromComparingData('value', externalKey),
+            keyValue: 'value'
+          } as locals"
+        >
+          <li [class.changed]="locals.isFieldChanged" class="hide-bullet">
+            {{ 'KEY_VALUE' | translate }} :
+            {{
+              locals.isFieldChanged && displayChangesToggleInput
+                ? '[' +
+                  (getFieldDataFromComparingData(locals.keyValue, externalKey) | emptyValuePipe) +
+                  '] =>'
+                : ''
+            }}
+            {{ externalKey?.value | emptyValuePipe }}
+          </li>
+        </ng-container>
+        <ng-container
+          *ngIf="{
+            isFieldChanged: isFieldChangedFromComparingData('brandId', externalKey),
+            brandId: 'brandId'
+          } as locals"
+        >
+          <li [class.changed]="locals.isFieldChanged" class="hide-bullet">
+            {{ 'BRAND_ID' | translate }} :
+            {{
+              locals.isFieldChanged && displayChangesToggleInput
+                ? '[' +
+                  (getFieldDataFromComparingData(locals.brandId, externalKey) | emptyValuePipe) +
+                  '] =>'
+                : ''
+            }}
+            <ng-container *ngIf="masterDataChangesFeatureToggle; else defaultBrandId">
+              <a
+                *ngIf="externalKey?.brandId; else defaultBrandId"
+                (click)="toggleMasterDataByBrandId(externalKey.brandId)"
+                class="popupLink"
+              >
+                {{ externalKey.brandId | emptyValuePipe }}
+              </a>
+            </ng-container>
+            <ng-template #defaultBrandId>
+              <span>
+                {{ externalKey?.brandId | emptyValuePipe }}
+              </span>
+            </ng-template>
+          </li>
+        </ng-container>
+        <ng-container
+          *ngIf="{
+            isFieldChanged: isFieldChangedFromComparingData('productGroupId', externalKey),
+            productGroupId: 'productGroupId'
+          } as locals"
+        >
+          <li [class.changed]="locals.isFieldChanged" class="hide-bullet">
+            {{ 'PRODUCT_GROUP' | translate }} :
+            {{
+              locals.isFieldChanged && displayChangesToggleInput
+                ? '[' +
+                  (getFieldDataFromComparingData(locals.productGroupId, externalKey)
+                    | emptyValuePipe) +
+                  '] =>'
+                : ''
+            }}
+            {{ externalKey?.productGroupId | emptyValuePipe }}
+          </li>
+        </ng-container>
+      </ul>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #showNothing> </ng-template>
+
+<ng-template #showEmpty>
+  <span [class.changed]="isChanged()">
+    <ng-container
+      *ngIf="!(isChanged() && displayChangesToggleInput); else showRemovePreviousChanges"
+    >
+      {{ '' | emptyValuePipe }}
+    </ng-container>
+  </span>
+</ng-template>
+
+<ng-template #showRemovePreviousChanges>
+  <div gpFxLayout="row wrap" gpFxLayoutAlign="center" gpFxLayoutGap="15px">
+    <ng-container *ngIf="comparingExternalKeys && comparingExternalKeys.length > 0; else showDash">
+      <div>
+        <ng-container *ngFor="let externalKey of comparingExternalKeys">
+          <ul>
+            <li>
+              {{ 'KEY_TYPE' | translate }} :
+              {{ externalKey?.keyType | emptyValuePipe }}
+            </li>
+            <li class="hide-bullet">
+              {{ 'KEY_VALUE' | translate }} :
+              {{ externalKey?.value | emptyValuePipe }}
+            </li>
+            <li class="hide-bullet">
+              {{ 'BRAND_ID' | translate }} :
+              {{ externalKey?.brandId | emptyValuePipe }}
+            </li>
+            <li class="hide-bullet">
+              {{ 'PRODUCT_GROUP' | translate }} :
+              {{ externalKey?.productGroupId | emptyValuePipe }}
+            </li>
+          </ul>
+        </ng-container>
+      </div>
+    </ng-container>
+    <span> => </span>
+    <span>
+      {{ '' | emptyValuePipe }}
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #showDash>
+  {{ '' | emptyValuePipe }}
+</ng-template>

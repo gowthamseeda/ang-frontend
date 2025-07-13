@@ -1,0 +1,10 @@
+<div class="spoken-language-container">
+  <h1>{{ 'SPOKEN_LANGUAGE' | translate }}</h1>
+  <gp-language-selection [languages]="allSpokenLanguages | async"
+                         [selected]="assignedSpokenLanguageId | async"
+                         [label]="'SPOKEN_LANGUAGE_SELECTION_LABEL'"
+                         [readonly]="!(userIsAuthorizedForOutlet | async) || !userIsAuthorizedForUpdateSpokenLanguage"
+                         [isLoading]="isLoadingSpokenLanguage"
+                         (languageSelectionChanged)="languageSelectionChanged($event)">
+  </gp-language-selection>
+</div>

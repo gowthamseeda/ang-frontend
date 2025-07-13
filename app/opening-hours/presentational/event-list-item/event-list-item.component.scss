@@ -1,0 +1,37 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.item-container {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  height: 40px;
+  width: 290px;
+  font-weight: bold;
+  border-bottom: 1px solid mat.get-color-from-palette($accent, 400);
+
+  .date-range {
+    border-radius: 15px;
+    background-color: mat.get-color-from-palette($primary, 100);
+    padding: 6px 10px 4px 10px;
+  }
+
+  .date-range-selected {
+    border-radius: 15px;
+    background-color: mat.get-color-from-palette($primary, 500);
+    padding: 6px 10px 4px 10px;
+    color: mat.get-color-from-palette($primary, 50);
+  }
+
+  .date-range:hover {
+    color: mat.get-color-from-palette($primary, 50);
+    background-color: mat.get-color-from-palette($primary, 500);
+    cursor: pointer;
+  }
+
+  .actions {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
+  }
+}

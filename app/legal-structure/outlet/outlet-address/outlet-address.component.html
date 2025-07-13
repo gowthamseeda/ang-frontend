@@ -1,0 +1,74 @@
+<div gpFxFlexFill>
+  <div gpFxLayout="row" gpFxLayoutAlign="none center" class="aggregate-data-field">
+    <h1> {{ 'ADDRESS' | translate }} </h1>
+    <gp-inplace-task-action-button *ngIf="isForRetailEnabled && isRetailOutlet && isMarketResponsible"
+                                   fieldsStartName='address'
+                                   [specificFields]="specificFields"
+                                   [outletId]="outlet?.id"
+                                   class="icon-padding"
+    >
+
+    </gp-inplace-task-action-button>
+    <gp-data-field-verification-button *ngIf="isForRetailEnabled && isRetailOutlet && isMarketResponsible"
+                                       fieldsStartName='address'
+                                       [specificFields]="specificFields"
+                                       [shouldShowDialog]="true"
+                                       class="icon-padding"
+    >
+    </gp-data-field-verification-button>
+    <gp-data-field-verification-remain-button [isBusinessSiteResponsible]="isBusinessSiteResponsible"
+                                              [aggregateFields]="addressAggregateFields.concat(specificFields)"
+                                              class="icon-padding"
+    >
+    </gp-data-field-verification-remain-button>
+  </div>
+  <div gpFxLayout
+       gpFxLayoutGap="30px">
+    <gp-legal-name gpFxFlex
+                   [parentForm]="parentForm"
+                   [registeredOffice]="outlet?.registeredOffice"
+                   [countryId]="outlet?.countryId"
+                   [name]="outlet?.legalName"
+                   [required]="true"
+                   [dataNotificationChangeFields]="dataNotificationChangeFields"></gp-legal-name>
+    <gp-name-addition gpFxFlex
+                      [parentForm]="parentForm"
+                      [name]="outlet?.nameAddition"
+                      [dataNotificationChangeFields]="dataNotificationChangeFields"
+                      [isRetailOutlet]="isRetailOutlet"
+    ></gp-name-addition>
+  </div>
+  <gp-address [parentForm]="parentForm"
+              [address]="outlet?.address"
+              [addressType]="addressType.Main"
+              [addressStreetDataRequired]="addressStreetDataRequired"
+              [addressCityDataRequired]="true"
+              [dataNotification]="dataNotification"
+              [isRetailOutlet]="isRetailOutlet"></gp-address>
+
+  <div gpFxLayout
+       gpFxLayoutGap="30px">
+    <gp-state gpFxFlex
+              [parentForm]="parentForm"
+              [state]="outlet?.state"
+              [dataNotificationChangeFields]="dataNotificationChangeFields"
+              [isRetailOutlet]="isRetailOutlet"></gp-state>
+    <gp-province gpFxFlex
+                 [parentForm]="parentForm"
+                 [province]="outlet?.province"
+                 [dataNotificationChangeFields]="dataNotificationChangeFields"
+                 [isRetailOutlet]="isRetailOutlet"></gp-province>
+  </div>
+  <div gpFxLayout>
+    <gp-country *ngIf="!countryEditable"
+                gpFxFlex
+                [parentForm]="parentForm"
+                [countryId]="outlet?.countryId"
+                [dataNotificationChangeFields]="dataNotificationChangeFields"></gp-country>
+    <gp-country-dropdown *ngIf="countryEditable"
+                         gpFxFlex
+                         [parentForm]="parentForm"
+                         [countryId]="outlet?.countryId"
+                         (selectionChange)="emitCountryId($event)"></gp-country-dropdown>
+  </div>
+</div>

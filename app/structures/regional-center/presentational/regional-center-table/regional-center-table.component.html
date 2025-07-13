@@ -1,0 +1,85 @@
+<mat-table [dataSource]="dataSource" matSort
+           matSortActive="name"
+           matSortDirection="asc"
+           matSortStart="desc"
+           matSortDisableClear="true">
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      <div>{{ 'REGIONAL_CENTER_TAB_HEADER_COL_NAME' | translate }}</div>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let regionalCenter">
+      <div class="center-name">{{ regionalCenter['name'] }}</div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="country">
+    <mat-header-cell *matHeaderCellDef>
+      <div>{{ 'REGIONAL_CENTER_TAB_HEADER_COL_COUNTRY' | translate }}</div>
+      <div class="country-cpi">{{ 'REGIONAL_CENTER_TAB_HEADER_COL_COUNTRY_CPI' | translate }}</div>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let regionalCenter">
+      <div class="countries-container">
+        <ng-container *ngFor="let country of regionalCenter['superviseeCountries']">
+          <div class="country-cpi">
+            {{country | translateData: languageId }}
+            <div class="cpi">{{ country['cpiIndex'] }}</div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="address">
+    <mat-header-cell *matHeaderCellDef>{{ 'REGIONAL_CENTER_TAB_HEADER_COL_ADDRESS' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let regionalCenter">
+      <div class="address-container">
+        <div>
+          {{regionalCenter.address['street']}} {{regionalCenter.address['number']}}
+        </div>
+        <div>{{regionalCenter.address['city']}}</div>
+        <div>{{regionalCenter.address | translateData: languageId }}</div>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="brand">
+    <mat-header-cell *matHeaderCellDef>{{ 'REGIONAL_CENTER_TAB_HEADER_COL_BRAND' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let regionalCenter">
+      <div class="brand-codes_container">
+        <div *ngFor="let brandCode of regionalCenter['brandCodes']" class="brand-code_container">
+          <gp-brand-icon
+            [id]="brandCode['brandId']"
+            tooltipPosition="before"></gp-brand-icon>
+          <div class="brand-code">
+            {{ brandCode['code'] }}
+          </div>
+        </div>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef>{{ 'REGIONAL_CENTER_TAB_HEADER_COL_TYPE' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let regionalCenter">
+      <div class="type-container" *ngIf="regionalCenter['registeredOffice'] === true">
+        <div class="left-circle"></div>
+        <div class="type_ro">RO</div>
+        <div class="right-circle"></div>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="category">
+    <mat-header-cell *matHeaderCellDef>{{ 'REGIONAL_CENTER_TAB_HEADER_COL_CATEGORY' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let regionalCenter">
+      <div *ngIf="regionalCenter['distributionLevels'].length > 0" class="categories-container">
+        <div *ngFor="let distributionLevel of regionalCenter['distributionLevels']">
+          {{ distributionLevel | translate }}
+        </div>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

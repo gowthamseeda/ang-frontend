@@ -1,0 +1,20 @@
+<div gpFxLayout="row"
+     gpFxLayoutAlign="center center"
+     *ngIf="serviceTableSaved">
+  <ng-container *ngFor="let action of actions">
+    <div *ngIf="(action.userIsAuthorized | async) && (action.permissions | async)">
+      <a gpFxLayoutAlign="center center" [matTooltip]="action.tooltip">
+        <gp-icon (click)="iconClick(action)"
+                 *ngIf=" (serviceTableRowHovered && (isNotEmpty | async) && (isActive | async))
+                 || (action.icon === 'validity' && !(isValidityMaintained | async))
+                 || (action.icon === 'clock' && !(isOpeningHoursMaintained | async) && showUnmaintainedInfo)
+                 || (action.icon === 'contract' && !(isContractsMaintained | async) && showUnmaintainedInfo)
+                 || (action.icon === 'contact' && !(isCommunicationsMaintained | async) && showUnmaintainedInfo)"
+                 [hover]="true"
+                 [name]="(action.icon === 'validity' && !(isValidityMaintained | async)) ? 'pen' : action.icon"
+                 [disabled]="action.icon === 'clock' && !serviceSupportsClockAction">
+        </gp-icon>
+      </a>
+    </div>
+  </ng-container>
+</div>

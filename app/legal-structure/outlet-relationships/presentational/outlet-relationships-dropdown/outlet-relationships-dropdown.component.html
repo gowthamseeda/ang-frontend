@@ -1,0 +1,9 @@
+<mat-form-field class="no-label">
+  <mat-select [formControl]="control"
+              [placeholder]="placeholder | translate">
+    <mat-option *ngFor="let rel of relationshipDefCodes()"
+                [value]="rel">
+      {{ relationshipDefCodeValue(rel) }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

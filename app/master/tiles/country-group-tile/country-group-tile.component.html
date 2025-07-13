@@ -1,0 +1,22 @@
+<gp-master-tile headerText="{{ 'COUNTRY_GROUP' | translate }}"
+                searchPlaceHolder="{{ 'SEARCH_COUNTRY_GROUP_FIELD_INLINE_PLACEHOLDER' | translate }}"
+                buttonText="{{ 'ADD_COUNTRY_GROUP_BUTTON' | translate }}"
+                componentLink="/master/countryGroup"
+                (searchText)="searchCountryGroupName($event)">
+  <div gpFxLayout="column">
+    <div class="country-group-container"
+         *ngFor="let countryGroup of countryGroups | filter: searchText"
+         routerLink="/master/countryGroup/{{ countryGroup.id }}">
+      <div class="country-group-name-container">
+        <span>{{ countryGroup.name }}</span>
+      </div>
+      <div class="delete-country-group-container"
+           (click)="$event.stopPropagation()">
+        <button mat-icon-button
+                (click)="deleteCountryGroup(countryGroup.id)">
+          <gp-icon name="trash"></gp-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</gp-master-tile>

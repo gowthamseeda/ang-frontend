@@ -1,0 +1,75 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{label: 'MASTER_DATA', path: '/master'},
+             {label: 'OUTLET_RELATIONSHIP'},
+             {label: outletRelationshipName}]">
+  </gp-header>
+  <div gpContent>
+    <div gpFxLayout="row"
+         gpFxLayoutGap="10px">
+      <div gpFxLayout="column"
+           class="header">
+        <h1>{{ outletRelationshipName }}</h1>
+        <span>{{ 'UPDATE_OUTLET_RELATIONSHIP_SUBTITLE' | translate }}</span>
+      </div>
+    </div>
+    <form [formGroup]="outletRelationshipForm"
+          (ngSubmit)="submit(outletRelationshipForm.value)">
+      <div gpFxLayout="column">
+        <div gpFxLayout="row"
+             gpFxLayoutGap="10px">
+          <mat-form-field gpFxFlex="60">
+            <mat-label>{{ 'NAME' | translate }}</mat-label>
+            <input matInput
+                   formControlName="name"
+                   type="text"
+                   required />
+            <mat-error *ngIf="outletRelationshipForm.get('name')?.hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+            <mat-error *ngIf="outletRelationshipForm.get('name')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field gpFxFlex>
+            <mat-label>{{ 'ID' | translate }}</mat-label>
+            <input matInput
+                   formControlName="id"
+                   type="text"
+                   required />
+            <gp-icon matSuffix
+                     *ngIf="outletRelationshipForm.get('id')?.disabled"
+                     name="lock"
+                     size="small"></gp-icon>
+          </mat-form-field>
+        </div>
+        <div fxLayout="column">
+          <mat-form-field fxFlex>
+            <mat-label>{{ 'DESCRIPTION' | translate }}</mat-label>
+            <input matInput
+                   formControlName="description"
+                   type="text"
+            />
+            <mat-error *ngIf="outletRelationshipForm.get('description')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div gpFxLayout="row">
+          <div gpFxFlex>
+            <button type="reset"
+                    mat-button
+                    routerLink="/master">
+              {{ 'CANCEL' | translate }}
+            </button>
+          </div>
+          <button type="submit"
+                  mat-button
+                  [disabled]="outletRelationshipForm.invalid || outletRelationshipForm.pristine || saveDisabled">
+            {{ 'SAVE' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</gp-default-layout>

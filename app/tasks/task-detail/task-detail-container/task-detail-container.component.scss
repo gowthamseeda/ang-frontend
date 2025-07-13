@@ -1,0 +1,72 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.footer-button {
+  height: 40px !important;
+  min-width: 128px !important;
+  text-transform: uppercase;
+}
+
+.task-info-detail {
+  background: transparent;
+  margin-bottom: 30px;
+
+  .mat-mdc-header-cell {
+    display: inline-block;
+    color: mat.get-color-from-palette($accent, 600);
+    padding: 0 15px;
+
+    &:first-child {
+      padding-left: 5px;
+    }
+
+    &.center {
+      text-align: center;
+    }
+  }
+
+  .task-row {
+    &:hover {
+      cursor: pointer;
+      background-color: mat.get-color-from-palette($accent, 100, 0.5);
+    }
+  }
+
+  .mat-mdc-row {
+    border: 1px solid mat.get-color-from-palette($accent, 300);
+    border-left: 0;
+    border-right: 0;
+    padding: 0;
+
+    .mat-mdc-cell {
+      color: mat.get-color-from-palette($accent, 800);
+      border-left: 1px solid mat.get-color-from-palette($accent, 300);
+      padding: 12px;
+      line-height: 26px;
+
+      &:first-child {
+        border-left: none;
+        padding-left: 5px;
+      }
+
+      &.cell-icon {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}
+
+.diff-title {
+  display: inline-block;
+  color: mat.get-color-from-palette($accent, 600);
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+
+.line {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border: 1px solid mat.get-color-from-palette($accent, 300);
+}

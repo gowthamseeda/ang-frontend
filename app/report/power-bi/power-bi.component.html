@@ -1,0 +1,7 @@
+<gp-default-layout>
+  <gp-header header-toolbar [breadcrumbItems]="[{ label: 'ADMIN_POWERBI' }]">
+  </gp-header>
+  <powerbi-report *ngIf="embedConfig.accessToken" [embedConfig]="embedConfig" [phasedEmbedding]="false"
+                  [eventHandlers]="eventHandler" cssClassName="report-container">
+  </powerbi-report>
+</gp-default-layout>

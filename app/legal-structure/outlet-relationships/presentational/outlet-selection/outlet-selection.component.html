@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{ 'OUTLET_RELATIONSHIPS_ADD_OUTLET' | translate | titlecase }}</h1>
+
+<mat-dialog-content>
+  <gp-searchfield [predefinedSearchFilters]="searchFieldInput.predefinedSearchFilters"
+                  [placeHolderText]="searchFieldInput.placeHolderText"
+                  [searchResultMessage]="searchFieldInput.searchResultMessage"
+                  [settings]="searchFieldSettings"
+                  [excludedSearchItems]="data.excludedOutletIds"
+                  (searchItemRetrieved)="searchItemRetrieved($event)"
+  >
+  </gp-searchfield>
+</mat-dialog-content>

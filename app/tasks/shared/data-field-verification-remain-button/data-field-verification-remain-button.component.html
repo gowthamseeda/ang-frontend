@@ -1,0 +1,9 @@
+<gp-icon matSuffix
+         *ngIf="isBusinessSiteResponsible && (isBlockVerificationsTasksRemained | async) === false"
+         name="check"
+         color="green"
+         size="small"
+         class="verification-task-present"
+         style="height: 100%"
+         (click)="onBlockRemainClick()">
+</gp-icon>

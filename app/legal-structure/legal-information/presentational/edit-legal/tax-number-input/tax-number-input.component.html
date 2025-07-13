@@ -1,0 +1,90 @@
+<form [formGroup]="formGroup">
+  <mat-form-field class="show-footer no-horizontal-hint-space"
+                  [ngClass]="{'no-underline':taskForDisplay.shouldDisplayFutureValue}"
+                  [floatLabel]="taskForDisplay.shouldDisplayFutureValue ? 'always':'auto'">
+    <mat-label>{{ 'LEGAL_TAX_NR' | translate }}</mat-label>
+    <div gpFxLayout="column">
+      <div gpFxLayout="row"
+           gpFxLayoutAlign="center center"
+           class="aggregate-data-field">
+        <span *ngIf="taskForDisplay.shouldDisplayFutureValue">{{ 'ACTUAL'|translate }}:&nbsp;</span>
+        <input matInput
+               #textInput
+               type="text"
+               (keyup)="onKeyUp($event)"
+               [formControlName]="controlName"
+               [required]="required"
+               [readonly]="readonly"
+               [ngClass]="{'prev-value':taskForDisplay.shouldDisplayFutureValue,
+               'verification-task-present':verificationTaskStatus === VerificationTaskFormStatus.PENDING,
+               'notification-present':taskForDisplay.showDirectChangeNotification || verificationTaskStatus ===
+               VerificationTaskFormStatus.REMAIN,
+               'changes-made':verificationTaskStatus === VerificationTaskFormStatus.CHANGED
+               }" />
+        <gp-data-field-verification-button
+          *ngIf="isMTR && verificationTaskStatus === VerificationTaskFormStatus.NOT_PRESENT &&
+          isOutletRetailer && !taskForDisplay.shouldDisplayFutureValue"
+          [fields]="[fieldData]" [shouldShowDialog]="true"></gp-data-field-verification-button>
+        <gp-icon matSuffix
+                 *ngIf="readonly"
+                 name="lock"
+                 size="small"></gp-icon>
+        <gp-icon matSuffix
+                 *ngIf="taskForDisplay.showVerificationNotification"
+                 name="check"
+                 color="green"
+                 size="small"
+                 class="verification-task-present"
+                 style="height: 100%"
+                 (click)="onRemainClick('TAX_NO')"></gp-icon>
+      </div>
+      <div *ngIf="taskForDisplay.shouldDisplayFutureValue"
+           gpFxLayoutRow
+           gpFxLayoutAlign="center center"
+           [ngClass]="taskForDisplay.isChanged?'changes-future-value':'no-changes-future-value'">
+        <ng-container *ngIf="taskForDisplay.isChanged; else noValueChange">
+          <div gpFxFlexFill>{{ 'FUTURE'|translate }}: {{ taskForDisplay.futureValue }}</div>
+        </ng-container>
+        <gp-inplace-task-action-button *ngIf="isMTR"
+                                       [task]="taskForDisplay"></gp-inplace-task-action-button>
+        <!-- FOR VERIFICATION -->
+        <!-- <gp-icon *ngIf="isMTR" name="flag" size="small" color="darkgray" hover="true" actionable="true"
+          (click)="onAction()" class="action-icon"></gp-icon> -->
+      </div>
+    </div>
+    <mat-hint *ngIf="taskForDisplay.showVerificationNotification"
+              class="verify-data">
+      {{ 'VERIFY_FIELD_MESSAGE' | translate }}
+    </mat-hint>
+    <mat-hint
+      *ngIf="verificationTaskStatus === VerificationTaskFormStatus.PENDING && isUserAuthorizedForVerificationTask"
+      class="verify-data">
+      {{ 'WAITING_FOR_REACTION' | translate }}
+    </mat-hint>
+    <mat-hint *ngIf="taskForDisplay.showDirectChangeNotification"
+              class="data-changed">
+      {{ 'DATA_CHANGED_NOTIFICATIONS' | translate }}
+    </mat-hint>
+    <mat-hint *ngIf="taskForDisplay.showApprovedNotification"
+              class="data-changed-approved">
+      {{ 'DATA_CHANGED_APPROVED' | translate }}
+    </mat-hint>
+    <mat-hint *ngIf="taskForDisplay.showDeclinedNotification"
+              class="data-changed-declined">
+      <gp-icon name="hint-info"
+               size="small"
+               color="red"
+               (click)="taskCommentPopup()"></gp-icon>
+      {{ 'DATA_CHANGED_DECLINED' | translate }}
+    </mat-hint>
+    <mat-error>
+      {{
+        'VALIDATION_ERROR_NUMERIC_COUNT_BETWEEN'
+          | translate: { min: '11', max: '13' }
+      }}
+    </mat-error>
+  </mat-form-field>
+</form>
+<ng-template #noValueChange>
+  {{ taskForDisplay.messageForUnchangedValue|translate }}
+</ng-template>

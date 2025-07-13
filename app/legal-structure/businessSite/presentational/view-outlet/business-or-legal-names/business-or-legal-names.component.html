@@ -1,0 +1,54 @@
+<div class="business-name-box">
+  <div gpFxLayout="row"
+       gpFxLayoutAlign="space-between">
+    <div class="business-name"
+         data-cy="business-or-legal-names">
+      <ng-container *ngIf="!businessNames || businessNames.length === 0">
+        {{ legalName }}
+      </ng-container>
+      <ng-container *ngIf="businessNames && businessNames.length >= 1">
+        {{ businessNames[0] }}
+      </ng-container>
+      <div class="tooltip">
+        <gp-icon class="icon-left"
+                 name="hint-help"
+                 color="white"
+                 size="small"
+                 [hover]="true"></gp-icon>
+        <div class="tooltip-content">
+          <div class="tooltip-background">
+            <div class="tooltip-text">
+              <ng-container *ngIf="businessNames && businessNames.length > 0">
+                {{ 'TILE_HEADER_TOOLTIP_BUSINESS_NAME' | translate }}
+              </ng-container>
+              <ng-container *ngIf="!businessNames || businessNames.length === 0">
+                {{ 'TILE_HEADER_TOOLTIP_LEGAL_NAME' | translate }}
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="businessNames && businessNames.length >= 2"
+       gpFxLayout="row"
+       gpFxLayoutAlign="space-between">
+    <div class="business-name">
+      {{ businessNames[1] }}
+      <div class="tooltip">
+        <gp-icon class="icon-left"
+                 name="hint-help"
+                 color="white"
+                 size="small"
+                 [hover]="true"></gp-icon>
+        <div class="tooltip-content">
+          <div class="tooltip-background">
+            <div class="tooltip-text">
+              {{ 'TILE_HEADER_TOOLTIP_BUSINESS_NAME' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

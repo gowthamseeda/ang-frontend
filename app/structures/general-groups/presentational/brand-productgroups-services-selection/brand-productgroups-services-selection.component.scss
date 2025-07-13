@@ -1,0 +1,33 @@
+h5 {
+  margin-bottom: 0;
+}
+
+.mat-mdc-list-item {
+  &:hover {
+    background: none;
+  }
+
+  &.mat-list-item-disabled {
+    background: none;
+  }
+}
+
+.product-groups ::ng-deep .mat-list-item-content {
+  flex-direction: column !important;
+}
+
+mat-dialog-content {
+  height: 325px;
+}
+
+::ng-deep .mat-pseudo-checkbox{
+  display: none !important;
+}
+
+.mat-mdc-list-option ::ng-deep .mdc-checkbox .mdc-checkbox__background {
+  top: auto;
+}
+
+.center{
+  text-align: center;
+}

@@ -1,0 +1,30 @@
+<gp-master-tile headerText="{{ 'SERVICES' | translate }}"
+                searchPlaceHolder="{{ 'SEARCH_SERVICE_FIELD_INLINE_PLACEHOLDER' | translate }}"
+                buttonText="{{ 'ADD_SERVICE_BUTTON' | translate }}"
+                componentLink="/master/service"
+                (searchText)="searchServiceName($event)"
+                [displayBurgerMenu]="true"
+                [detailsLinks]="menuItems">
+  <div gpFxLayout="column">
+    <div class="service-container"
+         *ngFor="let service of services | filter: searchText"
+         routerLink="/master/service/{{ service.id }}"
+         matTooltip="{{ isServiceDescriptionExist(service) ? (service | translateData: currentSelectedLanguage: undefined : translateType.description) : '' }}"
+         matTooltipPosition="{{ 'position' | tooltipDefault }}">
+      <div class="service-name-container">
+        <span>{{ service.name }}</span>
+      </div>
+      <div gpFxLayoutAlign="end center">
+        <div *ngIf="!service.active"
+             class="expired-container">{{ 'EXPIRED_LABEL' | translate }}</div>
+        <div class="delete-service-container"
+             (click)="$event.stopPropagation()">
+          <button mat-icon-button
+                  (click)="deleteService(service.id)">
+            <gp-icon name="trash"></gp-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</gp-master-tile>

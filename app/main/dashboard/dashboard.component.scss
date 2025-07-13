@@ -1,0 +1,38 @@
+::ng-deep .ql-container {
+  height: 450px;
+}
+
+.ql-read-only {
+  ::ng-deep .ql-toolbar {
+    display: none;
+  }
+
+  ::ng-deep .ql-container {
+    border: none;
+  }
+}
+
+.ql-error {
+  ::ng-deep .ql-toolbar {
+    border-bottom: 1px solid #b00020;
+  }
+
+  ::ng-deep .ql-container {
+    border: 1px solid #b00020;
+  }
+}
+
+.word-counter {
+  padding: 12px 15px;
+}
+
+.ql-view-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.ql-editor-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

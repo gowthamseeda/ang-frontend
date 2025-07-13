@@ -1,0 +1,47 @@
+<h1 mat-dialog-title>{{ 'SERVICE_TITLE' | translate }}</h1>
+<mat-dialog-content>
+  <form [formGroup]="serviceVariantFilterFormGroup">
+    <div gpFxLayout="column">
+      <div gpFxLayout="row">
+
+        <div gpFxFlex style="display: block;">
+          <gp-chips-selection placeholder="{{ 'SERVICES' | translate }}"
+                              [control]="serviceVariantFilterFormGroup.get('service')" [itemList]="services">
+          </gp-chips-selection>
+        </div>
+      </div>
+
+      <div gpFxLayout="row">
+
+        <div gpFxFlex style="display: block;">
+          <gp-chips-selection placeholder="{{ 'BRAND' | translate }}"
+                              [control]="serviceVariantFilterFormGroup.get('brand')" [itemList]="brands"
+                              [isBrand]="true">
+          </gp-chips-selection>
+        </div>
+      </div>
+
+      <div gpFxLayout="row">
+        <div gpFxFlex style="display: block;">
+          <gp-chips-selection placeholder="{{ 'PRODUCT_GROUP' | translate }}"
+                              [control]="serviceVariantFilterFormGroup.get('productGroup')" [itemList]="productGroups"
+                              [isProductGroup]="true">
+          </gp-chips-selection>
+        </div>
+      </div>
+
+      <div gpFxLayout="row">
+        <div gpFxFlex="30">
+          {{ 'ACTIVE' | translate }}
+        </div>
+        <mat-slide-toggle formControlName="active" color="primary">
+        </mat-slide-toggle>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <gp-default-edit-actions cancelButtonTranslationKey="RESET" (cancel)="reset()" saveButtonTranslationKey="SEARCH"
+                           (save)="search()">
+  </gp-default-edit-actions>
+</mat-dialog-actions>

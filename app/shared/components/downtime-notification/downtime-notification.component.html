@@ -1,0 +1,14 @@
+<ng-scrollbar *ngIf="isVisible" class="message" [autoHeightDisabled]="false">
+  <div class="contents"
+       gpFxLayout="row">
+    <p gpFxFlex="98"
+       class="paragraph"> {{ 'DOWNTIME_ADVANCE_NOTIFICATION' | translate }}</p>
+    <button mat-icon-button
+            class="close_button"
+            (click)="this.isVisible = false"
+            mat-icon-button>
+      <gp-icon name="close"
+               size="small"></gp-icon>
+    </button>
+  </div>
+</ng-scrollbar>

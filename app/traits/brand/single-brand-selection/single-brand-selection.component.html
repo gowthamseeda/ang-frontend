@@ -1,0 +1,16 @@
+<mat-form-field [formGroup]="parentForm">
+  <mat-label>{{(uppercaseLabel ? (placeholderTranslation | translate | uppercase) : (placeholderTranslation |
+    translate)) }}</mat-label>
+  <mat-select formControlName="brand" (selectionChange)="emitChange($event)" [required]="required"
+              data-cy="single-brand-selection">
+    <mat-option *ngIf="allowEmptyOption" [value]="null">
+    </mat-option>
+    <mat-option *ngFor="let brand of allBrands | async" [value]="brand.id"
+                data-cy="single-brand-selection-option">
+      {{ brand.name }}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="parentForm.get('brand')?.hasError('required')">{{
+    'VALIDATION_ERROR_REQUIRED' | translate }}
+  </mat-error>
+</mat-form-field>

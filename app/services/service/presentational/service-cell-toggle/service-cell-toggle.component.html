@@ -1,0 +1,60 @@
+<ng-container *ngIf="userHasPermissions !== undefined">
+  <p class="offered-service"
+      gpFxLayoutAlign="center center">
+    <span *ngIf="processState && processState.action && userHasPermissions"
+          [class.show-add-icon]="showAddIcon || processState?.status !== Status.NOT_OFFERED"
+          cdkOverlayOrigin
+          class="product-group"
+          gpFxLayoutAlign="center center">
+
+      <span (click)="processState?.action()"
+            [class.expired]="processState?.status !== Status.NOT_OFFERED && !serviceVariant?.active"
+            [class.offered]="processState?.status !== Status.NOT_OFFERED"
+            gpFxLayout="column"
+            gpFxLayoutAlign="center center">
+        <span *ngIf="processState?.status !== Status.NOT_OFFERED && !serviceVariant?.active"
+              class="expired-text">
+          exp
+        </span>
+        <gp-icon [class.expired-icon]="processState?.status !== Status.NOT_OFFERED && !serviceVariant?.active"
+                 [name]="getServiceIcon()"
+                 [color]="processState?.icon !== 'plus' && 'petrol'"
+                 [hover]="serviceVariant?.active"
+                 matTooltip="{{ processState?.status ? ('OFFERED_SERVICE_STATUS_' + processState?.status?.toUpperCase() | translate) : null }}"
+                 matTooltipPosition="above"></gp-icon>
+      </span>
+    </span>
+
+    <span *ngIf="processState && !userHasPermissions"
+          class="product-group read-only"
+          gpFxLayoutAlign="center center"
+          matTooltip="{{ 'NO_EDIT_RIGHTS_FOR_OFFERED_SERVICE' | translate }}"
+          matTooltipHideDelay="{{ 'hideDelay' | tooltipDefault }}"
+          matTooltipPosition="{{ 'position' | tooltipDefault }}"
+          matTooltipShowDelay="{{ 'showDelay' | tooltipDefault }}">
+      <span [class.expired]="processState?.status !== Status.NOT_OFFERED && !serviceVariant?.active"
+            [class.offered]="processState?.status !== Status.NOT_OFFERED"
+            gpFxLayout="column"
+            gpFxLayoutAlign="center center">
+        <span *ngIf="processState?.status !== Status.NOT_OFFERED && !serviceVariant?.active"
+              class="expired-text">
+          exp
+        </span>
+        <gp-icon *gpOnlyForRetail
+                 [class.expired-icon]="processState?.status !== Status.NOT_OFFERED && !serviceVariant?.active"
+                 [name]="getServiceIcon()"
+                 color="petrol"
+                 matTooltip="{{ processState?.status ? ('OFFERED_SERVICE_STATUS_' + processState?.status?.toUpperCase() | translate) : null }}"
+                 matTooltipPosition="above">
+
+        </gp-icon>
+        <gp-icon *gpNotForRetail
+                 [class.expired-icon]="processState?.status !== Status.NOT_OFFERED && !serviceVariant?.active"
+                 [disabled]=true
+                 [name]="getServiceIcon()"
+                 matTooltip="{{ processState?.status ? ('OFFERED_SERVICE_STATUS_' + processState?.status?.toUpperCase() | translate) : null }}"
+                 matTooltipPosition="above"></gp-icon>
+      </span>
+    </span>
+  </p>
+</ng-container>

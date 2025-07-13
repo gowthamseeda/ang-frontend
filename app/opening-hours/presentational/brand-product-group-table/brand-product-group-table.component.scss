@@ -1,0 +1,76 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.mat-mdc-table {
+  width: fit-content;
+  border-top: 1px solid mat.get-color-from-palette($accent, 700);
+  border-right: 1px solid mat.get-color-from-palette($accent, 400);
+
+  .mat-mdc-header-row {
+    display: none;
+    background-color: mat.get-color-from-palette($primary, 50);
+    border-bottom: 1px solid mat.get-color-from-palette($accent, 700);
+  }
+
+  .mat-mdc-row {
+    border: 0;
+    border-bottom: 1px solid mat.get-color-from-palette($accent, 400);
+    min-height: 80px;
+    padding: 0;
+  }
+
+  .mat-mdc-cell {
+    .source-indication {
+      border-left: 15px solid mat.get-color-from-palette($primary, 400);
+      border-bottom: 15px solid transparent;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+    }
+  }
+
+  .mat-mdc-header-cell {
+    min-height: 110px;
+    border-right: 1px solid mat.get-color-from-palette($accent, 400);
+    padding: 0px;
+
+    &:last-of-type {
+      border-right: none;
+    }
+  }
+
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    min-width: 290px;
+    position: relative;
+    font-size: 16px;
+    border-left: 1px solid mat.get-color-from-palette($accent, 400);
+    padding: 0px;
+
+    &:first-child {
+      border-left: none;
+    }
+
+    &:hover {
+      background-color: mat.get-color-from-palette(mat.$grey-palette, 100, 0.8);
+      cursor: pointer;
+    }
+
+    &.readOnly {
+      color: mat.get-color-from-palette($accent, 600);
+
+      &:hover {
+        background-color: mat.get-color-from-palette($primary, 50);
+        cursor: default;
+      }
+    }
+
+    &:last-of-type {
+      border-right: none;
+    }
+  }
+
+  .mat-mdc-cell:last-child {
+    max-width: none;
+  }
+}

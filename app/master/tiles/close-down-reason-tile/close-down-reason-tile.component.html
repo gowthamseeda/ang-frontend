@@ -1,0 +1,21 @@
+<gp-master-tile iconLink="close-down-reasons"
+                headerText="{{ 'CLOSE_DOWN_REASONS' | translate }}"
+                searchPlaceHolder="{{ 'SEARCH_CLOSE_DOWN_REASON_FIELD_INLINE_PLACEHOLDER' | translate }}"
+                buttonText="{{ 'ADD_CLOSE_DOWN_REASON_BUTTON' | translate }}"
+                componentLink="/master/closeDownReason"
+                (searchText)="searchCloseDownReasonName($event)">
+  <div gpFxLayout="column">
+    <div class="close-down-reason-container"
+         *ngFor="let closeDownReason of closeDownReasons | filter: searchText"
+         routerLink="/master/closeDownReason/{{ closeDownReason.id }}">
+      <div class="close-down-reason-name-container">{{ closeDownReason.name }}</div>
+      <div class="delete-close-down-reason-container"
+           (click)="$event.stopPropagation()">
+        <button mat-icon-button
+                (click)="deleteCloseDownReason(closeDownReason.id)">
+          <gp-icon name="trash"></gp-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</gp-master-tile>

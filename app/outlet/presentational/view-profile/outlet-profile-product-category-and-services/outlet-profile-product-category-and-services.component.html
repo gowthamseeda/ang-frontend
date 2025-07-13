@@ -1,0 +1,13 @@
+<ng-container *ngIf="productCategoryWithServices">
+  <div gpFxLayout="row">
+    <div class="headline">
+      {{ productCategoryWithServices.productCategoryName }}
+    </div>
+  </div>
+
+  <div gpFxLayout="row">
+    <div class="content">
+      {{ productCategoryWithServices.serviceNames.join(', ') }}
+    </div>
+  </div>
+</ng-container>

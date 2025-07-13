@@ -1,0 +1,109 @@
+<div class="tab-content">
+  <div *ngIf="focusFeatureToggleFlag | async">
+    <h1 class="header">{{ 'DATARESTRICTION_INFORMATION' | translate}}</h1>
+
+    <div gpFxLayout="column" gpFxLayoutGap="10px" style="gap: 0px;">
+      <ng-container *ngIf="groupType; then thenShowData else thenShowEmpty"> </ng-container>
+    </div>
+
+    <h1 class="header">{{'DATARESTRICTION_SETTING' | translate}}</h1>
+    <div class="box" [formGroup]="parentForm">
+      <mat-slide-toggle color="primary" style="user-select: none" labelPosition="after"
+                        formControlName="ignoreFocusProductGroupFlagToggle" (click)="toggle()">
+        {{ 'DATARESTRICTION_FOCUS_PRODUCTGROUPS_IGNORE' | translate }}
+      </mat-slide-toggle>
+      <h3 [ngClass]="{'grey': ignoreFocusProductGroupFlagToggle}">
+        {{'DATARESTRICTION_FOCUS_PRODUCTGROUPS' | translate}}</h3>
+      <mat-basic-chip *ngFor="let dataRestrictionValue of focusProductGroupDataRestrictionValues">
+        <span>{{dataRestrictionValue}}</span>
+      </mat-basic-chip>
+
+      <h3 [ngClass]="{'grey': !ignoreFocusProductGroupFlagToggle}">
+        {{'DATARESTRICTION_PRODUCTGROUPS' | translate}}</h3>
+
+      <gp-data-restriction-assigner [(assignedDataRestrictionValues)]="productGroupDataRestrictionValues"
+                                    [dataRestrictionId]="'ProductGroup'">
+      </gp-data-restriction-assigner>
+    </div>
+  </div>
+
+  <h3>{{'DATARESTRICTION_TENANTS' | translate}}</h3>
+  <gp-data-restriction-assigner [(assignedDataRestrictionValues)]="tenantDataRestrictionValues"
+                                [dataRestrictionId]="'Tenant'">
+  </gp-data-restriction-assigner>
+
+  <h3>{{'DATARESTRICTION_LANGUAGES' | translate}}</h3>
+  <gp-data-restriction-assigner [(assignedDataRestrictionValues)]="languageDataRestrictionValues"
+                                [dataRestrictionId]="'Language'">
+  </gp-data-restriction-assigner>
+
+  <h3>{{'DATARESTRICTION_COUNTRIES' | translate}}</h3>
+  <gp-data-restriction-assigner [(assignedDataRestrictionValues)]="countryDataRestrictionValues"
+                                [dataRestrictionId]="'Country'">
+  </gp-data-restriction-assigner>
+
+  <h3>{{'DATARESTRICTION_BRANDS' | translate}}</h3>
+  <gp-data-restriction-assigner [(assignedDataRestrictionValues)]="brandDataRestrictionValues"
+                                [dataRestrictionId]="'Brand'">
+  </gp-data-restriction-assigner>
+
+  <div *ngIf="!(focusFeatureToggleFlag | async)">
+    <h3>{{'DATARESTRICTION_PRODUCTGROUPS' | translate}}</h3>
+    <gp-data-restriction-assigner [(assignedDataRestrictionValues)]="productGroupDataRestrictionValues"
+                                  [dataRestrictionId]="'ProductGroup'">
+    </gp-data-restriction-assigner>
+  </div>
+
+  <h3>{{'DATARESTRICTION_DISTRIBUTION_LEVELS' | translate}}</h3>
+  <gp-data-restriction-assigner [(assignedDataRestrictionValues)]="distributionLevelDataRestrictionValues"
+                                [dataRestrictionId]="'DistributionLevel'">
+  </gp-data-restriction-assigner>
+
+  <h3>{{'DATARESTRICTION_OUTLETS' | translate}}</h3>
+  <gp-data-restriction-assigner [(assignedDataRestrictionValues)]="businessSiteDataRestrictionValues"
+                                [dataRestrictionId]="'BusinessSite'">
+  </gp-data-restriction-assigner>
+
+  <h3>{{'DATARESTRICTION_SERVICES' | translate}}</h3>
+  <gp-data-restriction-assigner [(assignedDataRestrictionValues)]="serviceDataRestrictionValues"
+                                [dataRestrictionId]="'Service'">
+  </gp-data-restriction-assigner>
+  <div class="buttons">
+    <button type="reset" mat-button routerLink="/iam">
+      {{ 'BACK' | translate }}
+    </button>
+    &nbsp;
+    <button (click)="onSubmit()" [disabled]="isLoading" mat-button>{{'SAVE' | translate}}
+    </button>
+  </div>
+</div>
+
+<ng-template #thenShowEmpty>
+  <div gpFxLayout="row" gpFxLayoutGap="10px">
+    <div> {{ 'DATARESTRICTION_RESTRICTED_GROUPTYPE' | translate}}: </div>
+    <div gpFxFlex> - </div>
+  </div>
+</ng-template>
+
+<ng-template #thenShowData>
+  <h3 style="margin-bottom: 10px;">{{ 'DATARESTRICTION_RESTRICTED_GROUPTYPE' | translate}}</h3>
+  <div gpFxLayout="row" gpFxLayoutGap="10px"
+       style="flex-direction: row;box-sizing: border-box;display: flex;margin-bottom: 10px;">
+    <div gpFxFlex>
+      <mat-basic-chip>
+        <span> {{groupType}}&nbsp;({{ 'FOCUS_GROUPTYPE_'+groupType | translate}})
+        </span>
+      </mat-basic-chip>
+    </div>
+  </div>
+  <br>
+  <ng-container *ngIf="currentIgnoreFocusProductGroupFlag;
+  then thenShowPGMessage else thenShowFocusPGMessage">
+  </ng-container>
+</ng-template>
+<ng-template #thenShowFocusPGMessage>
+  {{ 'DATARESTRICTION_USING_FOCUS_PRODUCTGROUP' | translate}}
+</ng-template>
+<ng-template #thenShowPGMessage>
+  {{ 'DATARESTRICTION_USING_PRODUCTGROUP' | translate}}
+</ng-template>

@@ -1,0 +1,122 @@
+<mat-table [dataSource]="schedulerJobs">
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>
+      {{ 'NAME' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job">
+      <a class="link"
+         [routerLink]="['/scheduler/'+job.tableType+'/'+job.jobId]+'/edit'">
+        {{ job.jobName | uppercase | translate }}
+      </a>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="jobParameters">
+    <mat-header-cell *matHeaderCellDef>{{ 'SCHEDULER_JOB_PARAMETERS' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let job">
+      {{ job.jobParameters | emptyValuePipe }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="schedule">
+    <mat-header-cell *matHeaderCellDef>{{ 'SCHEDULE' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let job">
+      {{ job.schedule }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="active">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="8%">{{ 'ENABLED' | translate }}
+    </mat-header-cell>
+    <mat-cell [ngClass]="job.isActive+'-status'"
+              *matCellDef="let job"
+              gpFxFlex="8%">{{ job.isActive?.toString() | uppercase}}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="running">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="8%">{{ 'RUNNING' | translate }}
+    </mat-header-cell>
+    <mat-cell [ngClass]="job.isRunning+'-status'"
+              *matCellDef="let job"
+              gpFxFlex="8%">{{ job.isRunning?.toString() | uppercase }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lastRunningStatus">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="8%">
+      {{ 'LAST_RUNNING_STATUS' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job"
+              [ngClass]="job.lastRunningStatus?.toLowerCase()"
+              gpFxFlex="8%">
+      {{ job.lastRunningStatus | translate }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="copyFileStorageStatus">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="8%">
+      {{ 'COPY_FILE_STORAGE_STATUS' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job"
+              [ngClass]="job.copyFileStorageStatus?.toLowerCase()"
+              gpFxFlex="8%">
+      {{ job.copyFileStorageStatus | translate }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lastRunningTime">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="10%">
+      {{ 'LAST_RUNNING_TIME' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job"
+              gpFxFlex="10%">
+      {{ job.lastRunningTime | date:'E MMM dd HH:mm:ss UTC YYYY'}}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="triggerJob">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="8%"
+                     gpFxLayoutAlign="center center">
+      {{ 'TRIGGER' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job"
+              gpFxFlex="8%"
+              gpFxLayoutAlign="center center">
+      <button mat-button
+              [disabled]="isDisabled | async"
+              (click)="requestRun(job)">
+        <span *ngIf="job.isRunning; else triggerRun">
+          {{ 'ABORT' | translate }}
+        </span>
+      </button>
+      <ng-template #triggerRun>{{ 'RUN_NOW' | translate }}
+      </ng-template>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="deleteSchedule">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="8%"
+                     gpFxLayoutAlign="center center">
+      {{ 'DELETE' | translate }}
+    </mat-header-cell>
+      <mat-cell *matCellDef="let job"
+                gpFxFlex="8%"
+                gpFxLayoutAlign="center center">
+        <button mat-icon-button
+                (click)="deleteScheduleJob(job.jobId)">
+          <gp-icon name="trash"></gp-icon>
+        </button>
+      </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>

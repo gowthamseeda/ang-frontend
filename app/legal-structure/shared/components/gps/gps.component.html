@@ -1,0 +1,53 @@
+<div gpFxFlexFill>
+  <div gpFxLayout>
+    <h1 id="gpsCoordinates">{{ 'GPS_COORDINATES' | translate }}</h1>
+  </div>
+  <ng-container *ngIf="(mismatchAddress | async) as missMatchAddress">
+    <gp-map-message *ngIf="missMatchAddress"
+                    [mismatchAddress]="missMatchAddress"></gp-map-message>
+  </ng-container>
+  <div gpFxLayout="row"
+       gpFxLayoutGap="20px"
+       [formGroup]="gpsForm">
+    <gp-task-input-text gpFxFlexFill
+                        label="LATITUDE"
+                        data-cy="gps-latitude"
+                        [fieldName]="latitudeDataField"
+                        [parentForm]="gpsForm"
+                        [value]="gpsCoordsForMap.latitude"
+                        [initialValue]="initialGpsCoords.latitude? initialGpsCoords.latitude : ''"
+                        [dataNotificationChangeFields]="gpsChangeFields"
+                        [isRetailOutlet]="isRetailOutlet"
+                        [dataNotificationChangeFieldsInclusion]="['LATITUDE']"
+                        (inputChange)="inputCoordinatesChanged()"
+                        [readonly]="readonly"
+                        [aggregateField]="latitudeAggregateField"
+                        [aggregateName]="aggregateName"
+                        [dataCluster]="dataCluster"
+    >
+    </gp-task-input-text>
+
+    <gp-task-input-text gpFxFlexFill
+                        label="LONGITUDE"
+                        data-cy="gps-longitude"
+                        [fieldName]="longitudeDataField"
+                        [parentForm]="gpsForm"
+                        [value]="gpsCoordsForMap.longitude"
+                        [initialValue]="initialGpsCoords.longitude? initialGpsCoords.longitude : ''"
+                        [dataNotificationChangeFields]="gpsChangeFields"
+                        [isRetailOutlet]="isRetailOutlet"
+                        [dataNotificationChangeFieldsInclusion]="['LONGITUDE']"
+                        (inputChange)="inputCoordinatesChanged()"
+                        [readonly]="readonly"
+                        [aggregateField]="longitudeAggregateField"
+                        [aggregateName]="aggregateName"
+                        [dataCluster]="dataCluster"
+    >
+    </gp-task-input-text>
+  </div>
+
+  <gp-map [latitude]="gpsCoordsForMap?.latitude"
+          [longitude]="gpsCoordsForMap?.longitude">
+  </gp-map>
+
+</div>

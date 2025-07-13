@@ -1,0 +1,63 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+@import '../../shared/styles/master-detail.scss';
+
+.mat-mdc-form-field {
+  .mat-mdc-input-element {
+    &:disabled {
+      color: mat.get-color-from-palette($accent, 600) !important;
+    }
+  }
+}
+
+.checkbox-container {
+  margin-bottom: 30px;
+}
+
+.custom-popover {
+  background-color: #616161;
+  margin: 0;
+  color: white;
+  border-radius: 10px;
+  padding: 8px 8px 8px 8px;
+  line-height: 0.5em;
+  font-size: 12px
+}
+
+::ng-deep div.custom-popover > h1 {
+  font-size: 16px !important;
+  line-height: 1.3em !important;
+  font-weight: normal !important;
+  margin: 0;
+  color: white !important;
+}
+
+::ng-deep div.custom-popover > h2 {
+  font-size: 15px !important;
+  line-height: 1.3em !important;
+  font-weight: normal !important;
+  margin: 0;
+  color: white !important;
+}
+
+::ng-deep div.custom-popover > h3 {
+  font-size: 13px !important;
+  line-height: 1.3em !important;
+  font-weight: normal !important;
+  margin: 0;
+  color: white !important;
+}
+
+::ng-deep div.custom-popover > ul {
+  font-size: 12px !important;
+  line-height: 1.3em !important;
+  font-weight: normal !important;
+  color: white !important;
+}
+
+::ng-deep div.custom-popover > ol {
+  font-size: 12px !important;
+  line-height: 1.3em !important;
+  font-weight: normal !important;
+  color: white !important;
+}

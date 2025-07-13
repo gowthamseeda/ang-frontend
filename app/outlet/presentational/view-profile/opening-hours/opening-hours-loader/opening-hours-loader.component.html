@@ -1,0 +1,14 @@
+<gp-content-loader [isLoading]="isLoading">
+  <ng-content select="[opening-hours-content]"></ng-content>
+  <div loader class="loader" xmlns:svg="http://www.w3.org/2000/svg">
+    <content-loader primaryOpacity="0.3"
+                    secondaryOpacity="0.7"
+                    preserveAspectRatio="none"
+                    height="30" width="150" >
+      <svg:rect x="0px"
+                y="0px"
+                width="150px"
+                height="21px" />
+    </content-loader>
+  </div>
+</gp-content-loader>

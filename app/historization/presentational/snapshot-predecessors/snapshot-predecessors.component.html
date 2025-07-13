@@ -1,0 +1,14 @@
+<ng-container *ngIf="predecessors; else showEmpty">
+
+<ul *ngFor="let predecessor of predecessors">
+  <li [class.changed]="isChanged">
+    <gp-link-out-to-outlet [outletId]="predecessor">
+        {{ predecessor }}
+    </gp-link-out-to-outlet>
+  </li>
+</ul>
+</ng-container>
+
+<ng-template #showEmpty>
+  {{ '-' | emptyValuePipe }}
+</ng-template>

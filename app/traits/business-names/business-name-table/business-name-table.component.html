@@ -1,0 +1,93 @@
+<div class="business-names-table"
+     *ngxPermissionsOnly="['traits.businessnames.read']">
+  <h3 *ngIf="isInTranslationEditMode && dataSource.filteredData.length === 0">
+    {{ 'NO_BUSINESS_NAMES_IN_DEFAULT_LANGUAGE_PROVIDED' | translate }}
+  </h3>
+
+  <form [formGroup]="businessNamesForm">
+    <table mat-table
+           matSort
+           [dataSource]="dataSource"
+           formArrayName="businessNames"
+           *ngIf="dataSource.filteredData.length > 0">
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="46"
+                         mat-sort-header>{{ 'BUSINESS_NAME' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" gpFxFlex="46">
+          <mat-form-field class="no-label">
+            <input [formControl]="getInputFormControl(row)"
+                   [errorStateMatcher]="errorStateMatcher"
+                   matInput
+                   autocomplete="off"
+                   placeholder="{{ 'BUSINESS_NAME' | translate }}"
+                   [readonly]="hasReadonlyBrand(row) || row.disabled"
+                   data-cy="business-names-business-name" />
+            <mat-error *ngIf="row.get('name').hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+            <mat-error *ngIf="row.get('name').hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_CHARS' | translate: { value: '256' } }}
+            </mat-error>
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="brands">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="46">{{ 'BRANDS' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let row" gpFxFlex="46">
+          <gp-brand-selection placeholder="{{ 'BRAND' | translate }}"                    
+                              [readonly]="isInTranslationEditMode"
+                              [control]="row.get('brands')"
+                              [excludedBrandIds]="filteredBrandIds(row)"
+                              [errorStateMatcher]="errorStateMatcher">
+          </gp-brand-selection>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="8%"></mat-header-cell>
+
+        <mat-cell *matCellDef="let row" gpFxFlex="8%">
+          <ng-container *ngIf="row.disabled; else deleteButton">
+            <button mat-icon-button>
+              <gp-icon name="lock"
+                       size="small"></gp-icon>
+            </button>
+          </ng-container>
+
+          <ng-template #deleteButton>
+            <ng-container *ngIf="!hasReadonlyBrand(row) && !isInTranslationEditMode">
+              <button mat-icon-button
+                      (click)="showDeleteConfirmationDialog(row)">
+                <gp-icon name="trash"></gp-icon>
+              </button>
+            </ng-container>
+          </ng-template>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; let i = index; columns: displayedColumns"
+               [class.locked]="row.disabled"
+               gpFxLayoutAlign="center"></mat-row>
+    </table>
+
+    <ng-container *ngIf="!(disabled | async) || dataSource.filteredData.length > 0">
+      <div gpFxFlexFill
+           *ngxPermissionsOnly="['traits.businessnames.update']">
+        <button mat-flat-button
+                class="gp-icon-flat-button"
+                [class.add-business-name]="dataSource.filteredData.length > 0"
+                (click)="addNewRow()"
+                [disabled]="isAddButtonDisabled()"
+                *ngIf="!isInTranslationEditMode">
+          <gp-icon gpIconButtonWithText
+                   name="plus"
+                   [disabled]="isAddButtonDisabled()"></gp-icon>
+          {{ 'ADD_BUTTON' | translate }}
+        </button>
+      </div>
+    </ng-container>
+  </form>
+</div>

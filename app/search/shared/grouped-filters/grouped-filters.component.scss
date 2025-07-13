@@ -1,0 +1,25 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+mat-basic-chip.filter-group {
+  padding-right: 5px;
+
+  .vertical-divider {
+    height: 80%;
+    border-right: 1px solid silver;
+    margin-right: 4px;
+    margin-left: 5px;
+  }
+
+  &:hover gp-icon {
+    fill: mat.get-color-from-palette($primary, 500);
+  }
+}
+
+mat-basic-chip.filter-option {
+  cursor: pointer;
+}
+
+gp-icon {
+  margin-bottom: 3px;
+}

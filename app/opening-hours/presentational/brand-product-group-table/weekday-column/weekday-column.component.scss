@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.header-cell {
+  height: 121px;
+  border: 0;
+  border-right: 1px solid mat.get-color-from-palette($accent, 400);
+  border-bottom: 1px solid mat.get-color-from-palette($accent, 700);
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+  border: 0;
+  border-right: 1px solid mat.get-color-from-palette($accent, 400);
+  border-bottom: 1px solid mat.get-color-from-palette($accent, 400);
+  padding-left: 10px;
+  font-size: 16px;
+  color: mat.get-color-from-palette($accent, 600);
+
+  &.editable {
+    color: mat.get-color-from-palette($accent, 800);
+  }
+
+  &:last-child {
+    border: 1px solid mat.get-color-from-palette($accent, 400);
+    border-top: none;
+    border-left: none;
+  }
+}

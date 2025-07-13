@@ -1,0 +1,48 @@
+<ng-container *ngIf="showDoNotShowAgainCheckBox">
+    <mat-checkbox (change)="emitDoNotShowAgainCheckBoxChange()">
+      {{ 'SHOW_MULTI_SELECT_CONFIRMATION_DIALOG_CHECK_BOX' | translate }}
+    </mat-checkbox>
+    <gp-icon name="hint-info"
+             size="small"
+             class="gp-info-icon"
+             matTooltip="{{ 'SHOW_MULTI_SELECT_CONFIRMATION_DIALOG_CHECK_BOX_INFO' | translate }}"
+             matTooltipPosition="above">
+    </gp-icon>
+</ng-container>
+<div *ngxPermissionsOnly="permissions"
+     gpFxFill
+     gpFxLayout="row"
+     gpFxLayoutAlign="space-between">
+  <div gpFxLayout="row"
+       gpFxLayoutAlign="start center">
+    <ng-content></ng-content>
+  </div>
+  <div gpFxLayout="row"
+       gpFxLayoutAlign="end center"
+       gpFxLayoutGap="40px"
+       class="edit-actions">
+    <button type="reset"
+            mat-button
+            [disabled]="cancelButtonDisabled"
+            (click)="cancel.emit()"
+            data-cy="default-edit-action-cancel-button">
+      {{ cancelButtonTranslationKey | translate }}
+    </button>
+    <span *ngIf="saveButtonRouterLink; else noSaveButtonRouterLink"
+          [routerLink]="saveButtonRouterLink">
+    <ng-container *ngTemplateOutlet="saveButton"></ng-container>
+  </span>
+    <ng-template #noSaveButtonRouterLink>
+      <ng-container *ngTemplateOutlet="saveButton"></ng-container>
+    </ng-template>
+
+    <ng-template #saveButton>
+      <button mat-button
+              [disabled]="saveButtonDisabled"
+              (click)="emitSave()"
+              data-cy="default-edit-action-save-button">
+        {{ saveButtonTranslationKey | translate }}
+      </button>
+    </ng-template>
+  </div>
+</div>

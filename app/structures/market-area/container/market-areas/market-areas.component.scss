@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.page {
+  .header-text {
+    padding-left: 0px;
+    padding-top: 10px;
+    font-size: 26px;
+    color: mat.get-color-from-palette($accent, 800);
+    width: 100%;
+  }
+  .content {
+    padding: 20px;
+  }
+}

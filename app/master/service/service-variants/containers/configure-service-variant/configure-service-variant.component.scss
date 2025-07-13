@@ -1,0 +1,11 @@
+@import '../../../../../../styles-theme';
+@import '../../../../shared/styles/master-detail.scss';
+@import '../../../../../../styles/progress-bar.scss';
+
+.bottom-right-action {
+  padding-left: 20px;
+}
+
+::ng-deep .mat-mdc-tooltip {
+  white-space: pre-line;
+}

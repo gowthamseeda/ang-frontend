@@ -1,0 +1,14 @@
+<div *ngIf="startDate" class="chip">
+  <ng-container *ngIf="isSingleDay(); then startOnly; else startAndEnd"></ng-container>
+  <span class="close" (click)="onCloseClicked()"></span>
+</div>
+
+<ng-template #startAndEnd>
+  {{ startDate | localeDateTime }}
+  {{ endDate ? ' - ' : '' }}
+  {{ endDate ? (endDate | localeDateTime) : '' }}
+</ng-template>
+
+<ng-template #startOnly>
+  {{ startDate | localeDateTime }}
+</ng-template>

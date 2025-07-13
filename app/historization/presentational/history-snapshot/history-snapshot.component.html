@@ -1,0 +1,29 @@
+<mat-tree [dataSource]="dataSource"
+          [treeControl]="treeControl">
+  <mat-tree-node *matTreeNodeDef="let node">
+    <button mat-icon-button
+            disabled></button>
+    <gp-data-cluster-snapshot [dataCluster]="node.dataCluster"
+                              [currentSnapshot]="node.currentSnapshot"
+                              [changes]="node.changes"
+                              [comparingSnapshot]="node.comparingSnapshot"
+                              [selectedDate]="selectedDate"
+                              [isUserCountryPermitted]="isUserCountryPermitted"
+                              [displayChangesToggleInput]="displayChangesToggleInput"
+                              [hideEditorsToggleInput]="hideEditorsToggleInput"
+                              [showChangeOnlyToggleInput]="showChangeOnlyToggleInput"
+                              [hideAdditionalTranslationsToggleInput]="hideAdditionalTranslationsToggleInput"
+                              [hideExtraInformationToggleInput]="hideExtraInformationToggleInput">
+    </gp-data-cluster-snapshot>
+  </mat-tree-node>
+
+  <mat-tree-node *matTreeNodeDef="let node;when: hasChild"
+                 matTreeNodePadding>
+    <button mat-icon-button
+            matTreeNodeToggle>
+      <gp-icon color="petrol"
+               [name]="treeControl.isExpanded(node) ? 'accordion-open' : 'accordion'"></gp-icon>
+    </button>
+    {{ node.dataCluster | translate }}
+  </mat-tree-node>
+</mat-tree>

@@ -1,0 +1,23 @@
+<div gpFxLayout="row">
+  <div class="outlet-id"
+       data-cy="outlet-id-and-status-outlet-id">
+    {{outletId}} |
+  </div>
+  <div class="outlet-status"
+       data-cy="outlet-id-and-status-outlet-status">
+    <div *ngIf="active"
+         class="outlet-active">
+      <gp-icon class="icon-left"
+               name="hint-ok"
+               size="small"></gp-icon>
+      {{'ACTIVE' | translate | uppercase}}
+    </div>
+    <div *ngIf="!active"
+         class="outlet-inactive">
+      <gp-icon class="icon-left"
+               name="hint-error"
+               size="small"></gp-icon>
+      {{'INACTIVE' | translate | uppercase}}
+    </div>
+  </div>
+</div>

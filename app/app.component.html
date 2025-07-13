@@ -1,0 +1,25 @@
+<mat-progress-bar class="top-layout"
+                  *ngIf="loadProgress > 0"
+                  mode="determinate"
+                  [value]="loadProgress"
+                  color="primary">
+</mat-progress-bar>
+
+<div gpFxFill
+     gpFxLayout="row">
+
+  <gp-nav-bar></gp-nav-bar>
+
+  <div gpFxFlex
+       gpFxLayout="column"
+       class="page">
+    <gp-downtime-notification *gpFeatureToggle="downtimeNotificationFeatureToggleName">
+    </gp-downtime-notification>
+
+    <div class="router-container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+<gp-ie-notification></gp-ie-notification>

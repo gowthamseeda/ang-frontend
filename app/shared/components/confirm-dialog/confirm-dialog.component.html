@@ -1,0 +1,31 @@
+<div gpFxLayoutRow>
+  <h1 mat-dialog-title>{{confirmDialog?.text?.title | translate}}</h1>
+  <div class="close-btn-container">
+    <button mat-icon-button
+            mat-dialog-close
+            tabindex="-1"
+            (click)="dialogRef.close(false)">
+      <gp-icon name="close"
+              size="small"></gp-icon>
+    </button>
+  </div>
+</div>
+
+<mat-dialog-content>
+  {{confirmDialog?.text?.content | translate}}
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div gpFxFlex>
+    <button *ngIf="!confirmDialog?.options?.hideCancelButton"
+            mat-button
+            mat-dialog-close
+            (click)="dialogRef.close(false)">
+      {{'CANCEL' | translate}}
+    </button>
+  </div>
+  <button mat-button
+          (click)="dialogRef.close(true)">
+    {{confirmDialog?.text?.confirmButton | translate}}
+  </button>
+</mat-dialog-actions>

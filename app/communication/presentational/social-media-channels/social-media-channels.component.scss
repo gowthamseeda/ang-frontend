@@ -1,0 +1,52 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.mat-button-toggle-group {
+  height: auto;
+  margin-bottom: 30px;
+  border: 0;
+
+  .mat-button-toggle {
+    border: 0 !important;
+    background: none;
+    width: 41px;
+    height: 41px;
+    margin-right: 10px;
+    border-radius: 20px;
+    padding-top: 3px;
+
+    &:hover {
+      background: none;
+    }
+
+    &.mat-button-toggle-disabled:focus {
+      outline: none;
+    }
+
+    ::ng-deep .mat-button-toggle-label-content {
+      padding: 0;
+    }
+  }
+}
+
+.form-field {
+  padding-bottom: 0 !important;
+}
+
+.autoScale {
+  flex: 1 1 100%;
+  max-width: 66.6% !important;
+  min-width: 66.6% !important;
+  box-sizing: border-box;
+  display: flex;
+}
+
+@media (max-width: 959px) {
+  .autoScale {
+    flex: 1 1 100%;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    box-sizing: border-box;
+    display: flex;
+  }
+}

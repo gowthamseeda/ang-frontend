@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+@import '../../../shared/styles/table';
+
+@include structures-table($gssnplus-theme);
+
+a {
+  text-decoration: none;
+}
+
+.row-disabled {
+  .mat-mdc-cell,
+  .mat-cell:not(:last-child) a {
+    color: mat.get-color-from-palette($accent, 600);
+  }
+
+  ::ng-deep {
+    .brand-code {
+      background-color: mat.get-color-from-palette($accent, 400);
+    }
+
+    gp-brand-icon img {
+      filter: grayscale(100%) opacity(50%);
+    }
+  }
+}
+
+.mat-mdc-header-cell:last-child,
+.mat-mdc-cell:last-child {
+  max-width: none;
+}

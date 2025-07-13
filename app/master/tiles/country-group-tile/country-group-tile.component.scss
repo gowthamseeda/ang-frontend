@@ -1,0 +1,47 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.country-group-container {
+  outline: none;
+
+  &:hover {
+    background-color: mat.get-color-from-palette($accent, 100);
+
+    .delete-country-group-container button {
+      visibility: visible;
+
+      .gp-icon:hover {
+        color: mat.get-color-from-palette($accent, 500);
+      }
+    }
+  }
+
+  .country-group-name-container {
+    float: left;
+    margin-top: 12px;
+    max-width: 85%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    .country-group-logo {
+      height: 20px;
+      width: auto;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    *::-ms-backdrop,
+    .country-group-logo {
+      min-width: 28px;
+    }
+  }
+
+  .delete-country-group-container {
+    float: right;
+
+    .mat-mdc-icon-button {
+      visibility: hidden;
+    }
+  }
+}

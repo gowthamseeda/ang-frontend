@@ -1,0 +1,77 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+header {
+  padding: 0 30px;
+  border-bottom: 1px solid mat.get-color-from-palette($accent, 300);
+}
+
+.layout {
+  min-width: 0;
+
+  main {
+    max-width: 100%;
+
+    .margin {
+      margin: 30px;
+
+      .switch-language {
+        margin-right: 15px;
+      }
+    }
+
+    footer {
+      padding-right: 20px;
+      border-top: 1px solid mat.get-color-from-palette($accent, 300);
+    }
+  }
+
+  // TO BE REMOVED WHEN SPLIT LAYOUT IS DEPRECATED
+  aside {
+    background-color: mat.get-color-from-palette($accent, 500);
+    width: 100%;
+  }
+
+  .overlay-button {
+    position: fixed;
+    top: calc(50% - 60px);
+    right: 0;
+    z-index: 9999;
+    border: none;
+    background-color: mat.get-color-from-palette($gssnplus-primary-palette, 500);
+    cursor: pointer;
+    padding: 15px 3px;
+  }
+}
+
+::ng-deep .overlay {
+  display: block;
+  background-color: mat.get-color-from-palette($gssnplus-primary-palette, 500);
+  width: 40%;
+  margin-top: 60px;
+  height: calc(100% - 60px);
+  transition: 0.3s;
+
+  .hide-overlay-button {
+    position: fixed;
+    top: calc(50% - 60px);
+    right: 40%;
+    z-index: 9999;
+    border: none;
+    background-color: mat.get-color-from-palette($gssnplus-primary-palette, 500);
+    cursor: pointer;
+    padding: 15px 3px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .autoHide {
+    display: none !important;
+  }
+}
+
+@media screen and (min-width: 600px) and (max-width: 959px) {
+  .autoHide {
+    display: none !important;
+  }
+}

@@ -1,0 +1,8 @@
+<div class="outlet-building__container">
+  <ng-container *ngIf="isBasicBuildingType()">
+    <gp-basic-building
+      [outletName]="outletName"
+      [productGroupIds]="productGroups">
+    </gp-basic-building>
+  </ng-container>
+</div>

@@ -1,0 +1,20 @@
+<gp-master-tile iconLink="countries"
+                headerText="{{ '4RETAIL_COUNTRIES' | translate }}"
+                searchPlaceHolder="{{ 'SEARCH_4RETAIL_COUNTRY_FIELD_INLINE_PLACEHOLDER' | translate }}"
+                buttonText="{{ 'ADD_4RETAIL_COUNTRY_BUTTON' | translate }}"
+                componentLink="/master/retailCountry"
+                (searchText)="searchRetailCountryName($event)">
+  <div gpFxLayout="column">
+    <div class="retail-country-container"
+         *ngFor="let retailCountry of (retailCountries | filter: searchText)"
+         routerLink="/master/retailCountry/{{ retailCountry.id }}">
+      <div class="retail-country-name-container">{{ retailCountry.name }}</div>
+      <div class="delete-retail-country-container"
+           (click)="$event.stopPropagation()">
+        <button mat-icon-button>
+          <gp-icon name="trash" (click)="deleteRetailCountry(retailCountry.id)"></gp-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</gp-master-tile>

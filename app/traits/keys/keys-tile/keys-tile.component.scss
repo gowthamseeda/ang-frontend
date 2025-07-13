@@ -1,0 +1,38 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.mat-card-content-cell-header {
+  font-size: 14px;
+  color: mat.get-color-from-palette($accent, 800);
+  padding-bottom: 6px;
+  font-weight: bold;
+}
+
+.mat-card-content-cell {
+  padding-bottom: 14px;
+}
+
+gp-brand-ico {
+  padding-right: 10px;
+}
+
+gp-keys-duplicate-message {
+  ::ng-deep {
+    font-size: 12px;
+
+    gp-message {
+      ul {
+        margin: 0px !important;
+      }
+
+      .message {
+        margin-bottom: 5px;
+        padding-bottom: 0px;
+      }
+    }
+  }
+}
+
+[loader] {
+  width: 255px;
+}

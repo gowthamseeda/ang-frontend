@@ -1,0 +1,14 @@
+<gp-default-layout class="page">
+  <gp-header header-toolbar
+      [breadcrumbItems]="[{ label: 'STRUCTURE' }, { label: 'MARKET_AREA' }]"
+    >
+  </gp-header>
+  <div class="header-text">{{ 'MARKET_AREA' | translate }}</div>
+  <div class="content">
+
+  </div>
+  <gp-default-edit-actions footer-toolbar
+                           [saveButtonDisabled]="true"
+                           [cancelButtonDisabled]="true">
+  </gp-default-edit-actions>
+</gp-default-layout>

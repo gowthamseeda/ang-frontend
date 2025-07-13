@@ -1,0 +1,115 @@
+<mat-table [dataSource]="legalContracts?.controls">
+  <ng-container matColumnDef="contract-brand">
+    <mat-header-cell *matHeaderCellDef>{{ 'BRAND' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let legalContractControl" [formGroup]="legalContractControl">
+      <ng-container *ngIf="legalContractControl.get('brandId').enabled; else noBrandData">
+        <mat-form-field>
+          <mat-select formControlName="brandId" [placeholder]="'SELECT' | translate"
+                      (selectionChange)="brandSelectionChanged(legalContractControl)">
+            <mat-select-trigger>
+              <gp-brand-icon *ngIf="legalContractControl.get('brandId').value !== ''"
+                             [id]="legalContractControl.get('brandId').value"></gp-brand-icon>
+            </mat-select-trigger>
+            <mat-option *ngFor="let option of availableBrandSelections" [value]="option.value">
+              <gp-brand-icon [id]="option.value"></gp-brand-icon>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+      <ng-template #noBrandData>
+        <gp-brand-icon [id]="legalContractControl.get('brandId').value"></gp-brand-icon>
+      </ng-template>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container *ngIf="focusEnabled" matColumnDef="contract-company-relation">
+    <mat-header-cell *matHeaderCellDef gpFxFlex="12">{{ 'COMPANY_RELATION' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let legalContractControl" [formGroup]="legalContractControl" gpFxFlex="12">
+      <mat-form-field>
+        <mat-label *ngIf="legalContractControl.get('companyRelationId')?.value !== ''"></mat-label>
+        <mat-select formControlName="companyRelationId"
+                    [placeholder]="contractStatusDowntimeEnabled? '' : 'SELECT' | translate"
+                    (selectionChange)="companyRelationSelectionChanged(legalContractControl)">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let option of availableCompanyRelationSelections" [value]="option.value">
+            {{ 'COMPANY_RELATION_' + option.text | translate}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="contract-required">
+    <mat-header-cell *matHeaderCellDef gpFxFlex="12">{{ 'LEGAL_CONTRACT_STATUS_ENTRY' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let legalContractControl" gpFxFlex="12" [formGroup]="legalContractControl">
+      <mat-form-field>
+        <mat-select formControlName="required"
+                    (selectionChange)="contractRequiredSelectionChange(legalContractControl)">
+          <mat-option *ngFor="let option of availableRequiredSelections" [value]="option.value">
+            {{ option.text | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="contract-entry-per-language">
+    <mat-header-cell *matHeaderCellDef>{{ 'LEGAL_CONTRACT_STATUS_ENTRY_PER_LANGUAGE' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let legalContractControl" [formGroup]="legalContractControl">
+      <ng-container *ngIf="legalContractControl.get('required').value === true ; else noData">
+        <div class="contract-entry-per-language_container language">
+          <mat-form-field floatLabel="always">
+            <mat-label>{{ 'LANGUAGE' | translate | uppercase }}</mat-label>
+            <mat-select formControlName="languageId" [placeholder]="'SELECT' | translate"
+                        (selectionChange)="languageChanged(legalContractControl)">
+              <mat-option *ngFor="let option of availableLanguageSelections" [value]="option.value">
+                {{ option.text }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="contract-entry-per-language_container status">
+          <mat-form-field floatLabel="always">
+            <mat-label>{{ 'LEGAL_CONTRACT_STATUS' | translate | uppercase }}</mat-label>
+            <textarea matInput maxlength="150" formControlName="contractState"
+                      (keyup)="contractStateChanged(legalContractControl)"
+                      [placeholder]="'LEGAL_CONTRACT_STATUS_CORPORATE_DISCLOSURE_EMPTY' | translate"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="contract-entry-per-language_container disclosure">
+          <mat-form-field floatLabel="always">
+            <mat-label>{{ 'LEGAL_CONTRACT_STATUS_CORPORATE_DISCLOSURE' | translate | uppercase }}
+            </mat-label>
+            <textarea matInput maxlength="150" formControlName="corporateDisclosure"
+                      (keyup)="corporateDisclosureChanged(legalContractControl)"
+                      [placeholder]="'LEGAL_CONTRACT_STATUS_CORPORATE_DISCLOSURE_EMPTY' | translate"></textarea>
+          </mat-form-field>
+        </div>
+      </ng-container>
+      <ng-template #noData>
+        <div class="contract-entry-per-language_no">
+          {{ 'LEGAL_CONTRACT_STATUS_NOT_REQUIRED_INFO' | translate }}</div>
+      </ng-template>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="contract-actions">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let legalContractControl; let contractIndex = index;">
+      <ng-container *ngIf="legalContractControl.get('brandId') as brandControl">
+        <gp-icon name="trash" *ngIf="!brandControl.disabled" [hover]="!brandControl.disabled"
+                 [actionable]="!brandControl.disabled" (click)="removeIconClicked(legalContractControl)">
+        </gp-icon>
+        <gp-icon name="lock" *ngIf="brandControl.disabled" [disabled]="brandControl.disabled">
+        </gp-icon>
+      </ng-container>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="focusEnabled ? columns : columnsFocusDisabled"></mat-header-row>
+  <mat-row *matRowDef="let rowData; columns: focusEnabled ? columns : columnsFocusDisabled"
+           [class.locked]="rowData.disabled"></mat-row>
+</mat-table>

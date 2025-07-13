@@ -1,0 +1,363 @@
+<ng-container *ngIf="currentAdditionalTranslations; else showEmpty">
+  <ul *ngFor="let key of objectKeys(currentAdditionalTranslations)">
+    <ng-container *ngIf="{
+    businessNames: currentAdditionalTranslations[key].businessNames,
+
+    isLegalNameFieldChanged: isFieldChanged(key, 'legalName'),
+    isNameAdditionFieldChanged: isFieldChanged(key, 'nameAddition'),
+    isAddressStreetFieldChanged: isFieldChanged(key, 'address.street'),
+    isAddressStreetNumberFieldChanged: isFieldChanged(key, 'address.streetNumber'),
+    isAddressCityFieldChanged: isFieldChanged(key, 'address.city'),
+    isAddressDistrictFieldChanged: isFieldChanged(key, 'address.district'),
+    isAddressAdditionFieldChanged: isFieldChanged(key, 'address.addressAddition'),
+    isAdditionalAddressStreetFieldChanged: isFieldChanged(key, 'additionalAddress.street'),
+    isAdditionalAddressStreetNumberFieldChanged: isFieldChanged(key, 'additionalAddress.streetNumber'),
+    isAdditionalAddressCityFieldChanged: isFieldChanged(key, 'additionalAddress.city'),
+    isAdditionalAddressDistrictFieldChanged: isFieldChanged(key, 'additionalAddress.district'),
+    isAdditionalAddressAdditionFieldChanged: isFieldChanged(key, 'additionalAddress.addressAddition'),
+    isPoBoxCityFieldChanged: isFieldChanged(key, 'poBox.city'),
+    isProvinceFieldChanged: isFieldChanged(key, 'province'),
+    isStateFieldChanged: isFieldChanged(key, 'state'),
+    businessNamesFieldName: key + '.businessNames',
+    isBusinessNamesFieldChanged: isFieldChanged(key, 'businessNames')
+    } as translationVar">
+
+      <li
+          *ngIf="isAdditionalTranslationsFieldChanged(translationVar) ||
+      (!isAdditionalTranslationsFieldChanged(translationVar) && !showChangeOnlyToggleInput); else showNothing">
+        <span>
+          {{"LANGUAGE_ID" | translate}}
+        </span>
+        :
+        <ng-container *ngIf="masterDataChangesFeatureToggle; else noMasterDataChanges">
+          <a (click)="toggleMasterDataLanguageDetail(key)" class="popupLink">
+            {{ key }}
+          </a>
+        </ng-container>
+        <ng-template #noMasterDataChanges>
+          {{ key }}
+        </ng-template>
+      </li>
+
+      <li *ngIf="translationVar.isLegalNameFieldChanged ||
+      (!translationVar.isLegalNameFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isLegalNameFieldChanged">
+          {{"LEGAL_NAME" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            <ng-container *ngIf="(isMoveOutlet); else normalEditorLegalName">
+              {{ '[Move outlet, ' + getChangeEditor(key, legalNameField) + ']'}}
+            </ng-container>
+            <ng-template #normalEditorLegalName>
+              {{ '[' + getChangeEditor(key, legalNameField) + ']'}}
+            </ng-template>
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isLegalNameFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "legalName") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isNameAdditionFieldChanged ||
+      (!translationVar.isNameAdditionFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isNameAdditionFieldChanged">
+          {{"NAME_ADDITION" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "nameAddition") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isNameAdditionFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "nameAddition") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isAddressStreetFieldChanged ||
+      (!translationVar.isAddressStreetFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isAddressStreetFieldChanged">
+          {{"STREET" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "address.street") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isAddressStreetFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "address.street") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isAddressStreetNumberFieldChanged ||
+      (!translationVar.isAddressStreetNumberFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isAddressStreetNumberFieldChanged">
+          {{"STREET_NUMBER" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "address.streetNumber") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isAddressStreetNumberFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "address.streetNumber") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isAddressAdditionFieldChanged ||
+      (!translationVar.isAddressAdditionFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isAddressAdditionFieldChanged">
+          {{"ADDRESS_ADDITION" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "address.addressAddition") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isAddressAdditionFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "address.addressAddition") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isAddressCityFieldChanged ||
+      (!translationVar.isAddressCityFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isAddressCityFieldChanged">
+          {{"CITY" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "address.city") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isAddressCityFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "address.city") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isAddressDistrictFieldChanged ||
+      (!translationVar.isAddressDistrictFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isAddressDistrictFieldChanged">
+          {{"DISTRICT" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "address.district") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isAddressDistrictFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "address.district") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isStateFieldChanged ||
+      (!translationVar.isStateFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isStateFieldChanged">
+          {{"STATE" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "state") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isStateFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "state") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isProvinceFieldChanged ||
+      (!translationVar.isProvinceFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isProvinceFieldChanged">
+          {{"PROVINCE" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "province") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isProvinceFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "province") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isAdditionalAddressStreetFieldChanged ||
+      (!translationVar.isAdditionalAddressStreetFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isAdditionalAddressStreetFieldChanged">
+          {{"ADDITIONAL_ADDRESS_STREET" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "additionalAddress.street") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isAdditionalAddressStreetFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "additionalAddress.street") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isAdditionalAddressStreetNumberFieldChanged ||
+      (!translationVar.isAdditionalAddressStreetNumberFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isAdditionalAddressStreetNumberFieldChanged">
+          {{"ADDITIONAL_ADDRESS_STREET_NUMBER" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "additionalAddress.streetNumber") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isAdditionalAddressStreetNumberFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "additionalAddress.streetNumber") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isAdditionalAddressAdditionFieldChanged ||
+      (!translationVar.isAdditionalAddressAdditionFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isAdditionalAddressAdditionFieldChanged">
+          {{"ADDITIONAL_ADDRESS_ADDRESS_ADDITION" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "additionalAddress.addressAddition") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isAdditionalAddressAdditionFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "additionalAddress.addressAddition") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isAdditionalAddressCityFieldChanged ||
+      (!translationVar.isAdditionalAddressCityFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isAdditionalAddressCityFieldChanged">
+          {{"ADDITIONAL_ADDRESS_CITY" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "additionalAddress.city") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isAdditionalAddressCityFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "additionalAddress.city") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isAdditionalAddressDistrictFieldChanged ||
+      (!translationVar.isAdditionalAddressDistrictFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isAdditionalAddressDistrictFieldChanged">
+          {{"ADDITIONAL_ADDRESS_DISTRICT" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "additionalAddress.district") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isAdditionalAddressDistrictFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "additionalAddress.district") | emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isPoBoxCityFieldChanged ||
+      (!translationVar.isPoBoxCityFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isPoBoxCityFieldChanged">
+          {{"PO_BOX_CITY" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, "poBox.city") }}
+          </span>
+        </ng-container>
+        :
+        <span [class.changed]="translationVar.isPoBoxCityFieldChanged">
+          {{ displayFieldValueBasedOnToggle(key, "poBox.city") |
+          emptyValuePipe }}
+        </span>
+      </li>
+
+      <li *ngIf="translationVar.isBusinessNamesFieldChanged ||
+      (!translationVar.isBusinessNamesFieldChanged && !showChangeOnlyToggleInput); else showNothing">
+        <span [class.changed]="translationVar.isBusinessNamesFieldChanged">
+          {{"BUSINESS_NAMES" | translate}}
+        </span>
+
+        <ng-container *ngIf="!hideEditorsToggleInput">
+          <span [class.changed]="false"
+                *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ getChangeEditor(key, 'businessNames') }}
+          </span>
+        </ng-container>
+        :
+        <ng-container *ngIf="translationVar.businessNames; else showDash">
+          <ul *ngFor="let businessName of translationVar.businessNames">
+                <!-- TODO: in future need to think of a better way to highlight only specific business name translation -->
+                <li [class.changed]="translationVar.isBusinessNamesFieldChanged">
+                  {{"BUSINESS_NAME" | translate}} :
+                  <span [class.changed]="translationVar.isBusinessNamesFieldChanged">
+                    {{ displayBusinessNameFieldValueBasedOnToggle(key, "businessName",businessName) | emptyValuePipe }}
+                  </span>
+                </li>
+                <li [class.changed]="translationVar.isBusinessNamesFieldChanged">
+                  {{"BRANDS" | translate}} :
+                  <span [class.changed]="translationVar.isBusinessNamesFieldChanged">
+                    {{ displayBusinessNameFieldValueBasedOnToggle(key, "brandIds",businessName) | emptyValuePipe }}
+                  </span>
+                </li>
+          </ul>
+        </ng-container>
+      </li>
+    </ng-container>
+
+  </ul>
+</ng-container>
+
+<ng-template #showEmpty>
+  {{ '' | emptyValuePipe }}
+</ng-template>
+
+<ng-template #showDash>
+  {{ '-' | emptyValuePipe }}
+</ng-template>
+
+<ng-template #showNothing>
+</ng-template>

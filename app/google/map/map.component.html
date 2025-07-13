@@ -1,0 +1,14 @@
+<div *ngIf="!mapVisible" class="gp-map-not-available-text">
+  {{ 'GOOGLEMAPS_NOT_AVAILABLE' | translate }}
+</div>
+
+<google-map
+  *ngIf="mapVisible"
+  height="{{ mapHeight }}"
+  width="100%"
+  [zoom]="zoom"
+  [center]="center"
+  [options]="options"
+>
+  <map-marker *ngIf="displayMarker" #markerElem [position]="marker.position"></map-marker>
+</google-map>

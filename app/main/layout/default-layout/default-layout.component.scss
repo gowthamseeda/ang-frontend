@@ -1,0 +1,19 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+header {
+  padding: 5px 30px;
+  border-bottom: 1px solid mat.get-color-from-palette($accent, 300);
+}
+
+main {
+  .margin {
+    margin: 30px;
+  }
+}
+
+footer {
+  padding-left: 30px;
+  padding-right: 30px;
+  border-top: 1px solid mat.get-color-from-palette($accent, 300);
+}

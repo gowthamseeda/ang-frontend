@@ -1,0 +1,17 @@
+<mat-table [dataSource]="dataSource"
+           multiTemplateDataRows>
+
+  <ng-content select="[tableContents]"></ng-content>
+
+  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: columnsToDisplay"
+           class="row-overview"
+           [class.row-overview-expanded]="row.show"
+           (click)="row.show = !row.show;">
+  </mat-row>
+  <mat-row *matRowDef="let row; columns: ['expandedDetail']"
+           [@detailExpand]="row.show ? 'expanded' : 'collapsed'"
+           [class.detail-row]="!row.show"
+           class="detail-row">
+  </mat-row>
+</mat-table>

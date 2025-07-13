@@ -1,0 +1,21 @@
+::ng-deep .mat-card-header-text {
+  padding-top: 15px;
+}
+
+ng-scrollbar {
+  padding-right: 15px;
+}
+
+.content {
+  padding: 20px;
+
+  .scroll-area {
+    min-height: 300px;
+    height: calc(100vh - 380px);
+    overflow: auto;
+  }
+
+  gp-services-chip {
+    margin-left: 10px;
+  }
+}

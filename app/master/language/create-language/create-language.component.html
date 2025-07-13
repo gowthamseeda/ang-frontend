@@ -1,0 +1,84 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{label: 'MASTER_DATA', path: '/master'},
+             {label: 'LANGUAGES'}]">
+  </gp-header>
+  <div gpContent>
+    <div gpFxLayout="row"
+         gpFxLayoutGap="10px">
+      <gp-header-image [name]="'languages'"
+                       [large]="true"></gp-header-image>
+      <div gpFxLayout="column"
+           class="header">
+        <h1>{{ 'CREATE_LANGUAGE' | translate }}</h1>
+        <span>{{ 'CREATE_LANGUAGE_SUBTITLE' | translate }}</span>
+      </div>
+    </div>
+    <form [formGroup]="languageForm"
+          (ngSubmit)="submit(languageForm.value)">
+      <div gpFxLayout="column">
+        <div gpFxLayout="row"
+             gpFxLayoutGap="30px">
+          <mat-form-field gpFxFlex="45">
+            <mat-label>{{ 'NAME' | translate }}</mat-label>
+            <input matInput
+                   formControlName="name"
+                   type="text"
+                   required />
+            <mat-error *ngIf="languageForm.get('name')?.hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+            <mat-error *ngIf="languageForm.get('name')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field gpFxFlex="35">
+            <mat-label>{{ 'REPRESENTATION' | translate }}</mat-label>
+            <input matInput
+                   formControlName="representation"
+                   type="text"
+                   required />
+            <mat-error *ngIf="languageForm.get('representation')?.hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+            <mat-error *ngIf="languageForm.get('representation')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field gpFxFlex>
+            <mat-label>{{ 'ID' | translate }}</mat-label>
+            <input matInput
+                   formControlName="id"
+                   type="text"
+                   required />
+            <mat-error *ngIf="languageForm.get('id')?.hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+            <mat-error *ngIf="languageForm.get('id')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+            <mat-error *ngIf="languageForm.get('id')?.hasError('validId')">
+              {{ 'VALIDATION_ERROR_PATTERN_LANGUAGE_ID' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div gpFxLayout="row">
+          <div gpFxFlex>
+            <button type="reset"
+                    mat-button
+                    routerLink="/master">
+              {{ 'CANCEL' | translate }}
+            </button>
+          </div>
+          <button type="submit"
+                  mat-button
+                  [disabled]="languageForm.invalid">
+            {{ 'CREATE' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</gp-default-layout>

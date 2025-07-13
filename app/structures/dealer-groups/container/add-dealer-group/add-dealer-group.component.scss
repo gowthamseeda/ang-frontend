@@ -1,0 +1,5 @@
+.no-field-underline {
+  ::ng-deep .mdc-line-ripple {
+    display: none;
+  }
+}

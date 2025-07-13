@@ -1,0 +1,179 @@
+<gp-default-layout>
+  <gp-header [breadcrumbItems]="breadcrumbItems"
+             header-toolbar>
+  </gp-header>
+  <ng-container *ngIf="task | async as task">
+    <mat-table class="task-info-detail"
+               [dataSource]="[task]"
+               *ngIf="task">
+
+      <ng-container matColumnDef="outletId">
+        <mat-header-cell *matHeaderCellDef
+                         gpFxFlex="15">{{ 'OUTLET_ID' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let task"
+                  gpFxFlex="15">
+
+          <span><a
+            routerLink="../../../outlet/{{ task.businessSite.businessSiteId }}">{{ task.businessSite.businessSiteId }}</a></span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="address">
+        <mat-header-cell *matHeaderCellDef
+                         gpFxFlex="25">{{ 'ADDRESS' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let task"
+                  gpFxFlex="25">
+          <div>
+            {{ task.businessSite.address.street }}
+            {{ task.businessSite.address.streetNumber }}
+          </div>
+          <div>{{ task.businessSite.address.zipCode }}
+            {{ task?.businessSite?.address?.city }}
+          </div>
+          <div>
+            {{ task.businessSite.address.countryId | translateCountry | async }}
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="legalName">
+        <mat-header-cell *matHeaderCellDef
+                         gpFxFlex="35">{{ 'LEGAL_NAME' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let task"
+                  gpFxFlex="35">
+          {{ task.businessSite.legalName }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="brandCodes">
+        <mat-header-cell *matHeaderCellDef
+                         gpFxFlex="30">{{ 'BRAND_CODES' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let task"
+                  gpFxFlex="30">
+          <gp-brand-code [outletId]="task?.businessSite?.businessSiteId">
+          </gp-brand-code>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+      <mat-row *matRowDef="let task; columns: columnsToDisplay"></mat-row>
+    </mat-table>
+    <gp-task-info [task]="task"></gp-task-info>
+
+    <ng-container *gpFeatureToggle="focusFeatureToggleName">
+      <span *ngIf="task?.diff && showDiff(task.dataCluster, [dataCluster.openingHours, dataCluster.generalCommunicationChannels, dataCluster.communicationChannels])"
+            class="diff-title">{{ 'TASK_OPEN_DATA' | translate }}</span>
+    </ng-container>
+    <gp-edit-layout [marginalColumnDisabled]=true>
+      <div class="content">
+        <gp-task-diff-business-name *ngIf="showDiff(task.dataCluster, [dataCluster.businessName])"
+                                    [taskDiff]="task?.diff">
+        </gp-task-diff-business-name>
+        <gp-task-diff-opening-hours *ngIf="showDiff(task.dataCluster, [dataCluster.openingHours])"
+                                    [taskDiff]="task?.diff"
+                                    [languageId]="languageId">
+        </gp-task-diff-opening-hours>
+        <gp-task-diff-communication *ngIf="showDiff(task.dataCluster, [dataCluster.communicationChannels])"
+                                    [taskDiff]="task?.diff"
+                                    [languageId]="languageId">
+        </gp-task-diff-communication>
+        <gp-task-diff-general-communication *ngIf="showDiff(task.dataCluster,
+        [dataCluster.generalCommunicationChannels]) || task.aggregateName ===
+        'GeneralCommunicationData'"
+                                            [taskDiff]="task?.diff"
+                                            [languageId]="languageId">
+        </gp-task-diff-general-communication>
+        <gp-task-diff-default *ngIf="showDiff(task.dataCluster, [dataCluster.baseDataAddress,
+                                                                 dataCluster.baseDataAdditionalAddress,
+                                                                 dataCluster.baseDataGps,
+                                                                 dataCluster.baseDataPoBox,
+                                                                 dataCluster.baseDataNameAddition,
+                                                                 dataCluster.baseDataStateAndProvince,
+                                                                 dataCluster.legalTaxNo,
+                                                                 dataCluster.legalVatNo,
+                                                                 dataCluster.legalLegalFooter,
+                                                                 dataCluster.baseDataAddressStreet,
+                                                                 dataCluster.baseDataAddressNumber,
+                                                                 dataCluster.baseDataAddressAddressAddition,
+                                                                 dataCluster.baseDataAddressZipCode,
+                                                                 dataCluster.baseDataAddressCity,
+                                                                 dataCluster.baseDataAddressDistrict,
+                                                                 dataCluster.baseDataAddressState,
+                                                                 dataCluster.baseDataAddressProvince])"
+                              [taskDiff]="task?.diff">
+        </gp-task-diff-default>
+        <gp-task-diff-default *ngIf="!(task?.aggregateName === undefined || task?.aggregateName
+        === null || task?.aggregateName === '') && task.aggregateName !==
+        'GeneralCommunicationData'"
+                              [taskDiff]="task?.diff"
+                              [fieldName]="task.aggregateField">
+        </gp-task-diff-default>
+
+      </div>
+    </gp-edit-layout>
+
+    <ng-container *ngIf="showDiff(task.dataCluster, [dataCluster.openingHours, dataCluster.communicationChannels])">
+      <ng-container *ngIf="(task?.approvedDiff && diffIsNotEmpty(task.approvedDiff)) ||
+      (task?.declinedDiff && diffIsNotEmpty(task.declinedDiff))">
+        <hr class="line"/>
+
+        <div *ngIf="task?.approvedDiff && diffIsNotEmpty(task.approvedDiff)">
+          <span class="diff-title">{{ 'TASK_APPROVED_DATA' | translate }}</span>
+          <gp-edit-layout [marginalColumnDisabled]=true>
+            <gp-task-diff-opening-hours *ngIf="showDiff(task.dataCluster, [dataCluster.openingHours])"
+                                        [taskDiff]="task?.approvedDiff"
+                                        [languageId]="languageId">
+            </gp-task-diff-opening-hours>
+            <gp-task-diff-communication *ngIf="showDiff(task.dataCluster, [dataCluster.communicationChannels])"
+                                        [taskDiff]="task?.approvedDiff"
+                                        [languageId]="languageId">
+            </gp-task-diff-communication>
+          </gp-edit-layout>
+        </div>
+
+        <div *ngIf="task?.declinedDiff && diffIsNotEmpty(task.declinedDiff)">
+          <span class="diff-title">{{ 'TASK_REJECTED_DATA' | translate }}</span>
+          <gp-edit-layout [marginalColumnDisabled]=true>
+
+            <gp-task-diff-opening-hours *ngIf="showDiff(task.dataCluster, [dataCluster.openingHours])"
+                                        [taskDiff]="task?.declinedDiff"
+                                        [languageId]="languageId">
+            </gp-task-diff-opening-hours>
+            <gp-task-diff-communication *ngIf="showDiff(task.dataCluster, [dataCluster.communicationChannels])"
+                                        [taskDiff]="task?.declinedDiff"
+                                        [languageId]="languageId">
+            </gp-task-diff-communication>
+          </gp-edit-layout>
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="(task | async) as task; else currentUser"
+                footer-toolbar>
+    <gp-task-footer *ngIf="!isCurrentUserTaskInitiator(task.initiator); else currentUser"
+                    (confirm)="approve($event)"
+                    (discard)="reject($event)"
+                    [taskId]="task?.taskId"
+                    [type]="taskType"
+                    [confirmButtonDisabled]="(task?.status !== statusOpen && task?.status !== statusPartially) || noMorePendingTask(task?.diff, task?.approvedDiff, task?.declinedDiff)"
+                    [discardButtonDisabled]="(task?.status !== statusOpen && task?.status !== statusPartially) || noMorePendingTask(task?.diff, task?.approvedDiff, task?.declinedDiff)">
+    </gp-task-footer>
+  </ng-container>
+
+  <ng-template #currentUser>
+    <gp-task-footer [useOnlyContent]="true"
+                    footer-toolbar>
+      <button mat-button
+              type="reset"
+              class="footer-button"
+              routerLink="/tasks">
+        {{ 'BACK' | translate }}
+      </button>
+    </gp-task-footer>
+  </ng-template>
+</gp-default-layout>

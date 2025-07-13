@@ -1,0 +1,8 @@
+<p>{{ 'LAST_RUNNING_STATUS' | translate }}: {{ job?.lastRunningStatus | translate }}</p>
+<p>{{ 'COPY_FILE_STORAGE_STATUS' | translate }}:
+  {{ job?.copyFileStorageStatus | translate }}</p>
+<p>{{ 'LAST_RUNNING_TIME' | translate }}:
+  {{ job?.lastRunningTime  | date:'E MMM dd HH:mm:ss UTC YYYY' }}
+</p>
+<p *ngIf="!(type === schedulerType.API)">{{ 'NEXT_RUNNING_TIME' | translate }}:
+  {{ job?.nextRunDate | date:'E MMM dd HH:mm:ss UTC YYYY' }}</p>

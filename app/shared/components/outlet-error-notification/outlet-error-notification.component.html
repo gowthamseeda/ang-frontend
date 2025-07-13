@@ -1,0 +1,39 @@
+<div [hidden]="errors.size === 0"
+     *ngIf="businessSiteId | async as businessSiteId">
+  <ng-scrollbar class="message" [autoHeightDisabled]="false" >
+    <div class="contents">
+      <p>{{ 'ERROR_NOTIFICATION_TITLE' | translate }}</p>
+      <ul class="errors">
+        <li [hidden]="!hasError('brand-code-sync')">
+          <gp-brand-code-sync-message *ngxPermissionsOnly="['traits.assignedbrandlabel.read']"
+                                      [businessSiteId]="businessSiteId"
+                                      link="keys"
+                                      (errorOccurred)="setError('brand-code-sync', $event)">
+          </gp-brand-code-sync-message>
+        </li>
+        <li [hidden]="!hasError('brand-code-sync-registered-office')"
+            *ngIf="companysRegisteredOfficeId !== businessSiteId">
+          <gp-brand-code-sync-message *ngxPermissionsOnly="['traits.assignedbrandlabel.read']"
+                                      [businessSiteId]="companysRegisteredOfficeId"
+                                      [markAsRegisteredOffice]="true"
+                                      link="keys"
+                                      (errorOccurred)="setError('brand-code-sync-registered-office', $event)">
+          </gp-brand-code-sync-message>
+        </li>
+        <li [hidden]="!hasError('distribution-level-missing')">
+          <gp-distribution-level-message [businessSiteId]="businessSiteId"
+                                         link="edit"
+                                         (errorOccurred)="setError('distribution-level-missing', $event)">
+          </gp-distribution-level-message>
+        </li>
+        <li [hidden]="!hasDuplicateKeyErrors()">
+          <gp-duplicate-keys-message *ngxPermissionsOnly="['traits.adamid.read', 'traits.federalid.read']"
+                                     [businessSiteId]="businessSiteId"
+                                     link="keys"
+                                     (errorOccurred)="setError($event.type.toString(), $event.value)">
+          </gp-duplicate-keys-message>
+        </li>
+      </ul>
+    </div>
+  </ng-scrollbar>
+</div>

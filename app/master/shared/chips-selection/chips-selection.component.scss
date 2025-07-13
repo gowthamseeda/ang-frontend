@@ -1,0 +1,19 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.chips-selection {
+  .mat-mdc-chip-set {
+    .mat-mdc-chip.mat-mdc-basic-chip, .mat-mdc-chip.mat-mdc-standard-chip {
+      margin: 4px 8px 4px 4px;
+
+      color: white;
+      background-color: mat.get-color-from-palette($primary, 500);
+      border-color: mat.get-color-from-palette($primary, 500);
+
+      &:hover {
+        background-color: mat.get-color-from-palette($primary, 600);
+        border-color: mat.get-color-from-palette($primary, 600);
+      }
+    }
+  }
+}

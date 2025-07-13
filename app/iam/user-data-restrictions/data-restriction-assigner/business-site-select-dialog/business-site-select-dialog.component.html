@@ -1,0 +1,27 @@
+<div gpFxLayout="column">
+  <h3>{{'BUSINESS_SITE_DATARESTRICTION_SELECT_DIALOG' | translate}}</h3>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <input [errorStateMatcher]="errorStateMatcher"
+             [matAutocomplete]="auto"
+             formControlName="businessSiteId"
+             matInput
+             placeholder="Search ID"
+             type="text">
+      <mat-error>
+        {{ 'BUSINESS_SITE_ID_NOT_EXISTING' | translate }}
+      </mat-error>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let businessSiteId of foundBusinessSiteIds.ids"
+                    [value]="businessSiteId">
+          {{businessSiteId}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+  <button (click)="dialogRef.close(form.controls['businessSiteId'].value)"
+          [disabled]="form.invalid || form.controls['businessSiteId'].value.length === 0"
+          mat-button>
+    {{'OK' | translate}}
+  </button>
+</div>

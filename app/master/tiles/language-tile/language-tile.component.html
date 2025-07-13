@@ -1,0 +1,21 @@
+<gp-master-tile iconLink="languages"
+                headerText="{{ 'LANGUAGES' | translate }}"
+                searchPlaceHolder="{{ 'SEARCH_LANGUAGE_FIELD_INLINE_PLACEHOLDER' | translate }}"
+                buttonText="{{ 'ADD_LANGUAGE_BUTTON' | translate }}"
+                componentLink="/master/language"
+                (searchText)="searchLanguageName($event)">
+  <div gpFxLayout="column">
+    <div class="language-container"
+         *ngFor="let language of languages | filter: searchText"
+         routerLink="/master/language/{{ language.id }}">
+      <div class="language-name-container">{{ language.name }} [{{ language.id }}]</div>
+      <div class="delete-language-container"
+           (click)="$event.stopPropagation()">
+        <button mat-icon-button
+                (click)="deleteLanguage(language.id)">
+          <gp-icon name="trash"></gp-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</gp-master-tile>

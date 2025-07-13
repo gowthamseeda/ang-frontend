@@ -1,0 +1,48 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.page {
+  min-width: 700px;
+
+  .legal-info__container {
+    padding: 0 30px 15px 22px;
+  }
+}
+
+:host ::ng-deep h1 {
+  margin-bottom: 10px;
+  color: mat.get-color-from-palette($accent, 800);
+}
+
+.banner-text-4r {
+  color: white;
+}
+
+:host ::ng-deep div.mat-form-field-outline-start {
+  border-color: 0 !important;
+  border-width: 0px !important;
+}
+
+:host ::ng-deep .mat-form-field-outline-gap {
+  border-color: 0 !important;
+  border-width: 0px !important;
+}
+
+:host ::ng-deep .mat-form-field-outline-end {
+  border-color: 0 !important;
+  border-width: 0px !important;
+}
+
+.legal-footer-future-value {
+  padding: 10px 16px;
+  line-height: 24px;
+}
+
+.popupLink{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.popupLink:hover{
+  color: mat.get-color-from-palette($accent, 500);
+}

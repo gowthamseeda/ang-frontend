@@ -1,0 +1,26 @@
+<gp-master-tile headerText="{{ 'KEY_TYPE' | translate }}"
+                searchPlaceHolder="{{ 'SEARCH_KEY_TYPE_FIELD_INLINE_PLACEHOLDER' | translate }}"
+                buttonText="{{ 'ADD_KEY_TYPE_BUTTON' | translate }}"
+                componentLink="/master/keyType"
+                (searchText)="searchKeyTypeName($event)">
+  <div gpFxLayout="column">
+    <div class="key-type-container"
+         *ngFor="let keyType of keyTypes | filter: searchText"
+         routerLink="/master/keyType/{{ keyType.id }}"
+         matTooltip="{{ keyType && keyType?.description ? ( keyType | translateData: currentSelectedLanguage : undefined : translateOutputType.description) : '' }}"
+         matTooltipPosition="{{ 'position' | tooltipDefault }}">
+
+        <div class="key-type-name-container">
+          {{  keyType.name  }}
+        </div>
+
+      <div class="delete-key-type-container"
+          (click)="$event.stopPropagation()">
+        <button mat-icon-button
+              (click)="deleteKeyType(keyType.id)">
+        <gp-icon name="trash"></gp-icon>
+      </button>
+      </div>
+    </div>
+  </div>
+</gp-master-tile>

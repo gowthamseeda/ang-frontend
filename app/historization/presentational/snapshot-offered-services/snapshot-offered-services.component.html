@@ -1,0 +1,1153 @@
+<ng-container *ngIf="currentOfferedServices && currentOfferedServices.length > 0; else showEmpty">
+  <ng-container *ngFor="let offeredService of currentOfferedServices;">
+    <ng-container *ngIf="isFieldChangedCompareWholeData(offeredService) ||
+    (!isFieldChangedCompareWholeData(offeredService) && !showChangeOnlyToggleInput); else
+    showNothing">
+      <ul [class.changed]="isChanged('offeredServiceId',offeredService)">
+        <li>
+          <ng-container
+            *ngIf="{
+          isFieldChanged: isChanged('offeredServiceId',offeredService)
+        } as offeredServiceIdChanges"
+          >
+            {{ 'OFFERED_SERVICE_ID' | translate }}
+            <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+        <span *ngxPermissionsOnly="['app.historization.editor.show']">
+        {{
+            offeredServiceIdChanges.isFieldChanged ? '[' + getChangeEditor('offeredServiceId', offeredService) + ']'
+              : ''
+          }}
+        </span>:
+            </ng-container>
+            {{ offeredServiceIdChanges.isFieldChanged && displayChangesToggleInput ? '[-] =>' : '' }}
+            {{ offeredService?.offeredServiceId | emptyValuePipe }}
+          </ng-container>
+        </li>
+        <ul>
+          <li *ngIf="(!!offeredService?.service && !showChangeOnlyToggleInput) ||
+      (isChanged('service.id',offeredService) && showChangeOnlyToggleInput)">
+            {{ 'SERVICE' | translate }}
+            <ul>
+              <ng-container
+                *ngIf="{
+            isFieldChanged: isChanged('service.id',offeredService),
+            serviceId: 'service.id'
+          } as serviceChanges"
+              >
+                <li [class.changed]="serviceChanges.isFieldChanged">
+                  {{ 'SERVICE_ID' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+            <span *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{
+                serviceChanges.isFieldChanged ?
+                  '[' + getChangeEditor(serviceChanges.serviceId, offeredService) + ']' : ''
+              }}
+            </span>:
+                  </ng-container>
+                  {{
+                    serviceChanges.isFieldChanged && displayChangesToggleInput ?
+                      '[' + (getFieldDataFromComparingData(serviceChanges.serviceId,
+                        offeredService)| emptyValuePipe) +
+                      '] =>' :
+                      ''
+                  }}
+                  <ng-container *ngIf="masterDataChangesFeatureToggle; else noMasterDataChanges">
+                    <a (click)="toggleMasterDataByServiceId(offeredService.service.id)"
+                       class="popupLink">
+                      {{ offeredService?.service.id | emptyValuePipe }}
+                    </a>
+                  </ng-container>
+                  <ng-template #noMasterDataChanges>
+                    {{ offeredService?.service.id | emptyValuePipe }}
+                  </ng-template>
+                </li>
+                <ng-container *ngIf="!hideExtraInformationToggleInput">
+                  <li [class.changed]="serviceChanges.isFieldChanged">
+                    {{ 'SERVICE_NAME' | translate }}
+                    <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+            <span *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{
+                serviceChanges.isFieldChanged ?
+                  '[' + getChangeEditor(serviceChanges.serviceId, offeredService) + ']' : ''
+              }}
+            </span>:
+                    </ng-container>
+                    {{
+                      serviceChanges.isFieldChanged && displayChangesToggleInput ?
+                        '[' + (getFieldDataFromComparingData(serviceChanges.serviceId,
+                          offeredService)| emptyValuePipe) +
+                        '] =>' :
+                        ''
+                    }}
+                    {{ offeredService?.service.name | emptyValuePipe }}
+                  </li>
+                </ng-container>
+              </ng-container>
+            </ul>
+          </li>
+          <li *ngIf="(!!offeredService?.serviceCharacteristic && !showChangeOnlyToggleInput) ||
+            (isChanged('serviceCharacteristic.id',offeredService) && showChangeOnlyToggleInput)">
+            {{ 'SERVICE_CHARACTERISTIC' | translate }}
+            <ul>
+              <ng-container
+                *ngIf="{
+            isFieldChanged: isChanged('serviceCharacteristic.id',offeredService),
+            serviceCharacteristicId: 'serviceCharacteristic.id'
+          } as serviceCharacteristicsChanges"
+              >
+                <li
+                  [class.changed]="serviceCharacteristicsChanges.isFieldChanged">
+                  {{ 'SERVICE_CHARACTERISTIC_ID' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                    <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                      {{
+                        serviceCharacteristicsChanges.isFieldChanged ?
+                          '[' + getChangeEditor(serviceCharacteristicsChanges.serviceCharacteristicId, offeredService) + ']' : ''
+                      }}
+                    </span>:
+                  </ng-container>
+                  {{
+                    serviceCharacteristicsChanges.isFieldChanged && displayChangesToggleInput ?
+                      '[' + (getFieldDataFromComparingData(serviceCharacteristicsChanges.serviceCharacteristicId,
+                        offeredService)| emptyValuePipe) +
+                      '] =>' :
+                      ''
+                  }}
+                  {{ offeredService?.serviceCharacteristic.id | emptyValuePipe }}
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+          <li *ngIf="(!!offeredService?.productCategory && !showChangeOnlyToggleInput) ||
+            (isChanged('productCategory.id', offeredService) && showChangeOnlyToggleInput)">
+            {{ 'PRODUCT_CATEGORY' | translate }}
+            <ul>
+              <ng-container
+                *ngIf="{
+                  isFieldChanged: isChanged('productCategory.id', offeredService),
+                  productCategoryId: 'productCategory.id'
+                } as productCategoryChanges"
+              >
+                <li [class.changed]="productCategoryChanges.isFieldChanged">
+                  {{ 'PRODUCT_CATEGORY_ID' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                    <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                      {{
+                        productCategoryChanges.isFieldChanged ?
+                          '[' + getChangeEditor(productCategoryChanges.productCategoryId, offeredService) + ']'
+                          : ''
+                      }}
+                    </span>:
+                  </ng-container>
+                  {{
+                    productCategoryChanges.isFieldChanged && displayChangesToggleInput ?
+                      '[' + (getFieldDataFromComparingData(productCategoryChanges.productCategoryId,
+                        offeredService)| emptyValuePipe) +
+                      '] =>' :
+                      ''
+                  }}
+                  {{ offeredService?.productCategory.id | emptyValuePipe }}
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+          <li *ngIf="(!!offeredService?.brand && !showChangeOnlyToggleInput) ||
+            (isChanged('brand.id',offeredService) && showChangeOnlyToggleInput)">
+            {{ 'BRAND' | translate }}
+            <ul>
+              <ng-container
+                *ngIf="{
+              isFieldChanged: isChanged('brand.id',offeredService),
+              brandId: 'brand.id'
+            } as brandChanges"
+              >
+                <li [class.changed]="brandChanges.isFieldChanged">
+                  {{ 'BRAND_CODE' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+          <span *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{
+              brandChanges.isFieldChanged ?
+                '[' + getChangeEditor(brandChanges.brandId, offeredService) + ']' : ''
+            }}
+          </span>:
+                  </ng-container>
+                  {{
+                    brandChanges.isFieldChanged && displayChangesToggleInput ?
+                      '[' + (getFieldDataFromComparingData(brandChanges.brandId,
+                        offeredService)| emptyValuePipe) +
+                      '] =>' :
+                      ''
+                  }}
+                  <ng-container *ngIf="masterDataChangesFeatureToggle; else defaultBrandId">
+                    <a *ngIf="offeredService?.brand.id; else defaultBrandId"
+                       (click)="toggleMasterDataByBrandId(offeredService.brand.id)" class="popupLink">
+                      {{ offeredService.brand.id | emptyValuePipe }}
+                    </a>
+                  </ng-container>
+                  <ng-template #defaultBrandId>
+                    <span>
+                      {{ offeredService?.brand.id | emptyValuePipe }}
+                    </span>
+                  </ng-template>
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+          <li *ngIf="(!!offeredService?.productGroup && !showChangeOnlyToggleInput) ||
+            (isChanged('productGroup.id',offeredService) && showChangeOnlyToggleInput)">
+            {{ 'PRODUCT_GROUP' | translate }}
+            <ul>
+              <ng-container
+                *ngIf="{
+            isFieldChanged: isChanged('productGroup.id',offeredService),
+            productGroupId: 'productGroup.id'
+          } as productGroupChanges"
+              >
+                <li [class.changed]="productGroupChanges.isFieldChanged">
+                  {{ 'PRODUCT_GROUP_ID' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+          <span *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{
+              productGroupChanges.isFieldChanged ?
+                '[' + getChangeEditor(productGroupChanges.productGroupId, offeredService) + ']' : ''
+            }}
+          </span>:
+                  </ng-container>
+                  {{
+                    productGroupChanges.isFieldChanged && displayChangesToggleInput ?
+                      '[' + (getFieldDataFromComparingData(productGroupChanges.productGroupId,
+                        offeredService)| emptyValuePipe) +
+                      '] =>' :
+                      ''
+                  }}
+                  <ng-container *ngIf="masterDataChangesFeatureToggle; else noMasterDataChanges">
+                    <a (click)="toggleMasterDataProductGroupDetail(offeredService!!.productGroup.id)"
+                       class="popupLink">
+                      {{ offeredService?.productGroup.id | emptyValuePipe }}
+                    </a>
+                  </ng-container>
+                  <ng-template #noMasterDataChanges>
+                    {{ offeredService?.productGroup.id | emptyValuePipe }}
+                  </ng-template>
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+          <li *ngIf="(!!offeredService?.series && !showChangeOnlyToggleInput) ||
+          (isArrayChanged('series', offeredService) && showChangeOnlyToggleInput)">
+            {{ 'SERIES' | translate }}
+            <ul *ngFor="let series of offeredService?.series">
+              <ng-container
+                *ngIf="{
+            currentIdValue: {id: series?.id},
+            isFieldChanged: isArrayFieldChangedFromComparingData('series',{id: series?.id},offeredService),
+            arrayFieldName: 'series',
+            propertyName: 'id'
+          } as locals">
+                <li [class.changed]="locals.isFieldChanged"
+                    *ngIf="!showChangeOnlyToggleInput ||
+                  (locals.isFieldChanged && showChangeOnlyToggleInput)">
+                  {{ 'SERIES_ID' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">\
+                    <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                      {{
+                        locals.isFieldChanged ?
+                          '[' + getChangeEditor('series.id', offeredService) + ']' : ''
+                      }}
+                    </span>:
+                  </ng-container>
+                  {{
+                    locals.isFieldChanged && displayChangesToggleInput ?
+                      '[' + (getArrayFieldDataFromComparingData(locals.arrayFieldName,
+                        locals.currentIdValue,
+                        locals.propertyName,
+                        offeredService)| emptyValuePipe) +
+                      '] =>' : ''
+                  }}
+                  {{ series?.id | emptyValuePipe }}
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+          <li *ngIf="(!!offeredService?.modelSeries && !showChangeOnlyToggleInput) ||
+          (isArrayChanged('modelSeries', offeredService) && showChangeOnlyToggleInput)">
+            {{ 'MODEL_SERIES' | translate }}
+            <ul *ngFor="let modelSeries of offeredService?.modelSeries">
+              <ng-container
+                *ngIf="{
+              currentIdValue: {id: modelSeries?.id},
+              isFieldChanged: isArrayFieldChangedFromComparingData('modelSeries',{id: modelSeries?.id},offeredService),
+              arrayFieldName: 'modelSeries',
+              propertyName: 'id'
+            } as locals">
+                <li [class.changed]="locals.isFieldChanged"
+                    *ngIf="!showChangeOnlyToggleInput ||
+                  (locals.isFieldChanged && showChangeOnlyToggleInput)">
+                  {{ 'MODEL_SERIES_ID' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                      <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                        {{
+                          locals.isFieldChanged ?
+                            '[' + getChangeEditor('modelSeries.id', offeredService) + ']' : ''
+                        }}
+                      </span>:
+                  </ng-container>
+                  {{
+                    locals.isFieldChanged && displayChangesToggleInput ?
+                      '[' + (getArrayFieldDataFromComparingData(locals.arrayFieldName,
+                        locals.currentIdValue,
+                        locals.propertyName,
+                        offeredService)| emptyValuePipe) +
+                      '] =>' : ''
+                  }}
+                  {{ modelSeries?.id | emptyValuePipe }}
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+          <li *ngIf="(!!offeredService?.catalog && !showChangeOnlyToggleInput) ||
+          (isArrayChanged('catalog', offeredService) && showChangeOnlyToggleInput)">
+            {{ 'CATALOG' | translate }}
+            <ul *ngFor="let catalog of offeredService?.catalog">
+              <ng-container
+                *ngIf="{
+              currentIdValue: {id: catalog?.id},
+              isFieldChanged: isArrayFieldChangedFromComparingData('catalog',{id: catalog?.id},offeredService),
+              arrayFieldName: 'catalog',
+              propertyName: 'id'
+            } as locals">
+                <li [class.changed]="locals.isFieldChanged"
+                    *ngIf="!showChangeOnlyToggleInput ||
+                  (locals.isFieldChanged && showChangeOnlyToggleInput)">
+                  {{ 'CATALOG_ID' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                    <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                      {{
+                        locals.isFieldChanged ?
+                          '[' + getChangeEditor('catalog.id', offeredService) + ']' : ''
+                      }}
+                    </span>:
+                  </ng-container>
+                  {{
+                    locals.isFieldChanged && displayChangesToggleInput ?
+                      '[' + (getArrayFieldDataFromComparingData(locals.arrayFieldName,
+                        locals.currentIdValue,
+                        locals.propertyName,
+                        offeredService)| emptyValuePipe) + '] =>' : ''
+                  }}
+                  {{ catalog.id | emptyValuePipe }}
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+          <li *ngIf="(!!offeredService?.validity && !showChangeOnlyToggleInput) ||
+        (isValidityChanged(offeredService) && showChangeOnlyToggleInput)">
+            {{ 'VALIDITY' | translate }}
+            <gp-icon *ngIf="isValidityChanged(offeredService)"
+                     name="hint-error"
+                     size="small"
+                     color="petrol"
+                     matTooltip=""
+                     matTooltipClass="mat-changes-notification"
+                     (click)="viewOfferedServiceValidityDetail(
+                        offeredService.businessSite.id,
+                        offeredService.offeredServiceId
+                     )"
+            ></gp-icon>
+            <ul>
+              <ng-container
+                *ngIf="{
+            isFieldChanged: isChanged('validity.application',offeredService),
+            validityApplication: 'validity.application'
+          } as applicationChanges">
+                <li
+                  [class.changed]="applicationChanges.isFieldChanged"
+                  *ngIf="!showChangeOnlyToggleInput ||
+                  (applicationChanges.isFieldChanged && showChangeOnlyToggleInput)"
+                >
+                  {{ 'IS_APPLICATION' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+          <span *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{
+              applicationChanges.isFieldChanged ?
+                '[' + getChangeEditor(applicationChanges.validityApplication, offeredService) + ']' : ''
+            }}
+          </span>:
+                  </ng-container>
+                  {{
+                    applicationChanges.isFieldChanged && displayChangesToggleInput ? '[' + (getFieldDataFromComparingData(applicationChanges.validityApplication,
+                      offeredService) | emptyValuePipe) + '] =>' : ''
+                  }}
+                  {{ offeredService?.validity?.application | emptyValuePipe }}
+                </li>
+              </ng-container>
+              <ng-container
+                *ngIf="{
+            isFieldChanged: isChanged('validity.applicationValidUntil',offeredService),
+            applicationValidUntil: 'validity.applicationValidUntil'
+          } as validityApplicationValidUntilChanges">
+                <li
+                  [class.changed]="validityApplicationValidUntilChanges.isFieldChanged"
+                  *ngIf="!showChangeOnlyToggleInput ||
+                  (validityApplicationValidUntilChanges.isFieldChanged && showChangeOnlyToggleInput)"
+                >
+                  {{ 'APPLICATION_VALID_UNTIL' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+          <span *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{
+              validityApplicationValidUntilChanges.isFieldChanged ?
+                '[' + getChangeEditor(validityApplicationValidUntilChanges.applicationValidUntil, offeredService) + ']' : ''
+            }}
+          </span>:
+                  </ng-container>
+                  {{
+                    validityApplicationValidUntilChanges.isFieldChanged && displayChangesToggleInput ? '[' + (getFieldDataFromComparingData(validityApplicationValidUntilChanges.applicationValidUntil,
+                      offeredService)| emptyValuePipe) + '] =>' : ''
+                  }}
+                  {{ offeredService?.validity?.applicationValidUntil | emptyValuePipe }}
+                </li>
+              </ng-container>
+              <ng-container
+                *ngIf="{
+            isFieldChanged: isChanged('validity.validFrom',offeredService),
+            validFrom: 'validity.validFrom'
+          } as validityValidFromChanges">
+                <li [class.changed]="validityValidFromChanges.isFieldChanged"
+                    *ngIf="!showChangeOnlyToggleInput ||
+                    (validityValidFromChanges.isFieldChanged && showChangeOnlyToggleInput)"
+                >
+                  {{ 'VALID_FROM' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+          <span *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{
+              validityValidFromChanges.isFieldChanged ?
+                '[' + getChangeEditor(validityValidFromChanges.validFrom, offeredService) + ']' : ''
+            }}
+          </span>:
+                  </ng-container>
+                  {{
+                    validityValidFromChanges.isFieldChanged && displayChangesToggleInput ? '[' + (getFieldDataFromComparingData(validityValidFromChanges.validFrom,
+                      offeredService)| emptyValuePipe) + '] =>' : ''
+                  }}
+                  {{ offeredService?.validity?.validFrom | emptyValuePipe }}
+                </li>
+              </ng-container>
+              <ng-container
+                *ngIf="{
+            isFieldChanged: isChanged('validity.validUntil',offeredService),
+            validUntil: 'validity.validUntil'
+          } as validityValidUntilChanges">
+                <li [class.changed]="validityValidUntilChanges.isFieldChanged"
+                    *ngIf="!showChangeOnlyToggleInput ||
+                    (validityValidUntilChanges.isFieldChanged && showChangeOnlyToggleInput)"
+                >
+                  {{ 'VALID_UNTIL' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+          <span *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{
+              validityValidUntilChanges.isFieldChanged ?
+                '[' + getChangeEditor(validityValidUntilChanges.validUntil, offeredService) + ']' : ''
+            }}
+          </span>:
+                  </ng-container>
+                  {{
+                    validityValidUntilChanges.isFieldChanged && displayChangesToggleInput ? '[' + (getFieldDataFromComparingData(validityValidUntilChanges.validUntil,
+                      offeredService)| emptyValuePipe) + '] =>' : ''
+                  }}
+                  {{ offeredService?.validity?.validUntil | emptyValuePipe }}
+                </li>
+              </ng-container>
+              <ng-container
+                *ngIf="{
+            isFieldChanged: isChanged('validity.valid',offeredService),
+            validityValid: 'validity.valid'
+          } as validityValidChanges">
+                <li [class.changed]="validityValidChanges.isFieldChanged"
+                    *ngIf="!showChangeOnlyToggleInput ||
+                    (validityValidChanges.isFieldChanged && showChangeOnlyToggleInput)"
+                >
+                  {{ 'VALID' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+          <span *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{
+              validityValidChanges.isFieldChanged ?
+                '[' + getChangeEditor(validityValidChanges.validityValid, offeredService) + ']' : ''
+            }}
+          </span>:
+                  </ng-container>
+                  {{
+                    validityValidChanges.isFieldChanged && displayChangesToggleInput ? '[' + (getFieldDataFromComparingData(validityValidChanges.validityValid,
+                      offeredService) | emptyValuePipe) + '] =>' : ''
+                  }}
+                  {{ offeredService?.validity?.valid | emptyValuePipe }}
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+          <li *ngIf="(!!offeredService?.openingHours && !showChangeOnlyToggleInput) ||
+    (isArrayChanged('openingHours', offeredService) && showChangeOnlyToggleInput)">
+            {{ 'OPENING_HOURS' | translate }}
+            <ul *ngFor="let openingHours of offeredService?.openingHours">
+              <ng-container *ngIf="{
+        currentIdValue: {id: openingHours?.id},
+        isFieldChanged: isChanged(openingHours?.id, offeredService),
+        arrayFieldName: 'openingHours',
+        propertyName: 'id'
+      } as openingHoursChanges">
+                <li [class.changed]="openingHoursChanges.isFieldChanged"
+                    *ngIf="!showChangeOnlyToggleInput ||
+                (openingHoursChanges.isFieldChanged && showChangeOnlyToggleInput)">
+                  {{ 'OPENING_HOUR_ID' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                  <ng-container *ngIf="(isMoveOutlet &&
+                      getChangeEditor(openingHours.id, offeredService) === systemUserID); else
+                      normalEditorOpeningHours">
+                        {{
+                      openingHoursChanges.isFieldChanged ? '[Move outlet, ' +
+                        moveOutletInitiator + ']' : ''
+                    }}
+                  </ng-container>
+                  <ng-template #normalEditorOpeningHours>
+                    {{
+                      openingHoursChanges.isFieldChanged ?
+                        '[' + getChangeEditor(openingHours.id, offeredService) + ']' : ''
+                    }}
+                  </ng-template>
+                </span>:
+                  </ng-container>
+                  {{
+                    openingHoursChanges.isFieldChanged && displayChangesToggleInput ?
+                      '[' + (
+                        getArrayFieldDataFromComparingData(
+                          openingHoursChanges.arrayFieldName,
+                          openingHoursChanges.currentIdValue,
+                          openingHoursChanges.propertyName,
+                          offeredService
+                        )
+                          | emptyValuePipe
+                      ) +
+                      '] =>' :
+                      ''
+                  }}
+                  {{ openingHours?.id | emptyValuePipe }}
+                </li>
+              </ng-container>
+              <ul>
+                <ng-container *ngIf="{
+            currentIdValue: {id: openingHours?.id},
+            isFieldChanged: isChanged(openingHours?.id, offeredService),
+            arrayFieldName: 'openingHours',
+            propertyName: 'isDeleted'
+            } as openingHoursChanges">
+                  <li [class.changed]="openingHoursChanges.isFieldChanged"
+                      *ngIf="!showChangeOnlyToggleInput ||
+                (openingHoursChanges.isFieldChanged && showChangeOnlyToggleInput)">
+                    {{ 'IS_DELETED' | translate }}
+                    <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                    <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                      <ng-container *ngIf="(isMoveOutlet &&
+                      getChangeEditor(openingHours.id, offeredService) === systemUserID); else
+                      normalEditorOpeningHours">
+                        {{
+                          openingHoursChanges.isFieldChanged ? '[Move outlet, ' +
+                            moveOutletInitiator + ']' : ''
+                        }}
+                      </ng-container>
+                      <ng-template #normalEditorOpeningHours>
+                      {{
+                          openingHoursChanges.isFieldChanged ?
+                            '[' + getChangeEditor(openingHours.id, offeredService) + ']' : ''
+                        }}
+                      </ng-template>
+                    </span>:
+                    </ng-container>
+                    {{
+                      openingHoursChanges.isFieldChanged && displayChangesToggleInput ?
+                        '[' + (
+                          getArrayFieldDataFromComparingData(
+                            openingHoursChanges.arrayFieldName,
+                            openingHoursChanges.currentIdValue,
+                            openingHoursChanges.propertyName,
+                            offeredService
+                          )| emptyValuePipe
+                        ) +
+                        '] =>' :
+                        ''
+                    }}
+                    {{ (openingHours.isDeleted ? 'YES' : 'NO') | translate }}
+                  </li>
+                </ng-container>
+                <ng-container *ngIf="{
+        currentIdValue: {id: openingHours?.id},
+        isFieldChanged: isChanged(openingHours?.id, offeredService),
+        arrayFieldName: 'openingHours',
+        propertyName: 'startDate'
+        } as openingHoursChanges">
+                  <li [class.changed]="openingHoursChanges.isFieldChanged"
+                      *ngIf="!showChangeOnlyToggleInput ||
+                (openingHoursChanges.isFieldChanged && showChangeOnlyToggleInput)">
+                    {{ 'START_DATE' | translate }}
+                    <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                  <ng-container *ngIf="(isMoveOutlet &&
+                      getChangeEditor(openingHours.id, offeredService) === systemUserID); else
+                      normalEditorOpeningHours">
+                        {{
+                      openingHoursChanges.isFieldChanged ? '[Move outlet, ' +
+                        moveOutletInitiator + ']' : ''
+                    }}
+                      </ng-container>
+                      <ng-template #normalEditorOpeningHours>
+                      {{
+                          openingHoursChanges.isFieldChanged ?
+                            '[' + getChangeEditor(openingHours.id, offeredService) + ']' : ''
+                        }}
+                      </ng-template>
+                </span>:
+                    </ng-container>
+                    {{
+                      openingHoursChanges.isFieldChanged && displayChangesToggleInput ?
+                        '[' + (
+                          getArrayFieldDataFromComparingData(
+                            openingHoursChanges.arrayFieldName,
+                            openingHoursChanges.currentIdValue,
+                            openingHoursChanges.propertyName,
+                            offeredService
+                          )| emptyValuePipe
+                        ) +
+                        '] =>' :
+                        ''
+                    }}
+                    {{ openingHours?.startDate | emptyValuePipe }}
+                  </li>
+                </ng-container>
+                <ng-container *ngIf="{
+        currentIdValue: {id: openingHours?.id},
+        isFieldChanged: isChanged(openingHours?.id, offeredService),
+        arrayFieldName: 'openingHours',
+        propertyName: 'endDate'
+        } as openingHoursChanges">
+                  <li [class.changed]="openingHoursChanges.isFieldChanged"
+                      *ngIf="!showChangeOnlyToggleInput ||
+                (openingHoursChanges.isFieldChanged && showChangeOnlyToggleInput)">
+                    {{ 'END_DATE' | translate }}
+                    <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                  <ng-container *ngIf="(isMoveOutlet &&
+                    getChangeEditor(openingHours.id, offeredService) === systemUserID); else
+                      normalEditorOpeningHours">
+                    {{
+                      openingHoursChanges.isFieldChanged ? '[Move outlet, ' +
+                        moveOutletInitiator + ']' : ''
+                    }}
+                  </ng-container>
+                  <ng-template #normalEditorOpeningHours>
+                    {{
+                      openingHoursChanges.isFieldChanged ?
+                        '[' + getChangeEditor(openingHours.id, offeredService) + ']' : ''
+                    }}
+                  </ng-template>
+                </span>:
+                    </ng-container>
+                    {{
+                      openingHoursChanges.isFieldChanged && displayChangesToggleInput ?
+                        '[' + (
+                          getArrayFieldDataFromComparingData(
+                            openingHoursChanges.arrayFieldName,
+                            openingHoursChanges.currentIdValue,
+                            openingHoursChanges.propertyName,
+                            offeredService
+                          )| emptyValuePipe
+                        ) +
+                        '] =>' :
+                        ''
+                    }}
+                    {{ openingHours?.endDate | emptyValuePipe }}
+                  </li>
+                </ng-container>
+                <ng-container *ngIf="{
+        currentIdValue: {id: openingHours?.id},
+        isFieldChanged: isChanged(openingHours?.id, offeredService),
+        arrayFieldName: 'openingHours',
+        propertyName: 'day'
+        } as openingHoursChanges">
+                  <li [class.changed]="openingHoursChanges.isFieldChanged"
+                      *ngIf="!showChangeOnlyToggleInput ||
+                (openingHoursChanges.isFieldChanged && showChangeOnlyToggleInput)">
+                    {{ 'DAY' | translate }}
+                    <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                  <ng-container *ngIf="(isMoveOutlet &&
+                      getChangeEditor(openingHours.id, offeredService) === systemUserID); else
+                      normalEditorOpeningHours">
+                        {{
+                      openingHoursChanges.isFieldChanged ? '[Move outlet, ' +
+                        moveOutletInitiator + ']' : ''
+                    }}
+                      </ng-container>
+                      <ng-template #normalEditorOpeningHours>
+                      {{
+                          openingHoursChanges.isFieldChanged ?
+                            '[' + getChangeEditor(openingHours.id, offeredService) + ']' : ''
+                        }}
+                      </ng-template>
+                </span>:
+                    </ng-container>
+                    {{
+                      openingHoursChanges.isFieldChanged && displayChangesToggleInput ?
+                        '[' + (
+                          getArrayFieldDataFromComparingData(
+                            openingHoursChanges.arrayFieldName,
+                            openingHoursChanges.currentIdValue,
+                            openingHoursChanges.propertyName,
+                            offeredService
+                          )| emptyValuePipe
+                        ) +
+                        '] =>' :
+                        ''
+                    }}
+                    {{ openingHours?.day | emptyValuePipe }}
+                  </li>
+                </ng-container>
+                <li [class.changed]="isChanged(openingHours?.id, offeredService)"
+                    *ngIf="!showChangeOnlyToggleInput ||
+                (isChanged(openingHours?.id, offeredService) && showChangeOnlyToggleInput)">
+                  {{ 'TIMES' | translate }}
+                  <ng-container *ngIf="openingHours?.times.length === 0 && {
+                currentIdValue: {id: openingHours?.id},
+                isFieldChanged: isChanged(openingHours?.id, offeredService),
+                arrayFieldName: 'openingHours',
+                propertyName: 'times.begin'
+                } as openingHoursChanges">
+                    <ul>
+                      <li [class.changed]="isChanged(openingHours?.id, offeredService)"
+                          *ngIf="!showChangeOnlyToggleInput ||
+                (openingHoursChanges.isFieldChanged && showChangeOnlyToggleInput)">
+                        {{ 'CLOSED' | translate }}
+                        <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                      <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                        <ng-container *ngIf="(isMoveOutlet &&
+                      getChangeEditor(openingHours.id, offeredService) === systemUserID); else
+                      normalEditorOpeningHours">
+                        {{
+                            openingHoursChanges.isFieldChanged ? '[Move outlet, ' +
+                              moveOutletInitiator + ']' : ''
+                          }}
+                        </ng-container>
+                        <ng-template #normalEditorOpeningHours>
+                        {{
+                            openingHoursChanges.isFieldChanged ?
+                              '[' + getChangeEditor(openingHours.id, offeredService) + ']' : ''
+                          }}
+                        </ng-template>
+                      </span>
+                        </ng-container>
+                      </li>
+                    </ul>
+                  </ng-container>
+                  <ul *ngFor="let openingHoursTime of openingHours?.times">
+                    <ng-container *ngIf="{
+        currentIdValue: {id: openingHours?.id},
+        isFieldChanged: isChanged(openingHours?.id, offeredService),
+        arrayFieldName: 'openingHours',
+        propertyName: 'times.begin'
+        } as openingHoursChanges">
+                      <li [class.changed]="openingHoursChanges.isFieldChanged"
+                          *ngIf="!showChangeOnlyToggleInput ||
+                (openingHoursChanges.isFieldChanged && showChangeOnlyToggleInput)">
+                        {{ 'STARTING_TIME' | translate }}
+                        <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                    <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                      <ng-container *ngIf="(isMoveOutlet &&
+                      getChangeEditor(openingHours.id, offeredService) === systemUserID); else
+                      normalEditorOpeningHours">
+                        {{
+                          openingHoursChanges.isFieldChanged ? '[Move outlet, ' +
+                            moveOutletInitiator + ']' : ''
+                        }}
+                      </ng-container>
+                      <ng-template #normalEditorOpeningHours>
+                      {{
+                          openingHoursChanges.isFieldChanged ?
+                            '[' + getChangeEditor(openingHours.id, offeredService) + ']' : ''
+                        }}
+                      </ng-template>
+                    </span>:
+                        </ng-container>
+                        {{
+                          openingHoursChanges.isFieldChanged && displayChangesToggleInput ?
+                            '[' + (
+                              getArrayFieldDataFromComparingData(
+                                openingHoursChanges.arrayFieldName,
+                                openingHoursChanges.currentIdValue,
+                                openingHoursChanges.propertyName,
+                                offeredService
+                              )| emptyValuePipe
+                            ) +
+                            '] =>' :
+                            ''
+                        }}
+                        {{ openingHoursTime?.begin | emptyValuePipe }}
+                      </li>
+                    </ng-container>
+                    <ng-container *ngIf="{
+        currentIdValue: {id: openingHours?.id},
+        isFieldChanged: isChanged(openingHours?.id, offeredService),
+        arrayFieldName: 'openingHours',
+        propertyName: 'times.end'
+        } as openingHoursChanges">
+                      <li [class.changed]="openingHoursChanges.isFieldChanged"
+                          *ngIf="!showChangeOnlyToggleInput ||
+                (openingHoursChanges.isFieldChanged && showChangeOnlyToggleInput)">
+                        {{ 'ENDING_TIME' | translate }}
+                        <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                    <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                      <ng-container *ngIf="(isMoveOutlet &&
+                      getChangeEditor(openingHours.id, offeredService) === systemUserID); else
+                      normalEditorOpeningHours">
+                        {{
+                          openingHoursChanges.isFieldChanged ? '[Move outlet, ' +
+                            moveOutletInitiator + ']' : ''
+                        }}
+                      </ng-container>
+                      <ng-template #normalEditorOpeningHours>
+                      {{
+                          openingHoursChanges.isFieldChanged ?
+                            '[' + getChangeEditor(openingHours.id, offeredService) + ']' : ''
+                        }}
+                      </ng-template>
+                    </span>:
+                        </ng-container>
+                        {{
+                          openingHoursChanges.isFieldChanged && displayChangesToggleInput ?
+                            '[' + (
+                              getArrayFieldDataFromComparingData(
+                                openingHoursChanges.arrayFieldName,
+                                openingHoursChanges.currentIdValue,
+                                openingHoursChanges.propertyName,
+                                offeredService
+                              )| emptyValuePipe
+                            ) +
+                            '] =>' :
+                            ''
+                        }}
+                        {{ openingHoursTime?.end | emptyValuePipe }}
+                      </li>
+                    </ng-container>
+                  </ul>
+                </li>
+                <br *ngIf="!showChangeOnlyToggleInput ||
+                (isChanged(openingHours.id, offeredService) && showChangeOnlyToggleInput)">
+              </ul>
+            </ul>
+          </li>
+          <li *ngIf="(offeredService.communications && !showChangeOnlyToggleInput) ||
+      (isArrayChanged('communications', offeredService) && showChangeOnlyToggleInput)">
+            {{ 'COMMUNICATIONS' | translate }}
+            <ul *ngFor="let communicationData of offeredService.communications">
+              <ng-container
+                *ngIf="{
+              isFieldChanged: isChanged(
+                communicationData?.communicationFieldId,
+                offeredService
+              )
+            } as offeredServiceCommDataChanges">
+                <li [class.changed]="offeredServiceCommDataChanges.isFieldChanged"
+                    *ngIf="!showChangeOnlyToggleInput ||
+                (offeredServiceCommDataChanges.isFieldChanged && showChangeOnlyToggleInput)"
+                >
+                  {{ communicationData.communicationFieldId }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                  <ng-container *ngIf="(isMoveOutlet && getChangeEditor(
+                  communicationData.communicationFieldId, offeredService) === systemUserID); else
+                   normalEditorCommunication">
+                    {{
+                      (offeredServiceCommDataChanges.isFieldChanged) ? '[Move outlet, ' +
+                        moveOutletInitiator + ']' : ''
+                    }}
+                  </ng-container>
+                  <ng-template #normalEditorCommunication>
+                    {{
+                      (offeredServiceCommDataChanges.isFieldChanged) ?
+                        '[' + getChangeEditor(communicationData.communicationFieldId, offeredService)
+                        + ']' :
+                        ''
+                    }}
+                  </ng-template>
+                </span>:
+                  </ng-container>
+                  {{
+                    offeredServiceCommDataChanges.isFieldChanged && displayChangesToggleInput ?
+                      '[' + (
+                        getArrayFieldDataFromComparingData(
+                          'communications',
+                          { communicationFieldId: communicationData?.communicationFieldId },
+                          'value',
+                          offeredService
+                        )
+                          | emptyValuePipe
+                      ) +
+                      '] =>' :
+                      ''
+                  }}
+                  {{
+                    communicationData.value | emptyValuePipe
+                  }}
+                  <br>
+                  {{ 'IS_DELETED' | translate }} :
+                  {{ communicationData.communicationFieldIsDeleted }}
+                </li>
+              </ng-container>
+              <!-- <ng-container
+                *ngIf="{
+            currentIdValue: {communicationFieldId: communicationData?.communicationFieldId },
+            isFieldChanged: isArrayFieldChangedFromComparingData(
+            'communications',
+            {communicationFieldId: communicationData.communicationFieldId, value:
+            communicationData?.value},
+            offeredService
+            ),
+            arrayFieldName: 'communications',
+            propertyName: 'value'
+          } as locals"
+              >
+                <li [class.changed]="locals.isFieldChanged">
+                  {{ 'COMMUNICATION_VALUE' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+          <span *ngxPermissionsOnly="['app.historization.editor.show']">
+            {{ locals.isFieldChanged ?
+               '[' + getChangeEditor('communications.value', offeredService) + ']' : ''}}
+          </span>:
+                  </ng-container>
+          {{ locals.isFieldChanged && displayChangesToggleInput ?
+             '[' + (getArrayFieldDataFromComparingData(locals.arrayFieldName,
+                                                       locals.currentIdValue,
+                                                       locals.propertyName,
+                                                       offeredService)| emptyValuePipe) +
+                     '] =>' :
+                     ''
+                  }}
+                  {{ communicationData?.value | emptyValuePipe }}
+                </li>
+              </ng-container> -->
+            </ul>
+          </li>
+          <li *ngIf="(!!offeredService?.contractees && !showChangeOnlyToggleInput) ||
+      (isArrayChanged('contractees', offeredService) && showChangeOnlyToggleInput)">
+            {{ 'CONTRACTEES' | translate }}
+            <ul *ngFor="let contractee of offeredService?.contractees">
+              <ng-container
+                *ngIf="{
+            currentIdValue: {contracteeId: contractee?.contracteeId },
+            isFieldChanged: isArrayFieldChangedFromComparingData(
+            'contractees',
+            {contracteeId: contractee.contracteeId},
+            offeredService
+            ),
+            arrayFieldName: 'contractees',
+            propertyName: 'contracteeId'
+          } as locals">
+                <li [class.changed]="locals.isFieldChanged"
+                    *ngIf="!showChangeOnlyToggleInput ||
+                  (locals.isFieldChanged && showChangeOnlyToggleInput)"
+                >
+                  {{ 'CONTRACTEES_ID' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+          <span *ngxPermissionsOnly="['app.historization.editor.show']">
+            <ng-container *ngIf="(isMoveOutlet && getChangeEditor('contracteeList.contracteeId', offeredService) === systemUserID); else
+                   normalEditorContract">
+                    {{
+                (locals.isFieldChanged) ? '[Move outlet, ' +
+                  moveOutletInitiator + ']' : ''
+              }}
+            </ng-container>
+            <ng-template #normalEditorContract>
+              {{
+                locals.isFieldChanged ?
+                  '[' + getChangeEditor('contracteeList.contracteeId', offeredService) + ']' : ''
+              }}
+            </ng-template>
+          </span>:
+                  </ng-container>
+                  {{
+                    locals.isFieldChanged && displayChangesToggleInput ?
+                      '[' + (getArrayFieldDataFromComparingData(locals.arrayFieldName,
+                        locals.currentIdValue,
+                        locals.propertyName,
+                        offeredService)| emptyValuePipe) +
+                      '] =>' :
+                      ''
+                  }}
+                  {{
+                    contractee?.contracteeId |
+                      emptyValuePipe
+                  }}
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+          <li *ngIf="(!!offeredService?.contracteeList && !showChangeOnlyToggleInput) ||
+      (isArrayChanged('contracteeList', offeredService) && showChangeOnlyToggleInput)">
+            {{ 'CONTRACTEE_LIST' | translate }}
+            <ul *ngFor="let contractee of offeredService?.contracteeList">
+              <ng-container
+                *ngIf="{
+            currentIdValue: {contracteeId: contractee?.contracteeId },
+            isFieldChanged: isArrayFieldChangedFromComparingData(
+            'contracteeList',
+            {contracteeId: contractee.contracteeId},
+            offeredService
+            ),
+            arrayFieldName: 'contracteeList',
+            propertyName: 'contracteeId'
+          } as locals"
+              >
+                <li [class.changed]="locals.isFieldChanged"
+                    *ngIf="!showChangeOnlyToggleInput ||
+                  (locals.isFieldChanged && showChangeOnlyToggleInput)"
+                >
+                  {{ 'CONTRACTEES_ID' | translate }}
+                  <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+          <span *ngxPermissionsOnly="['app.historization.editor.show']">
+            <ng-container *ngIf="(isMoveOutlet && getChangeEditor('contracteeList.contracteeId', offeredService) === systemUserID); else
+                   normalEditorContract">
+                    {{
+                (locals.isFieldChanged) ? '[Move outlet, ' +
+                  moveOutletInitiator + ']' : ''
+              }}
+            </ng-container>
+            <ng-template #normalEditorContract>
+              {{
+                locals.isFieldChanged ?
+                  '[' + getChangeEditor('contracteeList.contracteeId', offeredService) + ']' : ''
+              }}
+            </ng-template>
+          </span>:
+                  </ng-container>
+                  {{
+                    locals.isFieldChanged && displayChangesToggleInput ?
+                      '[' + (getArrayFieldDataFromComparingData(locals.arrayFieldName,
+                        locals.currentIdValue,
+                        locals.propertyName,
+                        offeredService)| emptyValuePipe) +
+                      '] =>' :
+                      ''
+                  }}
+                  {{ contractee?.contracteeId | emptyValuePipe }}
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+          <ng-container
+            *ngIf="{
+        isFieldChanged: isChanged('onlineOnly',offeredService),
+        onlineOnly: 'onlineOnly'
+      } as onlineOnlyChanges"
+          >
+            <li [class.changed]="onlineOnlyChanges.isFieldChanged"
+                *ngIf="!showChangeOnlyToggleInput ||
+                (onlineOnlyChanges.isFieldChanged && showChangeOnlyToggleInput)"
+            >
+              {{ 'ONLINE_ONLY' | translate }}
+              <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+      <span *ngxPermissionsOnly="['app.historization.editor.show']">
+        {{
+          onlineOnlyChanges.isFieldChanged ?
+            '[' + getChangeEditor(onlineOnlyChanges.onlineOnly, offeredService) + ']' : ''
+        }}
+      </span>:
+              </ng-container>
+              {{
+                onlineOnlyChanges.isFieldChanged && displayChangesToggleInput ?
+                  '[' + (getFieldDataFromComparingData(onlineOnlyChanges.onlineOnly,
+                    offeredService) | emptyValuePipe) + '] =>' :
+                  ''
+              }}
+              {{ offeredService?.onlineOnly | emptyValuePipe }}
+            </li>
+          </ng-container>
+          <ng-container
+            *ngIf="{
+        isFieldChanged: isChanged('nonCustomerFacing',offeredService),
+        nonCustomerFacing: 'nonCustomerFacing'
+      } as nonCustomerFacingChanges"
+          >
+            <li [class.changed]="nonCustomerFacingChanges.isFieldChanged"
+                *ngIf="!showChangeOnlyToggleInput ||
+                (nonCustomerFacingChanges.isFieldChanged && showChangeOnlyToggleInput)"
+            >
+              {{ 'NONE_CUSTOMER_FACING' | translate }}
+              <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+      <span *ngxPermissionsOnly="['app.historization.editor.show']">
+        {{
+          nonCustomerFacingChanges.isFieldChanged ?
+            '[' + getChangeEditor(nonCustomerFacingChanges.nonCustomerFacing, offeredService) + ']' : ''
+        }}
+      </span>:
+              </ng-container>
+              {{
+                nonCustomerFacingChanges.isFieldChanged && displayChangesToggleInput ?
+                  '[' + (getFieldDataFromComparingData(nonCustomerFacingChanges.nonCustomerFacing,
+                    offeredService) | emptyValuePipe) + '] =>' :
+                  ''
+              }}
+              {{ offeredService?.nonCustomerFacing | emptyValuePipe }}
+            </li>
+          </ng-container>
+          <ng-container
+            *ngIf="{
+        isFieldChanged: isChanged('isDeleted',offeredService),
+        isDeleted: 'isDeleted'
+      } as isDeletedChanges"
+          >
+            <li [class.changed]="isDeletedChanges.isFieldChanged"
+                *ngIf="!showChangeOnlyToggleInput ||
+                (isDeletedChanges.isFieldChanged && showChangeOnlyToggleInput)"
+            >
+              {{ 'IS_DELETED' | translate }}
+              <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+      <span *ngxPermissionsOnly="['app.historization.editor.show']">
+        <ng-container *ngIf="(isMoveOutlet && getChangeEditor(isDeletedChanges.isDeleted, offeredService) === systemUserID); else
+                   normalEditorService">
+                    {{
+            (isDeletedChanges.isFieldChanged) ? '[Move outlet, ' +
+              moveOutletInitiator + ']' : ''
+          }}
+        </ng-container>
+        <ng-template #normalEditorService>
+          {{
+            isDeletedChanges.isFieldChanged ?
+              '[' + getChangeEditor(isDeletedChanges.isDeleted, offeredService) + ']' : ''
+          }}
+        </ng-template>
+      </span>:
+              </ng-container>
+              {{
+                isDeletedChanges.isFieldChanged && displayChangesToggleInput ?
+                  '[' + (getFieldDataFromComparingData(isDeletedChanges.isDeleted,
+                    offeredService) | emptyValuePipe) + '] =>' :
+                  ''
+              }}
+              {{ offeredService?.isDeleted | emptyValuePipe }}
+            </li>
+          </ng-container>
+        </ul>
+      </ul>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #showEmpty>
+  {{ '' | emptyValuePipe }}
+</ng-template>
+
+<ng-template #noEditors>
+      <span *ngxPermissionsOnly="['app.historization.editor.show']">
+              {{ '' }}
+      </span>:
+</ng-template>
+
+<ng-template #showNothing>
+</ng-template>

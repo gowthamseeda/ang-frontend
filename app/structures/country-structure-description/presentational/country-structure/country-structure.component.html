@@ -1,0 +1,16 @@
+<ng-container *ngIf="countryStructureHierarchyFilteredByLeaf?.length > 0">
+  <div gpFxLayout="row" gpFxLayoutGap="30px">
+    <mat-form-field gpFxFlex="60" *ngFor="let structureDescription of countryStructureHierarchyFilteredByLeaf; let idx=index">
+      <mat-select [placeholder]="structureDescription | translateData: (userSettings | async)?.languageId"
+                  [disabled]="!(userHasUpdatePermission | async) || structureDescription.structures.length === 0"
+                  (selectionChange)="onSelectionChanged(idx, $event.value)"
+                  [(value)]="structureDescription.selectedStructureId">
+        <mat-option [value]=""></mat-option>
+        <mat-option *ngFor="let countryStructure of structureDescription.structures"
+                    [value]="countryStructure.id">
+          {{ countryStructure.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-container>

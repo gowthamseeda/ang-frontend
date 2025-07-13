@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>{{ 'STRUCTURES_ADD_MEMBERS' | translate | titlecase }}</h1>
+
+<mat-dialog-content>
+  <gp-searchfield [predefinedSearchFilters]="searchFieldInput.predefinedSearchFilters"
+                  [placeHolderText]="searchFieldInput.placeHolderText"
+                  [searchResultMessage]="searchFieldInput.searchResultMessage"
+                  [settings]="searchFieldSettings"
+                  [excludedSearchItems]="data.excludedMembers"
+                  (searchItemsRetrieved)="searchItemsRetrieved($event)"
+                  (searchResultsQueried)="searchItemsReset()"
+                  (searchResultsReseted)="searchItemsReset()"
+  >
+  </gp-searchfield>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <gp-default-edit-actions saveButtonTranslationKey="OK"
+                           [saveButtonDisabled]="!members.length"
+                           (save)="dialogRef.close(members)"
+                           (cancel)="dialogRef.close(false)">
+  </gp-default-edit-actions>
+</mat-dialog-actions>

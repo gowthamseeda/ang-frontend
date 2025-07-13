@@ -1,0 +1,15 @@
+<div gpFxFlex gpFxLayoutAlign="center center">
+  <h2>{{ 'SECURITY_POP_UP_MESSAGE' | translate }}</h2>
+</div>
+<div gpFxFlex gpFxLayoutAlign="center center">
+  <div style="right: 10px">
+    <button mat-button (click)=close() >
+      {{ 'AGREE' | translate }}
+    </button>
+  </div>
+  <div style="margin-left: 10px">
+    <button mat-button (click)=decline()>
+    {{ 'DECLINE' | translate }}
+    </button>
+  </div>
+</div>

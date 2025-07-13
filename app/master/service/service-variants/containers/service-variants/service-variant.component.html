@@ -1,0 +1,43 @@
+<gp-default-layout>
+  <gp-header header-toolbar [breadcrumbItems]="[{label: 'MASTER_DATA', path: '/master'},
+             {label: 'SERVICES'}]">
+  </gp-header>
+  <div gpContent>
+
+    <div gpFxLayout="row">
+      <div gpFxFlex>
+        <div gpFxLayout="column" class="header">
+          <h1>{{ 'MASTER_DATA_SERVICE_VARIANT' | translate }}</h1>
+          <span>{{ 'MASTER_DATA_UPDATE_SERVICE_VARIANT_SUBTITLE' | translate }}</span>
+        </div>
+      </div>
+      <button mat-icon-button type="button" (click)="openServiceVariantFilterDialog()">
+        <gp-icon name="filter" size="medium"></gp-icon>
+      </button>
+    </div>
+
+    <div gpFxLayout="column">
+      <gp-service-variant-table [isLoaded]="isLoading | async" [serviceVariantItems]="serviceVariantDataSource"
+                                (selectedServiceVariantIds)="selectedServiceVariant($event)"
+                                (viewServiceVariantId)="singleView($event)"
+                                (removeServiceVariantId)="singleDelete($event)"
+                                (editServiceVariantId)="singleEdit($event)">
+      </gp-service-variant-table>
+    </div>
+  </div>
+
+  <gp-service-variant-multi-actions footer-toolbar gpFxFill (view)="multiView(selectedServiceVariantIds)"
+                                    (delete)="multiDelete(selectedServiceVariantIds)"
+                                    (edit)="multiEdit(selectedServiceVariantIds)" [viewButtonDisabled]="selectedMulti()"
+                                    [deleteButtonDisabled]="selectedMulti()" [editButtonDisabled]="selectedMulti()"
+                                    [deleteButtonTranslationKey]="'MASTER_DATA_SERVICE_VARIANT_MULTI_VIEW'"
+                                    [deleteButtonTranslationKey]="'MASTER_DATA_SERVICE_VARIANT_MULTI_DELETE'"
+                                    [editButtonTranslationKey]="'MASTER_DATA_SERVICE_VARIANT_MULTI_EDIT'">
+    <div class="bottom-right-action">
+      <button mat-flat-button class="gp-icon-flat-button" (click)='add()'>
+        <gp-icon gpIconButtonWithText name="plus"></gp-icon>
+        {{ 'MASTER_DATA_SERVICE_VARIANT_ADD' | translate }}
+      </button>
+    </div>
+  </gp-service-variant-multi-actions>
+</gp-default-layout>

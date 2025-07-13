@@ -1,0 +1,15 @@
+<div class="product-group-selection">
+  <mat-form-field class="no-label">
+    <mat-select [formControl]="control"
+                [required]="true"
+                (selectionChange)="onChange($event)">
+      <mat-option *ngFor="let productGroup of productGroups"
+                  [value]="productGroup.id">
+        {{ productGroup.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="control.hasError('required')">
+      {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+    </mat-error>
+  </mat-form-field>
+</div>

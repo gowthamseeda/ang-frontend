@@ -1,0 +1,23 @@
+<gp-default-layout>
+
+  <h1 class="header">{{'DATARESTRICTION' | translate}} {{userId}}</h1>
+  <mat-tab-group (selectedTabChange)="onTabChanged($event)" mat-stretch-tabs="false">
+    <div *ngIf="!isError; else errorMessage"
+         gpContent>
+
+      <mat-tab label="{{'DATARESTRICTION_SETTING' | translate}}">
+        <gp-setting [userId]="userId"
+                    [focusFeatureToggleFlag]="focusFeatureToggleFlag"></gp-setting>
+
+      </mat-tab>
+
+      <mat-tab *ngIf="focusFeatureToggleFlag | async"
+               label=" {{'DATARESTRICTION_FOCUS_AUDIT_LOG' | translate}}">
+        <gp-history [userId]="userId"></gp-history>
+      </mat-tab>
+    </div>
+
+    <ng-template #errorMessage>{{'USER_ERROR' | translate}}</ng-template>
+
+  </mat-tab-group>
+</gp-default-layout>

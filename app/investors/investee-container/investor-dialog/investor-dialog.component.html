@@ -1,0 +1,6 @@
+<gp-searchfield [settings]="searchFieldSettings"
+                [predefinedSearchFilters]="searchFilters"
+                [placeHolderText]="'SEARCH_COMPANY_FIELD_INLINE_PLACEHOLDER'"
+                [searchResultMessage]="{ singular: 'COMPANY_FOUND', plural: 'COMPANIES_FOUND' }"
+                (searchItemRetrieved)="closeDialog($event)">
+</gp-searchfield>

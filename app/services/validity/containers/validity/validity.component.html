@@ -1,0 +1,48 @@
+<gp-overlay-layout [toolTipText]="'COMPANY_NAVIGATION_TREE'"
+                   [enableCompanyNavigation]="getEnableCompanyNavigation()">
+  <gp-outlet-header header-toolbar>
+  </gp-outlet-header>
+
+  <gp-edit-layout [marginalColumnDisabled]="true"
+                  logo="business"
+                  title="{{ 'VALIDITY' | translate }}">
+    <div class="content">
+      <gp-message *ngIf="!serviceIsAvailable"
+                  message="SERVICE_SERVICE_NOT_FOUND"
+                  type="info">
+        {{ 'SERVICE_SERVICE_NOT_FOUND' | translate:{ serviceId: serviceId } }}
+      </gp-message>
+
+      <div gpFxLayout="row">
+        <ng-container *ngIf="serviceId && (service | async) as service">
+          <gp-services-chip [name]="service | translateData: currentSelectedLanguage">
+          </gp-services-chip>
+        </ng-container>
+      </div>
+
+      <gp-validity-table *ngIf="countryId && outletId && serviceId"
+                         [countryId]="countryId"
+                         [outletId]="outletId"
+                         [pristine]="pristine | async"
+                         [serviceId]="serviceId"
+                         [userHasPermissions]="userHasPermissions"
+                         [valid]="valid | async">
+      </gp-validity-table>
+    </div>
+  </gp-edit-layout>
+  <gp-default-edit-actions (cancel)="cancel()"
+                           (save)="save()"
+                           *ngIf="userHasPermissions | async"
+                           [cancelButtonDisabled]="pristine | async"
+                           [saveButtonDisabled]="(pristine | async) || !(valid | async)"
+                           footer-toolbar>
+  </gp-default-edit-actions>
+  <gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>
+
+  <ng-container overlay>
+    <gp-outlet-tree-navigation gpFxFlex
+                               gpFxFlexXsSm="auto"
+                               style="display: inline">
+    </gp-outlet-tree-navigation>
+  </ng-container>
+</gp-overlay-layout>

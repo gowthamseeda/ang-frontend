@@ -1,0 +1,33 @@
+<gp-content-loader content-loader
+                   [isLoading]="isLoading">
+  <ng-content select="[outlet-profile-data-content]"></ng-content>
+  <div class="content-loader-container" loader>
+    <content-loader primaryOpacity="0.3"
+                    secondaryOpacity="0.7"
+                    height="186"
+                    width="225"
+                    preserveAspectRatio="none">
+      <svg:rect x="0"
+                y="20"
+                width="100px"
+                height="21px" />
+      <svg:rect x="0"
+                y="57px"
+                width="225px"
+                height="19px" />
+      <svg:rect x="0px"
+                y="82px"
+                width="225px"
+                height="19px" />
+      <svg:rect x="0"
+                y="106px"
+                width="225px"
+                height="19px" />
+      <svg:rect x="0"
+                y="130px"
+                width="225px"
+                height="19px" />
+    </content-loader>
+  </div>
+</gp-content-loader>
+

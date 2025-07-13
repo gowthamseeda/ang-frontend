@@ -1,0 +1,53 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.service-container {
+  outline: none;
+
+  &:hover {
+    background-color: mat.get-color-from-palette($accent, 100);
+
+    .delete-service-container button {
+      visibility: visible;
+
+      .gp-icon:hover {
+        color: mat.get-color-from-palette($accent, 500);
+      }
+    }
+  }
+
+  .service-name-container {
+    float: left;
+    margin-top: 12px;
+    max-width: 75%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    .service-logo {
+      height: 20px;
+      width: auto;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    *::-ms-backdrop,
+    .service-logo {
+      min-width: 28px;
+    }
+  }
+
+  .delete-service-container {
+    float: right;
+
+    .mat-mdc-icon-button {
+      visibility: hidden;
+    }
+  }
+}
+
+.expired-container {
+  position: relative;
+  top: -0.5em;
+  font-size: 70%;
+}

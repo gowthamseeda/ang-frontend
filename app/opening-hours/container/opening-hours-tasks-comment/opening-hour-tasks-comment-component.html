@@ -1,0 +1,24 @@
+<mat-table [dataSource]="dataToDisplay" class="task-comment">
+  <ng-container matColumnDef="taskId">
+    <mat-header-cell gpFxFlex="10" *matHeaderCellDef> {{ 'TASK_ID' | translate }} </mat-header-cell>
+    <mat-cell gpFxFlex="10" *matCellDef="let comment"> {{ comment.taskId }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="editor">
+    <mat-header-cell gpFxFlex="15" *matHeaderCellDef> {{ 'EDITOR' | translate }} </mat-header-cell>
+    <mat-cell gpFxFlex="15" *matCellDef="let comment"> {{ comment.user }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <mat-header-cell mat-header-cell gpFxFlex="20" *matHeaderCellDef> {{ 'DATE'  | translate }} </mat-header-cell>
+    <mat-cell gpFxFlex="20" *matCellDef="let comment"> {{ comment.creationDate | date:'mediumDate' }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="comment">
+    <mat-header-cell mat-header-cell gpFxFlex="55" *matHeaderCellDef>{{ 'COMMENT' | translate }}</mat-header-cell>
+    <mat-cell gpFxFlex="55" *matCellDef="let comment"> {{ comment.comment }} </mat-cell>
+  </ng-container>
+
+  <mat-header-row mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+  <mat-row mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+</mat-table>

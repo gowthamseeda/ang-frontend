@@ -1,0 +1,16 @@
+<div class="cell-container"
+  (click)="onMouseClick()"
+  (mouseenter)="onMouseEnter()">
+  <div [attr.id] = "isLabelTypeDate() ? null : 5" class="cell" [ngClass]="{
+    'active': isActive(),
+    'date': isLabelTypeDate(),
+    'weekDay': isLabelTypeWeekDay(),
+    'weekNumber': isLabelTypeWeekNumber(),
+    'currentDay': isHighLiteTypeCurrentDay(),
+    'eventDay': isHighLiteTypeEventDay(),
+    'selected': isHighLiteTypeSelected(),
+    'start': isHighLiteTypeEventStart(),
+    'end': isHighLiteTypeEventEnd()}">
+    {{ data?.label }}
+  </div>
+</div>

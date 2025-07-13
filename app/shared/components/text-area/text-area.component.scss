@@ -1,0 +1,37 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+textarea {
+  height: auto;
+  resize: none;
+
+  &:disabled {
+    color: mat.get-color-from-palette($accent, 600) !important;
+  }
+
+  &.revert-readonly {
+    color: black !important;
+  }
+}
+
+.optional {
+  font-size: 80%;
+  font-style: italic;
+}
+
+.data-changed-notification {
+  background-color: #bed8c1;
+}
+
+.verification-task-present {
+  background: mat.get-color-from-palette($warn, 300);
+  color: mat.get-contrast-color-from-palette($warn, 300);
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  background-color: #ffffff;
+}
+
+.changes-made {
+  background-color: #f2e7b8;
+}

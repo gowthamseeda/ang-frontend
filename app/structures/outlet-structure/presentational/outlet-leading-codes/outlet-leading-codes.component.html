@@ -1,0 +1,32 @@
+<div gpFxLayout="row"
+     class="outlet-leading-codes">
+
+  <div gpFxLayoutRow
+       gpFxLayoutAlign="start center">
+    <ng-container *ngFor="let brandId of sortedBrandIds">
+      <gp-brand-icon [id]="brandId"
+                     [small]="true"
+                     tooltipPosition="below"
+                     style="margin-right: 5px">
+      </gp-brand-icon>
+    </ng-container>
+  </div>
+
+  <div *ngIf="leadingBrandCode"
+       [matTooltip]="sortedBrandCodes | outletLeadingCodes: 'brandCode' : allBrands"
+       matTooltipClass="tooltip-class"
+       gpFxLayoutAlign="start center"
+       style="margin-right: 5px">
+    <span>{{ leadingBrandCode?.brandCode }}</span>
+  </div>
+
+  <div *ngIf="leadingBusinessName"
+       [matTooltip]="sortedBusinessNames | outletLeadingCodes: 'businessName' : allBrands"
+       matTooltipClass="tooltip-class"
+       gpFxLayoutAlign="start center"
+       style="margin-right: 5px">
+    <span>
+      {{(leadingBusinessName?.businessName | translate) + (hasMoreThanOneBusinessName() ? '...' : '')}}
+    </span>
+  </div>
+</div>

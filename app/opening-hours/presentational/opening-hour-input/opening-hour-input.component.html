@@ -1,0 +1,220 @@
+<ng-container [formGroup]="parentRowForm">
+  <div *ngIf="parentRowForm.value.openingHours[column.columnDef]; let weekDayCell" formGroupName="openingHours"
+       gpFxLayoutColumn [ngClass]="{'opening-time':!hasPendingTask(weekDayCell) ||
+       !showDataChangeNotification,
+       'opening-time-with-task':hasPendingTask(weekDayCell) && showDataChangeNotification}">
+    <ng-container *ngIf="hasPendingTask(weekDayCell) && showDataChangeNotification; else normalCell">
+        <div gpFxLayout="row" style="height: 100%">
+          <div gpFxFlex="30" gpFxLayout="column">
+            <div class="pending-task-notification-row background-for-future">
+              <span>{{ 'FUTURE' | translate }}</span>
+            </div>
+            <div class="pending-task-notification-row background-for-past">
+              <span>{{ 'ACTUAL' | translate }}</span>
+            </div>
+          </div>
+          <div gpFxFlex="70" gpFxLayout="column">
+            <div class="pending-task-notification-row background-for-future" [ngStyle]="{ 'height':
+             getHeightForCell(weekDayCell) }">
+              <div *ngIf="checkIsClosed(weekDayCell, 'future'); else changeDataFuture">
+                <span class="opening-time__closed-text">{{ 'OPENING_HOURS_CLOSED' | translate }}</span>
+              </div>
+              <ng-template #changeDataFuture>
+                <div class="task-row">
+                  <div *ngFor="let task of getTaskDataDiffTime(weekDayCell, 'future')">
+                    {{ task.begin }} - {{ task.end }}
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+            <div class="pending-task-notification-row background-for-past" [ngStyle]="{ 'height':
+             getHeightForCell(weekDayCell) }">
+              <div *ngIf="checkIsClosed(weekDayCell, 'actual'); else changeDataActual">
+                <span class="opening-time__closed-text">{{ 'OPENING_HOURS_CLOSED' | translate }}</span>
+              </div>
+              <ng-template #changeDataActual>
+                <div class="task-row">
+                  <div *ngFor="let task of getTaskDataDiffTime(weekDayCell, 'actual')">
+                    {{ task.begin }} - {{ task.end }}
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+    </ng-container>
+    <ng-template #normalCell>
+      <ng-container *ngIf="hasNotBeenClosed(weekDayCell); else closedOpeningHours">
+        <div [formGroupName]="column.columnDef">
+          <div *ngIf="!isReadyOnlyAndEmpty; else noEntry" formArrayName="times">
+            <div formGroupName="0" gpFxLayoutColumn class="opening-time-container">
+              <div gpFxLayout="row">
+                <div class="opening-time-plus-minus">
+                  <gp-plus-minus *ngIf="editable && !isOpeningHourEnabled(weekDayCell, 1)"
+                                 (plusIconClickedEvent)="onPlusMinusIconClicked(weekDayCell, OPENING_HOUR.SECOND, true)"
+                                 [isPlus]="true">
+                  </gp-plus-minus>
+                </div>
+                <div gpFxLayoutRow gpFxLayoutAlign="center center" class="opening-time-input">
+                  <mat-form-field class="no-label">
+                    <input matInput formControlName="begin" tabindex="{{ inputIndexes.firstBegin }}"
+                           placeholder="{{'OPENING_HOURS_FROM' | translate}}" maxlength="8"
+                           [ngxTimepicker]="firstFromTime" [disableClick]="true" [readonly]="!editable" [value]="'00:00'"
+                           [format]="localeTimeFormat"
+                           [ngClass]="{ 'readOnly': !editable, 'empty': !this.isOpeningHourEnabled(weekDayCell, 0) }"
+                           (click)="onTimeInputClicked($event)" (keydown)="onKeyDown(FIRST_HOUR_FROM, $event)"
+                           (keyup)="onTimeInputKeyUp(weekDayCell, FIRST_HOUR_FROM, $event)"
+                           (focusin)="onTimeInputFocusIn(weekDayCell, FIRST_HOUR_FROM, $event)"
+                           (focusout)="onTimeInputFocusOut(weekDayCell)">
+                  </mat-form-field>
+                  <div class="time-format-buttons">
+                    <gp-icon *ngIf="isTimeFormatChangeEnabled(weekDayCell, FIRST_HOUR_FROM)"
+                             (click)="onTimeFormatClicked(weekDayCell, FIRST_HOUR_FROM)" class="arrow down"
+                             name="caret-down" size="tiny" hover="true">
+                    </gp-icon>
+                  </div>
+                  <ngx-material-timepicker #firstFromTime></ngx-material-timepicker>
+                  <span class="time-from-to-divider"> - </span>
+                  <mat-form-field class="no-label">
+                    <input matInput formControlName="end" tabindex="{{ inputIndexes.firstEnd }}"
+                           placeholder="{{'OPENING_HOURS_TO' | translate}}" maxlength="8" [ngxTimepicker]="firstToTime"
+                           [disableClick]="true" [readonly]="!editable" [format]="localeTimeFormat"
+                           [ngClass]="{ 'readOnly': !editable, 'empty': !this.isOpeningHourEnabled(weekDayCell, 0) }"
+                           (click)="onTimeInputClicked($event)" (keydown)="onKeyDown(FIRST_HOUR_TO, $event)"
+                           (keyup)="onTimeInputKeyUp(weekDayCell, FIRST_HOUR_TO, $event)"
+                           (focusin)="onTimeInputFocusIn(weekDayCell, FIRST_HOUR_TO, $event)"
+                           (focusout)="onTimeInputFocusOut(weekDayCell)">
+                  </mat-form-field>
+                  <div class="time-format-buttons">
+                    <gp-icon *ngIf="isTimeFormatChangeEnabled(weekDayCell, FIRST_HOUR_TO)"
+                             (click)="onTimeFormatClicked(weekDayCell, FIRST_HOUR_TO)" class="arrow down"
+                             name="caret-down" size="tiny" hover="true">
+                    </gp-icon>
+                  </div>
+                  <ngx-material-timepicker #firstToTime></ngx-material-timepicker>
+                </div>
+              </div>
+              <mat-error class="opening-time-error" *ngIf="hasOpeningHourError(0) as error">
+                {{ error | translate}}
+              </mat-error>
+            </div>
+
+            <div *ngIf="isOpeningHourEnabled(weekDayCell, 1)" class="opening-time-container" formGroupName="1">
+              <div gpFxLayout="row">
+                <div gpFxLayoutRow gpFxLayoutAlign="center center" class="opening-time-plus-minus">
+                  <ng-container *ngIf="editable">
+                    <gp-plus-minus *ngIf="!isOpeningHourEnabled(weekDayCell, 2)"
+                                   (plusIconClickedEvent)="onPlusMinusIconClicked(weekDayCell, OPENING_HOUR.THIRD, true)"
+                                   [isPlus]="true">
+                    </gp-plus-minus>
+                    <gp-plus-minus (minusIconClickedEvent)="onPlusMinusIconClicked(weekDayCell, OPENING_HOUR.SECOND, false)"
+                                   [isPlus]="false">
+                    </gp-plus-minus>
+                  </ng-container>
+                </div>
+                <div gpFxLayoutRow gpFxLayoutAlign="center center" class="opening-time-input">
+                  <mat-form-field class="no-label">
+                    <input matInput formControlName="begin" placeholder="{{'OPENING_HOURS_FROM' | translate}}"
+                           tabindex="{{ inputIndexes.secondBegin }}" maxlength="8" [ngxTimepicker]="secondFromTime"
+                           [disableClick]="true" [readonly]="!editable" [value]="'00:00'" [format]="localeTimeFormat"
+                           [ngClass]="{ 'readOnly': !editable }" (click)="onTimeInputClicked($event)"
+                           (keydown)="onKeyDown(SECOND_HOUR_FROM, $event)"
+                           (keyup)="onTimeInputKeyUp(weekDayCell, SECOND_HOUR_FROM, $event)"
+                           (focusin)="onTimeInputFocusIn(weekDayCell, SECOND_HOUR_FROM, $event)"
+                           (focusout)="onTimeInputFocusOut(weekDayCell)">
+                  </mat-form-field>
+                  <div class="time-format-buttons">
+                    <gp-icon *ngIf="isTimeFormatChangeEnabled(weekDayCell, SECOND_HOUR_FROM)"
+                             (click)="onTimeFormatClicked(weekDayCell, SECOND_HOUR_FROM)" class="arrow down"
+                             name="caret-down" size="tiny" hover="true">
+                    </gp-icon>
+                  </div>
+                  <ngx-material-timepicker #secondFromTime></ngx-material-timepicker>
+                  <span class="time-from-to-divider"> - </span>
+                  <mat-form-field class="no-label">
+                    <input matInput formControlName="end" tabindex="{{ inputIndexes.secondEnd }}"
+                           placeholder="{{'OPENING_HOURS_TO' | translate}}" maxlength="8" [ngxTimepicker]="secondToTime"
+                           [disableClick]="true" [readonly]="!editable" [format]="localeTimeFormat"
+                           [ngClass]="{ 'readOnly': !editable }" (click)="onTimeInputClicked($event)"
+                           (keydown)="onKeyDown(SECOND_HOUR_TO, $event)"
+                           (keyup)="onTimeInputKeyUp(weekDayCell, SECOND_HOUR_TO, $event)"
+                           (focusin)="onTimeInputFocusIn(weekDayCell, SECOND_HOUR_TO, $event)"
+                           (focusout)="onTimeInputFocusOut(weekDayCell)">
+                  </mat-form-field>
+                  <div class="time-format-buttons">
+                    <gp-icon *ngIf="isTimeFormatChangeEnabled(weekDayCell, SECOND_HOUR_TO)"
+                             (click)="onTimeFormatClicked(weekDayCell, SECOND_HOUR_TO)" class="arrow down"
+                             name="caret-down" size="tiny" hover="true">
+                    </gp-icon>
+                  </div>
+                  <ngx-material-timepicker #secondToTime></ngx-material-timepicker>
+                </div>
+              </div>
+              <mat-error class="opening-time-error" *ngIf="hasOpeningHourError(1) as error">
+                {{ error | translate }}
+              </mat-error>
+            </div>
+
+            <div *ngIf="isOpeningHourEnabled(weekDayCell, 2)" class="opening-time-container" formGroupName="2">
+              <div gpFxLayout="row">
+                <div class="opening-time-plus-minus">
+                  <gp-plus-minus *ngIf="editable"
+                                 (minusIconClickedEvent)="onPlusMinusIconClicked(weekDayCell, OPENING_HOUR.THIRD, false)"
+                                 [isPlus]="false">
+                  </gp-plus-minus>
+                </div>
+                <div gpFxLayoutRow gpFxLayoutAlign="center center" class="opening-time-input">
+                  <input matInput formControlName="begin" placeholder="{{'OPENING_HOURS_FROM' | translate}}"
+                         tabindex="{{ inputIndexes.thirdBegin }}" maxlength="8" [ngxTimepicker]="thirdFromTime"
+                         [disableClick]="true" [readonly]="!editable" [value]="'00:00'" [format]="localeTimeFormat"
+                         [ngClass]="{ 'readOnly': !editable }" (click)="onTimeInputClicked($event)"
+                         (keydown)="onKeyDown(THIRD_HOUR_FROM, $event)"
+                         (keyup)="onTimeInputKeyUp(weekDayCell, THIRD_HOUR_FROM, $event)"
+                         (focusin)="onTimeInputFocusIn(weekDayCell, THIRD_HOUR_FROM, $event)"
+                         (focusout)="onTimeInputFocusOut(weekDayCell)">
+                  <div class="time-format-buttons">
+                    <gp-icon *ngIf="isTimeFormatChangeEnabled(weekDayCell, THIRD_HOUR_FROM)"
+                             (click)="onTimeFormatClicked(weekDayCell, THIRD_HOUR_FROM)" class="arrow down"
+                             name="caret-down" size="tiny" hover="true">
+                    </gp-icon>
+                  </div>
+                  <ngx-material-timepicker #thirdFromTime></ngx-material-timepicker>
+                  <span class="time-from-to-divider"> - </span>
+                  <input matInput formControlName="end" tabindex="{{ inputIndexes.thirdEnd }}"
+                         placeholder="{{'OPENING_HOURS_TO' | translate}}" maxlength="8" [ngxTimepicker]="thirdToTime"
+                         [disableClick]="true" [readonly]="!editable" [format]="localeTimeFormat"
+                         [ngClass]="{ 'readOnly': !editable }" (click)="onTimeInputClicked($event)"
+                         (keydown)="onKeyDown(THIRD_HOUR_TO, $event)"
+                         (keyup)="onTimeInputKeyUp(weekDayCell, THIRD_HOUR_TO, $event)"
+                         (focusin)="onTimeInputFocusIn(weekDayCell, THIRD_HOUR_TO, $event)"
+                         (focusout)="onTimeInputFocusOut(weekDayCell)">
+                  <div class="time-format-buttons">
+                    <gp-icon *ngIf="isTimeFormatChangeEnabled(weekDayCell, THIRD_HOUR_TO)"
+                             (click)="onTimeFormatClicked(weekDayCell, THIRD_HOUR_TO)" class="arrow down"
+                             name="caret-down" size="tiny" hover="true">
+                    </gp-icon>
+                  </div>
+                  <ngx-material-timepicker #thirdToTime></ngx-material-timepicker>
+                </div>
+              </div>
+              <mat-error class="opening-time-error" *ngIf="hasOpeningHourError(2) as error">
+                {{ error | translate }}
+              </mat-error>
+            </div>
+          </div>
+          <ng-template #noEntry><i>{{ 'OPENING_HOURS_NO_ENTRY' | translate}}</i></ng-template>
+        </div>
+        <gp-close-opening-hour *ngIf="editable" position="remove"
+                               (removeAllOpeningHoursEvent)="onCloseIconClicked(weekDayCell)">
+        </gp-close-opening-hour>
+      </ng-container>
+    </ng-template>
+
+    <ng-template #closedOpeningHours>
+      <gp-close-opening-hour position="open" [enabled]="editable"
+                             (openOpeningHoursEvent)="onOpenIconClicked(weekDayCell)">
+      </gp-close-opening-hour>
+    </ng-template>
+
+  </div>
+</ng-container>

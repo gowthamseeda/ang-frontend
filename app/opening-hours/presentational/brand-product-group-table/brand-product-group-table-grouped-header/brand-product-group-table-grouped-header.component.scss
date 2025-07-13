@@ -1,0 +1,75 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.column-headers {
+  background-color: transparent;
+
+  .column-header {
+    border-right: 1px solid mat.get-color-from-palette($accent, 400);
+    height: 120px;
+
+    &:first-child {
+      border-left: none;
+
+      .all-product-groups {
+        .product-groups {
+          &:first-child:not(lastGroupedColumn) {
+            min-width: 291px;
+          }
+
+          &:first-child.lastGroupedColumn {
+            min-width: 289px;
+          }
+        }
+      }
+    }
+
+    .all-product-groups {
+      .product-groups {
+        border-right: 1px solid mat.get-color-from-palette($accent, 400);
+        background-color: mat.get-color-from-palette($primary, 100, 0.15);
+        padding: 15px 15px 8px 15px;
+        margin-top: 10px;
+        min-width: 290px;
+
+        &:first-child {
+          min-width: 290px;
+        }
+
+        &.lastGroupedColumn {
+          border-right: none;
+          min-width: 289px;
+        }
+
+        .product-group {
+          line-height: initial;
+          width: 40px;
+          height: 55px;
+          margin: 0 5px;
+          text-align: center;
+
+          .actions {
+            display: flex;
+            justify-content: space-around;
+
+            .left,
+            .right {
+              width: 20px;
+              height: 20px;
+              font-size: 20px;
+              text-align: center;
+              color: mat.get-color-from-palette($accent, 600);
+
+              &:hover {
+                border-radius: 70%;
+                background-color: mat.get-color-from-palette($primary, 500);
+                color: mat.get-color-from-palette($primary, 50);
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

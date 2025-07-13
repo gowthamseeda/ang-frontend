@@ -1,0 +1,27 @@
+<div [formGroup]="poBoxForm">
+  <gp-po-box-number [poBoxForm]="poBoxForm"
+                    [number]="poBox?.number"
+                    [required]="poBoxNumberRequired(parentForm)"
+                    [readonly]="readonly"
+                    [dataNotificationChangeFields]="dataNotificationChangeFields"
+                    [isRetailOutlet]="isRetailOutlet"
+  ></gp-po-box-number>
+
+  <div gpFxLayout="row"
+       gpFxLayoutGap="30px">
+    <gp-po-box-zip-code gpFxFlex="30"
+                        [poBoxForm]="poBoxForm"
+                        [zipCode]="poBox?.zipCode"
+                        [readonly]="readonly"
+                        [dataNotificationChangeFields]="dataNotificationChangeFields"
+                        [isRetailOutlet]="isRetailOutlet"
+    ></gp-po-box-zip-code>
+    <gp-po-box-city gpFxFlex
+                    [poBoxForm]="poBoxForm"
+                    [city]="poBox?.city"
+                    [required]="poBoxCityRequired(parentForm)"
+                    [dataNotificationChangeFields]="dataNotificationChangeFields"
+                    [isRetailOutlet]="isRetailOutlet"
+    ></gp-po-box-city>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="address-data-box"
+     *ngIf="address"
+     data-cy="address-lines">
+  <div>
+    <ng-container *ngIf="address?.addressAddition">
+      <span>{{ address.addressAddition }}</span>
+    </ng-container>
+    <ng-container *ngIf="address?.addressAddition && address?.street">
+      <span>,&nbsp;</span>
+    </ng-container>
+    <ng-container *ngIf="address?.street">
+      <span>{{ address.street }}</span>
+    </ng-container>
+    <ng-container *ngIf="address?.streetNumber">
+      <span> {{ address.streetNumber }}</span>
+    </ng-container>
+  </div>
+  <ng-container *ngIf="address?.city">
+    <div>{{ address.city }}</div>
+  </ng-container>
+  <ng-container *ngIf="address?.countryName">
+    <div>{{ address.countryName }}</div>
+  </ng-container>
+</div>

@@ -1,0 +1,8 @@
+<mat-form-field>
+  <mat-label>{{'LANGUAGE' | translate}}</mat-label>
+  <mat-select [ngModel]="getSelectedLanguageId()" (ngModelChange)="setSelectedLanguageId($event)">
+    <mat-option *ngFor="let language of languages | async" [value]="language.id">
+      {{language.representation}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

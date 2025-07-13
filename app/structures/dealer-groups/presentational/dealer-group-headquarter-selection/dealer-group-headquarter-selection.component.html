@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>{{ 'DEALER_GROUPS_SELECT_HEADQUARTER' | translate }}</h1>
+
+<mat-dialog-content>
+  <gp-searchfield [predefinedSearchFilters]="searchFieldInput.predefinedSearchFilters"
+                  [placeHolderText]="searchFieldInput.placeHolderText"
+                  [searchResultMessage]="searchFieldInput.searchResultMessage"
+                  [settings]="searchFieldSettings"
+                  [excludedSearchItems]="[data.excludedHeadquarterId]"
+                  (searchItemRetrieved)="searchItemRetrieved($event)"
+                  (searchResultsQueried)="searchItemsReset()"
+                  (searchResultsReseted)="searchItemsReset()"
+  >
+  </gp-searchfield>
+</mat-dialog-content>

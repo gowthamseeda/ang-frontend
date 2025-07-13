@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.bubble {
+  border: 1px solid mat.get-color-from-palette($accent, 600);
+  padding: 5px;
+  border-radius: 10px;
+  background-color: #fff;
+  margin-top: 13px;
+  margin-left: -20px;
+  box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+.bubble:before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 15px;
+  left: 19px;
+  box-sizing: border-box;
+  border: 8px solid;
+  border-color: transparent transparent #fff #fff;
+  transform-origin: 0 0;
+  transform: rotate(135deg);
+  box-shadow: -1px 1px 0px 0px mat.get-color-from-palette($accent, 600);
+}

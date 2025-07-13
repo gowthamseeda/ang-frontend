@@ -1,0 +1,12 @@
+<div class="opening-time__plus-minus">
+  <ng-container *ngIf="isPlus; else minusIcon">
+    <gp-icon (click)="emitPlusIconClick()"
+             [actionable]="true"
+             name="plus"></gp-icon>
+  </ng-container>
+  <ng-template #minusIcon>
+    <gp-icon (click)="emitMinusIconClick()"
+             [actionable]="true"
+             name="minus"></gp-icon>
+  </ng-template>
+</div>

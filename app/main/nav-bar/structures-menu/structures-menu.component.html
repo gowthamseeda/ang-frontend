@@ -1,0 +1,48 @@
+<mat-list>
+  <ng-container *gpFeatureToggle="'MENU_STRUCTURES_MARKET_AREA'">
+    <ng-container *gpNotForRetail>
+      <mat-list-item
+        *ngxPermissionsOnly="['structures.marketareas.read']"
+        routerLink="structures/market-area"
+      >
+        <gp-icon matListItemIcon size="small"></gp-icon>
+        <div matListItemTitle>{{ 'MARKET_AREA' | translate }}</div>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *gpFeatureToggle="'MENU_STRUCTURES_REGIONAL_CENTER'">
+    <mat-list-item
+      *ngxPermissionsOnly="['structures.regionalcenter.read']"
+      routerLink="structures/regional-center"
+    >
+      <gp-icon matListItemIcon size="small"></gp-icon>
+      <div matListItemTitle>{{ 'REGIONAL_CENTER' | translate }}</div>
+    </mat-list-item>
+
+    <mat-divider></mat-divider>
+  </ng-container>
+
+  <mat-list-item
+    *ngxPermissionsOnly="['structures.generalgroups.read']"
+    routerLink="structures/general-groups"
+    data-cy="general-groups-menu"
+  >
+    <gp-icon matListItemIcon size="small"></gp-icon>
+    <div matListItemTitle>{{ 'GENERAL_GROUPS' | translate }}</div>
+  </mat-list-item>
+
+  <mat-divider></mat-divider>
+
+  <mat-list-item
+    *ngxPermissionsOnly="['structures.dealergroups.read']"
+    routerLink="structures/dealer-groups"
+  >
+    <gp-icon matListItemIcon size="small"></gp-icon>
+    <div matListItemTitle>{{ 'DEALER_GROUPS' | translate }}</div>
+  </mat-list-item>
+
+  <mat-divider></mat-divider>
+</mat-list>

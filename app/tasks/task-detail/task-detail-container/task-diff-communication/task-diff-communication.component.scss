@@ -1,0 +1,16 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+@import '../task-diff-default/task-diff-default.component';
+
+.diff-container {
+  margin-bottom: 20px;
+  border-bottom: 1px solid mat.get-color-from-palette($accent, 300);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+gp-product-group {
+  max-width: 32px;
+}

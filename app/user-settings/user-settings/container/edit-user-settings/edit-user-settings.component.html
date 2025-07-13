@@ -1,0 +1,29 @@
+<gp-default-layout>
+  <gp-header header-toolbar [breadcrumbItems]="[{ label: 'USER_SETTINGS' }]">
+  </gp-header>
+  <gp-edit-layout title="{{'USER_SETTINGS_EDIT_SETTINGS_TITLE' | translate }}" marginalColumnDisabled="true">
+    <ng-container subTitle>
+      {{ 'USER_SETTINGS_EDIT_SETTINGS_SUBTITLE' | translate }}
+    </ng-container>
+    <gp-edit-section>
+      <div gpFxFlexFill gpFxFlex="50%" gpFxLayout="column" style="display: inline" [formGroup]="userSettingForm">
+        <mat-slide-toggle formControlName="searchOutletByDefaultCountry" color="primary">
+          {{'SEARCH_OUTLET_BY_DEFAULT_COUNTRY' | translate}}
+        </mat-slide-toggle>
+        <gp-country-dropdown [parentForm]="userSettingForm" [countryId]="getCountryId()" [required]="false"
+                             [placeholderTranslation]="'USER_SETTINGS_DEFAULT_COUNTRY'">
+        </gp-country-dropdown>
+        <mat-slide-toggle formControlName="searchOutletByActiveOutlet" color="primary" class="toggle-bottom-spacing">
+          {{'SEARCH_OUTLET_BY_ACTIVE_OUTLET' | translate}}
+        </mat-slide-toggle>
+        <mat-slide-toggle formControlName="doNotShowMultiSelectConfirmationDialog" color="primary">
+          {{'SHOW_MULTI_SELECT_CONFIRMATION_DIALOG' | translate}}
+        </mat-slide-toggle>
+      </div>
+    </gp-edit-section>
+  </gp-edit-layout>
+  <gp-default-edit-actions footer-toolbar [saveButtonDisabled]="userSettingForm.pristine || userSettingForm.invalid"
+                           [cancelButtonDisabled]="userSettingForm.pristine" [saveButtonTranslationKey]="'SAVE'"
+                           (save)="updateUserSettings()" (cancel)="reset()">
+  </gp-default-edit-actions>
+</gp-default-layout>

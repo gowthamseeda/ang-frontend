@@ -1,0 +1,13 @@
+<div gpFxLayout="row">
+  <mat-form-field gpFxFlex="30%">
+    <input matInput
+           [disabled]="true"
+           placeholder="{{ 'NAME' | translate }}"
+           type="text"
+           value="{{ jobId | uppercase}}" />
+
+    <gp-icon matSuffix
+             name="lock"
+             size="small"></gp-icon>
+  </mat-form-field>
+</div>

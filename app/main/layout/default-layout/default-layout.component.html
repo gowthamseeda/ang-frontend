@@ -1,0 +1,19 @@
+<div gpFxFill
+     gpFxLayout="column">
+  <header gpFxLayoutAlign="start center">
+    <ng-content select="[header-toolbar]"></ng-content>
+  </header>
+
+  <main gpFxFlex
+        gpFxLayout="column">
+    <ng-scrollbar>
+      <div class="margin">
+        <ng-content></ng-content>
+      </div>
+    </ng-scrollbar>
+  </main>
+
+  <footer gpFxLayoutAlign="end center">
+    <ng-content select="[footer-toolbar]"></ng-content>
+  </footer>
+</div>

@@ -1,0 +1,66 @@
+<ng-container *ngIf="currentRelationships && currentRelationships.length > 0; else showEmpty">
+  <ng-container *ngFor="let relationship of currentRelationships;">
+    <ng-container *ngIf="isFieldChangedCompareWholeData(relationship) ||
+    (!isFieldChangedCompareWholeData(relationship) && !showChangeOnlyToggleInput); else showNothing">
+      <ng-container
+        *ngIf="{
+        isFieldChanged: isChanged(relationship.relationshipKey),
+        editor: getChangeEditor(relationship.relationshipKey)
+      } as relationshipChanges">
+        <ul [class.changed]="relationshipChanges.isFieldChanged">
+          <li>
+            {{ 'RELATED_BUSINESS_SITE_ID' | translate }}
+            <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+              <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                {{ relationshipChanges.isFieldChanged ? '[' + relationshipChanges.editor + ']' : '' }}
+              </span>:
+            </ng-container>
+            {{ relationshipChanges.isFieldChanged && displayChangesToggleInput ? '[' +
+               (getFieldDataFromComparingData('relatedBusinessSiteId', relationship)| emptyValuePipe) + '] =>' : '' }}
+            {{ relationship.relatedBusinessSiteId | emptyValuePipe }}
+          </li>
+          {{ 'OUTLET_RELATIONSHIPS_RELATIONSHIP_DEF_CODE' | translate }}
+          <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+            <span *ngxPermissionsOnly="['app.historization.editor.show']">
+              {{ relationshipChanges.isFieldChanged ? '[' + relationshipChanges.editor + ']' : '' }}
+            </span>:
+          </ng-container>
+          {{ relationshipChanges.isFieldChanged && displayChangesToggleInput ? '[' +
+             (getFieldDataFromComparingData('relationshipDefCode', relationship)| emptyValuePipe) + '] =>' : '' }}
+          <ng-container *ngIf="masterDataChangesFeatureToggle; else noMasterDataChanges">
+            <a (click)="toggleMasterDataLabelDetail(relationship!!.relationshipDefCode)" class="popupLink">
+              {{ relationship.relationshipDefCode | emptyValuePipe }}
+            </a>
+          </ng-container>
+          <ng-template #noMasterDataChanges>
+            {{ relationship.relationshipDefCode | emptyValuePipe }}
+          </ng-template>
+          <br />
+          {{ 'IS_DELETED' | translate }}
+          <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+            <span *ngxPermissionsOnly="['app.historization.editor.show']">
+              {{ relationshipChanges.isFieldChanged ? '[' + relationshipChanges.editor + ']' : '' }}
+            </span>:
+          </ng-container>
+          {{ relationshipChanges.isFieldChanged && displayChangesToggleInput ? '[' +
+             (getFieldDataFromComparingData('isDeleted', relationship)| emptyValuePipe) + '] =>' : '' }}
+          {{ relationship.isDeleted | emptyValuePipe }}
+        </ul>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #showEmpty>
+  {{ '' | emptyValuePipe }}
+</ng-template>
+
+<ng-template #noEditors>
+  <span *ngxPermissionsOnly="['app.historization.editor.show']">
+    {{''}}
+  </span>:
+</ng-template>
+
+<ng-template #showNothing>
+</ng-template>
+

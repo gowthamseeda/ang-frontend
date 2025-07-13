@@ -1,0 +1,71 @@
+<gp-overlay-layout [toolTipText]="'COMPANY_NAVIGATION_TREE'">
+  <gp-outlet-header header-toolbar> </gp-outlet-header>
+
+  <div *ngIf="outlet | async as outlet" class="scroll-area">
+    <div *gpNotForRetail error-notification>
+      <gp-outlet-error-notification
+        [businessSiteId]="outlet.id"
+        [registeredOfficeId]="
+          outlet.companysRegisteredOfficeId ? outlet.companysRegisteredOfficeId : ''
+        "
+      >
+      </gp-outlet-error-notification>
+    </div>
+
+    <gp-edit-layout
+      logo="keys"
+      title="{{ 'BRAND_CODES_AND_EXTERNAL_KEYS' | translate }}"
+      closeLink="/outlet/{{ outlet.id }}"
+      data-cy="edit-keys-layout"
+    >
+      <ng-container subTitle>
+        {{ 'EDIT_KEYS_HEADER_TEXT_PREFIX' | translate }}
+        <a routerLink="." fragment="keys">{{ 'EDIT_KEYS_HEADER_TEXT_LINK' | translate }}</a>
+        {{ 'EDIT_KEYS_HEADER_TEXT_POSTFIX' | translate }}
+      </ng-container>
+
+      <gp-edit-section>
+        <ng-container marginalContent>
+          <div>
+            <h1>{{ 'MARGINAL_CONTENT_KEYS_HEADER' | translate }}</h1>
+            {{ 'MARGINAL_CONTENT_KEYS_TEXT' | translate }}
+          </div>
+        </ng-container>
+        <gp-key-table
+          [outletId]="outlet.id"
+          [countryId]="outlet.countryId"
+          [disabled]="isNotAuthorizedForBusinessSite | async"
+          (hasChange)="cancelButtonDisabled = !$event"
+          (hasValidChange)="saveButtonDisabled = !$event"
+          [focusEnabled]="focusEnabled | async"
+          data-cy="edit-keys-table"
+        ></gp-key-table>
+      </gp-edit-section>
+    </gp-edit-layout>
+  </div>
+
+  <ng-container *gpNotForRetail footer-toolbar>
+    <gp-default-edit-actions
+      footer-toolbar
+      *ngIf="isAuthorizedToEdit | async"
+      [saveButtonDisabled]="saveButtonDisabled"
+      [cancelButtonDisabled]="cancelButtonDisabled"
+      (save)="keyTableComponent.save()"
+      (cancel)="keyTableComponent.reset()"
+      data-cy="default-edit-actions"
+    >
+    </gp-default-edit-actions>
+  </ng-container>
+
+  <ng-container overlay>
+    <gp-outlet-tree-navigation
+      gpFxFlex
+      gpFxFlexXsSm="auto"
+      style="display: inline"
+      [changed]="savedKeys"
+    >
+    </gp-outlet-tree-navigation>
+  </ng-container>
+</gp-overlay-layout>
+
+<gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>

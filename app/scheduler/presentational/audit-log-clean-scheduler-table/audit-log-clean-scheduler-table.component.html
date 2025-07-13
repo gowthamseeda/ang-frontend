@@ -1,0 +1,56 @@
+<mat-table [dataSource]="jobDetails">
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>
+      {{ 'NAME' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job">
+      {{ job.name | uppercase | translate }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="currentStatus">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="8%">{{ 'CURRENT_STATUS' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job"
+              gpFxFlex="8%">{{ job.currentStatus | uppercase }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="schedule">
+    <mat-header-cell *matHeaderCellDef>{{ 'SCHEDULE' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let job">
+      {{ "0 0 0 1 * ?" }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lastCleanTime">
+    <mat-header-cell *matHeaderCellDef>
+      {{ 'LAST_CLEAN_TIME' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job">
+      {{ job.lastRunningTime | date:'E MMM dd HH:mm:ss UTC YYYY' }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lastCleanStatus">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="15%">{{ 'LAST_CLEAN_STATUS' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job"
+              gpFxFlex="15%">{{ job.lastRunningStatus | uppercase }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lastDeleteRecords">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="15%">{{ 'LAST_DELETE_RECORDS' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job"
+              gpFxFlex="15%">{{ job.lastDeletedRecords }}
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>

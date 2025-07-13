@@ -1,0 +1,267 @@
+<gp-content-loader [isLoading]="isLoading">
+  <div class="keys-table">
+    <form [formGroup]="keysForm" data-cy="keys-form">
+      <h1 id="keys">{{ 'BRAND_CODES' | translate }}</h1>
+      <table mat-table
+             #keyTable="matSort"
+             matSort
+             [dataSource]="dataSource"
+             formArrayName="keys"
+             *ngIf="dataSource.filteredData.length > 0"
+             data-cy="keys-form-table">
+        <ng-container matColumnDef="type">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="30"
+                           mat-sort-header>{{ 'KEY_TYPE' | translate }}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let keyRow" gpFxFlex="30" data-cy="keys-form-table-cell-key-type">
+            <gp-key-type-selection [control]="keyRow.get('type')"
+                                   placeholder="{{ 'CHOOSE_KEY_TYPE' | translate }}"
+                                   [countryId]="countryId"
+                                   [readonly]="!isNewRow(keyRow)"
+                                   [selectedKeyTypes]="selectedKeyTypes"
+                                   [excludedKeyTypes]="excludedKeyTypes(keyRow) | async">
+            </gp-key-type-selection>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="key">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="31"
+                           mat-sort-header>{{ 'KEY' | translate }}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let keyRow" gpFxFlex="31" data-cy="keys-form-table-cell-key">
+            <div *ngIf="!isNewRow(keyRow)">
+              <mat-form-field class="no-label">
+                <input [formControl]="keyRow.get('key')"
+                       [errorStateMatcher]="errorStateMatcher"
+                       [readonly]="hasReadonlyBrand(keyRow) || keyRow.disabled"
+                       matInput
+                       placeholder="{{ 'TYPE_IN_KEY' | translate }}"
+                       autocomplete="off"
+                       required
+                       data-cy="keys-form-table-cell-key-input"/>
+                <mat-error *ngIf="keyRow.get('key').hasError('required')">
+                  {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+                </mat-error>
+                <mat-error *ngIf="keyRow.get('key').hasError('maxlength')">
+                  {{
+                  'VALIDATION_ERROR_MAX_CHARS'
+                    | translate: {value: keyRow.get('key').getError('maxlength').requiredLength}
+                  }}
+                </mat-error>
+                <mat-error *ngIf="keyRow.get('key').hasError('minlength')">
+                  {{
+                  'VALIDATION_ERROR_MIN_CHARS'
+                    | translate: {value: keyRow.get('key').getError('minlength').requiredLength}
+                  }}
+                </mat-error>
+                <mat-error *ngIf="keyRow.get('key').hasError('alphaNumericExceptDot')">
+                  {{ 'VALIDATION_ERROR_ALPHA_NUMERIC_EXCEPT_DOT' | translate }}
+                </mat-error>
+                <mat-error *ngIf="keyRow.get('key').hasError('alphaNumericExceptHyphen')">
+                  {{ 'VALIDATION_ERROR_ALPHA_NUMERIC_EXCEPT_HYPHEN' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="brands">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="31">{{ 'BRANDS' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let keyRow" gpFxFlex="31" data-cy="keys-form-table-cell-brands">
+            <div *ngIf="!isNewRow(keyRow) && isBrandDependent(keyRow)">
+              <gp-brand-selection placeholder="{{ 'CHOOSE_BRANDS' | translate }}" 
+                                  [control]="keyRow.get('brands')"
+                                  [excludedBrandIds]="assignedBrandIdsExceptOf(keyRow)"
+                                  [errorStateMatcher]="errorStateMatcher"
+                                  [readonly]="keyRow.disabled">
+              </gp-brand-selection>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="8%"></mat-header-cell>
+
+          <mat-cell *matCellDef="let keyRow" gpFxFlex="8%" data-cy="keys-form-table-cell-actions">
+            <ng-container *ngIf="keyRow.disabled; else deleteButton">
+              <button mat-icon-button>
+                <gp-icon name="lock"></gp-icon>
+              </button>
+            </ng-container>
+
+            <ng-template #deleteButton>
+              <ng-container *ngIf="!hasReadonlyBrand(keyRow)">
+                <button mat-icon-button
+                        (click)="showDeleteConfirmationDialog(keyRow)"
+                        data-cy="keys-form-table-row-delete-button">
+                  <gp-icon name="trash"></gp-icon>
+                </button>
+              </ng-container>
+            </ng-template>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"
+                        data-cy="keys-form-table-header"></mat-header-row>
+        <mat-row *matRowDef="let keyRow; let i = index; columns: displayedColumns"
+                 [class.locked]="keyRow.disabled"
+                 gpFxLayoutAlign="center"
+                 data-cy="keys-form-table-row"></mat-row>
+      </table>
+
+      <div gpFxFlexFill>
+        <div *ngIf="!readonly">
+          <button mat-flat-button
+                  gpRoundedIconButton
+                  class="add-key gp-icon-flat-button"
+                  (click)="addNewRow()"
+                  [disabled]="keysForm.disabled"
+                  data-cy="keys-form-add-key-button">
+            <gp-icon gpIconButtonWithText
+                     name="plus"></gp-icon>
+            {{ 'ADD_BUTTON' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+    <div *gpOnlyOwnCountry="countryId; permissions: ['traits.externalkey.read']">
+      <div class="spacer">
+      </div>
+      <form [formGroup]="externalKeysForm" data-cy="external-keys-form">
+        <h1 id="externalKeys">{{ 'EXTERNAL_KEYS' | translate }}</h1>
+        <table mat-table
+               #externalKeyTable="matSort"
+               matSort
+               [dataSource]="externalKeysDataSource"
+               formArrayName="externalKeys"
+               data-cy="external-keys-form-table">
+          <ng-container matColumnDef="keyType">
+            <mat-header-cell *matHeaderCellDef gpFxFlex="23"
+                             mat-sort-header>{{ 'KEY_TYPE' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let externalKeyRow" gpFxFlex="23"
+                      data-cy="external-keys-form-table-cell-key-type">
+              <gp-external-key-type [control]="externalKeyRow.get('keyType')"
+                                    placeholder="{{ 'CHOOSE_KEY_TYPE' | translate }}"
+                                    (selectionChange)="setExternalKeyValidators(externalKeyRow)"
+                                    [required]="true"
+                                    [outletId]="outletId">
+              </gp-external-key-type>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="value">
+            <mat-header-cell *matHeaderCellDef gpFxFlex="23"
+                             mat-sort-header>{{ 'KEY' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let externalKeyRow" gpFxFlex="23"
+                      data-cy="external-keys-form-table-cell-key">
+              <mat-form-field class="no-label">
+                <input [formControl]="externalKeyRow.get('value')"
+                       [readonly]="externalKeyRow.disabled"
+                       matInput
+                       placeholder="{{ 'TYPE_IN_KEY' | translate }}"
+                       autocomplete="off"
+                       required
+                       data-cy="external-keys-form-table-cell-key-input"
+                />
+                <mat-error *ngIf="externalKeyRow.get('value').hasError('required')">
+                  {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+                </mat-error>
+                <mat-error *ngIf="externalKeyRow.get('value').hasError('maxlength')">
+                  {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="brandId">
+            <mat-header-cell *matHeaderCellDef gpFxFlex="23">{{ 'BRAND' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let externalKeyRow" gpFxFlex="23"
+                      data-cy="external-keys-form-table-cell-brand">
+              <gp-brand-selection placeholder="{{ 'CHOOSE_BRANDS' | translate }}"      
+                                  [control]="externalKeyRow.get('brand')"
+                                  [errorStateMatcher]="errorStateMatcher"
+                                  [multiple]="false"
+                                  [required]="false">
+              </gp-brand-selection>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="productGroupId">
+            <mat-header-cell *matHeaderCellDef gpFxFlex="23">{{ 'PRODUCT_GROUP' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let externalKeyRow" gpFxFlex="23"
+                      data-cy="external-keys-form-table-cell-product-group">
+              <gp-product-group-selection [control]="externalKeyRow.get('productGroupId')"
+                                          placeholder="{{ 'CHOOSE_PRODUCT_GROUPS' | translate }}"
+                                          [required]="false"
+                                          (selectionChange)="validateBrandRequiredState(externalKeyRow)"
+                                          [focusEnabled]="focusEnabled">
+              </gp-product-group-selection>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef gpFxFlex="8%"></mat-header-cell>
+            <mat-cell *matCellDef="let externalKeyRow" gpFxFlex="8%"
+                      data-cy="external-keys-form-table-cell-actions">
+              <ng-container *ngIf="externalKeyRow.disabled; else externalKeyDeleteButton">
+                <button mat-icon-button>
+                  <gp-icon name="lock"></gp-icon>
+                </button>
+              </ng-container>
+
+              <ng-template #externalKeyDeleteButton>
+                <button mat-icon-button
+                        (click)="showExternalKeyDeleteConfirmationDialog(externalKeyRow)"
+                        data-cy="external-keys-form-table-row-delete-button">
+                  <gp-icon name="trash"></gp-icon>
+                </button>
+              </ng-template>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="externalKeysDisplayedColumns"
+                          data-cy="external-keys-form-table-header"></mat-header-row>
+          <mat-row
+            *matRowDef="let externalKeyRow; let i = index; columns: externalKeysDisplayedColumns"
+            [class.locked]="externalKeyRow.disabled"
+            gpFxLayoutAlign="center"
+            data-cy="external-keys-form-table-row"></mat-row>
+        </table>
+
+        <div *ngIf="!readonly || externalKeysAllowUpdate"
+             gpFxFlexFill>
+          <button mat-flat-button
+                  gpRoundedIconButton
+                  class="add-key gp-icon-flat-button"
+                  (click)="addNewExternalKeyRow()"
+                  [disabled]="externalKeysForm.disabled"
+                  data-cy="external-keys-form-add-key-button">
+            <gp-icon gpIconButtonWithText
+                     name="plus"></gp-icon>
+            {{ 'ADD_BUTTON' | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div loader
+       xmlns:svg='http://www.w3.org/2000/svg'>
+    <content-loader preserveAspectRatio="none">
+      <svg:rect x="0"
+                y="0"
+                width="400"
+                height="20"/>
+      <svg:rect x="0"
+                y="30"
+                width="400"
+                height="40"/>
+      <svg:rect x="0"
+                y="80"
+                width="400"
+                height="40"/>
+    </content-loader>
+  </div>
+</gp-content-loader>

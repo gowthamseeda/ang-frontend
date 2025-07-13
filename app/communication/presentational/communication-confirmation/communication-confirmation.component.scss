@@ -1,0 +1,17 @@
+@import 'src/styles/default-scrollbar';
+
+ul {
+  list-style-type: none;
+  margin-top: 4px;
+  padding-left: 24px;
+}
+
+.brand-product-group {
+  height: 45px;
+}
+
+.mat-mdc-cell:last-child,
+.mat-mdc-footer-cell:last-child,
+.mat-mdc-header-cell:last-child {
+  max-width: none;
+}

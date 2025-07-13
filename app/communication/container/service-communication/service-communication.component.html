@@ -1,0 +1,97 @@
+<gp-overlay-layout [toolTipText]="'COMPANY_NAVIGATION_TREE'"
+                   [enableCompanyNavigation]="getEnableCompanyNavigation()">
+  <gp-outlet-header header-toolbar>
+  </gp-outlet-header>
+
+  <gp-read-only-notification [showMessage]="isTaskPresent | async">
+  </gp-read-only-notification>
+
+  <gp-edit-layout *ngIf="service"
+                  logo="contact"
+                  title="{{ 'COMMUNICATION' | translate }}">
+
+    <gp-edit-section>
+      <div class="content">
+        <div style="display: flex; align-items: center;">
+          <gp-services-chip *ngIf="service"
+                    [name]="service | translateData: currentSelectedLanguage">
+          </gp-services-chip> &nbsp;
+          <gp-services-chip *ngIf="serviceCharacteristicName"
+                    [name]="serviceCharacteristicName">
+          </gp-services-chip> &nbsp;
+          <gp-inplace-task-action-button *ngIf="is4RetailEnabled && isMTR && (isTaskPresent | async)"
+                                 [outletId]="currentOutletId"
+                                 [dataCluster]="DataCluster.COMMUNICATION_CHANNELS"
+                                 [task]="openDataChangeTask"
+                                 class="icon-padding">
+          </gp-inplace-task-action-button>
+        </div>   
+
+        <div class="scroll-area">
+          <ng-scrollbar track="all" >
+            <gp-brand-product-groups-data-table *ngIf="tableEnabled"
+                                                [brandProductGroupsData]="brandProductGroupsCommunicationData | async"
+                                                [brandProductGroupValidities]="brandProductGroupValidities | async"
+                                                [brandProductGroupColumns]="groupedBrandProductGroups | async"
+                                                [isLoading]="isLoading"
+                                                [readOnly]="!(isEditable | async)"
+                                                [permissions]="['communications.communicationdata.update']"
+                                                [refreshTable]="refreshTable$ | async"
+                                                (brandProductGroupsChange)="mergeCommunicationDataOfOutlet($event)">
+              <div class="data-row"
+                   *matCellDef="let communicationDataRow">
+                <gp-communication-channels
+                  [communicationChannels]="communicationDataRow.data | standardCommunicationChannels | async"
+                  [readOnly]="!(isUserPermittedFor(communicationDataRow.brandProductGroupIds) | async) || !(isEditable | async)"
+                  (communicationChannelsChange)="upsertCommunicationDataOfOutlet($event,
+                  CommunicationFieldType.STANDARD, communicationDataRow.brandProductGroupIds)"
+                  [showNotification]="showNotification" 
+                  [taskType] ="taskType">
+                </gp-communication-channels>
+
+                <gp-social-media-channels
+                  [socialMediaChannels]="communicationDataRow.data | socialMediaChannels | async"
+                  [readOnly]="!(isUserPermittedFor(communicationDataRow.brandProductGroupIds) | async) || !(isEditable | async)"
+                  (communicationChannelsChange)="upsertCommunicationDataOfOutlet($event,
+                  CommunicationFieldType.SOCIAL_MEDIA, communicationDataRow.brandProductGroupIds)">
+                </gp-social-media-channels>
+              </div>
+            </gp-brand-product-groups-data-table>
+          </ng-scrollbar>
+        </div>
+      </div>
+      <ng-container marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_BRAND_COMMUNICATION_CHANNELS_TEXT' | translate }}</span>
+      </ng-container>
+    </gp-edit-section>
+  </gp-edit-layout>
+
+  <ng-container *gpNotForRetail
+                footer-toolbar>
+    <gp-default-edit-actions *ngIf="isEditable | async"
+                             [saveButtonDisabled]="saveButtonDisabled"
+                             [cancelButtonDisabled]="cancelButtonDisabled"
+                             (save)="save()"
+                             (cancel)="reset()">
+    </gp-default-edit-actions>
+  </ng-container>
+
+  <ng-container *gpOnlyForRetail="outletId | async"
+                footer-toolbar>
+    <gp-task-footer *ngIf="isEditable | async"
+                    (confirm)="save($event)"
+                    (discard)="reset()"
+                    [discardButtonDisabled]="cancelButtonDisabled"
+                    [confirmButtonDisabled]="saveButtonDisabled"
+                    [type]="taskType">
+    </gp-task-footer>
+  </ng-container>
+  <gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>
+
+  <ng-container overlay>
+    <gp-outlet-tree-navigation gpFxFlex
+                               gpFxFlexXsSm="auto"
+                               style="display: inline">
+    </gp-outlet-tree-navigation>
+  </ng-container>
+</gp-overlay-layout>

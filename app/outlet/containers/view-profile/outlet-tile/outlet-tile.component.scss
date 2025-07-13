@@ -1,0 +1,53 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.box {
+  min-height: 312px;
+  max-height: 358px;
+  min-width: 775px;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 0 0 0 0;
+  border-radius: 0;
+  background-color: mat.get-color-from-palette($primary, 250);
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  .legalName {
+    margin: 31px 0 0 25px;
+    min-height: 46px;
+    color: mat.get-color-from-palette($primary, 50);
+
+    font-size: 25px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+  }
+
+  .distribution-level-chips__row {
+    min-height: 26px;
+    max-height: 26px;
+  }
+
+  .product-groups-and-brands__row {
+    display: flex;
+    flex-direction: row;
+    min-height: 177px;
+    margin: 0 25px 6px 25px;
+
+    align-items: flex-end;
+    justify-content: space-around;
+
+    .product-groups-and-brands__container {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+    }
+  }
+}

@@ -1,0 +1,19 @@
+<div class="month-container">
+  <div class="weekNumbers">
+    <ng-container *ngFor="let weekNumber of weekNumbers">
+      <gp-cell [data]="weekNumber"></gp-cell>
+    </ng-container>
+  </div>
+  <div class="month">
+    <ng-container *ngFor="let weekDay of weekDays">
+      <gp-cell [data]="weekDay"></gp-cell>
+    </ng-container>
+    <ng-container *ngFor="let day of days">
+      <gp-cell
+        [data]="day"
+        (dayCellClicked)="onDayCellClicked(day)"
+        (dayCellFocused)="onDayCellFocused(day)">
+      </gp-cell>
+    </ng-container>
+  </div>
+</div>

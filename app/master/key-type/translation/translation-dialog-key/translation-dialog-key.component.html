@@ -1,0 +1,45 @@
+<h4 mat-dialog-title>
+  {{ (translation ? 'UPDATE_TRANSLATION' : 'CREATE_TRANSLATION') | translate }}
+</h4>
+<form [formGroup]="translationForm" (ngSubmit)="onChange()" novalidate>
+  <div gpFxLayout="column">
+    <gp-language-dropdown-key
+      gpFxFlex="grow"
+      placeHolder="{{ 'LANGUAGE' | translate }}"
+      (selectedLanguageChanged)="changeLanguage($event)"
+      [selectedLanguage]="translation?.key"
+    ></gp-language-dropdown-key>
+
+    <mat-form-field>
+      <mat-label>{{ 'TRANSLATION' | translate }}</mat-label>
+      <input
+        matInput
+        formControlName="translation"
+        type="text"
+        required
+      />
+      <mat-error *ngIf="translationForm.get('translation')?.hasError('required')">
+        {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="translationForm.get('translation')?.hasError('maxlength')">
+        {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <div class="buttons" gpFxLayout="row">
+      <div gpFxFlex>
+        <button type="reset" mat-button mat-dialog-close gpFxFlex="20">
+          {{ 'FORM_CANCEL' | translate }}
+        </button>
+      </div>
+      <button
+        type="submit"
+        mat-button
+        gpFxFlex="20"
+        [disabled]="translationForm.invalid || translationForm.pristine"
+      >
+        {{ (translation ? 'FORM_UPDATE' : 'FORM_CREATE') | translate }}
+      </button>
+    </div>
+  </div>
+</form>

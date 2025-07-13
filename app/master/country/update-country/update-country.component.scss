@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+@import '../../shared/styles/master-detail.scss';
+
+::ng-deep .tooltip {
+  max-width: 500px !important;
+  text-overflow: none !important;
+  word-wrap: break-word;
+}
+
+.mat-mdc-form-field {
+  .mat-mdc-input-element {
+    &:disabled {
+      color: mat.get-color-from-palette($accent, 600) !important;
+    }
+  }
+}
+
+.checkbox-container {
+  margin-bottom: 30px;
+}

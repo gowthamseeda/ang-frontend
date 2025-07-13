@@ -1,0 +1,109 @@
+
+
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{ label: 'NEW_COMPANY' }]">
+  </gp-header>
+
+  <gp-edit-layout logo="business"
+                  title="{{ 'CREATE_COMPANY' | translate }}">
+    <ng-container subTitle>
+      {{ 'EDIT_BASE_DATA_HEADER_TEXT_PREFIX' | translate }}
+      <a routerLink="."
+         fragment="distributionLevels"
+         (click)="scrollToFragment('distributionLevels')">
+        {{ 'DISTRIBUTION_LEVELS' | translate }} </a>,
+      <a routerLink="."
+         fragment="address"
+         (click)="scrollToFragment('address')">
+        {{ 'ADDRESS' | translate }} </a>,
+      <a routerLink="."
+         fragment="poBox"
+         (click)="scrollToFragment('poBox')">
+        {{ 'PO_BOX' | translate }}
+      </a>
+      {{ 'EDIT_BASE_DATA_HEADER_TEXT_OR' | translate }}
+      <a routerLink="."
+         fragment="gps"
+         (click)="scrollToFragment('gps')">
+        {{ 'GPS_COORDINATES' | translate }}
+      </a>
+    </ng-container>
+
+    <gp-edit-section id="distributionLevels">
+      <gp-distribution-level [parentForm]="createCompanyForm"
+                             [registeredOffice]="true"
+                             [testOutlet]="testOutlet"
+                             [productResponsible]="productResponsible"
+                             [isEditPage]="false">
+      </gp-distribution-level>
+      <ng-container marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_DISTRIBUTION_LEVELS_TEXT' | translate }}</span>
+      </ng-container>
+    </gp-edit-section>
+
+    <gp-edit-section>
+      <gp-legal-status-of-company [parentForm]="createCompanyForm"
+                                  [registeredOffice]="true">
+      </gp-legal-status-of-company>
+      <ng-container marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_LEGAL_STATUS_OF_COMPANY_TEXT' | translate }}</span>
+      </ng-container>
+    </gp-edit-section>
+
+    <gp-edit-section>
+      <gp-status [parentForm]="createCompanyForm"
+                 [registeredOffice]="true"></gp-status>
+      <ng-container marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_STATUS_TEXT' | translate }}</span>
+      </ng-container>
+    </gp-edit-section>
+
+    <gp-edit-section id="address">
+      <gp-company-form [parentForm]="createCompanyForm"></gp-company-form>
+      <ng-container marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_ADDRESS_TEXT' | translate }}</span>
+      </ng-container>
+    </gp-edit-section>
+
+    <gp-edit-section id="additional-address">
+      <gp-additional-content [headline]="'ADDITIONAL_ADDRESS' | translate">
+        <gp-address additional-content
+                    [parentForm]="createCompanyForm"
+                    [addressType]="additionalAddress"
+                    [addressStreetDataRequired]="false"></gp-address>
+      </gp-additional-content>
+      <ng-container marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_ADDITIONAL_ADDRESS_TEXT' | translate }}</span>
+      </ng-container>
+    </gp-edit-section>
+
+    <gp-edit-section id="poBox">
+      <div gpFxFlexFill>
+        <div gpFxLayout>
+          <h1>{{ 'PO_BOX' | translate }}</h1>
+        </div>
+        <gp-po-box [parentForm]="createCompanyForm"></gp-po-box>
+      </div>
+      <ng-container marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_PO_BOX_TEXT' | translate }}</span>
+      </ng-container>
+    </gp-edit-section>
+
+    <gp-edit-section id="gps">
+      <gp-gps [parentForm]="createCompanyForm"></gp-gps>
+      <ng-container marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_GPS_COORDINATES_TEXT' | translate }}</span>
+      </ng-container>
+    </gp-edit-section>
+  </gp-edit-layout>
+
+  <gp-default-edit-actions footer-toolbar
+                           [permissions]="'legalstructure.businesssite.create'"
+                           [saveButtonDisabled]="createCompanyForm.invalid || createCompanyForm.pristine"
+                           [cancelButtonDisabled]="createCompanyForm.pristine"
+                           [saveButtonTranslationKey]="'CREATE'"
+                           (save)="submitCompany()"
+                           (cancel)="reset()">
+  </gp-default-edit-actions>
+</gp-default-layout>

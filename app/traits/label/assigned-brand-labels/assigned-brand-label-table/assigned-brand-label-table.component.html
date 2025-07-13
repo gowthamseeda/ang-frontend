@@ -1,0 +1,109 @@
+<gp-content-loader [isLoading]="isLoading">
+  <div class="assigned-brand-label-table"
+       *ngxPermissionsOnly="['traits.assignedbrandlabel.read']">
+    <form [formGroup]="assignedBrandLabelsForm"
+          data-cy="labels-form">
+      <h1 id="labels">{{ 'BRAND_LABELS' | translate }}</h1>
+      <table mat-table
+             matSort
+             [dataSource]="dataSource"
+             formArrayName="assignedBrandLabels"
+             *ngIf="dataSource.filteredData.length > 0"
+             data-cy="labels-form-table">
+        <ng-container matColumnDef="labelId">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="46"
+                           mat-sort-header>{{ 'LABEL' | translate }}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" gpFxFlex="46"
+                    data-cy="labels-form-table-cell-label">
+            <gp-label-selection [control]="row.get('labelId')"
+                                [readonly]="hasReadonlyBrand(row) || row.disabled || isInTranslationEditMode"
+                                [availableLabels]="availableLabels(row)"
+                                [errorStateMatcher]="errorStateMatcher">
+            </gp-label-selection>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="brandIds">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="46">{{ 'BRANDS' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let row" gpFxFlex="46"
+                    data-cy="labels-form-table-cell-brands">
+            <gp-brand-selection placeholder="{{ 'BRAND' | translate }}"
+                                [control]="row.get('brands')"
+                                [readonly]="isInTranslationEditMode || row.disabled"
+                                [excludedBrandIds]="filteredBrandIds(row)"
+                                [availableBrandIds]="availableBrandIds(row.value.labelId)"
+                                [errorStateMatcher]="errorStateMatcher">
+            </gp-brand-selection>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="8%"></mat-header-cell>
+
+          <mat-cell *matCellDef="let row" gpFxFlex="8%"
+                    data-cy="labels-form-table-cell-actions">
+            <ng-container *ngIf="row.disabled; else deleteButton">
+              <button mat-icon-button>
+                <gp-icon name="lock"
+                         size="small"></gp-icon>
+              </button>
+            </ng-container>
+
+            <ng-template #deleteButton>
+              <button *ngIf="!hasReadonlyBrand(row) && !isInTranslationEditMode"
+                      mat-icon-button
+                      (click)="showDeleteConfirmationDialog(row)"
+                      data-cy="labels-form-table-row-delete-button">
+                <gp-icon name="trash"></gp-icon>
+              </button>
+            </ng-template>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"
+                        data-cy="labels-form-table-header"></mat-header-row>
+        <mat-row *matRowDef="let row; let i = index; columns: displayedColumns"
+                 [ngClass]="{ locked: row.disabled }"
+                 gpFxLayoutAlign="center"
+                 data-cy="labels-form-table-row"></mat-row>
+      </table>
+
+      <div gpFxFlexFill
+           *ngxPermissionsOnly="[
+          'traits.assignedbrandlabel.create',
+          'traits.assignedbrandlabel.delete'
+        ]">
+        <button mat-flat-button
+                class="add-assigned-brand-label gp-icon-flat-button"
+                (click)="addNewRow()"
+                [disabled]="isAddButtonDisabled()"
+                data-cy="labels-form-add-label-button"
+                *ngIf="!isInTranslationEditMode">
+          <gp-icon gpIconButtonWithText
+                   name="plus"
+                   [disabled]="isAddButtonDisabled()"></gp-icon>
+          {{ 'ADD_BUTTON' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div loader
+       xmlns:svg='http://www.w3.org/2000/svg'>
+    <content-loader preserveAspectRatio="none">
+      <svg:rect x="0"
+                y="0"
+                width="400"
+                height="20" />
+      <svg:rect x="0"
+                y="30"
+                width="400"
+                height="40" />
+      <svg:rect x="0"
+                y="80"
+                width="400"
+                height="40" />
+    </content-loader>
+  </div>
+</gp-content-loader>

@@ -1,0 +1,37 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+:host {
+  display: inline !important;
+}
+
+.outlet-tags-box {
+  .mat-mdc-chip {
+    padding: 0 6px 0 6px;
+
+    color: mat.get-color-from-palette($primary, 500) !important;
+    background-color: mat.get-color-from-palette($primary, 200);
+    font-weight: bold;
+
+    &.mat-mdc-standard-chip.dark {
+    }
+
+    &.mat-mdc-standard-chip.inactive {
+      color: mat.get-color-from-palette($primary, 700) !important;
+      background-color: mat.get-color-from-palette($accent, 600);
+    }
+  }
+
+  ::ng-deep .mdc-evolution-chip-set__chips {
+    margin: 0px;
+    flex-wrap: nowrap;
+  }
+
+  ::ng-deep .mat-mdc-standard-chip {
+    margin: 0px 4px 0px 0px;
+  }
+}
+
+::ng-deep .outlet-node-wrapper:hover .mat-mdc-chip {
+  background-color: mat.get-color-from-palette($primary, 50) !important;
+}

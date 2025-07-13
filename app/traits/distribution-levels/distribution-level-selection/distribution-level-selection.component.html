@@ -1,0 +1,25 @@
+<div class="distribution-level-selection"
+     gpFxFlex="row"
+     gpFxLayoutAlign="none center">
+  <mat-chip-grid>
+    <mat-basic-chip *ngIf="registeredOffice"
+                    data-cy="outlet-registered-office">
+      <span>{{ 'RO' | translate }}</span></mat-basic-chip>
+    <mat-basic-chip *ngFor="let selectedDistributionLevel of control?.value"
+                    [removable]="true"
+                    data-cy="outlet-distribution-Level-selection">
+      <span>{{ selectedDistributionLevel | translate }}</span>
+      <gp-icon *ngIf="isEditable(selectedDistributionLevel)
+      && !(isTestOutletDisable(selectedDistributionLevel))"
+               (click)="removeDistributionLevel(selectedDistributionLevel, $event)"
+               name="close"
+               size="small"
+               matChipRemove></gp-icon>
+    </mat-basic-chip>
+    <button mat-icon-button (click)="openDialog()" *ngIf="control.enabled">
+      <gp-icon name="plus"></gp-icon>
+    </button>
+    <span
+          *ngIf="control.enabled && isEmpty()">{{ 'ADD_DISTRIBUTION_LEVEL_BUTTON' | translate }}</span>
+  </mat-chip-grid>
+</div>

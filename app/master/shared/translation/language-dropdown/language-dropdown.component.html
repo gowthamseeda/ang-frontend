@@ -1,0 +1,10 @@
+<mat-form-field>
+  <mat-label>{{placeHolder}}</mat-label>
+  <mat-select (selectionChange)="onChange($event)"
+              [formControl]="languageControl">
+    <mat-option *ngFor="let language of languages"
+                [value]="language">
+      {{language.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

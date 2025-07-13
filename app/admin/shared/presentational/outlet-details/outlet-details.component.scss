@@ -1,0 +1,25 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme.scss';
+
+div {
+  text-align: center;
+}
+
+gp-link-out-to-outlet {
+  margin-bottom: 1%;
+}
+
+h2 {
+  margin-bottom: 5px;
+}
+
+.mat-mdc-chip {
+  margin-left: 1%;
+  font-weight: bold;
+  color: white;
+  background-color: mat.get-color-from-palette($accent, 600);
+}
+
+.highlight {
+  background: mat.get-color-from-palette($accent, 350);
+}

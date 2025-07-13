@@ -1,0 +1,27 @@
+<gp-master-tile iconLink="brands"
+                headerText="{{ 'BRANDS' | translate }}"
+                searchPlaceHolder="{{ 'SEARCH_BRAND_FIELD_INLINE_PLACEHOLDER' | translate }}"
+                buttonText="{{ 'ADD_BRAND_BUTTON' | translate }}"
+                componentLink="/master/brand"
+                (searchText)="searchBrandName($event)"
+                [displayBurgerMenu]="true"
+                [detailsLinks]="menuItems">
+  <div gpFxLayout="column">
+    <div class="brand-container"
+         *ngFor="let brand of brands | filter: searchText"
+         routerLink="/master/brand/{{ brand.id }}">
+      <div class="brand-name-container">
+        <gp-brand-icon [id]="brand.id"
+                       [small]=true></gp-brand-icon>
+        <span>{{ brand.name }}</span>
+      </div>
+      <div class="delete-brand-container"
+           (click)="$event.stopPropagation()">
+        <button mat-icon-button
+                (click)="deleteBrand(brand.id)">
+          <gp-icon name="trash"></gp-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</gp-master-tile>

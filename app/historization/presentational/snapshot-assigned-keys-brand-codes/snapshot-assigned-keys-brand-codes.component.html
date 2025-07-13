@@ -1,0 +1,52 @@
+<ng-container *ngIf="currentBrandCodes; else showEmpty">
+  <ng-container *ngFor="let brandCode of currentBrandCodes;">
+      <ng-container *ngIf="isFieldChangedCompareWholeData(brandCode) ||
+      (!isFieldChangedCompareWholeData(brandCode) && !showChangeOnlyToggleInput); else showNothing">
+  <ul>
+    <ng-container
+      *ngIf="{
+          isFieldChanged: isFieldChangedFromComparingData('brandCode',brandCode),
+          brandCode: 'brandCode'
+        } as locals"
+    >
+      <li [class.changed]="locals.isFieldChanged">
+        {{ 'BRAND_CODE' | translate }} :
+        {{ locals.isFieldChanged && displayChangesToggleInput ?
+           '[' + (getFieldDataFromComparingData(locals.brandCode,
+                                                brandCode)| emptyValuePipe) + '] =>' :
+           '' }}
+        {{ brandCode?.brandCode | emptyValuePipe }}
+      </li>
+    </ng-container>
+    <ng-container
+      *ngIf="{
+            isFieldChanged: isFieldChangedFromComparingData('brandId',brandCode),
+            brandId: 'brandId'
+          } as locals"
+    >
+      <li class="hide-bullet" [class.changed]="locals.isFieldChanged">
+        {{ 'BRANDS_ID' | translate }} :
+        {{ locals.isFieldChanged && displayChangesToggleInput ?
+           '[' + (getFieldDataFromComparingData(locals.brandId, brandCode) | emptyValuePipe) + '] =>' : '' }}
+        <ng-container *ngIf="masterDataChangesFeatureToggle; else defaultBrandId">
+          <a *ngIf="brandCode?.brandId; else defaultBrandId" (click)="toggleMasterDataByBrandId(brandCode.brandId)"
+             class="popupLink">
+             {{ brandCode.brandId | emptyValuePipe }}
+          </a>
+        </ng-container>
+        <ng-template #defaultBrandId>
+          {{ brandCode?.brandId | emptyValuePipe }}
+        </ng-template>
+      </li>
+    </ng-container>
+  </ul>
+    </ng-container>
+    </ng-container>
+</ng-container>
+
+<ng-template #showEmpty>
+  {{ '' | emptyValuePipe }}
+</ng-template>
+
+<ng-template #showNothing>
+</ng-template>

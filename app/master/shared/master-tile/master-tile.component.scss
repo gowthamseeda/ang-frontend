@@ -1,0 +1,62 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.mat-mdc-card {
+  height: 380px;
+  width: 310px;
+  max-width: 310px;
+  border-radius: 0px 0px 0px 0px;
+  justify-content: center;
+
+  .title-container{
+    height: 48px;
+  }
+
+  .mat-mdc-card-title {
+    font-size: 18px;
+    color: mat.get-color-from-palette($accent, 600);
+    padding-left: 10px;
+    white-space: nowrap;
+  }
+
+  .search-container {
+    padding-left: 10px;
+
+    .mat-mdc-form-field {
+      margin-bottom: 0px;
+    }
+  }
+
+  .mat-mdc-card-content {
+    height: 175px;
+    padding-left: 10px;
+    padding-top: 10px;
+    position: relative;
+    overflow: auto;
+    cursor: pointer;
+  }
+
+  .mat-divider {
+    margin-left: 20px;
+    width: 260px;
+  }
+
+  .mat-mdc-card-actions {
+    margin: 0%;
+  }
+
+  .mat-mdc-card-content {
+    padding: 10px !important;
+  }
+}
+
+.mat-mdc-menu-item {
+  gp-icon {
+    margin-top: 5px;
+    margin-right: 10px;
+  }
+}
+::ng-deep .ng-scroll-content {
+  display: block;
+  min-width: 100%;
+}

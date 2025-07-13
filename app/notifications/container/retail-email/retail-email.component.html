@@ -1,0 +1,86 @@
+<ng-container>
+  <gp-default-layout>
+    <gp-header [breadcrumbItems]="[{ label: '4RETAIL_EMAIL' }]" header-toolbar>
+    </gp-header>
+    <gp-edit-layout [marginalColumnDisabled]="true" title="{{ '4RETAIL_EMAIL' | translate }}">
+      <div [formGroup]="formGroup" gpFxLayout="column" gpFxLayoutGap="24px" class="retail-email-container">
+
+        <div gpFxLayout="column">
+          <div gpFxLayout="row wrap" gpFxLayoutGap="12px">
+            <gp-country-dropdown gpFxFlex="40" [parentForm]="formGroup" [countryId]="emailSetting.countryId"
+                                 (selectionChange)="getEmailSetting(formGroup.value.countryId)"></gp-country-dropdown>
+            <mat-form-field gpFxFlex="40" class="show-footer no-horizontal-hint-space">
+              <mat-label>{{'DEFAULT_LANGUAGE' | translate}}</mat-label>
+              <mat-select formControlName="countryDefaultLanguage">
+                <mat-option>{{'4RETAIL_EMAIL_DEFAULT_LANGUAGE_NONE' | translate}}</mat-option>
+                <mat-option *ngFor="let language of languages | async" [value]="language.id">
+                  {{language.name}}
+                </mat-option>
+              </mat-select>
+              <mat-hint>{{ 'OPTIONAL' | translate}}</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div gpFxLayout="column">
+          <h1>{{'4RETAIL_EMAIL_COUNTRY_RELATED_INBOX' | translate}}</h1>
+          <ng-container
+                        *ngTemplateOutlet="focusGroupTypeEmail; context { mail: 'npmMail', mbagForm: 'mbagNpmMail', dtagForm: 'dtagNpmMail'}">
+          </ng-container>
+        </div>
+
+        <div gpFxLayout="column">
+          <h1>{{'4RETAIL_EMAIL_ALTERNATE_SENDER' | translate}}</h1>
+          <ng-container
+                        *ngTemplateOutlet="focusGroupTypeEmail; context { mail: 'mailFrom', mbagForm: 'mbagMailFrom', dtagForm: 'dtagMailFrom'}">
+          </ng-container>
+        </div>
+      </div>
+    </gp-edit-layout>
+    <gp-default-edit-actions footer-toolbar (cancel)="cancelButtonClicked()" (save)="saveButtonClicked()"
+                             [cancelButtonDisabled]="formGroup.pristine"
+                             [saveButtonDisabled]="formGroup.pristine || formGroup.invalid">
+    </gp-default-edit-actions>
+  </gp-default-layout>
+</ng-container>
+
+<ng-template #focusGroupTypeEmail let-mail="mail" let-mbagForm="mbagForm" let-dtagForm="dtagForm"
+             [formGroup]="formGroup">
+  <div *ngIf="focusFeatureToggleFlag | async else focusOff">
+    <div gpFxLayout="row wrap" gpFxLayoutGap="12px">
+      <h2 gpFxFlex="40" *ngIf="showMBAG">{{'COMPANY_RELATION_MBAG' | translate}}</h2>
+      <h2 gpFxFlex="40" *ngIf="showDTAG">{{'COMPANY_RELATION_DTAG' | translate}}</h2>
+    </div>
+    <div gpFxLayout="row wrap" gpFxLayoutGap="12px">
+      <mat-form-field gpFxFlex="40" *ngIf="showMBAG" class="show-footer no-horizontal-hint-space">
+        <mat-label>{{ 'EMAIL' | translate }}</mat-label>
+        <input matInput [formControlName]="mbagForm">
+        <mat-hint>{{ 'OPTIONAL' | translate}}</mat-hint>
+        <mat-error *ngIf="formGroup.controls[mbagForm].invalid">
+          {{'4RETAIL_EMAIL_INVALID' | translate}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field gpFxFlex="40" *ngIf="showDTAG" class="show-footer no-horizontal-hint-space">
+        <mat-label>{{ 'EMAIL' | translate }}</mat-label>
+        <input matInput [formControlName]="dtagForm">
+        <mat-hint>{{ 'OPTIONAL' | translate}}</mat-hint>
+        <mat-error *ngIf="formGroup.controls[dtagForm].invalid">
+          {{'4RETAIL_EMAIL_INVALID' | translate}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <ng-template #focusOff>
+    <div gpFxLayout="row wrap" gpFxLayoutGap="12px">
+      <mat-form-field gpFxFlex="40" class="show-footer no-horizontal-hint-space">
+        <mat-label>{{ 'EMAIL' | translate }}</mat-label>
+        <input matInput [formControlName]="mail">
+        <mat-hint>{{ 'OPTIONAL' | translate}}</mat-hint>
+        <mat-error *ngIf="formGroup.controls[mail].invalid">
+          {{'4RETAIL_EMAIL_INVALID' | translate}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </ng-template>
+</ng-template>

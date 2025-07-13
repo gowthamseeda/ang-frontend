@@ -1,0 +1,46 @@
+<gp-default-layout>
+  <gp-outlet-header header-toolbar>
+  </gp-outlet-header>
+  <gp-edit-layout logo="business"
+                  title="{{ 'HISTORY' | translate }}">
+    <gp-edit-section>
+      <div gpFxLayout="row">
+        <gp-historization-timeline gpFxFlex="30"
+                                   [snapshotEntries]="outletHistorySnapshot?.groups"
+                                   (selectedDate)="onDateSelected($event)">
+        </gp-historization-timeline>
+        <gp-history-snapshot gpFxFlex="45"
+                             style="word-break: break-word; flex: 1 1 100%;"
+                             *ngIf="selectedDate"
+                             [selectedDate]="selectedDate"
+                             [currentSnapshot]="selectedSnapshotEntry"
+                             [comparingSnapshot]="comparingSnapshotEntry"
+                             [isUserCountryPermitted]="isUserCountryPermitted"
+                             [displayChangesToggleInput]="displayChangesToggleEvent"
+                             [hideEditorsToggleInput]="hideEditorsToggleEvent"
+                             [showChangeOnlyToggleInput]="showChangeOnlyToggleEvent"
+                             [hideAdditionalTranslationsToggleInput]="hideAdditionalTranslationsToggleEvent"
+                             [hideExtraInformationToggleInput]="hideExtraInformationToggleEvent">
+        </gp-history-snapshot>
+        <div gpFxLayout="column" gpFxFlex="25">
+          <gp-historization-toggle (displayChangesToggle)="receivedEvent($event)">
+          </gp-historization-toggle>
+          <gp-historization-hide-editor-toggle
+            (hideEditorsToggle)="receivedHideEditorsEvent($event)">
+          </gp-historization-hide-editor-toggle>
+          <gp-historization-expand-collapse-node-toggle>
+          </gp-historization-expand-collapse-node-toggle>
+          <gp-historization-show-change-only-toggle
+            (showChangeOnlyToggle)="receivedShowChangeOnlyEvent($event)">
+          </gp-historization-show-change-only-toggle>
+          <gp-historization-hide-additional-translations-toggle
+            (hideAdditionalTranslationsToggle)="receivedHideAdditionalTranslationsEvent($event)">
+          </gp-historization-hide-additional-translations-toggle>
+          <gp-historization-hide-extra-information-toggle
+            (hideExtraInformationToggle)="receivedHideExtraInformationEvent($event)">
+          </gp-historization-hide-extra-information-toggle>
+        </div>
+      </div>
+    </gp-edit-section>
+  </gp-edit-layout>
+</gp-default-layout>

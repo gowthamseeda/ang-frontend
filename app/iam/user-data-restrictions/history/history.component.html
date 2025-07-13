@@ -1,0 +1,147 @@
+<div class="tab-content">
+  <div gpFxLayout="row"
+       gpFxLayoutAlign="space-between">
+    <h1 class="header">{{'DATARESTRICTION_FOCUS_AUDIT_LOG' | translate}}</h1>
+
+    <button (click)="initLog()"
+            mat-button
+            [disabled]="isLoading">
+      {{'DATARESTRICTION_FOCUS_AUDIT_REFRESH' | translate}}
+    </button>
+  </div>
+
+  <gp-content-loader [isLoading]="isLoading">
+    <ng-container *ngIf="focusDataSource.data.length === 0;
+  then thenShowNoFound else thenShowTable">
+    </ng-container>
+
+    <ng-template #thenShowNoFound>
+      No log found.
+    </ng-template>
+    <ng-template #thenShowTable>
+      <mat-table [dataSource]="focusDataSource"
+                 multiTemplateDataRows
+                 matSort>
+        <ng-container matColumnDef="initiator">
+          <mat-header-cell *matHeaderCellDef
+                           gpFxFlex="15%">
+            {{'DATARESTRICTION_FOCUS_AUDIT_INITIATOR' | translate}}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"
+                    gpFxFlex="15%">
+            {{ element.initiator }}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="groupType">
+          <mat-header-cell *matHeaderCellDef
+                           gpFxFlex="15%">
+            {{'DATARESTRICTION_RESTRICTED_GROUPTYPE' | translate}}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"
+                    gpFxFlex="15%">
+
+            <ng-container *ngIf="element.groupType; then thenShowData else thenShowEmpty">
+            </ng-container>
+            <ng-template #thenShowEmpty> - </ng-template>
+            <ng-template #thenShowData>
+              <mat-basic-chip>
+                <span>
+                  {{element.groupType}}&nbsp;({{ 'FOCUS_GROUPTYPE_'+element.groupType | translate}})
+                </span>
+              </mat-basic-chip>
+            </ng-template>
+
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ignoreFocusProductGroup">
+          <mat-header-cell *matHeaderCellDef
+                           gpFxFlex="15%">
+            {{'DATARESTRICTION_FOCUS_PRODUCTGROUPS_IGNORE' | translate}}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"
+                    gpFxFlex="15%">
+            <ng-container *ngIf="element.ignoreFocusProductGroup; then thenPass else thenFail">
+            </ng-container>
+            <ng-template #thenPass>
+              <gp-icon color="petrol"
+                       name="check"
+                       size="small">
+              </gp-icon>
+            </ng-template>
+            <ng-template #thenFail>
+              <gp-icon color="warn"
+                       name="close"
+                       size="small">
+              </gp-icon>
+            </ng-template>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="activeProductGroups">
+          <mat-header-cell *matHeaderCellDef
+                           gpFxFlex="35%">
+            {{'DATARESTRICTION_ACTIVEPRODUCTGROUPS' | translate}}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"
+                    gpFxFlex="35%">
+            <mat-basic-chip *ngFor="let dataRestrictionValue of element.activeProductGroups">
+              <span>{{dataRestrictionValue}}</span>
+            </mat-basic-chip>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="createTimestamp">
+          <mat-header-cell *matHeaderCellDef
+                           mat-sort-header
+                           gpFxFlex="15%">
+            {{'DATARESTRICTION_FOCUS_AUDIT_CREATE_DATE' | translate}}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"
+                    gpFxFlex="15%">
+            {{ element.createTimestamp | date:'E MMM dd HH:mm:ss UTC YYYY'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="expandedDetail">
+          <mat-cell *matCellDef="let element"
+                    gpFxFill>
+            <gp-history-detail [assignedDataRestrictions]="element.assignedDataRestrictions">
+            </gp-history-detail>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="focusTableColumns"></mat-header-row>
+        <mat-row *matRowDef="let element; columns: focusTableColumns"
+                 class="element-row"
+                 [class.element-row-expanded]="expandedElement === element"
+                 (click)="expandedElement = expandedElement === element ? null : element">
+        </mat-row>
+        <mat-row *matRowDef="let row; columns: ['expandedDetail']"
+                 [@detailExpand]="row === expandedElement ? 'expanded' : 'collapsed'"
+                 [class.expanded-detail-row-hide]="row !== expandedElement"
+                 class="expanded-detail-row"></mat-row>
+
+      </mat-table>
+
+    </ng-template>
+    <div loader
+         xmlns:svg='http://www.w3.org/2000/svg'>
+      <content-loader preserveAspectRatio="none">
+        <svg:rect x="0"
+                  y="0"
+                  width="400"
+                  height="20" />
+        <svg:rect x="0"
+                  y="30"
+                  width="400"
+                  height="40" />
+        <svg:rect x="0"
+                  y="80"
+                  width="400"
+                  height="40" />
+      </content-loader>
+    </div>
+  </gp-content-loader>
+</div>

@@ -1,0 +1,17 @@
+<gp-task-input-text gpFxFill
+                    label="ZIP_CODE"
+                    data-cy="address-zip-code"
+                    [fieldName]="dataField"
+                    [parentForm]="parentForm"
+                    [value]="zipCode"
+                    [dataNotificationChangeFields]="dataNotificationChangeFields"
+                    [isRetailOutlet]="isRetailOutlet"
+                    [dataNotificationChangeFieldsInclusion]="['ZIP_CODE', 'ADDITIONAL_ADDRESS_ZIP_CODE']"
+                    (inputChange)="formControlChange()"
+                    [maxLength]="20"
+                    [readonly]="readonly"
+                    [aggregateField]="aggregateField"
+                    [aggregateName]="aggregateName"
+                    [dataCluster]="dataCluster"
+>
+</gp-task-input-text>

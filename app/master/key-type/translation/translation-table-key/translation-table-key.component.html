@@ -1,0 +1,63 @@
+<div>
+  <form [formGroup]="translationsForm">
+    <ng-container *ngIf="dataSource.data.length > 0">
+      <h3>{{ 'MASTER_DATA_TRANSLATIONS' | translate }}</h3>
+
+      <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="language">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="30%">
+            {{ 'LANGUAGES' | translate }}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let translation" gpFxFlex="30%">
+            {{ languageBy(translation.language)?.name }} {{ translation.language }}
+          </mat-cell>
+        </ng-container>
+        <ng-container *ngIf="IsActionRequired; else translationNameWithoutActions">
+          <ng-container matColumnDef="translation">
+            <mat-header-cell *matHeaderCellDef gpFxFlex="60%">
+              {{ 'MASTER_DATA_TRANSLATION' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let translation" gpFxFlex="60%">
+              <div class="input-container">
+                <mat-form-field class="no-label no-underline no-bottom-space">
+                  <input matInput formControlName="nameTranslation" type="text" readonly="true" required />
+                </mat-form-field>
+                <span class="placeholder">
+                  {{ translation.translation }}
+                </span>
+              </div>
+            </mat-cell>
+          </ng-container>
+        </ng-container>
+
+        <ng-template #translationNameWithoutActions>
+          <ng-container matColumnDef="translation">
+            <mat-header-cell *matHeaderCellDef gpFxFlex="70%">
+              {{ 'MASTER_DATA_TRANSLATION' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let translation" gpFxFlex="70%">
+              <input matInput formControlName="nameTranslation" type="text"
+                     placeholder="{{ translation.translation | slice:0:10 }}" readonly="true" required />
+            </mat-cell>
+          </ng-container>
+        </ng-template>
+        <ng-container *ngIf="IsActionRequired">
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef gpFxFlex="15%"></mat-header-cell>
+            <mat-cell *matCellDef="let translation" gpFxFlex="15%" gpFxLayoutRow>
+              <button id="edit" mat-icon-button (click)="editTranslation(translation)">
+                <gp-icon name="pen"></gp-icon>
+              </button>
+
+              <button id="remove" mat-icon-button (click)="removeTranslation(translation?.language)">
+                <gp-icon name="trash"></gp-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="getColumn()"></mat-header-row>
+        <mat-row *matRowDef="let translation; columns: getColumn()"> </mat-row>
+      </mat-table>
+    </ng-container>
+  </form>
+</div>

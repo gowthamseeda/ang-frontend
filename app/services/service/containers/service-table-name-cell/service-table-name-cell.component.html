@@ -1,0 +1,15 @@
+<div gpFxLayoutAlign="space-between center">
+  <div gpFxLayoutAlign="center center">
+    <span *gpOnlyForRetail
+          matTooltip="{{ serviceTableRow && serviceTableRow?.entry.description ? (serviceTableRow.entry | translateData: currentSelectedLanguage : undefined : TranslateOutputType.description) : '' }}"
+          matTooltipPosition="{{ 'position' | tooltipDefault }}">
+      {{ serviceTableRow.entry | translateData: currentSelectedLanguage }}
+    </span>
+    <span *gpNotForRetail
+          [class.read-only]="!(userHasPermissions | async)"
+          matTooltip="{{ serviceTableRow && serviceTableRow?.entry.description ? (serviceTableRow.entry | translateData: currentSelectedLanguage: undefined : TranslateOutputType.description) : '' }}"
+          matTooltipPosition="{{ 'position' | tooltipDefault }}">
+      {{ serviceTableRow.entry | translateData: currentSelectedLanguage }}
+    </span>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+@import '../../../../styles-theme';
+
+.opening-time__plus-minus {
+  visibility: hidden;
+}
+
+:host-context(.opening-time-container:hover) {
+  .opening-time__plus-minus {
+    visibility: visible;
+  }
+}

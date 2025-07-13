@@ -1,0 +1,13 @@
+<div gpFxFlexFill>
+  <div gpFxLayout>
+    <h1>{{ 'DISTRIBUTION_LEVELS' | translate }}</h1>
+  </div>
+  <gp-distribution-level-selection [registeredOffice]="registeredOffice"
+                                   [outletId]="outletId"
+                                   [testOutlet]="testOutlet"
+                                   [productResponsible]="productResponsible"
+                                   [marketResponsible]="marketResponsible"
+                                   [control]="parentForm.get('distributionLevels')"
+                                   [isEditPage]="isEditPage">
+  </gp-distribution-level-selection>
+</div>

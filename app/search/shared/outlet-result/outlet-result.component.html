@@ -1,0 +1,124 @@
+<div *ngIf="searchItem?.type === 'BusinessSite'"
+     gpFxLayout="row"
+     [class.active]="active"
+     (click)="onSearchItemClick()">
+
+  <div *ngIf="disabledRouting; else enabledRouting">
+    <ng-container *ngTemplateOutlet="outletResult"></ng-container>
+  </div>
+
+  <ng-template #enabledRouting>
+    <div gpFxFlex style="display: block"
+         routerLink="/outlet/{{ searchItem?.id }}">
+      <ng-container *ngTemplateOutlet="outletResult"></ng-container>
+    </div>
+  </ng-template>
+
+  <ng-template #outletResult>
+    <div class="outlet-result">
+      <div gpFxLayout="row" class="outlet-header">
+        <gp-icon *ngIf="retailOutlet && searchItem.payload.notification"
+                 name="hint-error"
+                 size="small"
+                 color="petrol"
+                 matTooltip="{{searchItem.payload.notificationType}}"
+                 matTooltipClass="mat-outlet-notification"></gp-icon>
+        <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.legalName, 'legalName')">
+        </gp-es-highlight>
+      </div>
+      <div>
+        <div gpFxLayout="row"
+             class="outlet-id">
+          <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.companyId, 'companyId')"
+                           style="margin-right: 10px">
+          </gp-es-highlight>
+          <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.id, 'id')"> </gp-es-highlight>
+          <gp-outlet-result-label [searchItem]="searchItem"></gp-outlet-result-label>
+        </div>
+        <div class="block">
+          <div>
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.street, 'street')">
+            </gp-es-highlight>
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.streetNumber, 'streetNumber')">
+            </gp-es-highlight>
+            -
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.zipCode, 'zipCode')">
+            </gp-es-highlight>
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.city, 'city')">
+            </gp-es-highlight>
+          </div>
+          <div>
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.province, 'province')">
+            </gp-es-highlight>
+          </div>
+          <div>
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.state, 'state')">
+            </gp-es-highlight>
+          </div>
+          <div>
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.countryName, 'countryName')">
+            </gp-es-highlight>
+          </div>
+        </div>
+        <div class="block">
+          <div gpFxLayout="row">
+            {{ 'BRAND_CODES' | translate }}: &nbsp;
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.brandCodes, 'brandCodes')">
+            </gp-es-highlight>
+          </div>
+          <div gpFxLayout="row">
+            {{ 'BUSINESS_NAMES' | translate }}: &nbsp;
+            <gp-es-highlight
+                [text]="markAllIfTagged(searchItem.payload.businessNames, 'businessNames')">
+            </gp-es-highlight>
+          </div>
+        </div>
+        <div class="block">
+          <div gpFxLayout="row"
+               *gpEnableIfMarkedForHighlighting="searchItem.payload.nameAddition">
+            {{ 'NAME_ADDITION' | translate }}: &nbsp;
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.nameAddition, 'nameAddition')">
+            </gp-es-highlight>
+          </div>
+          <div gpFxLayout="row"
+               *gpEnableIfMarkedForHighlighting="searchItem.payload.addressAddition">
+            {{ 'ADDRESS_ADDITION' | translate }}: &nbsp;
+            <gp-es-highlight
+                [text]="markAllIfTagged(searchItem.payload.addressAddition, 'addressAddition')">
+            </gp-es-highlight>
+          </div>
+          <div gpFxLayout="row"
+               *gpEnableIfMarkedForHighlighting="searchItem.payload.district">
+            {{ 'DISTRICT' | translate }}: &nbsp;
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.district, 'district')">
+            </gp-es-highlight>
+          </div>
+          <div gpFxLayout="row"
+               *gpEnableIfMarkedForHighlighting="searchItem.payload.alias">
+            {{ 'ALIAS' | translate }}: &nbsp;
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.alias, 'alias')">
+            </gp-es-highlight>
+          </div>
+          <div gpFxLayout="row"
+               *gpEnableIfMarkedForHighlighting="searchItem.payload.poBoxNumber">
+            {{ 'PO_BOX_NUMBER' | translate }}: &nbsp;
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.poBoxNumber, 'poBoxNumber')">
+            </gp-es-highlight>
+          </div>
+          <div gpFxLayout="row"
+               *gpEnableIfMarkedForHighlighting="searchItem.payload.poBoxZipCode">
+            {{ 'PO_BOX_ZIP_CODE' | translate }}: &nbsp;
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.poBoxZipCode, 'poBoxZipCode')">
+            </gp-es-highlight>
+          </div>
+          <div gpFxLayout="row"
+               *gpEnableIfMarkedForHighlighting="searchItem.payload.poBoxCity">
+            {{ 'PO_BOX_CITY' | translate }}: &nbsp;
+            <gp-es-highlight [text]="markAllIfTagged(searchItem.payload.poBoxCity, 'poBoxCity')">
+            </gp-es-highlight>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

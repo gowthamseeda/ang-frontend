@@ -1,0 +1,67 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{label: 'MASTER_DATA', path: '/master'},
+             {label: '4RETAIL_COUNTRIES'},
+             {label: retailCountryName}]">
+  </gp-header>
+  <div gpContent>
+    <div gpFxLayout="row"
+         gpFxLayoutGap="10px">
+      <gp-header-image [name]="'countries'"
+                       [large]="true"></gp-header-image>
+      <div gpFxLayout="column"
+           class="header">
+        <h1>{{ retailCountryName }}</h1>
+        <span>{{ 'UPDATE_RETAIL_COUNTRY_SUBTITLE' | translate }}</span>
+      </div>
+    </div>
+
+    <form [formGroup]="retailCountryForm"
+          (ngSubmit)="submit(retailCountryForm.value)">
+      <div gpFxLayout="column">
+        <div gpFxLayout="row"
+             gpFxLayoutGap="30px">
+          <mat-form-field gpFxFlex="50">
+            <mat-label>{{ 'COUNTRY_NAME' | translate }}</mat-label>
+            <input matInput
+                   formControlName="name"
+                   type="text"
+                   required />
+            <mat-error *ngIf="retailCountryForm.get('name')?.hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+            <mat-error *ngIf="retailCountryForm.get('name')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field gpFxFlex="20">
+            <mat-label>{{ 'COUNTRY_CODE' | translate }}</mat-label>
+            <input matInput
+                   formControlName="id"
+                   type="text"
+                   required />
+            <gp-icon matSuffix
+                     *ngIf="retailCountryForm.get('id')?.disabled"
+                     name="lock"
+                     size="small"></gp-icon>
+          </mat-form-field>
+        </div>
+        <div gpFxLayout="row">
+          <div gpFxFlex>
+            <button type="reset"
+                    mat-button
+                    routerLink="/master">
+              {{ 'CANCEL' | translate }}
+            </button>
+          </div>
+          <button type="submit"
+                  mat-button
+                  [disabled]="retailCountryForm.invalid">
+            {{ 'SAVE' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</gp-default-layout>

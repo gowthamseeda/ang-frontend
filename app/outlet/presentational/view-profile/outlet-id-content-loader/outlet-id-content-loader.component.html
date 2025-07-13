@@ -1,0 +1,17 @@
+<gp-content-loader [isLoading]="isLoading">
+  <ng-content select="[outlet-id-content]"></ng-content>
+  <div loader
+       class="id-loader"
+       xmlns:svg='http://www.w3.org/2000/svg'>
+    <content-loader primaryOpacity="0.3"
+                    secondaryOpacity="0.7"
+                    width="250"
+                    height="26"
+                    preserveAspectRatio="none">
+      <svg:rect x="0"
+                y="0"
+                width="250px"
+                height="26px" />
+    </content-loader>
+  </div>
+</gp-content-loader>

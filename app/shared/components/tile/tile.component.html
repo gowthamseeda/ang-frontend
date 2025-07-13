@@ -1,0 +1,51 @@
+<mat-card class="gp-tile-card">
+  <div gpFxLayout="row" gpFxLayoutAlign="space-between center">
+    <div gpFxLayout="row" gpFxLayoutAlign="space-between center" style="flex: 0">
+      <a [routerLink]="componentLink" [fragment]="fragment">
+        <gp-header-image [name]="iconUrl" [large]="true"></gp-header-image>
+      </a>
+      <a [routerLink]="componentLink" [fragment]="fragment">
+        <mat-card-title>{{ headerText }}</mat-card-title>
+      </a>
+    </div>
+    <div class="menu" *ngIf="menu">
+      <button mat-icon-button [matMenuTriggerFor]="actions">
+        <gp-icon name="more" size="small"></gp-icon>
+      </button>
+      <mat-menu #actions="matMenu">
+        <button mat-menu-item [routerLink]="componentLink" [fragment]="fragment">
+          {{ detailsLinkText }}
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <a [routerLink]="componentLink" [fragment]="fragment">
+    <mat-card-content>
+      <ng-scrollbar>
+        <ng-container *ngIf="isLoading | async">
+          <content-loader height="180" xmlns:svg="http://www.w3.org/2000/svg">
+            <svg:rect x="0" y="0" width="400" height="20" />
+            <svg:rect x="0" y="40" width="400" height="20" />
+            <svg:rect x="0" y="80" width="400" height="20" />
+            <svg:rect x="0" y="120" width="400" height="20" />
+            <svg:rect x="0" y="160" width="400" height="20" />
+          </content-loader>
+        </ng-container>
+        <ng-container *ngIf="!(isLoading | async)">
+          <ng-content></ng-content>
+          <div *ngIf="isEmpty">
+            <div class="mat-card-no-content">
+              {{ noTileDataText }}
+            </div>
+            <div class="mat-card-no-content">
+              {{ noTileDataTextPrefix }}
+              {{ noTileDataTextLink }}
+              {{ noTileDataTextPostfix }}
+            </div>
+          </div>
+        </ng-container>
+      </ng-scrollbar>
+    </mat-card-content>
+  </a>
+</mat-card>

@@ -1,0 +1,125 @@
+<gp-default-layout>
+    <gp-header header-toolbar
+               [breadcrumbItems]="[{ label: 'ADMIN' }, { label: 'FILE_UPLOAD_STATUS' }]">
+    </gp-header>
+    <gp-edit-layout title="{{ 'FILE_UPLOAD_STATUS' | translate }}"
+                    [marginalColumnDisabled]="true">
+      <gp-edit-section>
+        <gp-content-loader [isLoading]="isLoading">
+  
+          <mat-table matSort
+                     [dataSource]="dataSource">
+  
+            <!--<ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef
+                               mat-sort-header
+                               data-cy="file-upload-status-row-header-country">
+                {{ 'ID' | translate }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element"
+                        data-cy="file-upload-status-row-country">
+                <span>{{ element.id }}</span>
+              </mat-cell>
+            </ng-container>-->
+  
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef
+                               mat-sort-header
+                               data-cy="file-upload-status-row-header-name">
+                {{ 'NAME' | translate }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element"
+                        data-cy="file-upload-status-row-name">
+                <span>{{ element.name }}</span>
+              </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="status">
+              <mat-header-cell *matHeaderCellDef
+                               mat-sort-header
+                               data-cy="file-upload-status-row-header-status">
+                {{ 'STATUS' | translate }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element"
+                        data-cy="file-upload-status-row-status">
+                <span>{{ element.status }}</span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="fileName">
+              <mat-header-cell *matHeaderCellDef
+                               mat-sort-header
+                               data-cy="file-upload-status-row-header-fileName">
+                {{ 'FILE_NAME' | translate }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element"
+                        data-cy="file-upload-status-row-fileName">
+                <span>{{ element.fileName }}</span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="errorMsg">
+              <mat-header-cell *matHeaderCellDef
+                               mat-sort-header
+                               data-cy="file-upload-status-row-header-errorMsg">
+                {{ 'ERROR_MSG' | translate }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element"
+                        data-cy="file-upload-status-row-errorMsg">
+                <span>{{ element.errorMsg }}</span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="createTimestamp">
+              <mat-header-cell *matHeaderCellDef
+                               mat-sort-header
+                               data-cy="file-upload-status-row-header-createTimestamp">
+                {{ 'CREATED_TIMESTAMP' | translate }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element"
+                        data-cy="file-upload-status-row-createTimestamp">
+                <span>{{ element.createTimestamp }}</span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="updateTimestamp">
+              <mat-header-cell *matHeaderCellDef
+                               mat-sort-header
+                               data-cy="file-upload-status-row-header-updateTimestamp">
+                {{ 'UPDATED_TIMESTAMP' | translate }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element"
+                        data-cy="file-upload-status-row-updateTimestamp">
+                <span>{{ element.updateTimestamp }}</span>
+              </mat-cell>
+            </ng-container>
+  
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let element; columns: displayedColumns;"
+                     [class.row-disabled]="!element.active"
+                     data-cy="file-upload-status-row">
+            </mat-row>
+          </mat-table>
+  
+          <div loader
+               xmlns:svg='http://www.w3.org/2000/svg'>
+            <content-loader preserveAspectRatio="none">
+              <svg:rect x="0"
+                        y="0"
+                        width="400"
+                        height="20" />
+              <svg:rect x="0"
+                        y="30"
+                        width="400"
+                        height="40" />
+              <svg:rect x="0"
+                        y="80"
+                        width="400"
+                        height="40" />
+            </content-loader>
+          </div>
+        </gp-content-loader>
+      </gp-edit-section>
+    </gp-edit-layout>
+  </gp-default-layout>
+  

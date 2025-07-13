@@ -1,0 +1,22 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+@import '../user-data-restrictions.component.scss';
+
+.element-row {
+  &:hover {
+    background-color: mat.get-color-from-palette($accent, 100, 0.5);
+    cursor: pointer;
+  }
+}
+
+.element-row-expanded {
+  border-bottom: 0;
+}
+
+.expanded-detail-row {
+  padding: 15;
+}
+
+.expanded-detail-row-hide {
+  display: none;
+}

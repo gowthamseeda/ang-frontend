@@ -1,0 +1,88 @@
+<gp-default-layout>
+  <gp-header header-toolbar></gp-header>
+
+  <h2 *ngIf="(currentUser | async) as currentUser; else welcomeDefault"
+      data-cy="dashboard-welcome">
+    {{ 'DASHBOARD_USER_WELCOME' | translate: { user: currentUser?.givenName } }}
+  </h2>
+
+  <ng-template #welcomeDefault>
+    <h2>{{ 'DASHBOARD_WELCOME' | translate }}</h2>
+  </ng-template>
+
+  <ng-container *ngIf="announcementFeature">
+    <ng-container *ngxPermissionsOnly="['notifications.announcement.update']">
+      <form [formGroup]="formGroup">
+        <ng-container *ngIf="editMode; else viewMode">
+          <quill-editor formControlName="content"
+                        format="json"
+                        bounds="self"
+                        [modules]="quillModules"
+                        [readOnly]="readOnly"
+                        [placeholder]="null"
+                        [class.ql-read-only]="readOnly"
+                        [class.ql-error]="formGroup.invalid"
+                        (onEditorCreated)="editorCreated()"
+                        (onContentChanged)="contentChanged($event)">
+          </quill-editor>
+          <div class="ql-editor-flex">
+            <gp-icon
+              (click)="toggleEditMode()"
+              [actionable]="true"
+              [hover]="true"
+              size="small"
+              name="arrow-back">
+            </gp-icon>
+            <div *ngIf="!readOnly"
+                 class="word-counter">
+              <span>{{ currentWordCount }} / {{ maxWordCount }} word(s)</span>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #viewMode>
+          <div class="ql-view-container">
+            <quill-view
+              format="object"
+              (onEditorCreated)="editorCreated()"
+              [content]="contentAsDelta()">
+            </quill-view>
+          </div>
+          <div gpFxLayoutAlign="end">
+            <gp-icon
+              (click)="toggleEditMode()"
+              [actionable]="true"
+              [hover]="true"
+              name="pen">
+            </gp-icon>
+          </div>
+        </ng-template>
+      </form>
+    </ng-container>
+    <ng-container *ngxPermissionsOnly="['notifications.announcement.read']">
+      <ng-container *ngxPermissionsExcept=
+                      "['notifications.announcement.hide',
+                      'notifications.announcement.update']">
+        <div class="ql-view-container">
+          <quill-view
+            format="object"
+            (onEditorCreated)="editorCreated()"
+            [content]="contentAsDelta()">
+          </quill-view>
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="announcementFeature" footer-toolbar>
+    <gp-default-edit-actions gpFxFill
+                             *ngxPermissionsOnly="['notifications.announcement.update']"
+                             [saveButtonDisabled]="formGroup.invalid || formGroup.pristine"
+                             [cancelButtonDisabled]="formGroup.valid && formGroup.pristine"
+                             (save)="save()"
+                             (cancel)="cancel()">
+    </gp-default-edit-actions>
+  </ng-container>
+
+</gp-default-layout>
+
+<gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>

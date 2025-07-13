@@ -1,0 +1,10 @@
+@import '../../../../../styles/commons';
+
+:host {
+  @include no-select;
+
+  a {
+    cursor: pointer;
+    width: 60px;
+  }
+}

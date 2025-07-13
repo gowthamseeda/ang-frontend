@@ -1,0 +1,110 @@
+<div gpFxFill
+     gpFxLayout="column">
+  <h2 matDialogTitle> {{ 'OFFERED_SERVICE_VALIDITY' | translate }}</h2>
+  <table>
+    <tbody>
+    <tr>
+      <th scope="row">{{ 'DATE' | translate }}</th>
+      <td>: {{ this.data.date }}</td>
+    </tr>
+    <tr>
+      <th scope="row">{{ 'OFFERED_SERVICE_ID' | translate }}</th>
+      <td>: {{ this.data.offeredServiceId }}</td>
+    </tr>
+    </tbody>
+  </table>
+  <mat-dialog-content gpFxFlex
+                      class="mat-dialog-content">
+
+    <mat-table [dataSource]="offeredServiceValidity?.validities">
+      <ng-container matColumnDef="noData"
+                    *matNoDataRow>
+        <mat-cell>
+          <span>{{ 'NO_DATA_CHANGE' | translate }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="event">
+        <mat-header-cell *matHeaderCellDef
+                         data-cy="detail-offered-service-row-header-event">
+          {{ 'EVENT_NAME' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"
+                  data-cy="detail-offered-service-row-event">
+          <span>{{ element.eventName | translate }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="time">
+        <mat-header-cell *matHeaderCellDef
+                         data-cy="detail-offered-service-row-header-time">
+          {{ 'TIME' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"
+                  data-cy="detail-offered-service-row-time">
+          <span>{{ element.occurredOnForTimeOnly }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="value">
+        <mat-header-cell *matHeaderCellDef
+                         data-cy="detail-offered-service-row-header-value">
+          {{ 'VALUE' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"
+                  gpFxLayoutColumn
+                  gpFxLayoutAlign="start"
+                  data-cy="detail-offered-service-row-value">
+          <ul class="circle">
+          <li>
+            {{ 'VALIDITY' | translate }}
+            <ul class="square">
+                <li>
+                  {{ 'IS_APPLICATION' | translate }}
+                  :
+                  {{ element.application | emptyValuePipe }}
+                </li>
+
+                <li>
+                  {{ 'APPLICATION_VALID_UNTIL' | translate }}
+                  :
+                  {{ element.applicationValidUntil | emptyValuePipe }}
+                </li>
+
+                <li>
+                  {{ 'VALID_FROM' | translate }}
+                  :
+                  {{ element.validFrom | emptyValuePipe }}
+                </li>
+
+                <li>
+                  {{ 'VALID_UNTIL' | translate }}
+                  :
+                  {{ element.validUntil | emptyValuePipe }}
+                </li>
+
+                <li>
+                  {{ 'VALID' | translate }}
+                  :
+                  {{ element.valid | emptyValuePipe }}
+                </li>
+            </ul>
+          </li>
+          </ul>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row *matRowDef="let element; columns: displayedColumns;"
+               data-cy="detail-offered-service-row">
+      </mat-row>
+    </mat-table>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center">
+    <button (click)="cancel()"
+            mat-button>{{ 'OK' | translate}}</button>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,62 @@
+<div gpFxFill
+     gpFxLayout="column">
+  <header gpFxLayoutAlign="start center">
+    <ng-content select="[header-toolbar]"></ng-content>
+  </header>
+
+  <div gpFxFlex
+       gpFxLayout="row"
+       class="layout">
+    <!-- TO BE REMOVED WHEN SPLIT LAYOUT IS DEPRECATED -->
+    <main [style.flex]="getGpFlexValue"
+          [style.max-width]="getGpFlexValue()"
+          gpFxLayout="column">
+      <ng-content select="[error-notification]"></ng-content>
+
+      <ng-scrollbar>
+        <div class="margin">
+          <ng-content></ng-content>
+        </div>
+      </ng-scrollbar>
+
+      <footer gpFxLayoutAlign="end center">
+        <ng-content select="[footer-toolbar]"></ng-content>
+      </footer>
+    </main>
+
+    <!-- TO BE REMOVED WHEN SPLIT LAYOUT IS DEPRECATED -->
+    <aside *ngIf="enableCompanyNavigation && !getEnableHideableCompanyNavigationConfig()"
+           gpFxFlex="40"
+           gpFxLayout="column"
+           class="autoHide">
+      <ng-container *ngTemplateOutlet="overlayContent"></ng-container>
+    </aside>
+
+    <button *ngIf="enableCompanyNavigation && getEnableHideableCompanyNavigationConfig() && !isOpen"
+            (click)="openWithTemplate()"
+            matTooltip="{{ toolTipText | translate }}"
+            matTooltipPosition="before"
+            class="overlay-button"
+            gpFxLayoutAlign="center center">
+      <gp-icon class="icon"
+               name="caret-left"
+               size="small"
+               color="white"></gp-icon>
+    </button>
+
+    <ng-template #overlay>
+      <button class="hide-overlay-button"
+              (click)="close()">
+        <gp-icon name="caret-right"
+                 size="small"
+                 color="white"></gp-icon>
+      </button>
+      <ng-container *ngTemplateOutlet="overlayContent"></ng-container>
+    </ng-template>
+  </div>
+</div>
+
+
+<ng-template #overlayContent>
+  <ng-content select="[overlay]"></ng-content>
+</ng-template>

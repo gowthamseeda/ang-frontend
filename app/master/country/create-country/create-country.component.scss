@@ -1,0 +1,7 @@
+@import '../../shared/styles/master-detail.scss';
+
+::ng-deep .tooltip {
+  max-width: 500px !important;
+  text-overflow: none !important;
+  word-wrap: break-word;
+}

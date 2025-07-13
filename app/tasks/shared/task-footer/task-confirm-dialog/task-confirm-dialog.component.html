@@ -1,0 +1,48 @@
+<form [formGroup]="taskForm">
+  <h2 mat-dialog-title>{{ taskConfirmDialog.text.title | translate }}</h2>
+  <p *ngIf="taskConfirmDialog.options.multipleVerificationTasks">
+    <b>{{ 'MULTIPLE_VERIFICATION_TASKS_HEADLINE' | translate }}</b>
+    <br />
+    {{ 'MULTIPLE_VERIFICATION_TASKS_MESSAGE' | translate }}
+  </p>
+  <mat-dialog-content gpFxLayout="column">
+    <div *ngIf="!taskConfirmDialog.options.hideDueDate"
+         gpFxFlex>
+      <div class="section"
+           gpFxLayout="column">
+        <div gpFxFlex="35"
+             gpFxLayout="row">
+          <div gpFxLayout="column">
+            <mat-form-field>
+              <input [matDatepicker]="dueDate"
+                     formControlName="dueDate"
+                     [placeholder]="'CHOOSE_DATE' | translate"
+                     matInput>
+              <mat-hint class="optional">{{ 'OPTIONAL' | translate }}</mat-hint>
+              <mat-datepicker-toggle [for]="dueDate"
+                                     matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #dueDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>{{ 'Comment' | translate }}<span *ngIf="required">*</span></h3>
+    <gp-text-area [form]="taskForm"
+                  [minHeight]="200"
+                  controlName="comment"
+                  [readonly]="false"
+                  [required]="required"
+                  [maxCharLength]="maxCommentCharLength"
+                  [placeHolder]="'VERIFICATION_REQUEST_COMMENT_PLACEHOLDER' | translate">
+    </gp-text-area>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <gp-default-edit-actions [saveButtonTranslationKey]="taskConfirmDialog.text.confirmButton | translate"
+                             [saveButtonDisabled]="taskForm.invalid"
+                             (save)="close({ confirm: true, payload: taskForm.getRawValue() })"
+                             (cancel)="close({ confirm: false })">
+    </gp-default-edit-actions>
+  </mat-dialog-actions>
+</form>

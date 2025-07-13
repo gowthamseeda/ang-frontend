@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.inactive {
+  color: mat.get-contrast-color-from-palette($accent, 300);
+}
+
+[loader] ::ng-deep svg {
+  height: 200px;
+  width: 100%;
+}

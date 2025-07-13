@@ -1,0 +1,215 @@
+<div gpFxFill
+     gpFxLayout="column">
+  <h2 matDialogTitle> {{ 'SAVE_MULTI_EDIT_ENTRY' | translate }}</h2>
+  <mat-dialog-content gpFxFlex class="mat-dialog-content">
+    <div gpFxLayoutRow >
+      <div class="chip-container" *ngFor="let outletId of getOutletIdsFromRecords(validRecords)">
+        <gp-services-chip [name]="outletId"></gp-services-chip>
+      </div>
+    </div>
+    
+    <div *ngIf="validRecords.length >0" [ngClass]="invalidRecords.length === 0 ? 'table-height-25' : 'table-height-10'">
+      <h3>{{ 'VALID_RECORDS' | translate }}</h3>
+      <mat-table [dataSource]="validRecords">
+        <ng-container matColumnDef="service">
+          <mat-header-cell *matHeaderCellDef
+                         data-cy="validity-confirmation-row-header-service">
+          {{ 'SERVICE' | translate }}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"
+                  data-cy="validity-confirmation-row-service">
+            <span>{{ element.name }}</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="brands">
+          <mat-header-cell *matHeaderCellDef
+                         data-cy="validity-confirmation-row-header-brand">
+            {{ 'BRAND' | translate }}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"
+                  gpFxLayoutColumn
+                  gpFxLayoutAlign="start"
+                  data-cy="validity-confirmation-row-brand"
+                  >
+            <div *ngFor="let brandId of element.brandProductGroupsWithValidity"
+               class="brand-product-group"
+               gpFxLayout="row"
+               gpFxLayoutAlign=" center"
+              >
+              <gp-brand-icon [id]="brandId.brandId"
+                           tooltipPosition="above">
+              </gp-brand-icon>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="productGroups">
+          <mat-header-cell *matHeaderCellDef
+                         data-cy="validity-confirmation-row-header-product-group">
+            {{ 'PRODUCT_GROUP' | translate }}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"
+                  gpFxLayoutColumn
+                  gpFxLayoutAlign="start start"
+                  data-cy="validity-confirmation-row-product-group">
+            <div *ngFor="let brand of element.brandProductGroupsWithValidity"
+                gpFxLayout="row"
+                class="brand-product-group"
+                style="flex: 1 1 50%"
+                >
+                <gp-product-group [productGroupId]="brand.productGroupId"
+                                [readOnly]="true"
+                                tooltipPosition="above"
+                                size="medium"
+                                color="none">
+                </gp-product-group>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="validFrom">
+          <mat-header-cell *matHeaderCellDef>{{ 'VALID_FROM' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <div *ngFor="let group of element.brandProductGroupsWithValidity"
+                class="brand-product-group"
+                gpFxLayout="row"
+                gpFxLayoutAlign="center center">
+                <div>{{ group.validFrom }}</div>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="validUntil">
+          <mat-header-cell *matHeaderCellDef>{{ 'VALID_UNTIL' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <div *ngFor="let group of element.brandProductGroupsWithValidity"
+                class="brand-product-group"
+                gpFxLayout="row"
+                gpFxLayoutAlign="center center">
+                <div>{{ group.validUntil }}</div>
+            </div>
+          </mat-cell>
+        </ng-container>
+        
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      
+        <mat-row *matRowDef="let element; columns: displayedColumns;"
+               [class.row-disabled]="!element.active"
+               data-cy="validity-confirmation-row">
+        </mat-row>
+      </mat-table>
+    </div>
+    
+    <div *ngIf="invalidRecords.length >0" >
+      <h3>{{ 'INVALID_RECORDS' | translate }}</h3>
+      <div gpFxLayoutRow class="chip-row-wrap">
+        <div class="chip-container" *ngFor="let outletId of getOutletIdsFromRecords(invalidRecords)">
+          <gp-services-chip [name]="outletId"></gp-services-chip>
+        </div>
+      </div>
+      
+      <div [ngClass]="validRecords.length === 0 ? 'table-height-25' : 'table-height-10'">
+        <mat-table [dataSource]="invalidRecords">
+          
+          <ng-container matColumnDef="service">
+            <mat-header-cell *matHeaderCellDef
+                        data-cy="validity-confirmation-row-header-service">
+                        {{ 'SERVICE' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"
+                data-cy="validity-confirmation-row-service">
+                <span>{{ element.name }}</span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="brands">
+            <mat-header-cell *matHeaderCellDef
+                         data-cy="validity-confirmation-row-header-brand">
+                        {{ 'BRAND' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"
+                  gpFxLayoutColumn
+                  gpFxLayoutAlign="start"
+                  data-cy="validity-confirmation-row-brand"
+                  >
+              <div *ngFor="let brandId of element.brandProductGroupsWithValidity"
+                  class="brand-product-group"
+                  gpFxLayout="row"
+                  gpFxLayoutAlign=" center"
+                  >
+                <gp-brand-icon [id]="brandId.brandId"
+                            tooltipPosition="above">
+                </gp-brand-icon>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="productGroups">
+            <mat-header-cell *matHeaderCellDef
+                          data-cy="validity-confirmation-row-header-product-group">
+                      {{ 'PRODUCT_GROUP' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"
+                  gpFxLayoutColumn
+                  gpFxLayoutAlign="start start"
+                  data-cy="validity-confirmation-row-product-group">
+              <div *ngFor="let brand of element.brandProductGroupsWithValidity"
+                    gpFxLayout="row"
+                    class="brand-product-group"
+                    style="flex: 1 1 50%"
+              >
+                <gp-product-group [productGroupId]="brand.productGroupId"
+                                [readOnly]="true"
+                                tooltipPosition="above"
+                                size="medium"
+                                color="none">
+                </gp-product-group> 
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="validFrom">
+            <mat-header-cell *matHeaderCellDef>{{ 'VALID_FROM' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <div *ngFor="let group of element.brandProductGroupsWithValidity"
+              class="brand-product-group"
+              gpFxLayout="row"
+              gpFxLayoutAlign="center center">
+                <div>{{ group.validFrom }}</div>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+
+          <ng-container matColumnDef="validUntil">
+            <mat-header-cell *matHeaderCellDef>{{ 'VALID_UNTIL' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <div *ngFor="let group of element.brandProductGroupsWithValidity"
+              class="brand-product-group"
+              gpFxLayout="row"
+              gpFxLayoutAlign="center center">
+                <div>{{ group.validUntil }}</div>
+              </div>
+            </mat-cell>
+          </ng-container>
+        
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let element; columns: displayedColumns;"
+               [class.row-disabled]="!element.active"
+               data-cy="validity-confirmation-row">
+          </mat-row>
+        </mat-table>
+      </div>
+    </div>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="center">
+    <gp-default-edit-actions [saveButtonTranslationKey]="'SAVE'"
+                             [showDoNotShowAgainCheckBox]="true"
+                             (save)="save()"
+                             (cancel)="cancel()"
+                             (doNotShowAgainCheckBoxChange)="doNotShowAgainCheckBoxChange()">
+    </gp-default-edit-actions>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,7 @@
+<div *ngIf="!(loaderVisible | async); else loading">
+  <ng-content></ng-content>
+</div>
+
+<ng-template #loading>
+  <ng-content select="[loader]"></ng-content>
+</ng-template>

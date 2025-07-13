@@ -1,0 +1,21 @@
+<div class="roof">
+  <div class="roof-title">
+    <div class="roof-title_text" title="{{ outletName }}">{{ outletName }}</div>
+    <div class="roof-title__fade-out"></div>
+  </div>
+  <ng-container *ngFor="let loop of calculateBlocksAfterTheDoor()">
+    <div class="roof-title-positioner"></div>
+  </ng-container>
+</div>
+<div class="building-base__container">
+  <div class="wall-left"></div>
+    <ng-container *ngFor="let productGroupId of productGroupIds;  let currentIndex = index">
+      <gp-product-group-garage [productGroupId]="productGroupId"></gp-product-group-garage>
+
+      <div class="door__container" *ngIf="isDoorIndex(currentIndex)">
+        <div class="left-door"></div>
+        <div class="right-door"></div>
+      </div>
+    </ng-container>
+  <div class="wall-right"></div>
+</div>

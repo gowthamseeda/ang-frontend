@@ -1,0 +1,31 @@
+<div gpFxFill
+     gpFxLayout="row"
+     gpFxLayoutAlign="space-between">
+  <div gpFxLayout="row"
+       gpFxLayoutAlign="start center">
+    <ng-content></ng-content>
+  </div>
+  <div gpFxLayout="row"
+       gpFxLayoutAlign="end center"
+       gpFxLayoutGap="40px"
+       class="edit-actions">
+    <button mat-button
+            [disabled]="viewButtonDisabled"
+            (click)="view.emit()">
+      {{ viewButtonTranslationKey | translate }}
+    </button>
+
+    <button mat-button
+            [disabled]="editButtonDisabled"
+            (click)="edit.emit()">
+      {{ editButtonTranslationKey | translate }}
+    </button>
+
+    <button mat-button
+            [disabled]="deleteButtonDisabled"
+            (click)="delete.emit()">
+      {{ deleteButtonTranslationKey | translate }}
+    </button>
+
+  </div>
+</div>

@@ -1,0 +1,19 @@
+@import '../../../../../styles-theme';
+
+// overlay settings
+.year-option {
+  text-align: center;
+}
+
+.year-navigation {
+  .year-select {
+    width: 70px;
+    margin-left: 31px;
+    font-size: 21px;
+  }
+
+  .year-form-field {
+    width: 100px;
+    margin-bottom: 0px;
+  }
+}

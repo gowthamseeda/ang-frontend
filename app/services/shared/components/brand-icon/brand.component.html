@@ -1,0 +1,7 @@
+<img #image
+     (error)="image.hidden = true"
+     [hidden]="image.hidden"
+     [class.small]="small"
+     [matTooltip]="tooltip | async"
+     [matTooltipPosition]="tooltipPosition"
+     [src]="src" />

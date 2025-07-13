@@ -1,0 +1,45 @@
+<div gpFxLayout="row"
+     gpFxLayoutAlign="start center">
+  <ng-container *ngIf="hasNavigableParentBreadcrumb">
+    <button (click)="navigateUpBreadcrumb()"
+            mat-icon-button>
+      <gp-icon name="arrow-back"
+               size="small">
+      </gp-icon>
+    </button>
+  </ng-container>
+
+  <ng-container *ngFor="let item of breadcrumbItems; let i = index">
+
+    <ng-container *ngIf="item.path; else noPath">
+      <a style="white-space: nowrap" [routerLink]="item.path">{{item.label | translate}}</a>
+    </ng-container>
+
+    <ng-template #noPath>
+      <span style="white-space: nowrap">{{item.label | translate}}</span>
+    </ng-template>
+
+    <ng-container *ngIf="(item.children && item.children.length > 0); else noChildren">
+      <button [matMenuTriggerFor]="menu.childMenu"
+              mat-icon-button>
+        <gp-icon name="caret-right"
+                 size="tiny">
+        </gp-icon>
+      </button>
+      <gp-breadcrumb-item #menu
+                          [breadcrumbItems]="item.children">
+      </gp-breadcrumb-item>
+    </ng-container>
+
+    <ng-template #noChildren>
+      <button *ngIf="i !== breadcrumbItems.length - 1"
+              mat-icon-button
+              disabled>
+        <gp-icon name="caret-right"
+                 size="tiny">
+        </gp-icon>
+      </button>
+    </ng-template>
+
+  </ng-container>
+</div>

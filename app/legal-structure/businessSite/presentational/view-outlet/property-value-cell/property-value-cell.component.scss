@@ -1,0 +1,12 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.cell-property {
+  font-size: 10px;
+  color: mat.get-color-from-palette($accent, 600);
+}
+.cell-value {
+  font-size: 16px;
+  color: mat.get-color-from-palette($accent, 800);
+  padding-bottom: 20px;
+}

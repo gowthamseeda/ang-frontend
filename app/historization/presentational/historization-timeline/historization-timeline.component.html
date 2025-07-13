@@ -1,0 +1,44 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+
+  <mat-tree-node *matTreeNodeDef="let node"
+                 (click)="onNodeClick(node.id)">
+    <div gpFxLayout="row"
+         gpFxLayoutAlign="center center"
+         style="flex: none"
+         class="timeline">
+      <div class="node node-small"
+           [class.node-selected]="node.selected">
+      </div>
+    </div>
+    <div class="timeline-tracer"
+         [style.width.px]="node.level * 40">
+      <mat-divider></mat-divider>
+    </div>
+    <span class="label"
+          [class.label-selected]="node.selected">
+      {{node.label}}
+    </span>
+  </mat-tree-node>
+
+  <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodeToggle>
+    <div gpFxLayout="row"
+         gpFxLayoutAlign="center center"
+         style="flex: none;"
+         class="timeline">
+      <div class="node"
+           [class.node-large]="node.level === 0"
+           [class.node-medium]="node.level !== 0"
+           [class.node-selected]="node.selected"></div>
+    </div>
+    <div *ngIf="node.level !== 0"
+         class="timeline-tracer"
+         [style.width.px]="node.level * 40">
+      <mat-divider></mat-divider>
+    </div>
+    <span class="label"
+          [class.label-selected]="node.selected">
+      {{node.label}}
+    </span>
+  </mat-tree-node>
+
+</mat-tree>

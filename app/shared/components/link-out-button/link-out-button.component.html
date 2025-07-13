@@ -1,0 +1,24 @@
+<button (click)="goTo()"
+        *ngIf="buttonVariant === matButtonVariant.STROKED; else iconButton"
+        mat-stroked-button>
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</button>
+
+<ng-template #iconButton>
+  <button (click)="goTo()"
+          *ngIf="buttonVariant === matButtonVariant.ICON; else defaultButton"
+          mat-icon-button>
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </button>
+</ng-template>
+
+<ng-template #defaultButton>
+  <button (click)="goTo()"
+          mat-button>
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </button>
+</ng-template>
+
+<ng-template #content>
+  <ng-content></ng-content>
+</ng-template>

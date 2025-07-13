@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.po-box-content-container {
+  color: mat.get-color-from-palette($accent, 800);
+}
+
+.po-box-content-container span {
+  padding-bottom: 5px;
+}

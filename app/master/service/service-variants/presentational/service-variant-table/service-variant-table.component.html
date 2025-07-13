@@ -1,0 +1,97 @@
+<gp-content-loader [isLoading]="isLoaded">
+  <div [formGroup]="searchFormGroup">
+    <mat-form-field>
+      <mat-label>{{ 'SEARCH_SERVICES' | translate }}</mat-label>
+      <gp-icon matPrefix name="search">
+      </gp-icon>
+      <input matInput #input formControlName="search" autocomplete="off" (keyup)="onKeyUp()">
+      <mat-slide-toggle matSuffix labelPosition="after" color="primary" gpFxFlex="260px" formControlName="showSelected"
+                        (click)="filterSelectedServiceVariant(true)">
+        {{ 'MASTER_DATA_SERVICE_VARIANT_SHOW_SELECTED' | translate }}
+      </mat-slide-toggle>
+    </mat-form-field>
+
+    <cdk-virtual-scroll-viewport>
+      <mat-table [virtualDataSource]="displayServiceVariantItems" fixedLayout>
+
+        <ng-container matColumnDef="service">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="18">{{'SERVICE' | translate}}</mat-header-cell>
+          <mat-cell *matCellDef="let serviceVariant" gpFxFlex="18">
+            <div>{{serviceVariant.service}}</div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="brand">
+          <mat-header-cell *matHeaderCellDef gpFxLayoutAlign="center" gpFxFlex="10">{{'BRAND' |
+            translate}}</mat-header-cell>
+          <mat-cell *matCellDef="let serviceVariant" gpFxLayout="row" gpFxLayoutAlign="center center" gpFxFlex="10">
+            <gp-brand-icon [id]="serviceVariant?.brand"></gp-brand-icon>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="productGroup">
+          <mat-header-cell *matHeaderCellDef gpFxLayoutAlign="center">{{'PRODUCT_GROUP' | translate}}</mat-header-cell>
+          <mat-cell *matCellDef="let serviceVariant" gpFxLayout="row" gpFxLayoutAlign="center center">
+            <gp-product-group [productGroupId]="serviceVariant?.productGroup.toLocaleLowerCase()" size="medium"
+                              color="none">
+            </gp-product-group>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="active">
+          <mat-header-cell *matHeaderCellDef gpFxLayoutAlign="center">{{'ACTIVE' | translate}}</mat-header-cell>
+          <mat-cell *matCellDef="let serviceVariant" gpFxLayout="row" gpFxLayoutAlign="center center">
+            <mat-checkbox [checked]="serviceVariant?.active" disabled="true">
+            </mat-checkbox>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="multiAction">
+          <mat-header-cell *matHeaderCellDef gpFxLayoutAlign="center" gpFxFlex="15">
+            {{ 'MASTER_DATA_SERVICE_VARIANT_MULTI_SELECTION' | translate }}
+
+            <mat-checkbox matTooltip="{{ 'MASTER_DATA_SERVICE_VARIANT_DESELECT_ALL' | translate}}"
+                          matTooltipPosition="above" formControlName="multiSelect" (click)="$event.stopPropagation()"
+                          (change)="deselectAll()">
+            </mat-checkbox>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let serviceVariant" gpFxLayout="row" gpFxLayoutAlign="center center" gpFxFlex="15">
+            <mat-checkbox [checked]="serviceVariant.isMultiCheck" (click)="$event.stopPropagation()"
+                          (change)="toggle($event, serviceVariant)">
+            </mat-checkbox>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="singleAction">
+          <mat-header-cell *matHeaderCellDef gpFxLayoutAlign="center center" gpFxFlex="20">Single
+            Action</mat-header-cell>
+          <mat-cell *matCellDef="let serviceVariant" gpFxLayout="row" gpFxLayoutAlign="center" gpFxFlex="20">
+
+            <button mat-icon-button matTooltip="{{ 'MASTER_DATA_SERVICE_VARIANT_MULTI_VIEW' | translate }}"
+                    matTooltipPosition="after" (click)="viewServiceVariant(serviceVariant?.id)">
+              <gp-icon name="eye-active"></gp-icon>
+            </button>
+            <button mat-icon-button matTooltip="{{ 'MASTER_DATA_SERVICE_VARIANT_MULTI_EDIT' | translate }}"
+                    matTooltipPosition="after" (click)="editServiceVariant(serviceVariant?.id)">
+              <gp-icon name="pen"></gp-icon>
+            </button>
+            <button mat-icon-button matTooltip="{{ 'MASTER_DATA_SERVICE_VARIANT_MULTI_DELETE' | translate }}"
+                    matTooltipPosition="after" (click)="removeServiceVariant(serviceVariant?.id)">
+              <gp-icon name="trash"></gp-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let element; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </cdk-virtual-scroll-viewport>
+  </div>
+  <div loader xmlns:svg='http://www.w3.org/2000/svg'>
+    <content-loader preserveAspectRatio="none">
+      <svg:rect x="0" y="0" width="400" height="20" />
+      <svg:rect x="0" y="30" width="400" height="40" />
+      <svg:rect x="0" y="80" width="400" height="40" />
+    </content-loader>
+  </div>
+</gp-content-loader>

@@ -1,0 +1,20 @@
+.mat-mdc-table {
+  margin-bottom: 30px;
+}
+
+.row-height {
+  height: 40px;
+}
+
+.padding-right {
+  padding-right: 15px;
+}
+
+.no-field-underline-arrow {
+  ::ng-deep .mdc-line-ripple {
+    display: none;
+  }
+  ::ng-deep .mat-mdc-select-arrow-wrapper {
+    visibility: hidden;
+  }
+}

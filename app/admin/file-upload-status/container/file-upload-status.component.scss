@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+
+a {
+  text-decoration: none;
+}
+
+.brand-product-group {
+  height: 45px;
+}
+
+
+.mat-mdc-header-cell:last-child,
+.mat-mdc-cell:last-child {
+  max-width: none;
+}

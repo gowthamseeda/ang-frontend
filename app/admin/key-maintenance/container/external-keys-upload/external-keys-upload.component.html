@@ -1,0 +1,28 @@
+<div style="display: flex; align-items: center; gap: 16px;">
+  <mat-form-field gpFxFlex="40">
+    <mat-label>{{ 'KEY_TYPE' | translate }}</mat-label>
+    <mat-select [(value)]="selectedKey">
+      <mat-option *ngFor="let keyType of keyTypes" [value]="keyType">
+        {{ keyType.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div style="display: flex; flex-direction: column; align-content: center" gpFxFlex="20">
+    <label>{{ 'SELECT_FILE' | translate}}</label>
+    <input type="file" (change)="selectFile($event)"/>
+  </div>
+
+  <mat-form-field gpFxFlex="20">
+    <mat-label>{{ 'SHEET_NAME' | translate }}</mat-label>
+    <input matInput type="text" (keyup)="setSheetName($event)"/>
+  </mat-form-field>
+
+  <div gpFxFlex="20" style="justify-content: center">
+    <button mat-button [disabled]="disabledField() || isUploading" (click)="uploadKey()">
+      <span>{{ 'UPLOAD' | translate }}</span>
+    </button>
+  </div>
+</div>
+
+

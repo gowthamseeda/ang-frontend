@@ -1,0 +1,20 @@
+<ng-container *ngIf="userHasPermissions !== undefined">
+  <p class="offered-service"
+      gpFxLayoutAlign="center center">
+    <span *ngIf="processState && userHasPermissions"
+          [class.show-add-icon]="(processState?.status !== Status.NOT_ASSIGNABLE && processState?.status !== Status.NOT_OFFERED) && serviceVariant?.active"
+          cdkOverlayOrigin
+          class="product-group"
+          gpFxLayout="column"
+          gpFxLayoutAlign="center center"
+          (mouseenter)="setcellHovered(true)"
+          (mouseleave)="setcellHovered(false)">
+      <gp-icon [name]="(multiSelectDataService.isTarget(offeredService?.id) | async) ?  processState.selectedIcon 
+      : (cellHovered | async) ? processState.hoverIcon 
+      : processState.defaultIcon"
+               [color]="(multiSelectDataService.isTarget(offeredService?.id) | async) || 'petrol'"
+               matTooltip="{{ processState?.status ? ('OFFERED_SERVICE_STATUS_' + processState?.status?.toUpperCase() | translate) : null }}"
+               matTooltipPosition="above"></gp-icon>
+    </span>
+  </p>
+</ng-container>

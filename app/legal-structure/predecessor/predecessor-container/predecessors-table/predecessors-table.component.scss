@@ -1,0 +1,43 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.predecessor-table {
+  button.add-predecessor {
+    margin: 30px 0;
+  }
+
+  .mat-mdc-table {
+    width: 100%;
+  }
+
+  .mat-mdc-table .mat-mdc-row {
+    &:hover {
+      background-color: mat.get-color-from-palette($accent, 100);
+    }
+
+    .mat-column-action button {
+      visibility: hidden;
+    }
+
+    &:hover .mat-column-action button {
+      visibility: visible;
+
+      .gp-icon:hover {
+        color: mat.get-color-from-palette($accent, 500);
+      }
+    }
+  }
+}
+
+gp-link-out-to-outlet ::ng-deep a {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+[loader] ::ng-deep svg {
+  height: 200px;
+  width: 100%;
+}

@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+@import '../styles-theme';
+@import '../styles/progress-bar.scss';
+
+.page {
+  min-width: 0;
+
+  .router-container {
+    height: 100%;
+  }
+}

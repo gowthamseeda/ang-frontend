@@ -1,0 +1,25 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.row-disabled {
+  ::ng-deep {
+    gp-brand-icon img {
+      filter: grayscale(100%) opacity(50%);
+    }
+  }
+}
+
+.icon-disabled {
+  ::ng-deep svg {
+    fill: mat.get-color-from-palette($accent, 600);
+  }
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.add-btn{
+  width: 350px;
+  justify-content: normal;
+}

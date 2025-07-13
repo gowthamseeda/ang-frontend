@@ -1,0 +1,16 @@
+<mat-list #list
+          *ngIf="isHidden"
+          (keyup)="selectMatOptionByKeyboard($event)"
+          (mouseleave)="deselectMatOptions()">
+  <mat-option (click)="emitValue(inputVal)"
+              (mousemove)="selectMatOptionByMousemove(0)">
+    {{ inputVal }}
+  </mat-option>
+  <mat-option *ngFor="let item of listItems; let i = index"
+              (click)="itemSelect.emit(item)"
+              (mousemove)="selectMatOptionByMousemove(i + 1)">
+    <gp-es-highlight [text]="item"
+                     [manualHighlightText]="inputVal"
+                     [invertedStyle]="true"></gp-es-highlight>
+  </mat-option>
+</mat-list>

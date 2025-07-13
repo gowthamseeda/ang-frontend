@@ -1,0 +1,62 @@
+@use '@angular/material' as mat;
+@import '../../../../../../styles-theme';
+@import '../../../../../../styles/default-scrollbar.scss';
+
+.countries {
+  display: inline-block;
+  margin: 1%;
+}
+
+.mat-mdc-row.detail-row {
+  height: 0;
+  min-height: 0;
+  padding: 0;
+  border-bottom: 0;
+}
+
+.row-overview {
+  &:hover {
+    background-color: mat.get-color-from-palette($accent, 100, 0.5);
+  }
+}
+
+.mat-mdc-form-field {
+  margin-bottom: 0;
+}
+
+.mat-mdc-table .mat-mdc-row {
+  .mat-column-countryRestrictions {
+    max-width: 100%;
+  }
+
+  &:hover {
+    background-color: mat.get-color-from-palette($accent, 100);
+  }
+
+  .mat-column-action button {
+    visibility: hidden;
+  }
+
+  &:hover .mat-column-action button {
+    visibility: visible;
+
+    .gp-icon:hover {
+      color: mat.get-color-from-palette($accent, 500);
+    }
+  }
+
+  .mat-mdc-row {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .mat-mdc-cell {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .mat-mdc-cell:last-child {
+      border-right: none;
+      display: contents;
+    }
+  }
+}

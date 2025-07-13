@@ -1,0 +1,23 @@
+<gp-content-loader [isLoading]="isLoading">
+  <ng-content select="[pylone-content]"></ng-content>
+  <div loader class="loader" xmlns:svg="http://www.w3.org/2000/svg">
+    <content-loader primaryOpacity="0.3"
+                    secondaryOpacity="0.7"
+                    preserveAspectRatio="none"
+                    height="184"
+                    width="60">
+      <svg:rect x="0px"
+                y="0px"
+                width="60px"
+                height="60px" />
+      <svg:rect x="0px"
+                y="62px"
+                width="60px"
+                height="60px" />
+      <svg:rect x="0px"
+                y="124px"
+                width="60px"
+                height="60px" />
+    </content-loader>
+  </div>
+</gp-content-loader>

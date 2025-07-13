@@ -1,0 +1,27 @@
+<gp-content-loader [isLoading]="isLoading">
+  <ng-content select="[outlet-building-content]"></ng-content>
+  <div loader class="loader" xmlns:svg="http://www.w3.org/2000/svg">
+    <content-loader primaryOpacity="0.3"
+                    secondaryOpacity="0.7"
+                    preserveAspectRatio="none"
+                    width="300"
+                    height="126" >
+      <svg:rect x="0px"
+                y="0px"
+                width="300px"
+                height="23px" />
+      <svg:rect x="14px"
+                y="28px"
+                width="90px"
+                height="98px" />
+      <svg:rect x="105px"
+                y="28px"
+                width="90px"
+                height="98px" />
+      <svg:rect x="196px"
+                y="28px"
+                width="90px"
+                height="98px" />
+    </content-loader>
+  </div>
+</gp-content-loader>

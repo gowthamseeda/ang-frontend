@@ -1,0 +1,19 @@
+.headline {
+  gp-icon {
+    margin-top: 17px;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+}
+
+.content {
+  display: none;
+  &.expanded {
+    display: block;
+  }
+}
+
+.icon-padding {
+  padding-top: 17px;
+  padding-left: 5px;
+}

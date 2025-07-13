@@ -1,0 +1,29 @@
+<gp-tile componentLink="./labels"
+         iconUrl="labels"
+         headerText="{{ 'TILE_LABELS_HEADER' | translate }}"
+         noTileDataText="{{ 'TILE_LABELS_NO_DATA' | translate }}"
+         noTileDataTextPrefix="{{ 'TILE_LABELS_NO_DATA_PREFIX' | translate }}"
+         noTileDataTextLink="{{ 'TILE_LABELS_NO_DATA_LINK' | translate }}"
+         noTileDataTextPostfix="{{ 'TILE_LABELS_NO_DATA_POSTFIX' | translate }}"
+         [detailsLinkText]="detailsLinkText"
+         fragment="labels"
+         [isLoading]="isLoading"
+         [isEmpty]="isEmpty()">
+  <div *ngIf="!isEmpty()">
+    <div *ngFor="let label of labels">
+      <div class="mat-card-content-cell-header"
+           gpFxLayout="row">
+        {{ label | translateData: currentLanguage }}
+      </div>
+      <div class="mat-card-content-cell"
+           gpFxLayout="row"
+           *ngIf="label.brandIds.length > 0">
+        <gp-brand-icon *ngFor="let brandId of label.brandIds"
+                       [id]="brandId"
+                       [small]="true"
+                       tooltipPosition="below">
+        </gp-brand-icon>
+      </div>
+    </div>
+  </div>
+</gp-tile>

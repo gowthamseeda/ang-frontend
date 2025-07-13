@@ -1,0 +1,35 @@
+<ng-container *ngIf='!isLoading'>
+  <div gpFxLayout="row">
+    <ng-content select="[chips-content]"></ng-content>
+  </div>
+</ng-container>
+<ng-container *ngIf='isLoading'>
+  <div loader
+       class="chips-loader"
+       xmlns:svg='http://www.w3.org/2000/svg'>
+    <content-loader primaryOpacity="0.3"
+                    secondaryOpacity="0.7"
+                    width="250"
+                    height="30"
+                    preserveAspectRatio="none">
+      <svg:rect x="0"
+                y="5"
+                width="80px"
+                height="16px"
+                rx="8px"
+                ry="8px" />
+      <svg:rect x="85"
+                y="5px"
+                width="60px"
+                height="16px"
+                rx="8px"
+                ry="8px" />
+      <svg:rect x="150px"
+                y="5px"
+                width="60px"
+                height="16px"
+                rx="8px"
+                ry="8px" />
+    </content-loader>
+  </div>
+</ng-container>

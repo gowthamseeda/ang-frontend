@@ -1,0 +1,32 @@
+<div gpFxLayoutAlign="space-between">
+  <h1 mat-dialog-title>
+    Multi select to Copy</h1>
+  <button mat-icon-button
+          mat-dialog-close
+          tabindex="-1"
+          gpFxFlexAlign="baseline"
+          (click)="close()">
+    <gp-icon name="close"
+             size="small"></gp-icon>
+  </button>
+</div>
+
+<div mat-dialog-content>
+  <div>Please select source to update. You can't undo this action.</div>
+  <br />
+  <ng-container *ngIf="offeredServicesIsEmpty(); then thenShowSources else thenShowMessage">
+  </ng-container>
+</div>
+
+<ng-template #thenShowSources>
+  <mat-button-toggle-group>
+    <mat-button-toggle *ngFor="let offeredService of offeredServices"
+                       (change)="copy(offeredService.id)">
+      {{offeredService.brandId}} - {{offeredService.productGroupId}}
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</ng-template>
+
+<ng-template #thenShowMessage>
+  Not Source allow to select.
+</ng-template>

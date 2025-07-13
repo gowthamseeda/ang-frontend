@@ -1,0 +1,41 @@
+@use '@angular/material' as mat;
+@import '../../../styles-theme';
+@import '../../../styles/_gssnplus';
+@include gssnplus-theme($gssnplus-theme);
+
+.search-filter {
+  .search-filter-tag-name {
+    background-color: #7f7f7f !important;
+    padding-right: 20px !important;
+  }
+
+  .search-filter-tag-name + .search-filter-value {
+    margin-left: -18px;
+  }
+}
+
+form {
+  display: flex;
+  background-color: white;
+  opacity: 0.9;
+  padding: 0 10px 0 20px;
+  border-bottom: 1px solid mat.get-color-from-palette($accent, 100);
+
+  .mat-mdc-icon-button {
+    width: 20px;
+    height: 20px;
+    padding: 8px;
+  }
+
+  gp-search-filter-chip-list {
+    width: 100%;
+  }
+
+  .search-icon-container {
+    margin: 10px;
+  }
+}
+
+mat-progress-bar {
+  height: 1px;
+}

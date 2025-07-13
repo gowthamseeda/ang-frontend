@@ -1,0 +1,68 @@
+<h4 mat-dialog-title>{{ (ableToEdit?'SERVICE_DETAIL_DESCRIPTION':'SERVICE_DESCRIPTION') | translate }}</h4>
+<form [formGroup]="serviceForm" class="detail-form">
+  <div gpFxLayout="column">
+    <div *ngxPermissionsOnly="['services.service.detaildescription.update']">
+      <div gpFxLayout="row" gpFxLayoutGap="30px">
+        <mat-form-field gpFxFlex="70">
+          <mat-label>{{ 'NAME' | translate }}</mat-label>
+          <input matInput formControlName="name" type="text" required />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'ID' | translate }}</mat-label>
+          <input matInput formControlName="id" type="text" required />
+        </mat-form-field>
+      </div>
+      <div fxLayout="column">
+        <mat-form-field fxFlex>
+          <mat-label>{{ 'DESCRIPTION' | translate }}</mat-label>
+          <input matInput formControlName="description" type="text" />
+          <mat-error *ngIf="serviceForm.get('description')?.hasError('maxlength')">
+            {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <ng-template #popContent>
+      <div class="custom-popover" [innerHTML]="getDetailDescription() | safeHtml">
+      </div>
+    </ng-template>
+    <div style="min-height: 30px ; padding-bottom: 15px; display:inline-flex"
+      *ngIf="displayDetailedDescription&&ableToEdit">
+      <span [ngbPopover]="popContent" [disablePopover]="detailDescriptionEmpty()" triggers="mouseenter:mouseleave"
+        placement="right" closeDelay="500" style="padding-top: 8px">
+        {{ 'DETAIL_DESCRIPTION' | translate }}
+      </span>
+      <span *ngIf="!showDetailDescription">
+        <gp-icon *ngIf="detailDescriptionEmpty()" (click)="openDetailDescription()" name='plus'>
+        </gp-icon>
+        <gp-icon *ngIf="!detailDescriptionEmpty()" (click)="openDetailDescription()" name='caret-down' size="small"
+          style="padding-top: 6px; padding-left:6px">
+        </gp-icon>
+      </span>
+      <gp-icon *ngIf="showDetailDescription" (click)="closeDetailDescription()" name='caret-up' size="small"
+        style="padding-top: 6px; padding-left:6px">
+      </gp-icon>
+    </div>
+
+    <div *ngIf="showDetailDescription||!ableToEdit">
+      <div *ngxPermissionsOnly="['services.service.detaildescription.read']">
+        <form [formGroup]="quillForm" *ngxPermissionsOnly="['services.service.detaildescription.update']">
+          <quill-editor formControlName="content" format="html" bounds="self" [modules]="quillModules"
+            [placeholder]="null" (onContentChanged)="contentChanged($event)">
+          </quill-editor>
+        </form>
+
+        <div class="ql-view-container" *ngxPermissionsExcept="['services.service.detaildescription.update']">
+          <quill-view format="html" [content]="service.detailDescription">
+          </quill-view>
+        </div>
+      </div>
+    </div>
+
+    <gp-default-edit-actions gpFxFill *ngxPermissionsOnly="['services.service.detaildescription.update']"
+      [saveButtonDisabled]="serviceForm.invalid || serviceForm.pristine"
+      [cancelButtonDisabled]="serviceForm.pristine" (save)="save()" (cancel)="cancel()">
+    </gp-default-edit-actions>
+  </div>
+</form>

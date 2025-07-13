@@ -1,0 +1,92 @@
+<mat-list>
+  <mat-list-item *ngxPermissionsOnly="['legalstructure.admin.switchregisteredoffice.update']"
+                 routerLink="/admin/switch-registered-office">
+    <gp-icon matListItemIcon size="small"></gp-icon>
+    <div matListItemTitle>{{ 'ADMIN_SWITCH_RO' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+
+  <ng-container *gpFeatureToggle="'ADMIN_MOVE_OUTLET'">
+    <mat-list-item *ngxPermissionsOnly="['legalstructure.admin.movebusinesssite.update']"
+                   routerLink="/admin/move-outlet">
+      <gp-icon matListItemIcon size="small"></gp-icon>
+      <div matListItemTitle>{{ 'ADMIN_MOVE_OUTLET' | translate }}</div>
+    </mat-list-item>
+  </ng-container>
+  <mat-divider></mat-divider>
+
+  <mat-list-item *ngxPermissionsOnly="['app.masterdata.show']" routerLink="/master">
+    <gp-icon matListItemIcon size="small" name="database"></gp-icon>
+    <div matListItemTitle>{{ 'GOTO_MASTER_DATA' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+
+  <mat-list-item *ngxPermissionsOnly="['iam.userdatarestriction.read']" routerLink="iam">
+    <gp-icon matListItemIcon size="small"></gp-icon>
+    <div matListItemTitle>{{ 'ADMIN_IAM_MANAGEMENT' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+
+  <mat-list-item *ngxPermissionsOnly="['app.scheduler.show']" routerLink="scheduler">
+    <gp-icon matListItemIcon size="small"></gp-icon>
+    <div matListItemTitle>{{ 'SCHEDULER_SCHEDULER' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+
+  <mat-list-item (click)="navigateToFeatureToggles()">
+    <gp-icon matListItemIcon size="small"></gp-icon>
+    <div matListItemTitle>{{ 'FEATURE_TOGGLES' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+
+  <mat-list-item (click)="openSwaggerLink('gssnplus-api')">
+    <gp-icon matListItemIcon size="small"></gp-icon>
+    <div matListItemTitle>{{ 'GSSNPLUS_API' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+
+  <mat-list-item (click)="openSwaggerLink('gssnplus-xml')">
+    <gp-icon matListItemIcon size="small"></gp-icon>
+    <div matListItemTitle>{{ 'GSSNPLUS_XML' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="false" class="mat-elevation-z0">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="accordion-title">
+          {{ 'MICROSERVICE_SWAGGER_PAGES' | translate }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list-item *ngFor="let service of microservices" (click)="openSwaggerLink(service.service)">
+        <gp-icon matListItemIcon size="small"></gp-icon>
+        <div matListItemTitle>{{ service.translationName | translate }}</div>
+      </mat-list-item>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <mat-divider></mat-divider>
+
+  <mat-list-item (click)="navigateToStatusApp()">
+    <gp-icon matListItemIcon name="arrow-out" size="small"></gp-icon>
+    <div matListItemTitle>{{ 'STATUS_APP' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+
+  <mat-list-item (click)="navigateToDocumentation()">
+    <gp-icon matListItemIcon size="small"></gp-icon>
+    <div matListItemTitle>{{ 'DOCUMENTATION' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+
+  <mat-list-item routerLink="/admin/file-upload-status">
+    <gp-icon matListItemIcon size="small"></gp-icon>
+    <div matListItemTitle>{{ 'FILE_UPLOAD_STATUS' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <mat-list-item routerLink="/admin/external-keys-maintenance">
+    <gp-icon matListItemIcon size="small"></gp-icon>
+    <div matListItemTitle>{{ 'EXTERNAL_KEYS_MAINTENANCE' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+
+</mat-list>

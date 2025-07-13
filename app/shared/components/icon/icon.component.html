@@ -1,0 +1,16 @@
+<svg [class.disabled]="disabled"
+     [class.tiny]="size === 'tiny'"
+     [class.small]="size === 'small'"
+     [class.medium]="size === 'medium'"
+     [class.large]="size === 'large'"
+     [class.color-darkgray]="color === 'darkgray'"
+     [class.color-petrol]="color === 'petrol'"
+     [class.color-warn]="color === 'warn'"
+     [class.color-white]="color === 'white'"
+     [class.color-green]="color === 'green'"
+     [class.color-red]="color === 'red'"
+     [class.hover]="!disabled && hover"
+     [class.actionable]="actionable">
+
+  <use attr.xlink:href="assets/sprites/icons.svg#{{name}}"></use>
+</svg>

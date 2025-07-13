@@ -1,0 +1,172 @@
+<nav gpFxLayout="row">
+  <div class="nav-items"
+       gpFxFlex="auto"
+       gpFxLayout="column"
+       gpFxLayoutAlign="top center">
+    <gp-logo></gp-logo>
+
+    <gp-environment></gp-environment>
+
+    <div *gpOnlyForRetail
+         [class.active]="isActiveNavItem('retailer-outlets')"
+         gpFxLayoutAlign="center">
+      <button (click)="toggleNavDetail('retailer-outlets')"
+              mat-icon-button
+              matTooltip="{{ 'MY_OUTLETS' | translate }}"
+              matTooltipHideDelay="{{ 'hideDelay' | tooltipDefault }}"
+              matTooltipPosition="{{ 'position' | tooltipDefault }}"
+              matTooltipShowDelay="{{ 'showDelay' | tooltipDefault }}">
+        <gp-icon name="outlet"></gp-icon>
+      </button>
+    </div>
+    <ng-container *ngxPermissionsOnly="['tasks.task.read']">
+      <div gpFxLayoutAlign="center">
+        <button mat-icon-button
+                matTooltip="{{ 'GOTO_TASK_LIST' | translate }}"
+                matTooltipHideDelay="{{ 'hideDelay' | tooltipDefault }}"
+                matTooltipPosition="{{ 'position' | tooltipDefault }}"
+                matTooltipShowDelay="{{ 'showDelay' | tooltipDefault }}"
+                routerLink="/tasks"
+                (click)="reloadTaskList()">
+          <gp-icon name="tasklist"></gp-icon>
+          <span *ngIf="newTaskAvailable" class="dot"></span>
+        </button>
+      </div>
+    </ng-container>
+    <div [class.active]="isActiveNavItem('search')"
+         gpFxLayoutAlign="center">
+      <button (click)="toggleNavDetail('search')"
+              mat-icon-button
+              matTooltip="{{ 'SEARCH' | translate }}"
+              matTooltipHideDelay="{{ 'hideDelay' | tooltipDefault }}"
+              matTooltipPosition="{{ 'position' | tooltipDefault }}"
+              matTooltipShowDelay="{{ 'showDelay' | tooltipDefault }}"
+              data-cy="nav-bar-search-menu">
+        <gp-icon name="search"></gp-icon>
+      </button>
+    </div>
+    <div *ngxPermissionsOnly="['legalstructure.company.create', 'legalstructure.businesssite.create']"
+         [class.active]="isActiveNavItem('creation-menu')"
+         gpFxLayoutAlign="center">
+      <button (click)="toggleNavDetail('creation-menu')"
+              mat-icon-button
+              matTooltip="{{ 'OPEN_CREATION_MENU' | translate }}"
+              matTooltipHideDelay="{{ 'hideDelay' | tooltipDefault }}"
+              matTooltipPosition="{{ 'position' | tooltipDefault }}"
+              matTooltipShowDelay="{{ 'showDelay' | tooltipDefault }}">
+        <gp-icon name="plus"></gp-icon>
+      </button>
+    </div>
+    <ng-container *ngxPermissionsOnly="[
+        'structures.marketareas.read',
+        'structures.regionalcenter.read',
+        'structures.dealergroups.read',
+        'structures.generalgroups.read'
+      ]">
+      <ng-container *gpFeatureToggle="'MENU_STRUCTURES'">
+        <div *gpNotForRetail
+             [class.active]="isActiveNavItem('structures-menu')"
+             gpFxLayoutAlign="center">
+          <button (click)="toggleNavDetail('structures-menu')"
+                  mat-icon-button
+                  matTooltip="{{ 'OPEN_STRUCTURES_MENU' | translate }}"
+                  matTooltipHideDelay="{{ 'hideDelay' | tooltipDefault }}"
+                  matTooltipPosition="{{ 'position' | tooltipDefault }}"
+                  matTooltipShowDelay="{{ 'showDelay' | tooltipDefault }}"
+                  data-cy="structures-menu">
+            <gp-icon name="structure"></gp-icon>
+          </button>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <div *ngxPermissionsOnly="['app.admin.datahandling.show']"
+         [class.active]="isActiveNavItem('admin-menu')"
+         gpFxLayoutAlign="center">
+      <button (click)="toggleNavDetail('admin-menu')"
+              mat-icon-button
+              matTooltip="{{ 'OPEN_ADMIN_MENU' | translate }}"
+              matTooltipHideDelay="{{ 'hideDelay' | tooltipDefault }}"
+              matTooltipPosition="{{ 'position' | tooltipDefault }}"
+              matTooltipShowDelay="{{ 'showDelay' | tooltipDefault }}">
+        ADMIN
+      </button>
+    </div>
+
+    <ng-container *gpFeatureToggle="'LINK_TO_REPORTING'">
+      <div *ngxPermissionsOnly="['app.report.show']"
+           gpFxLayoutAlign="center">
+        <button mat-icon-button
+                matTooltip="{{ 'GOTO_REPORTING' | translate }}"
+                matTooltipHideDelay="{{ 'hideDelay' | tooltipDefault }}"
+                matTooltipPosition="{{ 'position' | tooltipDefault }}"
+                matTooltipShowDelay="{{ 'showDelay' | tooltipDefault }}"
+                routerLink="/reporting">
+                <!-- temporarily redirects to help-center module, see app-routing.module.ts -->
+          <gp-icon name="reporting"></gp-icon>
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-container>
+      <div [class.active]="isActiveNavItem('help')"
+           gpFxLayoutAlign="center">
+        <button mat-icon-button
+                matTooltip="{{ 'GOTO_HELP' | translate }}"
+                matTooltipHideDelay="{{ 'hideDelay' | tooltipDefault }}"
+                matTooltipPosition="{{ 'position' | tooltipDefault }}"
+                matTooltipShowDelay="{{ 'showDelay' | tooltipDefault }}"
+                routerLink="/help">
+          <gp-icon name="help-center"></gp-icon>
+        </button>
+      </div>
+    </ng-container>
+    <div [class.active]="isActiveNavItem('app-menu')"
+         gpFxLayoutAlign="center">
+      <button (click)="toggleNavDetail('app-menu')"
+              mat-icon-button
+              matTooltip="{{ 'OPEN_APP_MENU' | translate }}"
+              matTooltipHideDelay="{{ 'hideDelay' | tooltipDefault }}"
+              matTooltipPosition="{{ 'position' | tooltipDefault }}"
+              matTooltipShowDelay="{{ 'showDelay' | tooltipDefault }}">
+        <gp-icon name="settings"></gp-icon>
+      </button>
+    </div>
+  </div>
+
+  <mat-sidenav-container>
+    <mat-sidenav #navDetail
+                 [autoFocus]="false"
+                 class="detail"
+                 mode="side"
+                 data-cy="nav-bar-mat-sidenav">
+      <div gpFxLayoutAlign="end">
+        <button (click)="toggleNavDetail()"
+                mat-icon-button>
+          <gp-icon name="close"
+                   size="small"></gp-icon>
+        </button>
+      </div>
+
+      <gp-creation-menu *ngIf="isActiveNavItem('creation-menu')"></gp-creation-menu>
+
+      <gp-admin-menu *ngIf="isActiveNavItem('admin-menu')"></gp-admin-menu>
+
+      <gp-searchfield #searchField
+                      *ngIf="isActiveNavItem('search')"
+                      [placeHolderText]="searchFieldInput.placeHolderText"
+                      [predefinedSearchFilters]="searchFieldInput.predefinedSearchFilters"
+                      [searchResultMessage]="searchFieldInput.searchResultMessage"
+                      [settings]="searchFieldSettings"
+                      data-cy="nav-bar-searchfield"
+      >
+      </gp-searchfield>
+
+      <gp-retailer-outlets *ngIf="isActiveNavItem('retailer-outlets')"></gp-retailer-outlets>
+
+      <gp-structures-menu *ngIf="isActiveNavItem('structures-menu')"></gp-structures-menu>
+
+      <gp-app-menu *ngIf="isActiveNavItem('app-menu')"></gp-app-menu>
+    </mat-sidenav>
+  </mat-sidenav-container>
+</nav>

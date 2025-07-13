@@ -1,0 +1,26 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+ng-scrollbar {
+  width: 100%;
+  max-height: 350px;
+  top: 0px;
+  left: 0px;
+  z-index: 100;
+
+  .contents {
+    height: 100%;
+    padding: 10px;
+    font-size: 20px;
+    line-height: 25px;
+    background-color: mat.get-color-from-palette($warn, 500);
+    color: mat.get-color-from-palette($warn, 50);
+    left: 0;
+
+    ul {
+      ::ng-deep a {
+        color: white;
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+@use '@angular/material' as mat;
+@import '../../../styles-theme';
+
+ng-scrollbar {
+  width: 100%;
+  max-height: 350px;
+  top: 0px;
+  left: 0px;
+  z-index: 100;
+
+  .contents {
+    height: 100%;
+    padding: 10px;
+    font-size: 20px;
+    line-height: 25px;
+    background-color: mat.get-color-from-palette($primary, 300);
+    color: mat.get-color-from-palette($primary, 50);
+    left: 0;
+
+    .task-tile-header {
+      margin-top: 9px;
+      margin-left: 9px;
+      margin-bottom: 10px;
+      color: mat.get-color-from-palette($primary, 50);
+      font-size: 26px;
+    }
+
+    .task-type {
+      margin-top: 9px;
+      margin-left: 9px;
+      margin-bottom: 5px;
+    }
+
+    .task-row {
+      &:hover {
+        cursor: pointer;
+        background-color: mat.get-color-from-palette($primary, 100);
+      }
+    }
+  }
+}
+
+.task-tile{
+  margin-bottom: 20px;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}

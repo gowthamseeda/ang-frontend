@@ -1,0 +1,58 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+:host {
+  display: flex;
+  height: 90px;
+  width: 100%;
+}
+
+.sub-outlet-node-line {
+  width: 40px;
+
+  .up {
+    height: 50px;
+    margin: -10px 0px 0px 20px;
+    border-left: 1px solid mat.get-color-from-palette($primary, 200);
+    border-bottom: 1px solid mat.get-color-from-palette($primary, 200);
+  }
+  .down {
+    height: 50px;
+    margin: 0px 0px 0px 20px;
+    border-left: 1px solid mat.get-color-from-palette($primary, 200);
+  }
+}
+
+.outlet-node-wrapper {
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+  flex: 1 1 auto;
+  padding: 10px 10px 0px 10px;
+  border: 1px solid mat.get-color-from-palette($primary, 200);
+  color: mat.get-color-from-palette($primary, 200);
+
+  .title {
+    display: inline-block !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 3px 5px 0px 0px;
+  }
+
+  .actions {
+    /* to allow ellipsis in flex */
+    flex: 1 1 0% !important;
+  }
+
+  &.inactive {
+    border: 1px solid mat.get-color-from-palette($accent, 600);
+    color: mat.get-color-from-palette($accent, 600);
+  }
+}
+.outlet-node-wrapper.selected,
+.outlet-node-wrapper:hover {
+  border: 1px solid mat.get-color-from-palette($primary, 50);
+  color: mat.get-color-from-palette($primary, 50);
+  cursor: pointer;
+}

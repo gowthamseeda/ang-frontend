@@ -1,0 +1,78 @@
+<mat-table matSort class="members-table" [dataSource]="dataSource" [class.read-only]="readOnly || disabled">
+
+  <ng-container matColumnDef="filter">
+    <mat-header-cell *matHeaderCellDef style="flex: 0 1 600px; max-width: 600px;">
+      <mat-form-field gpFxFlex="70%">
+        <mat-label>{{ 'SEARCH_OUTLETS_PLACEHOLDER' | translate }}</mat-label>
+        <input matInput (keyup)="filterTable($event.target.value)" type="text" data-cy="members-table-filter-input">
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="legalName">
+    <mat-header-cell *matHeaderCellDef gpFxFlex="25" mat-sort-header>
+      {{ 'LEGAL_NAME' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" gpFxFlex="25" gpFxLayoutColumn gpFxLayoutAlign="start start"
+              data-cy="members-table-row-name" style="display: flex;">
+      <a routerLink="/outlet/{{element.id}}">{{element.legalName}}</a>
+      <div gpFxLayout="row wrap" gpFxLayoutGap="10px">
+        <span>{{element.companyId}}</span>
+        <span>{{element.id}}</span>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="address">
+    <mat-header-cell *matHeaderCellDef mat-sort-header gpFxFlex="25">
+      {{ 'ADDRESS' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" gpFxLayoutColumn gpFxFlex="25" gpFxLayoutAlign="start start"
+              style="display: flex;">
+      <span>{{element.address.street}} {{element.address.streetNumber}}</span>
+      <span>{{element.address.city}}</span>
+      <span>{{element.country.id | translateCountry | async}}</span>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="brandCode">
+    <mat-header-cell *matHeaderCellDef gpFxFlex="25">
+      {{ 'BRAND_CODE' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" gpFxFlex="25">
+      <gp-brand-code [outletId]="element.id" [brandCodesInput]="element.brandCodes"></gp-brand-code>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef mat-sort-header gpFxFlex="25">
+      {{ 'TYPE' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" gpFxFlex="25">
+      <mat-basic-chip *ngIf="element.isRegisteredOffice" disabled>
+        RO
+      </mat-basic-chip>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="cancel">
+    <mat-header-cell *matHeaderCellDef gpFxFlex="5"></mat-header-cell>
+    <mat-cell *matCellDef="let element" gpFxLayout="row" gpFxLayoutAlign="center center" gpFxFlex="5">
+      <button mat-icon-button [disabled]="disabled || readOnly" (click)="removeMember(element.id)"
+              matTooltip="{{ 'STRUCTURES_REMOVE_MEMBER' | translate }}" matTooltipPosition="after"
+              data-cy="members-table-remove-button">
+        <gp-icon name="minus"></gp-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns" [class.row-disabled]="disabled"
+                  [class.header-row-hide]="hideHeader">
+  </mat-header-row>
+  <mat-header-row *matHeaderRowDef="['filter']" [class.header-row-hide]="hideHeader || members?.length <= 1"
+                  class="filter">
+  </mat-header-row>
+  <mat-row *matRowDef="let element; columns: displayedColumns;" [class.row-disabled]="disabled || !element.active"
+           [class.non-ro-member]="nonRoMember" data-cy="members-table-row">
+  </mat-row>
+</mat-table>

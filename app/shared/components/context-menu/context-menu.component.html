@@ -1,0 +1,14 @@
+<ng-template cdkConnectedOverlay
+             [cdkConnectedOverlayOrigin]="overlayOrigin"
+             [cdkConnectedOverlayPositions]="positions"
+             [cdkConnectedOverlayOffsetX]="offsetX"
+             [cdkConnectedOverlayOffsetY]="offsetY"
+             [cdkConnectedOverlayOpen]="opened"
+             [cdkConnectedOverlayHasBackdrop]="true"
+             [cdkConnectedOverlayBackdropClass]="backdropStyle"
+             cdkConnectedOverlayPanelClass="cdk-context-menu-panel"
+             (backdropClick)="close()">
+  <div>
+    <ng-content></ng-content>
+  </div>
+</ng-template>

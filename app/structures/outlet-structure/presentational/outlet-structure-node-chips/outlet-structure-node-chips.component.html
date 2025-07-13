@@ -1,0 +1,11 @@
+<ng-container *ngIf="tags.length > 0">
+  <mat-chip-set gpFxFlex
+                 class="outlet-tags-box">
+    <ng-container *ngFor="let tag of tags">
+      <mat-chip [ngClass]="{ inactive: inactive }"
+                matTooltip="{{ tag + '_TOOLTIP' | translate }}">
+        <span>{{ tag | translate }}</span>
+      </mat-chip>
+    </ng-container>
+  </mat-chip-set>
+</ng-container>

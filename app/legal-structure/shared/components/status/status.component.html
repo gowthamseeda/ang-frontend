@@ -1,0 +1,54 @@
+<ng-container container *ngIf="parentForm">
+  <div gpFxLayout="column" [formGroup]="parentForm">
+    <div gpFxFlexFill>
+      <div gpFxLayout>
+        <h1>{{ 'STATUS' | translate }}</h1>
+      </div>
+
+      <div gpFxLayout="row" gpFxLayoutAlign="none center" gpFxLayoutGap="15px">
+        <span class="status-text">{{ 'ACTIVE_FROM' | translate }}:</span>
+        <mat-form-field gpFxFlex="23">
+          <mat-label>{{ 'CHOOSE_DATE' | translate }}</mat-label>
+          <input matInput formControlName="startOperationDate" [readonly]="readonly"
+                 [max]="parentForm.get('closeDownDate')?.value" [matDatepicker]="pickerFrom"
+                 data-cy="status-active-from" />
+          <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"
+                                 *ngIf="parentForm.get('startOperationDate')?.enabled && !readonly">
+            <gp-icon *ngIf="parentForm.get('startOperationDate')?.disabled || readonly" name="lock" size="small"
+                     matDatepickerToggleIcon>
+            </gp-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #pickerFrom></mat-datepicker>
+        </mat-form-field>
+
+        <span class="status-text">{{ 'UNTIL' | translate }}:</span>
+        <mat-form-field gpFxFlex="23">
+          <mat-label>{{ 'CHOOSE_DATE' | translate }}</mat-label>
+          <input matInput formControlName="closeDownDate" [readonly]="readonly"
+                 [min]="parentForm.get('startOperationDate')?.value" [matDatepicker]="pickerUntil"
+                 data-cy="status-active-until" />
+          <mat-datepicker-toggle matIconSuffix [for]="pickerUntil"
+                                 *ngIf="parentForm.get('closeDownDate')?.enabled && !readonly"
+                                 data-cy="status-active-until-datepicker">
+            <gp-icon *ngIf="parentForm.get('closeDownDate')?.disabled || readonly" name="lock" size="small">
+            </gp-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #pickerUntil></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field gpFxFlex *ngIf="showCloseDownReason()">
+          <mat-label>{{ 'INACTIVITY_REASON' | translate }}</mat-label>
+          <mat-select formControlName="closeDownReasonId" placeholder="{{ 'INACTIVITY_REASON' | translate }}">
+            <mat-option [value]=""></mat-option>
+            <mat-option *ngFor="let closeDownReason of closeDownReasons" [value]="closeDownReason.id"
+                        [disabled]="readonly">
+              {{ closeDownReason | translateData: (userSettings | async)?.languageId }}
+            </mat-option>
+          </mat-select>
+          <gp-icon matSuffix *ngIf="parentForm.get('closeDownReasonId')?.disabled || readonly" name="lock" size="small">
+          </gp-icon>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</ng-container>

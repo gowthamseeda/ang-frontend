@@ -1,0 +1,178 @@
+<gp-popup [title]="'INITIATE_DATA_VERIFICATION' | translate"
+          [showDialogActions]="true"
+          [size]="[825, 675]"
+          [isOkButtonDisabled]="disabled || !form.valid"
+          [saveButtonText]="'CREATE_TASK' | translate"
+          (saveButtonClicked)="save()"
+          (cancelButtonClicked)="cancel()">
+
+  <form [formGroup]="form">
+    <div gpFxLayoutColumn>
+      <div gpFxLayoutRow
+           gpFxFlex="35">
+        <div gpFxLayoutColumn>
+          <h3>{{ 'DUE_DATE' | translate }}</h3>
+          <mat-form-field class="show-footer no-horizontal-hint-space">
+            <mat-label>{{ 'CHOOSE_DATE' | translate }}</mat-label>
+            <input matInput
+                   [matDatepicker]="dueDate"
+                   [min]="currentDate"
+                   formControlName="dueDate">
+            <mat-hint class="optional">{{ 'OPTIONAL' | translate }}</mat-hint>
+            <mat-datepicker-toggle [for]="dueDate"
+                                   matSuffix></mat-datepicker-toggle>
+            <mat-datepicker #dueDate></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div gpFxLayout="row wrap"
+           class="section">
+
+        <ng-container *ngIf="(forRetailFeatureToggleFlag | async) else default">
+          <div
+               *ngFor="let dataVerificationField of dataVerificationFields"
+               class="outlet-section"
+               gpFxLayoutColumn
+          >
+            <h3>{{ dataVerificationField.aggregateName | translate }}</h3>
+            <div gpFxLayout="row wrap"
+                 style="flex: none; gap: 5px">
+
+              <ng-container  *ngFor="let aggregateField of dataVerificationField.aggregateFieldObjs" >
+              <div class="checkbox"
+                   *ngIf="(aggregateField.isObject && !aggregateField.isSubField) || (!aggregateField.isObject && !aggregateField.isSubField) "
+                   [attr.gpFxFlex]="dataVerificationField.aggregateName === 'BUSINESS_SITE' ? '30' : '100'"
+
+              >
+
+                <div *ngIf="(!aggregateField.isObject && !aggregateField.isSubField) ;else dropDownCheckbox">
+                <mat-checkbox [formControlName]="aggregateField.name"
+                              (change)="form.markAsDirty()">
+                  {{ this.toUpperSnakeCase(aggregateField.name) | translate }}
+                </mat-checkbox>
+                </div>
+                <ng-template #dropDownCheckbox>
+                  <div gpFxLayout="column" *ngIf="!aggregateField.isSubField">
+                    <mat-checkbox [formControlName]="aggregateField.name"
+                                  (change)="checkAllChildCluster(aggregateField.name)">
+                      <label>{{ this.toUpperSnakeCase(aggregateField.name) | translate }}</label>
+                      <span fxFlex></span>
+                      <button mat-icon-button
+                              (click)="aggregateField.isExpanded=!aggregateField.isExpanded">
+                        <gp-icon color="petrol"
+                                 size="small"
+                                 [name]="aggregateField.isExpanded ? 'accordion-open' : 'accordion'"></gp-icon>
+                      </button>
+                    </mat-checkbox>
+
+                    <div *ngFor="let subItem of aggregateField.subFields">
+                      <div class="collapsible">
+                        <div [hidden]="!aggregateField.isExpanded?true:null">
+                          <mat-checkbox [formControlName]="subItem"
+                                        (change)="checkChildCheckBox(aggregateField.name)">
+                            {{ this.toUpperSnakeCase(subItem) | translate }}
+                          </mat-checkbox>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+
+              </div>
+              </ng-container>
+
+            </div>
+          </div>
+
+          <div gpFxLayoutColumn style="width: 100%">
+            <h3>{{ 'DATA_VERIFICATION_SERVICE' | translate }}</h3>
+            <div gpFxLayout="row wrap"
+                 style="flex: none;">
+              <div class="checkbox"
+                   gpFxFlex="100">
+                <mat-checkbox formControlName='COMMUNICATION_CHANNELS'
+                              (change)="form.markAsDirty()">
+                  {{ 'COMMUNICATION_CHANNELS' | translate }}
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+          <div gpFxLayoutColumn>
+            <h3>{{ 'OPENING_HOURS' | translate }}</h3>
+            <div gpFxLayout="row wrap"
+                 style="flex: none;">
+              <div class="checkbox"
+                   gpFxFlex="100" *ngFor="let item of services">
+                <mat-checkbox (change)="form.markAsDirty();
+                addOpeningHour4RTask(item, $event.checked)">
+                  {{ item | translate }}
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #default>
+          <div class="outlet-section"
+               gpFxLayoutColumn>
+            <h3>{{ 'DATA_VERIFICATION_OUTLET' | translate }}</h3>
+            <div gpFxLayout="row wrap"
+                 style="flex: none;">
+              <div class="checkbox"
+                   gpFxFlex="20"
+                   *ngFor="let item of baseDataDataCluster">
+                <div>
+                  <mat-checkbox [formControlName]="item.name"
+                                (change)="form.markAsDirty()">
+                    {{ item.name | translate }}
+                  </mat-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div gpFxLayoutColumn>
+            <h3>{{ 'DATA_VERIFICATION_LEGAL' | translate }}</h3>
+            <div gpFxLayout="row wrap"
+                 style="flex: none;">
+              <div class="checkbox"
+                   gpFxFlex="100"
+                   *ngFor="let item of legalDataCluster">
+                <mat-checkbox [formControlName]="item"
+                              (change)="form.markAsDirty()">
+                  {{ item | translate }}
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+
+          <div gpFxLayoutColumn>
+            <h3>{{ 'DATA_VERIFICATION_SERVICE' | translate }}</h3>
+            <div gpFxLayout="row wrap"
+                 style="flex: none;">
+              <div class="checkbox"
+                   gpFxFlex="100"
+                   *ngFor="let item of serviceDataCluster">
+                <mat-checkbox [formControlName]="item"
+                              (change)="form.markAsDirty()">
+                  {{ item | translate }}
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+      <div gpFxLayoutColumn
+           class="section">
+        <h3>{{ 'Comment' | translate }}</h3>
+        <gp-text-area [form]="form"
+                      [minHeight]="80"
+                      [readonly]="false"
+                      [maxCharLength]="maxCommentCharLength"
+                      [placeHolder]="'VERIFICATION_REQUEST_COMMENT_PLACEHOLDER' | translate">
+        </gp-text-area>
+      </div>
+    </div>
+  </form>
+</gp-popup>

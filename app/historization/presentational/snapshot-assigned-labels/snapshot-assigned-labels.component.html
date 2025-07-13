@@ -1,0 +1,95 @@
+<ng-container *ngIf="currentLabels && currentLabels.length > 0; else showEmpty">
+  <ng-container *ngFor="let label of currentLabels;">
+    <ng-container *ngIf="isFieldChangedCompareWholeData(label) ||
+    (!isFieldChangedCompareWholeData(label) && !showChangeOnlyToggleInput); else showNothing">
+      <ul>
+        <ng-container
+          *ngIf="{
+          isFieldChanged: isFieldChangedFromComparingData('labelId',label),
+          labelId: 'labelId'
+        } as locals"
+        >
+          <li [class.changed]="locals.isFieldChanged">
+            {{ 'LABEL_ID' | translate }} :
+            {{ locals.isFieldChanged && displayChangesToggleInput ?
+               '[' + (getFieldDataFromComparingData(locals.labelId,
+                                                    label)| emptyValuePipe) + '] =>' :
+               '' }}
+            <ng-container *ngIf="masterDataChangesFeatureToggle; else noMasterDataChanges">
+              <a (click)="toggleMasterDataLabelDetail(label!!.labelId)" class="popupLink">
+                {{ label?.labelId | emptyValuePipe }}
+              </a>
+            </ng-container>
+            <ng-template #noMasterDataChanges>
+            {{ label?.labelId | emptyValuePipe }}
+            </ng-template>
+          </li>
+        </ng-container>
+        <ng-container
+          *ngIf="{
+            isFieldChanged: isFieldChangedFromComparingData('brandId',label),
+            brandId: 'brandId'
+          } as locals"
+        >
+          <li class="hide-bullet" [class.changed]="locals.isFieldChanged">
+            {{ 'BRANDS_ID' | translate }} :
+            {{ locals.isFieldChanged && displayChangesToggleInput ?
+               '[' + (getFieldDataFromComparingData(locals.brandId,
+                                                    label)| emptyValuePipe) + '] =>' :
+               '' }}
+            <ng-container *ngIf="masterDataChangesFeatureToggle; else defaultBrandId">
+              <a *ngIf="label?.brandId; else defaultBrandId" (click)="toggleMasterDataByBrandId(label.brandId)" class="popupLink">
+                {{ label?.brandId | emptyValuePipe }}
+              </a>
+            </ng-container>
+            <ng-template #defaultBrandId>
+              <span>
+                {{ label?.brandId | emptyValuePipe }}
+              </span>
+            </ng-template>
+          </li>
+        </ng-container>
+      </ul>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #showEmpty>
+  <span [class.changed]="isChanged()">
+    <ng-container *ngIf="!(isChanged() && displayChangesToggleInput); else showRemovePreviousChanges">
+      {{ '' | emptyValuePipe }}
+    </ng-container>
+  </span>
+</ng-template>
+
+<ng-template #showNothing>
+</ng-template>
+
+<ng-template #showRemovePreviousChanges>
+  <div gpFxLayout="row wrap" gpFxLayoutAlign="center" gpFxLayoutGap="15px">
+    <ng-container *ngIf="comparingLabels && comparingLabels.length > 0; else showDash">
+      <div>
+        <ng-container *ngFor="let label of comparingLabels;">
+          <ul>
+            <li>
+              {{ 'LABEL_ID' | translate }} :
+              {{ label?.labelId | emptyValuePipe }}
+            </li>
+            <li class="hide-bullet">
+              {{ 'BRANDS_ID' | translate }} :
+              {{ label?.brandId | emptyValuePipe }}
+            </li>
+          </ul>
+        </ng-container>
+      </div>
+    </ng-container>
+    <span> => </span>
+    <span>
+      {{ '' | emptyValuePipe }}
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #showDash>
+  {{ '' | emptyValuePipe }}
+</ng-template>

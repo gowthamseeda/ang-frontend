@@ -1,0 +1,12 @@
+@import 'src/styles-theme';
+
+.container {
+  height: 100%;
+  margin-left: 18px;
+  margin-right: 20px;
+  min-height: 305px;
+}
+
+.no-overflow {
+  overflow-y: hidden;
+}

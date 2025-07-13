@@ -1,0 +1,97 @@
+<div gpFxLayout="column">
+  <h5>{{ 'GENERAL_GROUPS_BRAND_PRODUCTGROUPS_AND_SERVICES' | translate }}</h5>
+
+  <div gpFxLayout="row">
+    <mat-table *ngIf="brandProductGroupsServicesRows"
+               [dataSource]="sortByBrandPosition(brandProductGroupsServicesRows | keyvalue) | async"
+               matSort
+               style="flex: 0 1 600px;max-width: 600px">
+
+      <ng-container matColumnDef="brands">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row"
+                  gpFxLayout="row"
+                  gpFxLayoutAlign="start center"
+                  gpFxFlex="60px">
+          <gp-brand-icon [id]="row.key"
+                         tooltipPosition="above">
+          </gp-brand-icon>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="productGroups">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row"
+                  gpFxLayout="row"
+                  gpFxLayoutAlign="start center">
+          <div *ngFor="let brandProductGroupService of uniqueByProductGroup(row.value)">
+            <gp-product-group [productGroupId]="brandProductGroupService.productGroupId"
+                              [readOnly]="disabled"
+                              tooltipPosition="above"
+                              size="medium"
+                              color="none">
+            </gp-product-group>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="services">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row"
+                  gpFxLayout="row wrap"
+                  gpFxLayoutAlign="start center">
+          <mat-basic-chip *ngFor="let brandProductGroupService of uniqueByService(row.value)"
+                          disabled>
+            {{ getServiceName(brandProductGroupService.serviceId) }}
+          </mat-basic-chip>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell gpFxLayout="row"
+                  gpFxLayoutAlign="center center"
+                  gpFxFlex="110px"
+                  *matCellDef="let row">
+          <ng-container *ngIf="!disabled && !readOnly && isAuthorizedBrand(row.value)">
+            <button mat-icon-button
+                    (click)="editBrandProductGroupsServices(row.value)"
+                    matTooltip="{{ 'GENERAL_GROUPS_EDIT_BRAND_PRODUCTGROUPS_AND_SERVICES' | translate }}"
+                    matTooltipPosition="above"
+                    [class.hide]="!isAllowedToEditBrandProductGroupServices(row.key)"
+                    data-cy="brand-product-group-services-table-edit-button">
+              <gp-icon name="pen"></gp-icon>
+            </button>
+            <button mat-icon-button
+                    (click)="removeBrandProductGroupServices(row.key)"
+                    matTooltip="{{ 'GENERAL_GROUPS_REMOVE_BRAND_PRODUCTGROUPS_AND_SERVICES' |
+                    translate }}"
+                    matTooltipPosition="above"
+                    [class.hide]="!isAllowedToRemoveBrandProductGroupServices(row.value)"
+                    data-cy="brand-product-group-services-table-remove-button">
+              <gp-icon name="trash"></gp-icon>
+            </button>
+          </ng-container>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row class="hide"
+                      *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"
+               [class.row-disabled]="disabled"
+               data-cy="brand-product-group-services-table-row"></mat-row>
+    </mat-table>
+  </div>
+
+  <button mat-flat-button
+          class="add-btn gp-icon-flat-button"
+          *ngIf="!readOnly"
+          [disabled]="disabled || availableBrandIds.length === 0"
+          (click)="addBrandProductGroupsServices()"
+          data-cy="add-brand-product-group-services-button">
+    <gp-icon gpIconButtonWithText
+             name="plus"
+             [class.icon-disabled]="disabled"></gp-icon>
+    {{ 'GENERAL_GROUPS_ADD_BRAND_PRODUCTGROUPS_AND_SERVICES' | translate }}
+  </button>
+</div>

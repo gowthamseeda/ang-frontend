@@ -1,0 +1,66 @@
+<gp-overlay-layout [toolTipText]="'COMPANY_NAVIGATION_TREE'"
+                   [enableCompanyNavigation]="getEnableCompanyNavigation()">
+  <gp-outlet-header header-toolbar>
+  </gp-outlet-header>
+
+  <gp-edit-layout *ngIf="service"
+                  [marginalColumnDisabled]="true"
+                  logo="contracts"
+                  title="{{ 'CONTRACTS' | translate }}">
+
+    <div class="content">
+      <gp-services-chip *ngIf="service"
+                        [name]="service | translateData: currentSelectedLanguage">
+      </gp-services-chip>&nbsp;
+      <gp-services-chip *ngIf="serviceCharacteristicName"
+                        [name]="serviceCharacteristicName">
+      </gp-services-chip>
+
+      <div class="scroll-area">
+        <ng-scrollbar track="all">
+          <gp-brand-product-groups-data-table dataColumnName="CONTRACTOR"
+                                              [brandProductGroupsData]="contractees | async"
+                                              [brandProductGroupValidities]="brandProductGroupValidities | async"
+                                              [brandProductGroupColumns]="offeredServicesBrandProductGroups | async"
+                                              [renderOnBrandProductGroupsDataChanges]="true"
+                                              [isLoading]="isLoading"
+                                              [readOnly]="!(userHasPermission | async)"
+                                              [permissions]="['contracts.contract.update']"
+                                              (brandProductGroupChange)="mergeContracts($event)">
+            <gp-contract-partner-info *matHeaderCellDef
+                                      [contractPartner]="contractor">
+            </gp-contract-partner-info>
+
+            <gp-contract-partner-search *matCellDef="let contractee; let rowIndex = index;"
+                                        gpFxFill
+                                        [contractPartner]="contractee.data"
+                                        [contextId]="getContextId(rowIndex)"
+                                        [countryRestrictions]="countryRestrictions | async"
+                                        [readOnly]="!(isUserPermittedFor(contractee.brandProductGroupIds) | async) || !(userHasPermission | async)"
+                                        (contractPartnerIdSelect)="upsertContracts($event, contractee)"
+                                        (contractPartnerDelete)="deleteContractPartner(contractee.brandProductGroupIds)"
+                                        (contractPartnerNavigate)="navigateToContractPartnerOutlet($event)">
+            </gp-contract-partner-search>
+          </gp-brand-product-groups-data-table>
+        </ng-scrollbar>
+      </div>
+    </div>
+  </gp-edit-layout>
+
+  <gp-default-edit-actions footer-toolbar
+                           *ngIf="userHasPermission | async"
+                           [saveButtonDisabled]="saveButtonDisabled"
+                           [cancelButtonDisabled]="cancelButtonDisabled"
+                           (save)="save()"
+                           (cancel)="reset()">
+  </gp-default-edit-actions>
+
+  <gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>
+
+  <ng-container overlay>
+    <gp-outlet-tree-navigation gpFxFlex
+                               gpFxFlexXsSm="auto"
+                               style="display: inline">
+    </gp-outlet-tree-navigation>
+  </ng-container>
+</gp-overlay-layout>

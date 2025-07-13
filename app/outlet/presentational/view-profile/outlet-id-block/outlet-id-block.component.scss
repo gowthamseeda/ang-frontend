@@ -1,0 +1,16 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.box {
+  width: 117px;
+  height: 26px !important;
+  background-color: mat.get-color-from-palette($warn, 650);
+  float: left;
+}
+
+.outlet-id {
+  color: mat.get-color-from-palette($accent, 50);
+  font-weight: bold;
+  font-size: 14px;
+  margin: 5px 24px;
+}

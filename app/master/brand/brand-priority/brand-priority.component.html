@@ -1,0 +1,33 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{label: 'MASTER_DATA', path: '/master'},
+             {label: 'BRANDS'}]">
+  </gp-header>
+  <div gpContent>
+    <div gpFxLayout="row"
+         gpFxLayoutGap="10px">
+      <gp-header-image [name]="'brands'"
+                       [large]="true"></gp-header-image>
+      <div gpFxLayout="column"
+           class="header">
+        <h1>{{ 'BRAND_PRIORITY' | translate }}</h1>
+        <span>{{ 'BRAND_PRIORITY_SUBTITLE' | translate }}</span>
+      </div>
+    </div>
+    <gp-position-control #positionControl
+                         updateSuccessTranslation="UPDATE_BRAND_PRIORITY_SUCCESS"
+                         logoTranslation="BRAND_LOGO"
+                         nameTranslation="BRAND_NAME"
+                         positionTranslation="BRAND_POSITION"
+                         imageFolder="brand-logos"
+                         [service]="service">
+    </gp-position-control>
+    <div class="button">
+      <button type="button"
+              mat-button
+              routerLink="/master">
+        {{ 'BACK_TO_MASTERDATA' | translate }}
+      </button>
+    </div>
+  </div>
+</gp-default-layout>

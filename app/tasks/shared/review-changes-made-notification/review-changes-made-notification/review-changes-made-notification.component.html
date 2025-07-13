@@ -1,0 +1,23 @@
+<ng-container *gpFeatureToggle="forRetailFeatureToggleName">
+  <gp-message type="info"
+              *ngIf="openTasks && openTasks.length > 0"
+  >
+    <div class="info-banner-4r"
+         gpFxLayoutAlign="space-between center">
+      <div class="banner-content-4r"
+           gpFxLayoutAlign="start">
+        <span class="banner-text-4r">{{ 'REVIEW_CHANGES_MADE'|translate }}</span>
+      </div>
+      <div gpFxLayoutGap="4px">
+        <button mat-stroked-button
+                class="action-button-4r"
+                (click)="onAcceptAll()">{{ 'ACCEPT_ALL'|translate }}
+        </button>
+        <button mat-stroked-button
+                class="action-button-4r"
+                (click)="onDeclineAll()">{{ 'DECLINE_ALL'|translate }}
+        </button>
+      </div>
+    </div>
+  </gp-message>
+</ng-container>

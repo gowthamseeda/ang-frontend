@@ -1,0 +1,141 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+:host-context(.mat-mdc-cell) {
+  input[type='time'],
+  input[type='text'] {
+    width: 95px;
+  }
+}
+
+:host {
+  width: 100%;
+  min-height: 125px;
+  display: flex;
+  position: initial;
+  align-self: center;
+  align-items: center;
+  border: 0;
+
+  /* Chrome */
+  ::ng-deep input::-webkit-input-placeholder {
+    color: mat.get-color-from-palette($accent, 800) !important;
+  }
+
+  /* Firefox 18- */
+  ::ng-deep input:-moz-placeholder {
+    color: mat.get-color-from-palette($accent, 800) !important;
+  }
+
+  /* Firefox 19+ */
+  ::ng-deep input::-moz-placeholder {
+    color: mat.get-color-from-palette($accent, 800) !important;
+  }
+
+  /* IE 11 */
+  ::ng-deep input:-ms-input-placeholder {
+    color: mat.get-color-from-palette($accent, 800) !important;
+  }
+
+  &.validation-error {
+    border: 1px solid mat.get-color-from-palette($warn, 500);
+  }
+}
+
+.opening-time {
+  width: 100%;
+  text-align: center;
+  line-height: 32px;
+
+  .opening-time-container {
+    position: relative;
+    height: 36px;
+    justify-content: center;
+
+    .opening-time-plus-minus {
+      width: 64px;
+    }
+
+    .opening-time-error {
+      pointer-events: none;
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      font-size: 12px;
+    }
+
+    .opening-time-input {
+      .time-format-buttons {
+        display: none;
+      }
+
+      &:hover {
+        .time-format-buttons {
+          display: inline;
+        }
+      }
+
+      .time-from-to-divider {
+        margin: 0 7px 0 7px;
+      }
+
+      .mat-mdc-form-field{
+        padding-bottom: 0;
+        ::ng-deep .mdc-line-ripple{
+          display: none;
+        }
+      }
+
+
+      .mat-mdc-input-element {
+        font-size: 16px;
+        height: 19px;
+        width: 66px !important;
+        color: mat.get-color-from-palette($accent, 800);
+        margin-right: 2px;
+        text-align: center;
+        background: transparent;
+
+        &.readOnly {
+          color: mat.get-color-from-palette($accent, 600);
+        }
+
+        &.readOnly:hover {
+          cursor: default;
+        }
+
+        &.empty {
+          color: mat.get-color-from-palette($accent, 600);
+          border: none;
+        }
+      }
+    }
+  }
+}
+.opening-time-with-task {
+  width: 100%;
+  text-align: center;
+  line-height: 32px;
+  min-height: 125px;
+
+  .pending-task-notification-row {
+    flex: 1 1 auto;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.1px solid #c8c8c8;
+  }
+
+  .background-for-future {
+    background-color: #D5F0C0;
+  }
+
+  .background-for-past {
+    background-color: #fff3cd;
+  }
+
+  .task-row {
+    flex-direction: row;
+  }
+}

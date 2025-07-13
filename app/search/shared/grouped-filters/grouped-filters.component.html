@@ -1,0 +1,48 @@
+<mat-basic-chip *ngIf="filterOptions && filterOptions.length > 0"
+                class="filter-group">
+
+  {{ getFilterGroupName() | adjustFilter | underscore | uppercase | translate }}
+
+  <gp-icon *ngIf="isSelectableFilterGroup()"
+           (click)="emitSelectedFilterGroup()"
+           name="add"
+           size="small"></gp-icon>
+
+  <span class="vertical-divider"></span>
+  <gp-icon (click)="speechBubbleOpened=!speechBubbleOpened"
+           #overlayOrigin="cdkOverlayOrigin"
+           cdkOverlayOrigin
+           name="caret-down"
+           size="small"></gp-icon>
+
+  <gp-speech-bubble [overlayOrigin]="overlayOrigin"
+                    [(opened)]="speechBubbleOpened">
+    <span *ngFor="let filterOption of filterOptions"
+          gpFxLayout="column"
+          gpFxLayoutAlign="start">
+      <mat-basic-chip (click)="emitSelectedFilter(filterOption)"
+                      class="filter-option">
+
+      <ng-container [ngSwitch]="getFilterOutput(filterOption)">
+        <ng-container *ngSwitchCase="'brand'">
+          <gp-translated-brand-flag [brandFlag]="filterOption.value">
+          </gp-translated-brand-flag>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'productGroup'">
+          <gp-translated-product-group-flag [productGroupFlag]="filterOption.value">
+          </gp-translated-product-group-flag>
+        </ng-container>
+
+         <ng-container *ngSwitchDefault>
+            {{ filterOption.value | adjustFilter | underscore | uppercase | translate }}
+         </ng-container>
+      </ng-container>
+
+      <gp-icon name="add"
+               size="small"></gp-icon>
+      </mat-basic-chip>
+    </span>
+
+  </gp-speech-bubble>
+</mat-basic-chip>

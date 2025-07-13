@@ -1,0 +1,61 @@
+<div class="main">
+  <div class="top">
+    <gp-outlet-profile-product-category-and-services-loader [isLoading]="isLoading | async">
+      <ng-container category-and-services-content
+                    *ngIf="hasOfferedProductCategories()">
+        <gp-outlet-profile-product-category-and-services *ngIf="primaryProductCategoryWithServices"
+                                                         [productCategoryWithServices]="primaryProductCategoryWithServices">
+        </gp-outlet-profile-product-category-and-services>
+
+        <gp-outlet-profile-product-categories [productCategories]="secondaryProductCategories">
+        </gp-outlet-profile-product-categories>
+      </ng-container>
+    </gp-outlet-profile-product-category-and-services-loader>
+  </div>
+
+  <div class="separator-line"></div>
+
+  <div class="bottom"
+       gpFxLayout="row wrap"
+       gpFxLayoutGap="layoutGap">
+    <div gpFxLayout="row"
+         gpFxLayoutGap="76px">
+      <ng-container container
+                    *ngIf="locatedAddress | async as address">
+        <gp-outlet-profile-data-loader [isLoading]="isLoading | async">
+          <gp-outlet-profile-data outlet-profile-data-content
+                                  headline="{{ 'ADDRESS' | translate }}"
+                                  [firstRow]="address?.formattedStreetAndNumber"
+                                  [secondRow]="address?.formattedZipAndCity"
+                                  [thirdRow]="address?.countryName">
+          </gp-outlet-profile-data>
+        </gp-outlet-profile-data-loader>
+      </ng-container>
+
+      <ng-container container
+                    *ngIf="poBox | async as poBox">
+        <gp-outlet-profile-data-loader [isLoading]="isLoading | async">
+          <gp-outlet-profile-data outlet-profile-data-content
+                                  *ngIf="poBox?.number"
+                                  headline="{{ 'PO_BOX' | translate }}"
+                                  [firstRow]="poBox?.number"
+                                  [secondRow]="poBox?.formattedZipAndCity">
+          </gp-outlet-profile-data>
+        </gp-outlet-profile-data-loader>
+      </ng-container>
+    </div>
+
+    <div class="lastColumn">
+      <ng-container container
+                    *ngIf="openingHours | async as openingHours">
+        <gp-opening-hours-loader [isLoading]="isLoading | async">
+          <gp-opening-hours opening-hours-content
+                            [currentLang]="(userSettings | async)?.languageId"
+                            [date]="openingHours.date"
+                            [fromTime]="openingHours.fromTime"
+                            [toTime]="openingHours.toTime"></gp-opening-hours>
+        </gp-opening-hours-loader>
+      </ng-container>
+    </div>
+  </div>
+</div>

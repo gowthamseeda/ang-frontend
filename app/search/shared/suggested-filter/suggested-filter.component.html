@@ -1,0 +1,18 @@
+<div class="suggested-filter"
+     *ngIf="!isHidden && suggestedFilters && suggestedFilters.length > 0">
+  <div class="header">
+    <div gpFxLayout
+         gpFxLayoutAlign="space-between">
+      <h5 gpFxFlexAlign="baseline">{{ 'SUGGESTED_FILTERS' | translate }}</h5>
+    </div>
+  </div>
+
+  <div class="tags">
+    <mat-chip-listbox>
+      <gp-grouped-filters *ngFor="let filterGroup of filterGroupsToDisplay"
+                          [filterOptions]="getFilterOptionsBy(filterGroup)"
+                          (filterSelect)="emitSelectedFilter($event)">
+      </gp-grouped-filters>
+    </mat-chip-listbox>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div *ngIf="subOutlet"
+     class="sub-outlet-node-line">
+  <div class="up"></div>
+  <div class="down"
+       *ngIf="!lastOutlet"></div>
+</div>
+<div class="outlet-node-wrapper"
+     gpFxLayout="column nowrap"
+     [ngClass]="{ inactive: inactive, selected: selected, subOutlet: subOutlet }">
+  <div gpFxLayout="row nowrap"
+       style="flex: none">
+    <div class="title"
+         gpFxLayout="column nowrap">
+      {{ businessSiteId }} - {{ city }}
+    </div>
+    <div class="actions"
+         gpFxLayoutAlign="end">
+      <ng-content select="[tags]"></ng-content>
+      <ng-content select="[lock]"></ng-content>
+      <ng-content select="[menu]"></ng-content>
+    </div>
+  </div>
+  <div gpFxLayout="row nowrap">
+    <ng-content select="[leadingCodes]"></ng-content>
+  </div>
+</div>

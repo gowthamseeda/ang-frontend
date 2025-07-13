@@ -1,0 +1,9 @@
+<h1>{{ title | translate }}</h1>
+<div class="tax-ids__row">
+  <div class="tax-id_column">
+    <ng-content select="[national-tax-number]"></ng-content>
+  </div>
+  <div class="tax-id_column">
+    <ng-content select="[vat-number]"></ng-content>
+  </div>
+</div>

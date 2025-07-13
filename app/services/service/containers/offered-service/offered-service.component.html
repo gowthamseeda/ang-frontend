@@ -1,0 +1,8 @@
+<gp-service-cell-toggle (add)="addOfferedService($event)"
+                        (remove)="removeOfferedService()"
+                        [isAssignable]="isAssignable | async"
+                        [offeredService]="offeredService | async"
+                        [serviceVariant]="serviceVariant | async"
+                        [showAddIcon]="showAddIcon"
+                        [userHasPermissions]="userHasPermissions | async">
+</gp-service-cell-toggle>

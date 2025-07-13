@@ -1,0 +1,52 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.business-names-table {
+  button.add-business-name {
+    margin-top: 30px;
+  }
+
+  .mat-mdc-table {
+    width: 100%;
+  }
+
+  .buttons {
+    margin-top: 30px;
+  }
+
+  .mat-mdc-table .mat-mdc-row {
+    &:hover {
+      background-color: mat.get-color-from-palette($accent, 100);
+    }
+
+    .mat-column-actions button {
+      visibility: hidden;
+    }
+
+    &:hover .mat-column-actions button {
+      visibility: visible;
+
+      .gp-icon:hover {
+        color: mat.get-color-from-palette($accent, 500);
+      }
+    }
+
+    &.locked {
+      opacity: 0.5;
+
+      .mat-column-actions button {
+        visibility: visible;
+        cursor: default;
+
+        .gp-icon,
+        .gp-icon:hover {
+          color: mat.get-color-from-palette($accent, 600);
+        }
+      }
+    }
+
+    gp-brand-selection {
+      width: 100%;
+    }
+  }
+}

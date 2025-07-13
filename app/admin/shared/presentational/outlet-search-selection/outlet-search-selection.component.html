@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{ title | translate | titlecase }}</h1>
+
+<mat-dialog-content>
+  <gp-searchfield [predefinedSearchFilters]="searchFieldInput.predefinedSearchFilters"
+                  [placeHolderText]="searchFieldInput.placeHolderText"
+                  [searchResultMessage]="searchFieldInput.searchResultMessage"
+                  [excludedSearchItems]="excludedOutletIds"
+                  [settings]="searchFieldSettings"
+                  (searchItemRetrieved)="searchItemRetrieved($event)">
+  </gp-searchfield>
+</mat-dialog-content>

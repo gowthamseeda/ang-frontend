@@ -1,0 +1,109 @@
+<gp-default-layout>
+  <gp-header header-toolbar [breadcrumbItems]="[{ label: 'STRUCTURE' },
+                    { label: 'GENERAL_GROUPS', path: '../../' },
+                    { label: 'GENERAL_GROUPS_EDIT' }]">
+  </gp-header>
+
+  <gp-edit-layout title="{{ 'GENERAL_GROUPS_EDIT' | translate }}" marginalColumnDisabled="true">
+    <gp-edit-section>
+
+      <div [formGroup]="generalGroupFormGroup" gpFxLayout="column" gpFxLayoutGap="15px">
+
+        <div gpFxLayout="row" gpFxLayoutGap="15px" class="row-height">
+          <div gpFxLayoutAlign="start center">
+            <mat-slide-toggle formControlName="active" color="primary" data-cy="edit-general-group-active-button">
+              {{ 'ACTIVE' | translate }}
+            </mat-slide-toggle>
+            <gp-icon matSuffix *ngIf="!isAuthorized" name="lock" size="small">
+            </gp-icon>
+          </div>
+
+          <button mat-flat-button class="gp-icon-flat-button"
+                  *ngIf="!generalGroupFormGroup.get('active')?.value && !hasSuccessor && isAuthorized"
+                  [disabled]="!isAuthorized" (click)="openGeneralGroupSuccessorList()"
+                  data-cy="edit-general-group-add-successor-button">
+            <gp-icon gpIconButtonWithText name="plus">
+            </gp-icon>
+            {{ 'STRUCTURES_ADD_SUCCESSOR' | translate }}
+          </button>
+        </div>
+
+        <div *ngIf="!generalGroupFormGroup.get('active')?.value && hasSuccessor" gpFxLayout="row">
+          <div gpFxLayout="row" style="flex: 0 1 600px;">
+            <div gpFxLayout="row" gpFxLayoutGap="15px" gpFxLayoutAlign="start center" gpFxFlex="70%"
+                 class="padding-right">
+              <mat-form-field>
+                <mat-label>{{ 'GENERAL_GROUPS_SUCCESSOR' | translate | uppercase }}</mat-label>
+                <input matInput type="text" value="{{successorGroupName}}" readonly />
+                <gp-icon matSuffix *ngIf="!isAuthorized" name="lock" size="small">
+                </gp-icon>
+              </mat-form-field>
+
+              <button *ngIf="isAuthorized" [disabled]="!isAuthorized" mat-icon-button
+                      (click)="removeGeneralGroupSuccessor()">
+                <gp-icon name="trash"></gp-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div gpFxLayout="row">
+          <div gpFxLayout="row" gpFxLayoutGap="15px" gpFxLayoutAlign="start center" style="flex: 0 1 600px;">
+            <mat-form-field gpFxFlex="70%">
+              <mat-label>{{ 'GENERAL_GROUPS_GROUP_NAME' | translate | uppercase }}</mat-label>
+              <input matInput type="text" formControlName="name"
+                     [readonly]="!this.generalGroupFormGroup.get('active')?.value || !isAuthorized" [required]="true"
+                     data-cy="edit-general-group-name-input" />
+              <gp-icon matSuffix *ngIf="!isAuthorized" name="lock" size="small">
+              </gp-icon>
+              <mat-error>
+                {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field gpFxFlex="30%" *ngIf="!isAuthorized; else showCountryDropdown"
+                            class="no-field-underline-arrow">
+              <input matInput type="text" placeholder="{{ 'COUNTRY' | translate | uppercase }}"
+                     [value]="generalGroupCountry.id | translateCountry: undefined: true | async"
+                     [readonly]="!this.generalGroupFormGroup.get('active')?.value || !isAuthorized" />
+            </mat-form-field>
+
+            <ng-template #showCountryDropdown>
+              <gp-country-dropdown gpFxFlex="30%" class="no-field-underline-arrow" [parentForm]="generalGroupFormGroup"
+                                   [uppercaseLabel]="true">
+              </gp-country-dropdown>
+            </ng-template>
+          </div>
+        </div>
+
+        <gp-brand-productgroups-services-table [brandProductGroupsServicesRows]="brandProductGroupsServicesRows"
+                                               [countryId]="generalGroupCountry?.id" [readOnly]="!isAuthorized"
+                                               [disabled]="!this.generalGroupFormGroup.get('active')?.value"
+                                               (brandProductGroupServiceIdsChange)="updateBrandProductGroupServicesControl($event)">
+        </gp-brand-productgroups-services-table>
+
+        <h2>{{'STRUCTURES_MEMBERS' | translate}}</h2>
+
+        <gp-members-table [members]="generalGroupMembers" [disabled]="!this.generalGroupFormGroup.get('active')?.value"
+                          [readOnly]="!isAuthorized" (memberRemoved)="removeGeneralGroupMember($event)">
+        </gp-members-table>
+
+      </div>
+
+    </gp-edit-section>
+  </gp-edit-layout>
+
+  <gp-default-edit-actions footer-toolbar gpFxFill *ngIf="isAuthorized"
+                           [saveButtonDisabled]="generalGroupFormGroup.invalid || generalGroupFormGroup.pristine"
+                           [cancelButtonDisabled]="generalGroupFormGroup.valid && generalGroupFormGroup.pristine"
+                           (save)="save()" (cancel)="reset()">
+    <button mat-flat-button class="gp-icon-flat-button" (click)="openGeneralGroupMembersList()" *ngIf="isAuthorized"
+            [disabled]="!isAuthorized || !this.generalGroupFormGroup.get('active')?.value"
+            data-cy="edit-general-group-add-members-button">
+      <gp-icon gpIconButtonWithText name="plus"></gp-icon>
+      {{ 'STRUCTURES_ADD_MEMBERS' | translate }}
+    </button>
+  </gp-default-edit-actions>
+</gp-default-layout>
+
+<gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>

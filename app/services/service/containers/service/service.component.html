@@ -1,0 +1,55 @@
+<gp-overlay-layout [toolTipText]="'COMPANY_NAVIGATION_TREE'" [enableCompanyNavigation]="getEnableCompanyNavigation()">
+  <gp-outlet-header header-toolbar>
+  </gp-outlet-header>
+
+  <gp-edit-layout logo="business" title="{{ 'SERVICES' | translate }}">
+    <gp-edit-section>
+      <ng-container marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_SERVICES' | translate }}</span>
+      </ng-container>
+      <gp-message *ngIf="!(isLoading | async) && (offeredServicesEmpty | async)" type="info">
+        {{ 'NO_SERVICES_MAINTAINED_YET' | translate }}
+      </gp-message>
+      <ng-container *ngIf="outlet">
+        <gp-service-table [countryId]="outlet.countryId" [outletId]="outlet.id">
+        </gp-service-table>
+      </ng-container>
+    </gp-edit-section>
+  </gp-edit-layout>
+
+  <gp-default-edit-actions *ngIf="(multiSelectDataService.copyStatus |async) else defaultActions"
+                           (cancel)="resetMultiSelect()" [cancelButtonDisabled]="disableCopy() | async"
+                           [saveButtonDisabled]="true" footer-toolbar>
+
+    <ng-container *ngIf="enableMultiSelect() && !(isLoading | async)">
+      <form [formGroup]=copyOfferedServiceToggleFormGroup>
+        <mat-slide-toggle labelPosition="after" color="primary" formControlName="copyOfferedService" gpFxFlex
+                          data-cy="copyOfferedServiceToggle">
+          {{ 'SERVICE_SHOW_MULTI_SELECT' | translate }}</mat-slide-toggle>
+      </form>
+    </ng-container>
+
+  </gp-default-edit-actions>
+
+  <ng-template #defaultActions>
+    <gp-default-edit-actions *ngIf="userHasPermissions | async" (cancel)="cancel()" (save)="save()"
+                             [cancelButtonDisabled]="pristine | async" [saveButtonDisabled]="pristine | async"
+                             footer-toolbar>
+
+      <ng-container *ngIf="enableMultiSelect() && !(isLoading | async)">
+        <form [formGroup]=copyOfferedServiceToggleFormGroup>
+          <mat-slide-toggle labelPosition="after" color="primary" formControlName="copyOfferedService" gpFxFlex
+                            data-cy="copyOfferedServiceToggle">
+            {{ 'SERVICE_SHOW_MULTI_SELECT' | translate }}</mat-slide-toggle>
+        </form>
+      </ng-container>
+
+    </gp-default-edit-actions>
+  </ng-template>
+  <gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>
+
+  <ng-container overlay>
+    <gp-outlet-tree-navigation gpFxFlex gpFxFlexXsSm="auto" style="display: inline">
+    </gp-outlet-tree-navigation>
+  </ng-container>
+</gp-overlay-layout>

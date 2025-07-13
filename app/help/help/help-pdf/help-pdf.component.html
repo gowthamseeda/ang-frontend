@@ -1,0 +1,7 @@
+<div gpFxLayout="row" gpFxLayoutAlign="space-between" gpFxLayoutGap="8px">
+  <span gpFxFlex="75%">{{pdf?.title| translate}}</span>
+  <span *ngIf="visibleSize" class="pdf-size">{{pdf?.size}} {{SIZE_UNIT}}</span>
+  <a mat-icon-button href="{{pdfSource}}" download="{{pdf?.name | translate}}" target="_blank">
+    <gp-icon name="download"></gp-icon>
+  </a>
+</div>

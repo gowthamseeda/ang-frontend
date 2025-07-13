@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.offered-service {
+  margin: 0;
+  width: 60px;
+
+  .product-group {
+    color: mat.get-color-from-palette(mat.$grey-palette, 500);
+    cursor: pointer;
+    visibility: hidden;
+
+    &.read-only {
+      cursor: default;
+    }
+
+    &.show-add-icon {
+      visibility: visible;
+      color: mat.get-color-from-palette($primary, 500);
+    }
+
+    span {
+      display: block;
+      position: relative;
+    }
+  }
+}

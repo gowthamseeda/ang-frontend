@@ -1,0 +1,31 @@
+<gp-content-loader [isLoading]="isLoading">
+  <mat-form-field>
+    <mat-label *ngIf="label">{{ label | translate }}</mat-label>
+    <mat-select [(value)]="selectedLanguage"
+                [required]="required"
+                [disabled]="readonly"
+                (selectionChange)="emitSelectionChange($event.value)">
+      <mat-option *ngIf="!required">{{ 'NONE' | translate }}</mat-option>
+      <mat-option *ngFor="let lang of sortedLanguages" [value]="lang.id">
+        {{ lang.name }}
+      </mat-option>
+    </mat-select>
+    <gp-icon *ngIf="readonly"
+             matSuffix
+             name="lock"
+             size="small">
+    </gp-icon>
+  </mat-form-field>
+
+  <div loader class="loading-indicator-container">
+    <content-loader preserveAspectRatio="none"
+                    width="200"
+                    height="50"
+                    xmlns:svg='http://www.w3.org/2000/svg'>
+      <svg:rect x="0"
+                y="0"
+                width="150"
+                height="30"/>
+    </content-loader>
+  </div>
+</gp-content-loader>

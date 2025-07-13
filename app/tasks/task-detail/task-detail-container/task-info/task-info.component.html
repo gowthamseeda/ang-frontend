@@ -1,0 +1,139 @@
+<mat-table class="task-info"
+           [dataSource]="tasks"
+           *ngIf="tasks">
+  <ng-container matColumnDef="cluster">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="15">
+      {{ 'DATA_CLUSTER' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let task"
+              class="cell-icon"
+              gpFxFlex="15">
+      {{
+        (!isBlank(task.aggregateField) ?
+         (task.aggregateField) :
+         task.dataCluster) | snakeCase | translate
+      }}
+      <gp-icon matSuffix
+               *ngIf="isLinkEnabled && isResponsibleUser(task)"
+               name="lock">
+      </gp-icon>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="taskId">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="10"
+                     class="center">
+      {{ 'TASK_ID' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let task"
+              align="center"
+              gpFxFlex="10">
+      {{ task.taskId }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="comment">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="20">
+      {{ 'COMMENT' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let task"
+              gpFxFlex="20">
+      <ng-container *ngIf="task.comments?.length">
+        <div *ngFor="let comment of task.comments;">
+          {{ comment.user + ': ' + comment.comment }}
+        </div>
+      </ng-container>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="editor">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="10">
+      {{ 'EDITOR' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let task"
+              gpFxFlex="10">
+      <span *ngIf="task.initiator">
+        {{ task.initiator }}
+      </span>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="created">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="15">
+      {{ 'CREATED' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let task"
+              gpFxFlex="15">
+      <span *ngIf="task.creationDate"
+            x-ms-format-detection="none">
+        {{ task.creationDate | localeDateTime: 'mediumDate' }} -
+        {{ task.creationDate | localeDateTime: 'shortTime' }}
+      </span>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="dueDate">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="10">
+      {{ 'DUE_DATE' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let task"
+              gpFxFlex="10">
+      <span *ngIf="task.dueDate"
+            x-ms-format-detection="none">
+        {{ task.dueDate | localeDateTime: 'mediumDate' }}
+      </span>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="10">
+      {{ 'TYPE' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let task"
+              gpFxFlex="10">
+      {{ task.type | translate }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="10">
+      {{ 'STATUS' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let task"
+              gpFxFlex="10">
+      {{ task.status | translate }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="cancel">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="10">
+    </mat-header-cell>
+    <mat-cell *matCellDef="let task"
+              align="center"
+              gpFxFlex="10">
+      <gp-icon name="trash"
+               *ngIf="isLinkEnabled && currentUserIsDataChangeTaskCancelAuthorized && task.type
+               === taskType.DATA_CHANGE && isResponsibleUser(task)"
+               (click)="cancelTask(task, $event)">
+      </gp-icon>
+      <gp-icon name="trash"
+               *ngIf="isLinkEnabled && currentUserIsDataVerificationTaskCancelAuthorized && task.type
+               === taskType.DATA_VERIFICATION"
+               (click)="cancelTask(task, $event)">
+      </gp-icon>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+  <mat-row *matRowDef="let task; columns: columnsToDisplay"
+           [class.task-row]="isLinkEnabled"
+           (click)="isLinkEnabled && openLink(task)"></mat-row>
+</mat-table>

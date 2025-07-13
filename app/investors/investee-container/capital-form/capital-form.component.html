@@ -1,0 +1,44 @@
+<gp-content-loader [isLoading]="!isLoaded">
+  <div gpFxFlex gpFxLayoutGap="20px">
+    <mat-form-field gpFxFlex="10">
+      <mat-label>{{ 'CURRENCY' | translate }}</mat-label>
+      <mat-select (selectionChange)="updateShareCapitalCurrency(shareCapitalCurrency)"
+                  [(value)]="shareCapitalCurrency">
+        <mat-option *ngFor="let currency of currencies" [value]="currency">
+          {{currency}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field gpFxFlex="15">
+      <mat-label>{{ 'CAPITAL' | translate }}</mat-label>
+      <input (change)="updateShareCapitalValue(shareCapitalValue.value)"
+             [formControl]="shareCapitalValue"
+             matInput type="text">
+      <mat-error *ngIf="shareCapitalValue.hasError('max')">
+        {{ "VALIDATION_ERROR_MAX" | translate: { max: maxCapitalValue } }}
+      </mat-error>
+      <mat-error *ngIf="shareCapitalValue.hasError('numberRequired')">
+        {{ "VALIDATION_ERROR_PATTERN_NUMBER" | translate }}
+      </mat-error>
+      <mat-error *ngIf="shareCapitalValue.hasError('min')">
+        {{ "VALIDATION_ERROR_MIN" | translate: { min: 0 } }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div loader
+       xmlns:svg='http://www.w3.org/2000/svg'>
+    <content-loader preserveAspectRatio="none">
+      <svg:rect height="80"
+                width="50"
+                x="0"
+                y="0"/>
+
+      <svg:rect height="80"
+                width="100"
+                x="60"
+                y="0"/>
+    </content-loader>
+  </div>
+</gp-content-loader>
+

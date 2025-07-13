@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.main-container {
+  margin-bottom: 30px;
+}
+
+.summary-table {
+  width: 100%;
+  & .mat-mdc-row:hover {
+    background-color: mat.get-color-from-palette($accent, 100, 0.5);
+  }
+
+  .wrap-content {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  a {
+    cursor: pointer;
+    color: mat.get-color-from-palette($primary, 400);
+  }
+}

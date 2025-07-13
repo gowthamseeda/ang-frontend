@@ -1,0 +1,77 @@
+<gp-default-layout>
+  <gp-header header-toolbar [breadcrumbItems]="[{ label: 'STRUCTURE' },
+             { label: 'DEALER_GROUPS' , path: '../' },
+             { label: 'DEALER_GROUPS_ADD' }]">
+  </gp-header>
+
+  <gp-edit-layout title="{{ 'DEALER_GROUPS_ADD' | translate }}" marginalColumnDisabled="true">
+    <gp-edit-section>
+
+      <div [formGroup]="dealerGroupFormGroup" gpFxLayout="column" gpFxLayoutGap="15px">
+
+        <div gpFxLayout="row">
+          <div style="flex: 0 1 550px; max-width:550px" gpFxLayout="row" gpFxLayoutGap="15px"
+               gpFxLayoutAlign="start center">
+
+            <mat-form-field gpFxFlex="70%">
+              <mat-label>{{ 'DEALER_GROUPS_GROUP_NAME' | translate | uppercase }}</mat-label>
+              <input matInput type="text" formControlName="name" [required]="true" />
+              <mat-error>
+                {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="dealerGroupCountry" gpFxFlex="30%" class="no-field-underline">
+              <mat-label>{{ 'COUNTRY' | translate | uppercase }}</mat-label>
+              <input matInput type="text" [value]="dealerGroupCountry.id | translateCountry: undefined: true | async"
+                     [readonly]="!this.dealerGroupFormGroup.get('active')?.value || !isAuthorized" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div>
+          <gp-dealer-group-headquarter [headquarter]="headquarter" [country]="dealerGroupCountry"
+                                       (headquarterRemoved)="removeHeadquarter()"
+                                       (headquarterAddedOrUpdated)="addOrUpdateHeadquarter($event)"
+                                       style="display: flex;">
+          </gp-dealer-group-headquarter>
+        </div>
+
+      </div>
+
+      <h2>{{'STRUCTURES_MEMBERS' | translate}}</h2>
+
+      <gp-registered-office-members-table [membersWithRO]="dealerGroupMembersWithRO"
+                                          [membersWithoutRO]="dealerGroupMembersWithoutRO"
+                                          [disabled]="!this.dealerGroupFormGroup.value.active"
+                                          (memberRemoved)="removeDealerGroupMember($event)"
+                                          (memberWithRORemoved)="removeDealerGroupMemberWithRO($event)"
+                                          (sortChangeEvent)="sortChanged($event)" (filterEvent)="filter($event)"
+                                          [readOnly]="!isAuthorized" style="display:flex;">
+      </gp-registered-office-members-table>
+
+
+      <h5 class="title" *ngIf="dealerGroupMembersWithoutRO.length > 0">
+        {{ 'DEALER_GROUPS_MEMBERS_WITHOUT_RO' | translate | uppercase }}</h5>
+
+      <gp-members-table [members]="dealerGroupMembersWithoutRO" [disabled]="!this.dealerGroupFormGroup.value.active"
+                        (memberRemoved)="removeDealerGroupMember($event)" [hideHeader]="true" [nonRoMember]="true"
+                        [sortEvent]="sortEvent" [filterValue]="filterValue" [readOnly]="!isAuthorized">
+      </gp-members-table>
+
+    </gp-edit-section>
+  </gp-edit-layout>
+
+  <gp-default-edit-actions footer-toolbar gpFxFill *ngIf="isAuthorized"
+                           [saveButtonDisabled]="dealerGroupFormGroup.invalid || dealerGroupFormGroup.pristine"
+                           [cancelButtonDisabled]="dealerGroupFormGroup.valid && dealerGroupFormGroup.pristine"
+                           (save)="save()" (cancel)="reset()">
+    <button mat-flat-button class="gp-icon-flat-button" (click)="openDealerGroupMembersList()"
+            [disabled]="!this.dealerGroupFormGroup.value.headquarterId">
+      <gp-icon gpIconButtonWithText name="plus"></gp-icon>
+      {{ 'STRUCTURES_ADD_MEMBERS' | translate }}
+    </button>
+  </gp-default-edit-actions>
+</gp-default-layout>
+
+<gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>

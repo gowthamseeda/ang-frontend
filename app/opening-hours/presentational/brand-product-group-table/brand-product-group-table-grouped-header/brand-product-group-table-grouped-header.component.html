@@ -1,0 +1,40 @@
+<div *ngIf="columnHeaders"
+     class="column-headers"
+     gpFxLayout="row">
+  <div *ngFor="let columnHeader of columnHeaders"
+       class="column-header"
+       gpFxLayoutColumn>
+    <gp-brand-icon [id]="columnHeader.brandId"
+                   gpFxFlexAlign="center"
+                   tooltipPosition="above"></gp-brand-icon>
+    <div class="all-product-groups"
+         gpFxLayout="row">
+      <div *ngFor="let groupedColumn of columnHeader.groupedColumns; let last = last"
+           [ngClass]="{ lastGroupedColumn: last }"
+           gpFxLayoutAlign="center"
+           class="product-groups">
+        <div *ngFor="let productGroup of groupedColumn.productGroups"
+             class="product-group">
+          <gp-product-group
+            [brandId]="columnHeader.brandId"
+            [productGroupId]="productGroup.id"
+            [isHover]="(getIcon(columnHeader.brandId,productGroup.id) | async)"
+            tooltipPosition="above"></gp-product-group>
+          <div class="actions"
+               *ngIf="productGroup.isActionEnabled">
+            <div class="left"
+                 *ngIf="columnHeader.hasMoveLeftAction(productGroup.id)"
+                 (click)="onMoveProductGroupLeft(groupedColumn.brandId, productGroup.id, groupedColumn.isLastOfBrand, groupedColumn.productGroups)">
+              &lt;
+            </div>
+            <div class="right"
+                 *ngIf="columnHeader.hasMoveRightAction(productGroup.id)"
+                 (click)="onMoveProductGroupRight(groupedColumn.brandId, productGroup.id, groupedColumn.isLastOfBrand, groupedColumn.productGroups)">
+              &gt;
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

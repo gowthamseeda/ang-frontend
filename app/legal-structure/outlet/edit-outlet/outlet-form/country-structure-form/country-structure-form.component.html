@@ -1,0 +1,12 @@
+<gp-edit-section *ngIf="(countryStructureDescriptions | async)?.length > 0">
+  <div gpFxLayout>
+    <h1>{{'COUNTRY_STRUCTURE' | translate}}</h1>
+  </div>
+  <gp-country-structure [countryStructureDescriptions]="countryStructureDescriptions | async"
+                        [parentForm]="parentForm"
+                        [selectedCountryStructureId]="selectedCountryStructureId | async">
+  </gp-country-structure>
+  <ng-container marginalContent>
+    <span>{{'MARGINAL_CONTENT_COUNTRY_STRUCTURE' | translate}}</span>
+  </ng-container>
+</gp-edit-section>

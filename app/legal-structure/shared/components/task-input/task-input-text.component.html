@@ -1,0 +1,93 @@
+<mat-form-field [formGroup]="parentForm" class="show-footer no-horizontal-hint-space"
+                [ngClass]="{'no-underline':(openDataChange | async)}"
+                [floatLabel]="(openDataChange | async) ? 'always':'auto'">
+  <mat-label>{{ label | translate }}</mat-label>
+  <div gpFxLayout="column">
+    <div gpFxLayout="row"
+         gpFxLayoutAlign="center center"
+         class="aggregate-data-field">
+      <span *ngIf="(openDataChange | async)">{{ 'ACTUAL'|translate }}:&nbsp;</span>
+      <input matInput
+             #textInput
+             type="text"
+             [required]="required"
+             (keyup)="onKeyUp($event)"
+             (keydown)="onKeyDown($event)"
+             [formControlName]="fieldName"
+             [errorStateMatcher]="errorStateMatcher"
+             [ngClass]="{'prev-value':isEditPage && (openDataChange | async),
+             'verification-task-present': isEditPage && (isVerificationTaskPresent | async),
+             'notification-present': isEditPage && (isDataChanged ||
+             verificationTaskStatus === VerificationTaskFormStatus.REMAIN),
+             'changes-made':isEditPage && (verificationTaskStatus ===
+             VerificationTaskFormStatus.CHANGED),
+             }" />
+      <gp-icon matSuffix
+               *ngIf="parentForm.get(fieldName)?.disabled || readonly"
+               name="lock"
+               size="small">
+      </gp-icon>
+      <gp-icon matSuffix
+               *ngIf="(isVerificationTaskPresent | async) && isBusinessSiteResponsible &&
+               verificationTaskStatus !== VerificationTaskFormStatus.REMAIN &&
+               verificationTaskStatus !== VerificationTaskFormStatus.CHANGED"
+               name="check"
+               color="green"
+               size="small"
+               class="verification-task-present"
+               style="height: 100%"
+               (click)="onRemainClick()">
+      </gp-icon>
+      <gp-data-field-verification-button
+        *ngIf="isEditPage && isMarketResponsible && (isVerificationTaskPresent | async) === false &&
+        isRetailOutlet &&
+        (openDataChange|async) === undefined"
+        [fields]="[fieldData]"
+        [shouldShowDialog]="shouldDisplayVerificationDialog">
+      </gp-data-field-verification-button>
+    </div>
+    <div *ngIf="(openDataChange | async)"
+         gpFxLayoutRow
+         gpFxLayoutAlign="space-between center"
+         [ngClass]="hasChange?'changes-future-value':'no-changes-future-value'">
+      <ng-container *ngIf="hasChange; else noValueChange">
+        <div gpFxFlexFill>{{ 'FUTURE' | translate }}:
+          {{ (futureValue | async) }}
+        </div>
+      </ng-container>
+      <gp-inplace-task-action-button *ngIf="isMarketResponsible"
+                                     [task]="taskForDisplay"></gp-inplace-task-action-button>
+    </div>
+  </div>
+  <mat-error *ngIf="parentForm.get(fieldName)?.hasError('maxlength')">
+    {{ 'VALIDATION_ERROR_MAX_CHARS' | translate:{ value: maxLength } }}
+  </mat-error>
+  <mat-error *ngIf="parentForm.get(fieldName)?.hasError('required')">{{
+      'VALIDATION_ERROR_REQUIRED' | translate
+    }}
+  </mat-error>
+  <mat-hint *ngIf="isDataChanged" class="data-changed">
+    {{ 'DATA_CHANGED_NOTIFICATIONS' | translate }}
+  </mat-hint>
+  <mat-hint class="data-changed-approved" *ngIf="isDataApproved">
+    {{ 'DATA_CHANGED_APPROVED' | translate }}
+  </mat-hint>
+  <mat-hint class="data-changed-declined" *ngIf="declinedData.shouldDisplay">
+    <gp-icon name="hint-info" size="small" color="red" (click)="taskCommentPopup()"></gp-icon>
+    {{ 'DATA_CHANGED_DECLINED' | translate }}
+  </mat-hint>
+  <mat-hint *ngIf="isEditPage && (isVerificationTaskPresent | async) && isMarketResponsible"
+            class="verify-data word-size">
+    {{ 'WAITING_FOR_REACTION' | translate }}
+  </mat-hint>
+  <mat-hint *ngIf="isEditPage && (isVerificationTaskPresent | async) && isBusinessSiteResponsible &&
+  verificationTaskStatus !== VerificationTaskFormStatus.REMAIN &&
+  verificationTaskStatus !== VerificationTaskFormStatus.CHANGED"
+            class="verify-data word-size">
+    {{ 'VERIFY_FIELD_MESSAGE' | translate }}
+  </mat-hint>
+</mat-form-field>
+
+<ng-template #noValueChange>
+  {{ 'NO_CHANGES_MADE_TO_THE_FIELD' |translate }}
+</ng-template>

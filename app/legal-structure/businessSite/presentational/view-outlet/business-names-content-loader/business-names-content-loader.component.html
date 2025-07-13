@@ -1,0 +1,19 @@
+<ng-container *ngIf='!isLoading'>
+  <ng-content select="[business-names-content]"></ng-content>
+</ng-container>
+<ng-container *ngIf='isLoading'>
+  <div loader
+       class="business-names-loader"
+       xmlns:svg='http://www.w3.org/2000/svg'>
+    <content-loader primaryOpacity="0.3"
+                    secondaryOpacity="0.7"
+                    width="400"
+                    height="45"
+                    preserveAspectRatio="none">
+      <svg:rect x="0"
+                y="0"
+                width="400px"
+                height="45px" />
+    </content-loader>
+  </div>
+</ng-container>

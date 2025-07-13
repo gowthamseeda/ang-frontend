@@ -1,0 +1,4 @@
+<span class="diff-key">{{ title }}</span>
+<span *ngIf="!customValue"
+      class="diff-value">{{ value | emptyValuePipe }}</span>
+<ng-content></ng-content>

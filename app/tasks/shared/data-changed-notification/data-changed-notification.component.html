@@ -1,0 +1,7 @@
+<gp-message *ngIf="showMessage"
+            type="info"
+            [showAction]=true
+            (actionClick)="onActionClick()"
+            actionText="MASTER_DATA_SERVICE_VARIANT_MULTI_VIEW">
+  {{ 'DATA_CHANGED_NOTIFICATIONS_BANNER' | translate }}
+</gp-message>

@@ -1,0 +1,21 @@
+<gp-master-tile iconLink="labels"
+                headerText="{{ 'LABELS' | translate }}"
+                searchPlaceHolder="{{ 'SEARCH_LABEL_FIELD_INLINE_PLACEHOLDER' | translate }}"
+                buttonText="{{ 'ADD_LABEL_BUTTON' | translate }}"
+                componentLink="/master/label"
+                (searchText)="searchLabelName($event)">
+  <div gpFxLayout="column">
+    <div class="label-container"
+         *ngFor="let label of labels | filter: searchText"
+         routerLink="/master/label/{{ label.id }}">
+      <div class="label-name-container">{{ label.name }}</div>
+      <div class="delete-label-container"
+           (click)="$event.stopPropagation()">
+        <button mat-icon-button
+                (click)="deleteLabel(label.id)">
+          <gp-icon name="trash"></gp-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</gp-master-tile>

@@ -1,0 +1,71 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+@import '../../../shared/styles/service-table';
+
+ng-scrollbar {
+  padding-right: 15px;
+}
+
+.table-container {
+  min-height: 300px;
+  height: calc(100vh - 350px);
+  overflow: auto;
+
+  .mat-mdc-table {
+    .mat-mdc-header-row {
+      position: sticky;
+      top: -1px;
+      z-index: 2;
+
+      &:nth-child(2) {
+        top: 59px;
+
+        .mat-mdc-header-cell {
+          &:last-of-type,
+          &:first-of-type {
+            border-right: none;
+          }
+
+          &:nth-child(2) {
+            border-right: 1px solid mat.get-color-from-palette($accent, 100);
+          }
+        }
+      }
+    }
+
+    .mat-mdc-row {
+      height: 80px;
+      min-height: 80px;
+
+      .application {
+        background-color: mat.get-color-from-palette($accent, 400, 0.15);
+
+        &.disabled {
+          background-color: mat.get-color-from-palette($primary, 50);
+        }
+      }
+
+      .mat-mdc-cell:first-of-type,
+      .mat-cell:nth-of-type(2) {
+        padding: 0 13px;
+      }
+
+      .mat-mdc-cell:nth-of-type(2) {
+        border-right: 1px solid mat.get-color-from-palette($accent, 100);
+      }
+
+      .product-groups {
+        height: 79px;
+
+        .product-group {
+          width: 60px;
+          margin: 0;
+        }
+      }
+
+      .validity-container{
+        margin-left: 10px;
+      }
+    }
+  }
+}

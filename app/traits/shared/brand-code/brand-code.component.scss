@@ -1,0 +1,13 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.brand-code {
+  padding: 5px 8px;
+  line-height: normal;
+  color: mat.get-color-from-palette($primary, 50);
+  background-color: mat.get-color-from-palette($primary, 300);
+}
+
+[loader] ::ng-deep svg {
+  width: 140px;
+}

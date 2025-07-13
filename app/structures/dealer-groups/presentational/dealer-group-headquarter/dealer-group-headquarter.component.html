@@ -1,0 +1,62 @@
+<div gpFxLayout="column"
+     style="flex: 0 1 auto;">
+  <h5 class="title">{{ 'DEALER_GROUPS_MAIN_LOCATION_RO' | translate | uppercase }}</h5>
+
+  <div *ngIf="headquarter && country && distributionLevelChips"
+       gpFxLayoutRow
+       gpFxLayoutGap="40px"
+       class="underline"
+       [class.hq-disabled]="disabled">
+
+    <div class="outlet-name">
+      <a  style="white-space: nowrap;"
+          routerLink="/outlet/{{headquarter.id}}">{{headquarter.legalName}}</a>
+    </div>
+
+    <div class="address"
+         gpFxLayout="column"
+         gpFxLayoutAlign="start start"
+         style="flex: none;">
+      <span>{{headquarter.address.street}} {{headquarter.address.streetNumber}}</span>
+      <span>{{headquarter.address.city}}</span>
+      <span>{{country.id | translateCountry: undefined: true | async}}</span>
+    </div>
+
+    <gp-brand-code [outletId]="headquarter.id"
+                   [brandCodesInput]="headquarter.brandCodes"></gp-brand-code>
+
+    <div *gpOnlyOwnCountry="country.id; permissions: ['traits.distributionlevels.show']">
+      <mat-basic-chip class="chip"
+                      *ngFor="let chip of distributionLevelChips"
+                      disabled>
+        {{chip}}
+      </mat-basic-chip>
+    </div>
+
+    <div gpFxLayout="row wrap"
+         gpFxLayoutAlign="start center"
+         *ngIf="!disabled && !readOnly">
+      <button mat-icon-button
+              (click)="openSelectDealerGroupHeadquarterList()"
+              matTooltip="{{ 'STRUCTURES_EDIT_HEADQUARTERS' | translate }}"
+              matTooltipPosition="above">
+        <gp-icon name="pen"></gp-icon>
+      </button>
+      <button mat-icon-button
+              (click)="removeHeadquarter()"
+              matTooltip="{{ 'STRUCTURES_REMOVE_HEADQUARTERS' | translate }}"
+              matTooltipPosition="above">
+        <gp-icon name="trash"></gp-icon>
+      </button>
+    </div>
+  </div>
+
+  <button mat-flat-button
+          class="gp-icon-flat-button add-btn"
+          *ngIf="!headquarter"
+          (click)="openSelectDealerGroupHeadquarterList()">
+    <gp-icon gpIconButtonWithText
+             name="plus"></gp-icon>
+    {{ 'DEALER_GROUPS_ADD_HEADQUARTER' | translate }}
+  </button>
+</div>

@@ -1,0 +1,23 @@
+<gp-content-loader [isLoading]="isLoading">
+  <ng-content select="[category-and-services-content]"></ng-content>
+  <div loader class="loader" xmlns:svg="http://www.w3.org/2000/svg">
+    <content-loader primaryOpacity="0.3"
+                    secondaryOpacity="0.7"
+                    preserveAspectRatio="none"
+                    height="150"
+                    width="200">
+      <svg:rect x="0px"
+                y="0px"
+                width="100px"
+                height="26px" />
+      <svg:rect x="0px"
+                y="43px"
+                width="180px"
+                height="19px" />
+      <svg:rect x="0px"
+                y="95px"
+                width="180px"
+                height="26px" />
+    </content-loader>
+  </div>
+</gp-content-loader>

@@ -1,0 +1,176 @@
+<ng-container *ngIf="currentContractStatuses && currentContractStatuses.length > 0; else showEmpty">
+  <ng-container *ngFor="let contractStatus of currentContractStatuses;">
+    <ng-container *ngIf="isFieldChangedCompareWholeData(contractStatus) ||
+    (!isFieldChangedCompareWholeData(contractStatus) && !showChangeOnlyToggleInput); else
+    showNothing">
+      <ng-container *ngIf="{
+        isFieldChanged: isChanged(contractStatus.contractStatusKey),
+        editor: getChangeEditor(contractStatus.contractStatusKey)
+        } as contractStatusChanges">
+        <ul [class.changed]="isChanged(contractStatus.contractStatusKey)">
+          <li>
+            {{ 'BRAND_ID' | translate }}
+            <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+              <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                <ng-container *ngIf="(isMoveOutlet && contractStatusChanges.editor === systemUserID); else
+                   normalEditorContractStatus">
+                    {{
+                  (contractStatusChanges.isFieldChanged) ? '[Move outlet, ' +
+                                                      moveOutletInitiator + ']' : ''
+                  }}
+                </ng-container>
+                <ng-template #normalEditorContractStatus>
+                  {{ contractStatusChanges.isFieldChanged ?
+                     '[' + contractStatusChanges.editor + ']' : ''}}
+                </ng-template>
+              </span>:
+            </ng-container>
+            {{ contractStatusChanges.isFieldChanged && displayChangesToggleInput ? '[' +
+            (getFieldDataFromComparingData("brandId",contractStatus)| emptyValuePipe) +'] =>' : '' }}
+            {{ contractStatus.brandId }}
+          </li>
+          <ng-container *ngIf="!!contractStatus?.companyRelationshipId">
+            {{ 'COMPANY_RELATION' | translate }}
+            <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+              <span *ngxPermissionsOnly="['app.historization.editor.show']">
+               <ng-container *ngIf="(isMoveOutlet && contractStatusChanges.editor === systemUserID); else
+                   normalEditorContractStatus">
+                    {{
+                 (contractStatusChanges.isFieldChanged) ? '[Move outlet, ' +
+                                                          moveOutletInitiator + ']' : ''
+                 }}
+                </ng-container>
+                <ng-template #normalEditorContractStatus>
+                  {{ contractStatusChanges.isFieldChanged ?
+                     '[' + contractStatusChanges.editor + ']' : ''}}
+                </ng-template>
+              </span>:
+            </ng-container>
+            {{ contractStatusChanges.isFieldChanged && displayChangesToggleInput ? '[' +
+            (getFieldDataFromComparingData("companyRelationshipId",contractStatus)| emptyValuePipe) +'] =>' : '' }}
+            {{ contractStatus.companyRelationshipId }}
+            <br />
+          </ng-container>
+          {{ 'LEGAL_CONTRACT_STATUS_REQUIRED' | translate }}
+          <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+            <span *ngxPermissionsOnly="['app.historization.editor.show']">
+              <ng-container *ngIf="(isMoveOutlet && contractStatusChanges.editor === systemUserID); else
+                   normalEditorContractStatus">
+                    {{
+                (contractStatusChanges.isFieldChanged) ? '[Move outlet, ' +
+                                                         moveOutletInitiator + ']' : ''
+                }}
+                </ng-container>
+                <ng-template #normalEditorContractStatus>
+                  {{ contractStatusChanges.isFieldChanged ?
+                     '[' + contractStatusChanges.editor + ']' : ''}}
+                </ng-template>
+            </span>:
+          </ng-container>
+          {{ contractStatusChanges.isFieldChanged && displayChangesToggleInput ? '[' +
+          (getFieldDataFromComparingData("required",contractStatus)| emptyValuePipe) +'] =>' : '' }}
+          {{ contractStatus.required }}
+          <br />
+          <ng-container *ngIf="!!contractStatus?.languageId">
+            {{ 'LANGUAGE_ID' | translate }}
+            <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+              <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                <ng-container *ngIf="(isMoveOutlet && contractStatusChanges.editor === systemUserID); else
+                   normalEditorContractStatus">
+                    {{
+                  (contractStatusChanges.isFieldChanged) ? '[Move outlet, ' +
+                                                           moveOutletInitiator + ']' : ''
+                  }}
+                </ng-container>
+                <ng-template #normalEditorContractStatus>
+                  {{ contractStatusChanges.isFieldChanged ?
+                     '[' + contractStatusChanges.editor + ']' : ''}}
+                </ng-template>
+              </span>:
+            </ng-container>
+            {{ contractStatusChanges.isFieldChanged && displayChangesToggleInput ? '[' +
+            (getFieldDataFromComparingData("languageId",contractStatus)| emptyValuePipe) +'] =>' : '' }}
+            {{ contractStatus.languageId }}
+            <br />
+          </ng-container>
+          <ng-container *ngIf="!!contractStatus?.status">
+            {{ 'LEGAL_CONTRACT_STATUS' | translate }}
+            <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+              <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                <ng-container *ngIf="(isMoveOutlet && contractStatusChanges.editor === systemUserID); else
+                   normalEditorContractStatus">
+                    {{
+                  (contractStatusChanges.isFieldChanged) ? '[Move outlet, ' +
+                                                           moveOutletInitiator + ']' : ''
+                  }}
+                </ng-container>
+                <ng-template #normalEditorContractStatus>
+                  {{ contractStatusChanges.isFieldChanged ?
+                     '[' + contractStatusChanges.editor + ']' : ''}}
+                </ng-template>
+              </span>:
+            </ng-container>
+            {{ contractStatusChanges.isFieldChanged && displayChangesToggleInput ? '[' +
+            (getFieldDataFromComparingData("status",contractStatus)| emptyValuePipe) +'] =>' : '' }}
+            {{ contractStatus.status }}
+            <br />
+          </ng-container>
+          <ng-container *ngIf="!!contractStatus?.disclosures">
+            {{ 'LEGAL_CONTRACT_STATUS_CORPORATE_DISCLOSURE' | translate }}
+            <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+              <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                <ng-container *ngIf="(isMoveOutlet && contractStatusChanges.editor === systemUserID); else
+                   normalEditorContractStatus">
+                    {{
+                  (contractStatusChanges.isFieldChanged) ? '[Move outlet, ' +
+                                                           moveOutletInitiator + ']' : ''
+                  }}
+                </ng-container>
+                <ng-template #normalEditorContractStatus>
+                  {{ contractStatusChanges.isFieldChanged ?
+                     '[' + contractStatusChanges.editor + ']' : ''}}
+                </ng-template>
+              </span>:
+            </ng-container>
+            {{ contractStatusChanges.isFieldChanged && displayChangesToggleInput ? '[' +
+            (getFieldDataFromComparingData("disclosures",contractStatus)| emptyValuePipe) +'] =>' : '' }}
+            {{ contractStatus.disclosures }}
+            <br />
+          </ng-container>
+          {{ 'IS_DELETED' | translate }}
+          <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+            <span *ngxPermissionsOnly="['app.historization.editor.show']">
+             <ng-container *ngIf="(isMoveOutlet && contractStatusChanges.editor === systemUserID); else
+                   normalEditorContractStatus">
+                    {{
+               (contractStatusChanges.isFieldChanged) ? '[Move outlet, ' +
+                                                        moveOutletInitiator + ']' : ''
+               }}
+                </ng-container>
+                <ng-template #normalEditorContractStatus>
+                  {{ contractStatusChanges.isFieldChanged ?
+                     '[' + contractStatusChanges.editor + ']' : ''}}
+                </ng-template>
+            </span>:
+          </ng-container>
+          {{ contractStatusChanges.isFieldChanged && displayChangesToggleInput ? '[' +
+          (getFieldDataFromComparingData("isDeleted",contractStatus)| emptyValuePipe) +'] =>' : '' }}
+          {{ contractStatus.isDeleted }}
+        </ul>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #showEmpty>
+  {{ '' | emptyValuePipe }}
+</ng-template>
+
+<ng-template #noEditors>
+  <span *ngxPermissionsOnly="['app.historization.editor.show']">
+    {{''}}
+  </span>:
+</ng-template>
+
+<ng-template #showNothing>
+</ng-template>

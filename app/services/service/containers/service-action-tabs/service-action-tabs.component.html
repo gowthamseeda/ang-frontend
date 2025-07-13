@@ -1,0 +1,17 @@
+<div gpFxLayout="row"
+     gpFxLayoutAlign="center center">
+  <ng-container *ngFor="let tab of tabs">
+    <div *ngIf="tab.userIsAuthorized | async">
+      <a *ngxPermissionsOnly="tab.permissions"
+         gpFxLayoutAlign="center center"
+         style="display: flex;"
+         matTooltip="{{ tab.tooltip | translate }}"
+         matTooltipHideDelay="{{ 'hideDelay' | tooltipDefault }}"
+         matTooltipPosition="{{ 'above' }}"
+         matTooltipShowDelay="{{ 'showDelay' | tooltipDefault }}">
+        <gp-icon [name]="tab.icon">
+        </gp-icon>
+      </a>
+    </div>
+  </ng-container>
+</div>

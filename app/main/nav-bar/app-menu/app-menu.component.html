@@ -1,0 +1,38 @@
+<mat-list>
+  <mat-list-item routerLink="/user-settings">
+    <gp-icon matListItemIcon name="settings" size="small"></gp-icon>
+    <div matListItemTitle>{{ 'USER_SETTINGS' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+
+  <ng-container *gpFeatureToggle="'LINK_TO_RETAIL_EMAIL_SETTING'">
+    <ng-container *gpShowByPermissions="['notifications.emailsetting.read']">
+      <mat-list-item routerLink="/email-settings">
+        <gp-icon matListItemIcon name="email" size="small"></gp-icon>
+        <div matListItemTitle>{{ '4RETAIL_EMAIL' | translate }}</div>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </ng-container>
+  </ng-container>
+
+  <mat-list-item (click)="openLegalNoticeDialog()">
+    <gp-icon matListItemIcon name="legal-notice" size="small"></gp-icon>
+    <div matListItemTitle>{{ 'LEGAL_NOTICE' | translate }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+
+  <mat-divider class="logout"></mat-divider>
+  <mat-divider></mat-divider>
+
+  <mat-list-item (click)="logout()">
+    <gp-icon matListItemIcon name="logout" size="small"></gp-icon>
+    <div matListItemTitle>{{ 'LOGOUT' | translate }}</div>
+  </mat-list-item>
+
+  <mat-divider></mat-divider>
+</mat-list>
+
+<div class="app-version">
+  {{ 'GSSNPLUS_APP_VERSION_PREFIX' | translate }}
+  {{ appConfigProvider.getAppConfig().releaseVersion }}
+</div>

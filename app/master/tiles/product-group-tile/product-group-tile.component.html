@@ -1,0 +1,24 @@
+<gp-master-tile headerText="{{ 'PRODUCT_GROUPS' | translate }}"
+                searchPlaceHolder="{{ 'SEARCH_PRODUCT_GROUP_FIELD_INLINE_PLACEHOLDER' | translate }}"
+                buttonText="{{ 'ADD_PRODUCT_GROUP_BUTTON' | translate }}"
+                componentLink="/master/productGroup"
+                (searchText)="searchProductGroupName($event)">
+  <div gpFxLayout="column">
+    <div class="product-group-container"
+         *ngFor="let productGroup of productGroups | filter: searchText"
+         routerLink="/master/productGroup/{{ productGroup.id }}">
+      <div class="product-group-name-container">
+        <gp-icon *ngIf="hasProductGroupIcon(productGroup.id)"
+                 [name]="'pg-' + productGroup.id.toLowerCase()"></gp-icon>
+        <span>{{ productGroup.name }}</span>
+      </div>
+      <div class="delete-product-group-container"
+           (click)="$event.stopPropagation()">
+        <button mat-icon-button
+                (click)="deleteProductGroup(productGroup.id)">
+          <gp-icon name="trash"></gp-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</gp-master-tile>

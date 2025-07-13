@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+@import '../../../../styles/_gssnplus';
+
+@include gssnplus-theme($gssnplus-theme);
+
+mat-list {
+  background-color: white;
+  opacity: 0.9;
+  mat-option {
+    padding-left: 20px;
+  }
+
+  ::ng-deep {
+    .mat-mdc-option.mat-mdc-selected {
+      background-color: mat.get-color-from-palette($accent, 200) !important;
+    }
+
+    .mdc-list-item__primary-text{
+      color: mat.get-color-from-palette($accent, 700) !important;
+    }
+
+    .mat-mdc-option:not(.mat-mdc-selected) {
+      background: none !important;
+    }
+  }
+}

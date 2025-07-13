@@ -1,0 +1,29 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+.mat-mdc-table {
+  width: 100%;
+}
+
+.link {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.success,
+.true-status {
+  color: mat.get-color-from-palette($accent, 550);
+}
+
+.fail,
+.false-status {
+  color: mat.get-color-from-palette($warn, 500);
+}
+
+.not_available {
+  color: mat.get-color-from-palette($accent, 650);
+}
+
+.mat-mdc-table .mat-mdc-header-cell:last-child,
+.mat-mdc-table .mat-mdc-row .mat-mdc-cell:last-child {
+  max-width: none;
+}

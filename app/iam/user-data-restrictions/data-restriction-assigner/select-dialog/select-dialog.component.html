@@ -1,0 +1,23 @@
+<div *ngIf="this.availableDataRestrictionValues?.length > 0; else dataRestrictionsEmpty"
+     gpFxLayout="column">
+  <h3>{{'DATARESTRICTION_SELECT_DIALOG' | translate}}</h3>
+  <mat-form-field>
+    <mat-select [formControl]="control"
+                name="dataRestriction"
+                multiple>
+      <mat-option *ngFor="let availableDataRestrictionValue of availableDataRestrictionValues"
+                  [value]="availableDataRestrictionValue">
+        {{availableDataRestrictionValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-button
+          gpFxFlexAlign="end"
+          (click)="dialogRef.close(control.value)">
+    {{'OK' | translate}}
+  </button>
+</div>
+
+<ng-template #dataRestrictionsEmpty>
+  <h3>{{'DATARESTRICTIONS_ASSIGNED_EMPTY' | translate}}</h3>
+</ng-template>

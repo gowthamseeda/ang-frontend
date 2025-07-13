@@ -1,0 +1,8 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.accordion-title {
+  font-size: 15px;
+  margin-left: 46px;
+  font-weight: bold;
+}

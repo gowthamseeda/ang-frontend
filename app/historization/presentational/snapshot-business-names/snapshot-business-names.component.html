@@ -1,0 +1,19 @@
+<ng-container *ngIf="businessNames; else showEmpty">
+  <ul *ngFor="let businessName of businessNames">
+    <li [class.changed]="isChanged">
+      {{ 'BUSINESS_NAME' | translate }}: {{ businessName?.businessName | emptyValuePipe }}
+      |
+      {{ 'BRANDS' | translate }}: {{ businessName?.brandId | emptyValuePipe }}
+      <ul>
+        <li>
+        {{ 'IS_DELETED' | translate }}: {{ businessName?.isDeleted | emptyValuePipe }}
+        </li>
+      </ul>
+    </li>
+
+  </ul>
+</ng-container>
+
+<ng-template #showEmpty>
+  {{ '' | emptyValuePipe }}
+</ng-template>

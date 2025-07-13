@@ -1,0 +1,38 @@
+<div class="menu"
+     data-cy="outlet-menu">
+  <button mat-icon-button
+          [matMenuTriggerFor]="actions"
+          [disabled]="disabled"
+          data-cy="outlet-menu-button">
+    <gp-icon [className]="brightProfile ? 'menu-icon-bright' : 'menu-icon-default'"
+             [name]="fontIcon"
+             size="small">
+    </gp-icon>
+  </button>
+  <mat-menu #actions="matMenu"
+            data-cy="outlet-menu-list">
+    <ng-container *ngFor="let item of items">
+      <mat-divider *ngIf="!item.label && !item.action; else headlineItem"></mat-divider>
+      <ng-template #headlineItem>
+        <div *ngIf="item.label && !item.action; else normalItem"
+             mat-menu-item
+             class="menu-item-heading"
+             [disabled]="true">
+          <h2>{{ item.label | translate }}:</h2>
+        </div>
+      </ng-template>
+      <ng-template #normalItem>
+        <button mat-menu-item
+                (click)="clicked(item.action, item.param)"
+                [disabled]="item.disabled"
+                [attr.data-cy]="item.label" 
+                [ngClass]="{'highlight-menu':item.highlight}">
+          <ng-container *ngIf="item.fontIcon">
+            <gp-icon class="icon-left">{{ item.fontIcon }}</gp-icon>
+          </ng-container>
+          {{ item.label | translate }}
+        </button>
+      </ng-template>
+    </ng-container>
+  </mat-menu>
+</div>

@@ -1,0 +1,68 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.timeline {
+  position: relative;
+  width: 24px;
+  height: 48px !important;
+  margin-right: 12px !important;
+}
+
+.timeline:after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  border-left: 1px solid mat.get-color-from-palette($accent, 200);
+  transform: translate(-50%);
+}
+
+.timeline-tracer {
+  padding-right: 12px;
+
+  mat-divider {
+    position: relative !important;
+  }
+}
+
+.node {
+  content: '';
+  position: relative;
+  background-color: mat.get-color-from-palette($accent, 400);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.node-selected {
+  background-color: mat.get-color-from-palette($primary, 500);
+}
+
+.node-large {
+  width: 24px;
+  height: 24px;
+}
+
+.node-medium {
+  width: 18px;
+  height: 18px;
+}
+
+.node-small {
+  width: 12px;
+  height: 12px;
+}
+
+.label {
+  cursor: pointer;
+
+  &:hover {
+    color: mat.get-color-from-palette($primary, 500);
+  }
+}
+
+.label-selected {
+  font-weight: bold;
+  color: mat.get-color-from-palette($primary, 500);
+}

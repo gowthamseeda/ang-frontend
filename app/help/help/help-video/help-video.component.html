@@ -1,0 +1,18 @@
+<div gpFxLayout="row" gpFxLayoutAlign="space-between" gpFxLayoutGap="8px">
+  <span gpFxFlex="60%">{{video?.title | translate}}</span>
+  <div gpFxFlex gpFxLayout="row" gpFxLayoutAlign="flex-end" gpFxLayoutGap="4px" class="button">
+    <span *ngIf="visibleDuration" class="video-duration">{{video?.duration}}
+      {{DURATION_UNIT}}</span>
+    <ng-container *ngIf="visibleAdditionalActions">
+      <button mat-icon-button>
+        <gp-icon name="eye-active"></gp-icon>
+      </button>
+      <button mat-icon-button>
+        <gp-icon name="download"></gp-icon>
+      </button>
+    </ng-container>
+    <button mat-icon-button (click)="playVideo(video)">
+      <gp-icon name="play-button" ></gp-icon>
+    </button>
+  </div>
+</div>

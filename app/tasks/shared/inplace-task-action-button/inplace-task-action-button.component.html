@@ -1,0 +1,6 @@
+<div gpFxLayoutRow *ngIf="(isOpenTaskAvailable | async) || task">
+    <gp-icon matSuffix name="check" color="green" size="small" class="action-button" [hover]="true"
+        (click)="onAccept()"></gp-icon>
+    <gp-icon matSuffix name="close" color="red" size="small" class="action-button" [hover]="true"
+        (click)="onDecline()"></gp-icon>
+</div>

@@ -1,0 +1,38 @@
+<div gpFxLayout="row"
+     gpFxLayoutAlign="start center"
+     class="message warning">
+
+  <gp-icon gpFxFlex="35px"
+           name="hint-error"
+           color="white"
+           size="small"></gp-icon>
+
+  <div gpFxFlex
+       *ngIf="mismatchAddress">
+    {{'ADDRESS_NOT_MATCHED' | translate}}
+    <ul>
+      <li *ngIf="mismatchAddress.isStreetNumberMismatched">{{'STREET_NUMBER_NOT_MATCHED' |
+        translate:{decodedValue: mismatchAddress.decodedStreetNumber, currentValue:
+        mismatchAddress.currentStreetNumber} }}</li>
+      <li *ngIf="mismatchAddress.isStreetMismatched">{{'STREET_NOT_MATCHED' |
+        translate:{decodedValue: mismatchAddress.decodedStreet, currentValue:
+        mismatchAddress.currentStreet} }}</li>
+      <li *ngIf="mismatchAddress.isZipCodeMismatched">{{'ZIPCODE_NOT_MATCHED' |
+        translate:{decodedValue: mismatchAddress.decodedZipCode, currentValue:
+        mismatchAddress.currentZipCode} }}</li>
+      <li *ngIf="mismatchAddress.isCityMismatched">{{'CITY_NOT_MATCHED' | translate:{decodedValue:
+        mismatchAddress.decodedCity, currentValue: mismatchAddress.currentCity}
+        }}
+      </li>
+      <li *ngIf="mismatchAddress.isStateMismatched">{{'STATE_NOT_MATCHED' |
+        translate:{decodedValue: mismatchAddress.decodedState, currentValue:
+        mismatchAddress.currentState}
+        }}
+      </li>
+      <li *ngIf="mismatchAddress.isCountryMismatched">{{'COUNTRY_NOT_MATCHED' |
+        translate:{decodedValue: mismatchAddress.decodedCountryId, currentValue:
+        mismatchAddress.currentCountryId} }}</li>
+    </ul>
+  </div>
+
+</div>

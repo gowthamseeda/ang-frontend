@@ -1,0 +1,12 @@
+<div gpFxFlexFill>
+  <div gpFxLayout>
+    <h1>{{'LEGAL_STATUS_OF_COMPANY' | translate}}</h1>
+  </div>
+  <div *ngIf="registeredOffice || affiliate" [formGroup]="parentForm" class="affiliate-toggle">
+    <mat-slide-toggle formControlName="affiliate" color="primary" data-cy="legal-status-affiliate">
+      {{'AFFILIATE_OF_DAIMLER' | translate}}
+    </mat-slide-toggle>
+    <gp-icon matSuffix *ngIf="parentForm.get('affiliate')?.disabled" name="lock" size="small">
+    </gp-icon>
+  </div>
+</div>

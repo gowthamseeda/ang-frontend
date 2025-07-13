@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.mat-card-content-cell-header {
+  font-size: 14px;
+  color: mat.get-color-from-palette($accent, 800);
+  padding-bottom: 6px;
+  font-weight: bold;
+}
+
+.mat-card-content-cell {
+  padding-bottom: 14px;
+}
+
+gp-brand-icon {
+  padding-right: 10px;
+}
+
+[loader] {
+  width: 255px;
+}

@@ -1,0 +1,96 @@
+<div>
+  <form [formGroup]="communicationChannelsForm" >
+    <div gpFxLayout="row wrap"
+         gpFxLayoutAlign="start center"
+         gpFxLayoutGap="32px grid">
+      <div *ngFor="let channel of channelsFormArray.controls; let i = index;"
+           formArrayName="channels"
+           [style.max-width]="getFieldSizeFor(channel.value)"
+           [style.min-width]="getFieldSizeFor(channel.value)"
+           [class.flex-item-spacing]="channel.get('value').invalid"
+           style="padding: 0px 32px 20px 0px;"
+           class="flex-item">
+        <div [formGroupName]="i"
+             gpFxLayout="row"
+             gpFxFill>
+             <mat-form-field class="show-footer no-horizontal-hint-space" 
+              [ngClass]="{'no-underline': taskType === Type.DATA_CHANGE}"
+              [floatLabel]="taskType === Type.DATA_CHANGE ? 'always':'auto'">
+            <mat-label>{{ channel.value.name }}</mat-label>
+            
+              <div gpFxLayout="column">
+                <div gpFxLayout="row" gpFxLayoutAlign="center center">
+                  <span class="actual-block" style="margin-right: 8px;"
+                  *ngIf="taskType === Type.DATA_CHANGE && channel.get('futureValue').value && 
+                  channel.get('futureValue').value !== channel.get('value').value">
+                  {{ 'ACTUAL' | translate }}:
+                </span>
+                <input matInput
+                  [readonly]="readOnly"
+                  formControlName="value"
+                  type="text"
+                  [ngClass]="getNotificationClass(channel)">
+                <gp-icon matSuffix
+                  *ngIf="readOnly"
+                  name="lock"
+                  size="small">
+                </gp-icon>
+              </div>
+            <div gpFxLayout="row"
+              *ngIf="taskType === Type.DATA_CHANGE && channel.get('futureValue').value && channel.get('futureValue').value !== channel.get('value').value"
+              [ngClass]="'changes-future-value'">
+              <span class="future-block">
+                {{ 'FUTURE' | translate }}: {{ channel.get('futureValue').value }}
+              </span>
+            </div>
+          </div>
+          
+            <mat-hint *ngIf="channel.value.notification === 'DIRECT_CHANGE' && showNotification
+            && channel.get('value').pristine"
+                      class="data-changed-comm">
+              {{ 'DATA_CHANGED_NOTIFICATIONS' | translate }}
+            </mat-hint>
+            <mat-hint class="data-changed-approved-comm"
+                      *ngIf="channel.value.notification === 'APPROVED' && showNotification
+            && channel.get('value').pristine">
+              {{ 'DATA_CHANGED_APPROVED' | translate }}
+            </mat-hint>
+            <mat-hint class="data-changed-declined-comm"
+                      *ngIf="channel.value.notification === 'DECLINED' && showNotification
+            && channel.get('value').pristine">
+              <gp-icon name="hint-info" size="small" color="red"
+                       (click)="taskCommentPopup(channel.value.taskId)"></gp-icon>
+              {{ 'DATA_CHANGED_DECLINED' | translate }}
+            </mat-hint>
+            <mat-error *ngIf="channel.get('value').hasError('email')">
+              {{ 'VALIDATION_ERROR_EMAIL' | translate }}
+            </mat-error>
+            <mat-error
+              *ngIf="channel.get('value').hasError('pattern') && channel.value.format === 'TEL'">
+              {{ 'VALIDATION_ERROR_TEL' | translate }}
+            </mat-error>
+            <mat-error
+              *ngIf="channel.get('value').hasError('pattern') && channel.value.format === 'URL'">
+              {{ 'VALIDATION_ERROR_URL' | translate }}
+            </mat-error>
+          </mat-form-field>
+          <ng-template #noValueChange>
+            {{ 'NO_CHANGES_MADE_TO_THE_FIELD' |translate }}
+          </ng-template>
+          <div *ngIf="channel.valid && isLinkOutAllowed(channel.value.value, channel.value.format)">
+            <button mat-icon-button
+                    type="button"
+                    (click)="openLink( channel.value.value, channel.value.format )">
+              <gp-icon name="arrow-out"
+                       matTooltip="{{ (channel.value.format === 'EMAIL'
+                       ? 'COMMUNICATION_OPEN_EMAIL_CLIENT'
+                       : 'COMMUNICATION_OPEN_NEW_TAB') | translate}}"
+                       matTooltipPosition="above"
+                       size="small"></gp-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

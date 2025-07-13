@@ -1,0 +1,17 @@
+<div gpFxLayout="row"
+     gpFxLayoutAlign="center center">
+  <ng-container *ngFor="let action of actions">
+    <div *ngIf="(action.userIsAuthorized | async) && (action.permissions | async)">
+      <a gpFxLayoutAlign="center center">
+        <gp-icon (click)="navigateToAction(action)"
+                 *ngIf="serviceTableRowHovered && action.enabled"
+                 [hover]="true"
+                 [matTooltip]="action.tooltip"
+                 [name]="getIconName(action)"
+                 [disabled]="(targetsEmpty() | async)"
+        >
+        </gp-icon>
+      </a>
+    </div>
+  </ng-container>
+</div>

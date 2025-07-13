@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>{{ 'GENERAL_GROUPS_SELECT_SUCCESSOR' | translate }}</h1>
+
+<mat-dialog-content [formGroup]="formGroup">
+  <mat-form-field>
+    <mat-label>{{ 'TYPE_TO_SEARCH_WITHIN_LIST' | translate }}</mat-label>
+    <gp-icon matPrefix
+             name="search">
+    </gp-icon>
+    <input matInput
+           (keyup)="filterTable($event.target.value)"
+           data-cy="successor-selection-filter-input">
+  </mat-form-field>
+  <mat-progress-bar *ngIf="isLoading"
+                    mode="indeterminate"></mat-progress-bar>
+  <mat-selection-list formControlName="successorGroup"
+                      [multiple]="false">
+    <mat-list-option *ngFor="let generalGroup of this.dataSource.filteredData"
+                     [value]="generalGroup"
+                     data-cy="successor-selection-option">
+      {{generalGroup.name}}
+    </mat-list-option>
+  </mat-selection-list>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <gp-default-edit-actions saveButtonTranslationKey="OK"
+                           [saveButtonDisabled]="formGroup.invalid || formGroup.pristine"
+                           (save)="dialogRef.close(formGroup.get('successorGroup')?.value[0])"
+                           (cancel)="dialogRef.close(false)">
+  </gp-default-edit-actions>
+</mat-dialog-actions>

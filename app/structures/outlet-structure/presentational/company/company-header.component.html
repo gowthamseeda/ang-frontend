@@ -1,0 +1,6 @@
+<div class="company-header"
+     *ngIf="company && company.id">
+  <h1>{{ 'COMPANY' | translate }}</h1>
+  <h2>{{ company.id }} - {{ company.legalName }}</h2>
+  <h3>{{ company.city }}</h3>
+</div>

@@ -1,0 +1,20 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.suggested-filter {
+  background: white;
+  padding: 0 0 20px 20px;
+  border-top: 1px solid mat.get-color-from-palette($accent, 100);
+  .mat-chip-listbox {
+    mat-basic-chip {
+      cursor: pointer;
+    }
+    ::ng-deep .mdc-evolution-chip-set__chips {
+      margin-right: 0;
+    }
+
+    ::ng-deep .mdc-evolution-chip-set__chips {
+      margin-right: 0;
+    }
+  }
+}

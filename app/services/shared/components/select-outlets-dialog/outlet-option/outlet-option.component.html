@@ -1,0 +1,33 @@
+<div class="outlet-result" (click)="selectOutlet()">
+  <div class="outlet-header">
+    {{outlet.legalName}}
+    <mat-checkbox [checked]="selected">
+    </mat-checkbox>
+  </div>
+  <div>
+    <div gpFxLayout="row" class="outlet-id">
+        <span style="margin-right: 10px">
+          {{outlet.companyId}}
+        </span>
+      {{outlet.id}}
+      <mat-chip-set>
+        <ng-container *ngFor="let label of outletLabels">
+          <mat-chip>
+            {{ label | translate }}
+          </mat-chip>
+        </ng-container>
+        <mat-chip class="inactive"
+                  *ngIf="outletInactive">
+          {{ 'INACTIVE' | translate }}
+        </mat-chip>
+      </mat-chip-set>
+    </div>
+    <div class="block">
+      <div>
+        {{outlet.address.street}} {{outlet.address.streetNumber}}
+        -
+        {{outlet.address.zipCode}} {{outlet.address.city}}
+      </div>
+    </div>
+  </div>
+</div>

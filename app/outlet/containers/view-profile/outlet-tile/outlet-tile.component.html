@@ -1,0 +1,51 @@
+<div class="box" (click)="emitCardClickedEvent($event)">
+  <gp-menu-positioned
+    [menuItems]="menuItems"
+    (menuItemClicked)="navigateTo($event)"
+  >
+  </gp-menu-positioned>
+  <ng-container container *ngIf="businessSite | async as businessSite">
+    <gp-outlet-id-content-loader
+      tile-title
+      [isLoading]="isOutletLoading | async"
+    >
+      <gp-outlet-id-block outlet-id-content [outletId]="businessSite.id">
+      </gp-outlet-id-block>
+
+      <gp-brand-code-blocks outlet-id-content [brandCodes]="brandCodes | async">
+      </gp-brand-code-blocks>
+
+      <gp-registered-office-block
+        outlet-id-content
+        [registeredOffice]="businessSite.registeredOffice"
+      >
+      </gp-registered-office-block>
+    </gp-outlet-id-content-loader>
+
+    <gp-legal-name-content-loader [isLoading]="isOutletLoading | async">
+      <div class="legalName" legal-name-content>
+        {{ businessSite?.legalName }}
+      </div>
+    </gp-legal-name-content-loader>
+
+    <div class="distribution-level-chips__row"></div>
+
+    <div class="product-groups-and-brands__row">
+      <div class="product-groups-and-brands__container">
+        <gp-outlet-building-loader [isLoading]="isOutletLoading | async">
+          <gp-outlet-building
+            outlet-building-content
+            [outletType]="buildingType | async"
+            [outletName]="outletName | async"
+            [productGroups]="productGroups | async"
+          >
+          </gp-outlet-building>
+        </gp-outlet-building-loader>
+
+        <gp-brand-pylone-loader [isLoading]="isOutletLoading | async">
+          <gp-brand-pylone pylone-content [brandIds]="brandIds | async"></gp-brand-pylone>
+        </gp-brand-pylone-loader>
+      </div>
+    </div>
+  </ng-container>
+</div>

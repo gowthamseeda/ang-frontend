@@ -1,0 +1,23 @@
+<ng-container *ngIf="(company | async) as company">
+  <nav>
+    <div class="navigation-container">
+      <gp-company-header [company]="company"></gp-company-header>
+      <div class="tree-container">
+        <ng-container *ngIf="(outlets | async) as outletNodes">
+          <cdk-virtual-scroll-viewport (scrolledIndexChange)="onScrollIndexChange($event)"
+                                       scrollViewport
+                                       class="ps scroll-vertical"
+                                       itemSize="90"
+                                       minBufferPx="1200"
+                                       maxBufferPx="1200">
+            <ng-container *cdkVirtualFor="let node of outletNodes; templateCacheSize: 0"
+                           style="height: 200px;">
+              <ng-container *ngTemplateOutlet="nodeContentComponent, context:{$implicit:node}">
+              </ng-container>
+            </ng-container>
+          </cdk-virtual-scroll-viewport>
+        </ng-container>
+      </div>
+    </div>
+  </nav>
+</ng-container>

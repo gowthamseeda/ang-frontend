@@ -1,0 +1,37 @@
+<div *ngxPermissionsOnly="['legalstructure.company.update']; else readonlyTemplate">
+  <gp-icon class="icon-left"
+           name="arrow-forward"
+           size="small"></gp-icon>{{ 'TILE_DETAILS_EDIT' | translate }}
+</div>
+<ng-template #readonlyTemplate>
+  <gp-icon class="icon-left"
+           name="arrow-forward"
+           size="small"></gp-icon>{{ 'TILE_DETAILS' | translate }}
+</ng-template>
+<gp-tile componentLink="../{{ company?.registeredOfficeId }}/edit"
+         iconUrl="business"
+         headerText="{{ 'TILE_COMPANY_HEADER' | translate }}"
+         noTileDataText="{{ 'TILE_PO_BOX_NO_DATA' | translate }}"
+         noTileDataTextPrefix="{{ 'TILE_PO_BOX_NO_DATA_PREFIX' | translate }}"
+         noTileDataTextLink="{{ 'TILE_PO_BOX_NO_DATA_LINK' | translate }}"
+         noTileDataTextPostfix="{{ 'TILE_PO_BOX_NO_DATA_POSTFIX' | translate }}"
+         [detailsLinkText]="detailsLinkText">
+  <div gpFxLayout="column">
+    <div class="mat-card-content-legal-name">
+      {{ company?.legalName }}
+    </div>
+    <div class="mat-card-content-address">
+      <div>{{ company?.address.street }} {{ company?.address.streetNumber }}</div>
+      <div>{{ company?.address.zipCode }} {{ company?.address.city }}</div>
+      <div>
+        {{ countryName }}
+      </div>
+    </div>
+    <div class="mat-card-content-affiliate"
+         *ngIf="(affiliate | async)">
+      <gp-icon class="icon-left"
+               name="hint-ok"></gp-icon>
+      {{ 'TILE_COMPANY_AFFILIATE' | translate }}
+    </div>
+  </div>
+</gp-tile>

@@ -1,0 +1,11 @@
+<div class="brand-restrictions-select-dialog"
+     gpFxLayout="column">
+  {{ 'MASTER_DATA_KEY_BRAND_RESTRICTIONS' | translate }}
+  <gp-chips-selection [control]="fControl"
+                      [placeholder]="placeholder"
+                      [required]="required"
+                      [itemList]="allBrands"
+                      [floatLabel]='floatLabel'
+                      (changeFunction)="change()">
+  </gp-chips-selection>
+</div>

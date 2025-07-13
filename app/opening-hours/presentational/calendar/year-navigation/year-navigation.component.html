@@ -1,0 +1,11 @@
+<div *ngIf="selectedYear" class="year-navigation">
+  <mat-form-field class="year-form-field">
+    <mat-select class="year-select" [value]="selectedYear">
+      <ng-container *ngFor="let year of years;">
+        <mat-option class="year-option" [value]="year" (onSelectionChange)="onSelectionChange($event)">
+          {{ year }}
+        </mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+</div>

@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.box {
+  width: 122px;
+  height: 26px !important;
+  background-color: mat.get-color-from-palette($accent, 700);
+}
+
+.registered-office {
+  color: mat.get-color-from-palette($accent, 50);
+  font-size: 11px;
+  margin: 5px 14px;
+}

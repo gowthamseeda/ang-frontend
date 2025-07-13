@@ -1,0 +1,36 @@
+<gp-content-loader [isLoading]="isLoading | async">
+  <gp-message *ngIf="!(isLoading | async) && serviceTableDataSource?.data?.length === 0"
+              message="SERVICE_TABLE_EMPTY"
+              type="info">
+    {{ 'SERVICE_TABLE_EMPTY' | translate }}
+  </gp-message>
+
+  <gp-service-table-layout (addOfferedService)="addOfferedService($event)"
+                           (applyFilter)="applyFilter($event)"
+                           (servicesFilter)="servicesFilter($event)"
+                           (removeOfferedService)="removeOfferedService($event)"
+                           [brandProductGroups]="brandProductGroups | async"
+                           [countryId]="countryId"
+                           [outletId]="outletId"
+                           [serviceTableRows]="serviceTableDataSource"
+                           [serviceTableSaved]="serviceTableSaved">
+  </gp-service-table-layout>
+
+  <div loader
+       xmlns:svg='http://www.w3.org/2000/svg'>
+    <content-loader preserveAspectRatio="none">
+      <svg:rect x="0"
+                y="0"
+                width="400"
+                height="20" />
+      <svg:rect x="0"
+                y="30"
+                width="400"
+                height="40" />
+      <svg:rect x="0"
+                y="80"
+                width="400"
+                height="40" />
+    </content-loader>
+  </div>
+</gp-content-loader>

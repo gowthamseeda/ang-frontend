@@ -1,0 +1,31 @@
+<div class="calendar">
+  <div class="years">
+    <gp-year-navigation
+      [selectedYear]="year"
+      [startYear]="minSelectableYear"
+      [endYear]="maxSelectableYear"
+      (yearChanged)="onYearChanged($event)">
+    </gp-year-navigation>
+  </div>
+  <div class="months">
+    <ng-container *ngFor="let month of months">
+      <gp-month-navigation
+        [selectedMonth]="month.number"
+        [allowNavigation]="month.allowNavigation"
+        [translationLocale]="translationLocale"
+        (previousMonthSelected)="onPreviousMonthSelected()"
+        (nextMonthSelected)="onNextMonthSelected()">
+      </gp-month-navigation>
+      <gp-month
+        [year]="month.year"
+        [month]="month.number"
+        [events]="month.events"
+        [translationLocale]="translationLocale"
+        (daySelected)="onDaySelected($event)"
+        (eventDaySelected)="onEventDaySelected($event)"
+        (selectedEventDaySelected)="onSelectedEventDaySelected($event)"
+        (dayFocused)="onDayFocused($event)">
+      </gp-month>
+    </ng-container>
+  </div>
+</div>

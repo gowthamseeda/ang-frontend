@@ -1,0 +1,50 @@
+<div *ngIf="taskDiff?.generalCommunicationDataDiff?.length > 0"
+     class="diff-item"
+     data-test-id="task-diff-old">
+  <h2>{{ 'TASK_OLD' | translate }}</h2>
+
+  <div class="diff-container old"
+       *ngFor="let items of taskDiff?.generalCommunicationDataDiff">
+
+    <gp-task-diff-item [title]="'BRAND' | translate"
+                       [customValue]="true"
+                       class="diff-keyvalue slim">
+      <gp-brand-icon [id]="items?.brandId || 'BRANDLESS'"></gp-brand-icon>
+    </gp-task-diff-item>
+
+    <gp-task-diff-item class="diff-keyvalue slim"
+                       [title]="'TASK_DIFF_COMMUNICATION_FIELD' | translate"
+                       [value]="items?.communicationFieldId"></gp-task-diff-item>
+
+    <gp-task-diff-item class="diff-keyvalue slim"
+                       [title]="'TASK_DIFF_COMMUNICATION_VALUE' | translate"
+                       [value]="items?.diff?.old"></gp-task-diff-item>
+  </div>
+</div>
+<div *ngIf="taskDiff?.generalCommunicationDataDiff?.length > 0"
+     class="diff-item"
+     data-test-id="task-diff-new">
+  <h2>{{ 'TASK_NEW' | translate }}</h2>
+  <div class="diff-container"
+       *ngFor="let items of taskDiff?.generalCommunicationDataDiff">
+
+    <gp-task-diff-item [title]="'BRAND' | translate"
+                       [customValue]="true"
+                       class="diff-keyvalue slim">
+      <gp-brand-icon [id]="items?.brandId || 'BRANDLESS'"></gp-brand-icon>
+    </gp-task-diff-item>
+
+    <gp-task-diff-item class="diff-keyvalue slim"
+                       [title]="'TASK_DIFF_COMMUNICATION_FIELD' | translate"
+                       [value]="items?.communicationFieldId"></gp-task-diff-item>
+
+    <gp-task-diff-item class="diff-keyvalue slim"
+                       [class.highlight]="valueChanged(items?.diff)"
+                       [title]="'TASK_DIFF_COMMUNICATION_VALUE' | translate"
+                       [value]="items?.diff?.new"></gp-task-diff-item>
+  </div>
+</div>
+<div class="diff-container"
+     *ngIf="taskDiff?.generalCommunicationDataDiff?.length === 0">
+  {{ 'NO_DATA_CHANGE' | translate }}
+</div>

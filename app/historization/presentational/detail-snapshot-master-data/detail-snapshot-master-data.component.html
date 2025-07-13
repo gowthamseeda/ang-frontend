@@ -1,0 +1,557 @@
+<div gpFxFill gpFxLayout="column">
+  <h2 matDialogTitle>
+    {{ detailSnapshotTitle | translate }}: {{ data.masterDataDescriptor.fieldValue }}
+  </h2>
+  <mat-dialog-content gpFxFlex class="mat-dialog-content">
+    <mat-table [dataSource]="detailMasterData.snapshots">
+      <ng-container matColumnDef="event">
+        <mat-header-cell *matHeaderCellDef data-cy="detail-master-data-row-header-event">
+          {{ 'EVENT_NAME' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" data-cy="detail-master-data-row-event">
+          <span>{{ element.eventName | translate }}</span>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="time">
+        <mat-header-cell *matHeaderCellDef data-cy="detail-master-data-row-header-time">
+          {{ 'TIME' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" data-cy="detail-master-data-row-time">
+          <span>{{ element.occurredOnForTimeOnly }}</span>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="value">
+        <mat-header-cell *matHeaderCellDef data-cy="detail-master-data-row-header-value">
+          {{ 'VALUE' | translate }}
+        </mat-header-cell>
+        <mat-cell
+          *matCellDef="let element"
+          gpFxLayoutColumn
+          gpFxLayoutAlign="start"
+          data-cy="detail-master-data-row-value"
+        >
+          <ul class="circle">
+            <li>
+              {{ 'ADMIN_TABLE_DETAILS' | translate }}
+              <ul class="square">
+                <div [ngSwitch]="data.masterDataDescriptor.type">
+                  <ng-container
+                    *ngSwitchCase="'Brand'"
+                    [ngTemplateOutlet]="masterDataBrands"
+                    [ngTemplateOutletContext]="{ data: element }"
+                  ></ng-container>
+                  <ng-container
+                    *ngSwitchCase="'Label'"
+                    [ngTemplateOutlet]="masterDataLabels"
+                    [ngTemplateOutletContext]="{ data: element }"
+                  ></ng-container>
+                  <ng-container
+                    *ngSwitchCase="'KeyType'"
+                    [ngTemplateOutlet]="masterDataKeyTypes"
+                    [ngTemplateOutletContext]="{ data: element }"
+                  ></ng-container>
+                  <ng-container
+                    *ngSwitchCase="'Country'"
+                    [ngTemplateOutlet]="masterDataCountry"
+                    [ngTemplateOutletContext]="{ data: element }"
+                  ></ng-container>
+                  <ng-container
+                    *ngSwitchCase="'ProductGroup'"
+                    [ngTemplateOutlet]="masterDataProductGroups"
+                    [ngTemplateOutletContext]="{ data: element }"
+                  ></ng-container>
+                  <ng-container
+                    *ngSwitchCase="'Language'"
+                    [ngTemplateOutlet]="masterDataLanguages"
+                    [ngTemplateOutletContext]="{ data: element }"
+                  ></ng-container>
+                  <ng-container
+                    *ngSwitchCase="'Service'"
+                    [ngTemplateOutlet]="masterDataService"
+                    [ngTemplateOutletContext]="{data: element}">
+                  </ng-container>
+                  <ng-container
+                    *ngSwitchCase="'OutletRelationship'"
+                    [ngTemplateOutlet]="masterDataOutletRelationships"
+                    [ngTemplateOutletContext]="{data: element}">
+                  </ng-container>
+				          <ng-container
+                    *ngSwitchCase="'CloseDownReason'"
+                    [ngTemplateOutlet]="masterDataCloseDownReason"
+                    [ngTemplateOutletContext]="{data: element}">
+                  </ng-container>
+                </div>
+              </ul>
+            </li>
+          </ul>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="detailSnapshotHeaders"></mat-header-row>
+      <mat-row 
+        *matRowDef="let element; columns: detailSnapshotHeaders"
+        data-cy="detail-master-data-row"
+        class = "{{ element.highlight ? 'highlightItem' : ''}}"
+        #itemElement
+      ></mat-row>
+    </mat-table>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center">
+    <button (click)="cancel()"
+            mat-button>{{ 'OK' | translate}}</button>
+  </mat-dialog-actions>
+</div>
+
+<ng-template #masterDataBrands let-data="data">
+  <li>
+    {{ 'BRAND_ID' | translate }}
+    :
+    {{ data.brandId | emptyValuePipe }}
+  </li>
+  <li>
+    {{ 'NAME' | translate }}
+    :
+    {{ data.name | emptyValuePipe }}
+  </li>
+  <li>
+    {{ 'POSITION' | translate }}
+    :
+    {{ data.position | emptyValuePipe }}
+  </li>
+  <li *ngIf="data.isDeleted">
+    {{ 'IS_DELETED' | translate }}
+    :
+    {{ data.isDeleted | emptyValuePipe }}
+  </li>
+</ng-template>
+
+<ng-template #masterDataLabels let-data="data">
+  <li>
+    {{ 'LABEL_ID' | translate }}
+    :
+    {{ data.labelId | emptyValuePipe }}
+  </li>
+
+  <li>
+    {{ 'NAME' | translate }}
+    :
+    {{ data.name | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.assignableTo?.length > 0">
+    {{ 'MASTER_DATA_LABEL_ASSIGNABLE_TO' | translate }}
+    <ul class="circle">
+      <div *ngFor="let assignableTo of data.assignableTo">
+        <li>
+          {{ assignableTo | emptyValuePipe }}
+        </li>
+      </div>
+    </ul>
+  </li>
+
+  <li *ngIf="data.restrictedToBrandIds?.length > 0">
+    {{ 'MASTER_DATA_LABEL_BRAND_RESTRICTIONS' | translate }}
+    <ul class="circle">
+      <div *ngFor="let restrictedToBrandIds of data.restrictedToBrandIds">
+        <li>
+          {{ restrictedToBrandIds | emptyValuePipe }}
+        </li>
+      </div>
+    </ul>
+  </li>
+
+  <li *ngIf="data.restrictedToCountryIds?.length > 0">
+    {{ 'MASTER_DATA_LABEL_COUNTRY_RESTRICTION' | translate }}
+    <ul class="circle">
+      <div *ngFor="let country of data.restrictedToCountryIds">
+        <li>
+          {{ country | emptyValuePipe }}
+        </li>
+      </div>
+    </ul>
+  </li>
+
+  <li *ngIf="data.restrictedToDistributionLevels?.length > 0">
+    {{ 'MASTER_DATA_LABEL_DISTRIBUTION_LEVELS_RESTRICTION' | translate }}
+    <ul class="circle">
+      <div *ngFor="let restrictedDistributionLevel of data.restrictedToDistributionLevels">
+        <li>
+          {{ restrictedDistributionLevel | emptyValuePipe }}
+        </li>
+      </div>
+    </ul>
+  </li>
+
+  <li *ngIf="data.translations.length > 0">
+    {{ 'MASTER_DATA_TRANSLATIONS' | translate }}
+    <div *ngFor="let translate of data.translations">
+      <ul class="circle">
+        <li>
+          {{ 'LANGUAGE_ID' | translate }}
+          :
+          {{ translate.languageId | emptyValuePipe }}
+        </li>
+
+        <li>
+          {{ 'NAME' | translate }}
+          :
+          {{ translate.name | emptyValuePipe }}
+        </li>
+      </ul>
+    </div>
+  </li>
+</ng-template>
+
+<ng-template #masterDataKeyTypes let-data="data">
+  <li>
+    {{ 'MASTER_DATA_KEY_TYPE_ID' | translate }}
+    :
+    {{ data.keyTypeId | emptyValuePipe }}
+  </li>
+
+  <li>
+    {{ 'NAME' | translate }}
+    :
+    {{ data.name | emptyValuePipe }}
+  </li>
+
+  <li>
+    {{ 'DESCRIPTION' | translate }}
+    :
+    {{ data.description | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.translations.length > 0">
+    {{ 'MASTER_DATA_KEY_TYPE_TRANSLATION' | translate }}
+    <div *ngFor="let translate of data.translations">
+      <ul class="circle">
+        <li>
+          {{ 'LANGUAGE_ID' | translate }}
+          :
+          {{ translate.languageId | emptyValuePipe }}
+        </li>
+
+        <li>
+          {{ 'DESCRIPTION' | translate }}
+          :
+          {{ translate.description | emptyValuePipe }}
+        </li>
+      </ul>
+    </div>
+  </li>
+
+  <li>
+    {{ 'MAX_VALUE_LENGTH' | translate }}
+    :
+    {{ data.maxValueLength | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.countryRestrictions?.length > 0">
+    {{ 'MASTER_DATA_KEY_TYPE_COUNTRY_RESTRICTION' | translate }}
+    <ul class="circle">
+      <div *ngFor="let country of data.countryRestrictions">
+        <li>
+          {{ country | emptyValuePipe }}
+        </li>
+      </div>
+    </ul>
+  </li>
+
+  <li *ngIf="data.brandRestrictions?.length > 0">
+    {{ 'MASTER_DATA_KEY_BRAND_RESTRICTIONS' | translate }}
+    <ul class="circle">
+      <div *ngFor="let brandId of data.brandRestrictions">
+        <li>
+          {{ brandId | emptyValuePipe }}
+        </li>
+      </div>
+    </ul>
+  </li>
+
+  <li *ngIf="data.productGroupRestrictions?.length > 0">
+    {{ 'MASTER_DATA_KEY_PRODUCT_GROUP_RESTRICTIONS' | translate }}
+    <ul class="circle">
+      <div *ngFor="let productGroupId of data.productGroupRestrictions">
+        <li>
+          {{ productGroupId | emptyValuePipe }}
+        </li>
+      </div>
+    </ul>
+  </li>
+</ng-template>
+
+<ng-template #masterDataCountry let-data="data">
+  <li>
+    {{ 'COUNTRY_ID' | translate }}
+    :
+    {{ data.countryId | emptyValuePipe }}
+  </li>
+
+  <li>
+    {{ 'NAME' | translate }}
+    :
+    {{ data.name | emptyValuePipe }}
+  </li>
+
+  <li>
+    {{ 'DEFAULT_LANGUAGE' | translate }}
+    :
+    {{ data.defaultLanguageId | emptyValuePipe }}
+  </li>
+
+  <ul *ngIf="data.translations.length > 0" class="circle">
+    <li>
+      {{ 'MASTER_DATA_TRANSLATIONS' | translate }}
+      <div *ngFor="let translate of data.translations">
+        <ul class="square">
+          <li>
+            {{ 'LANGUAGE_ID' | translate }}
+            :
+            {{ translate.languageId | emptyValuePipe }}
+          </li>
+
+          <li>
+            {{ 'NAME' | translate }}
+            :
+            {{ translate.name | emptyValuePipe }}
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</ng-template>
+
+<ng-template #masterDataProductGroups let-data="data">
+  <li>
+    {{ 'PRODUCT_GROUP_ID' | translate }}
+    :
+    {{ data.productGroupId | emptyValuePipe }}
+  </li>
+
+  <li>
+    {{ 'NAME' | translate }}
+    :
+    {{ data.name | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.shortName">
+    {{ 'SHORT_NAME' | translate }}
+    :
+    {{ data.shortName | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.position">
+    {{ 'POSITION' | translate }}
+    :
+    {{ data.position | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.isDeleted">
+    {{ 'IS_DELETED' | translate }}
+    :
+    {{ data.isDeleted | emptyValuePipe }}
+  </li>
+
+  <ul *ngIf="data.translations.length > 0" class="circle">
+    <li>
+      {{ 'MASTER_DATA_TRANSLATIONS' | translate }}
+      <div *ngFor="let translate of data.translations">
+        <ul class="square">
+          <li>
+            {{ 'LANGUAGE_ID' | translate }}
+            :
+            {{ translate.languageId | emptyValuePipe }}
+          </li>
+
+          <li>
+            {{ 'NAME' | translate }}
+            :
+            {{ translate.name | emptyValuePipe }}
+          </li>
+
+          <li *ngIf="translate.shortName">
+            {{ 'SHORT_NAME' | translate }}
+            :
+            {{ translate.shortName | emptyValuePipe }}
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</ng-template>
+
+<ng-template #masterDataLanguages let-data="data">
+  <li>
+    {{ 'LANGUAGE_ID' | translate }}
+    :
+    {{ data.languageId | emptyValuePipe }}
+  </li>
+
+  <li>
+    {{ 'NAME' | translate }}
+    :
+    {{ data.name | emptyValuePipe }}
+  </li>
+
+  <li>
+    {{ 'REPRESENTATION' | translate }}
+    :
+    {{ data.representation | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.isDeleted">
+    {{ 'IS_DELETED' | translate }}
+    :
+    {{ data.isDeleted | emptyValuePipe }}
+  </li>
+</ng-template>
+
+
+<ng-template #masterDataService let-data="data">
+  <li>
+    {{ 'SERVICE_ID' | translate }}
+    :
+    {{ data.serviceId | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.name">
+    {{ 'NAME' | translate }}
+    :
+    {{ data.name | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.description">
+    {{ 'DESCRIPTION' | translate }}
+    :
+    {{ data.description | emptyValuePipe }}
+  </li>
+
+  <li>
+    {{ 'ACTIVE' | translate }}
+    :
+    {{ data.active | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.position">
+    {{ 'POSITION' | translate }}
+    :
+    {{ data.position | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.openingHoursSupport">
+    {{ 'OPENING_HOURS_SUPPORT' | translate }}
+    :
+    {{ data.openingHoursSupport | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.allowedDistributionLevels">
+    {{ 'ALLOWED_DISTRIBUTION_LEVELS' | translate }}
+    :
+    {{ data.allowedDistributionLevels | emptyValuePipe }}
+  </li>
+
+  <li *ngIf="data.isDeleted">
+    {{ 'IS_DELETED' | translate }}
+    :
+    {{ data.isDeleted | emptyValuePipe }}
+  </li>
+
+  <ul *ngIf="data.translations.length > 0" class="circle">
+    <li>
+      {{ 'MASTER_DATA_TRANSLATIONS' | translate }}
+      <div *ngFor="let translate of data.translations">
+        <ul class="square">
+          <li>
+            {{ 'LANGUAGE_ID' | translate }}
+            :
+            {{ translate.languageId | emptyValuePipe }}
+          </li>
+
+          <li>
+            {{ 'NAME' | translate }}
+            :
+            {{ translate.name | emptyValuePipe }}
+          </li>
+
+          <li *ngIf="translate.nameDescription">
+            {{ 'NAME_DESCRIPTION' | translate }}
+            :
+            {{ translate.nameDescription | emptyValuePipe }}
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</ng-template>
+
+<ng-template #masterDataOutletRelationships let-data="data">
+  <li>
+    {{ 'OUTLET_RELATIONSHIP_ID' | translate }}
+    :
+    {{ data.outletRelationshipId | emptyValuePipe }}
+  </li>
+  <li>
+    {{ 'NAME' | translate }}
+    :
+    {{ data.name | emptyValuePipe }}
+  </li>
+  <li>
+    {{ 'DESCRIPTION' | translate }}
+    :
+    {{ data.description | emptyValuePipe }}
+  </li>
+  <li *ngIf="data.isDeleted">
+    {{ 'IS_DELETED' | translate }}
+    :
+    {{ data.isDeleted | emptyValuePipe }}
+  </li>
+</ng-template>
+
+<ng-template #masterDataCloseDownReason let-data="data">
+  <li>
+    {{ 'CLOSE_DOWN_REASON_ID' | translate }}
+    :
+    {{ data.closeDownReasonId | emptyValuePipe }}
+  </li>
+
+  <li>
+    {{ 'NAME' | translate }}
+    :
+    {{ data.name | emptyValuePipe }}
+  </li>
+
+  <ul *ngIf="data.validity.length > 0" class="circle">
+    <li>
+      {{ 'VALIDITY' | translate }}
+      <div *ngFor="let validity of data.validity">
+        <ul class="square">
+          <li>
+            {{ validity | translate }}
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+
+  <ul *ngIf="data.translations.length > 0" class="circle">
+    <li>
+      {{ 'MASTER_DATA_TRANSLATIONS' | translate }}
+      <div *ngFor="let translate of data.translations">
+        <ul class="square">
+          <li>
+            {{ 'LANGUAGE_ID' | translate }}
+            :
+            {{ translate.languageId | emptyValuePipe }}
+          </li>
+
+          <li>
+            {{ 'NAME' | translate }}
+            :
+            {{ translate.name | emptyValuePipe }}
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</ng-template>

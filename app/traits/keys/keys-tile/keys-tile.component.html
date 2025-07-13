@@ -1,0 +1,27 @@
+<gp-tile componentLink="./keys"
+         iconUrl="keys"
+         headerText="{{ 'TILE_KEYS_HEADER' | translate }}"
+         noTileDataText="{{ 'TILE_KEYS_NO_DATA' | translate }}"
+         noTileDataTextPrefix="{{ 'TILE_KEYS_NO_DATA_PREFIX' | translate }}"
+         noTileDataTextLink="{{ 'TILE_KEYS_NO_DATA_LINK' | translate }}"
+         noTileDataTextPostfix="{{ 'TILE_KEYS_NO_DATA_POSTFIX' | translate }}"
+         [detailsLinkText]="detailsLinkText"
+         fragment="keys"
+         [isLoading]="isLoading"
+         [isEmpty]="isEmpty()">
+  <div *ngFor="let key of keys">
+    <div class="mat-card-content-cell-header"
+         gpFxLayout="row">
+      {{ key.type | translate }}: {{ key.key }}
+    </div>
+    <div class="mat-card-content-cell"
+         gpFxLayout="row"
+         *ngIf="key.brands.length > 0">
+      <gp-brand-icon *ngFor="let brand of key.brands"
+                     [id]="brand.brandId"
+                     tooltipPosition="below"
+                     [small]=true>
+      </gp-brand-icon>
+    </div>
+  </div>
+</gp-tile>

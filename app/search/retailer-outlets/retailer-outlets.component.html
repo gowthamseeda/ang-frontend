@@ -1,0 +1,39 @@
+<ng-scrollbar (reachedBottom)="lazyLoadRetailerOutlets($event)" [reachedOffset]="1" style="max-height:
+calc(100% - 40px)">
+  <h1>{{ 'MY_OUTLETS' | translate }}</h1>
+
+  <gp-content-loader [isLoading]="isLoading">
+
+    <ng-template #searchSuccessful>
+      <div  *ngFor="let retailerOutlet of retailerOutlets"
+            gpFxLayout="row">
+        <gp-outlet-result [searchItem]="retailerOutlet"
+                          [active]="retailerOutlet.id === (selectedOutletId | async)"
+                          [retailOutlet]=true
+                          gpFxFlex="100">
+        </gp-outlet-result>
+      </div>
+
+      <h2 *ngIf="retailerOutlets?.length === 0">
+        {{ 'NO_OUTLETS_MESSAGE' | translate }}
+      </h2>
+    </ng-template>
+
+    <h1 *ngIf="error; else searchSuccessful">{{ 'GENERIC_API_ERROR' | translate }}</h1>
+
+    <div loader
+         xmlns:svg='http://www.w3.org/2000/svg'>
+      <content-loader preserveAspectRatio="none"
+                      height="300">
+        <svg:rect x="20"
+                  y="0"
+                  width="350"
+                  height="145" />
+        <svg:rect x="20"
+                  y="155"
+                  width="350"
+                  height="145" />
+      </content-loader>
+    </div>
+  </gp-content-loader>
+</ng-scrollbar>

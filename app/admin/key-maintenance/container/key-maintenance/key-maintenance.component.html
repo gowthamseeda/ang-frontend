@@ -1,0 +1,18 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{ label: 'ADMIN' }, { label: 'EXTERNAL_KEYS_MAINTENANCE' }]">
+  </gp-header>
+  <gp-edit-layout title="{{ 'FILE_DOWNLOAD' | translate }}"
+                  [marginalColumnDisabled]="true">
+    <gp-edit-section>
+      <gp-external-keys-download></gp-external-keys-download>
+    </gp-edit-section>
+  </gp-edit-layout>
+
+  <gp-edit-layout title="{{ 'FILE_UPLOAD' | translate }}"
+                  [marginalColumnDisabled]="true">
+    <gp-edit-section>
+      <gp-external-keys-upload></gp-external-keys-upload>
+    </gp-edit-section>
+  </gp-edit-layout>
+</gp-default-layout>

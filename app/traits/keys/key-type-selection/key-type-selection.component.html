@@ -1,0 +1,37 @@
+<ng-container *ngIf="!readonly; else keyTypeReadonly">
+  <mat-form-field *ngIf="keyTypes.length > 0">
+    <mat-select [formControl]="control"
+                [placeholder]="placeholder"
+                data-cy="key-type-selection">
+      <mat-option *ngFor="let keyType of filteredKeyTypes"
+                  [value]="keyType"
+                  data-cy="key-type-selection-option">
+        {{ keyType | translate }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="control.touched && control?.hasError('required')">
+      {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="masterKeyTypes.length > 0">
+    <mat-label>{{ placeholder }}</mat-label>
+    <mat-select [formControl]="control"
+                [required]="required"
+                data-cy="key-type-selection"
+                (click)="control.markAsTouched()">
+      <mat-option *ngFor="let keyType of masterKeyTypes"
+                  [value]="keyType.id"
+                  data-cy="key-type-selection-option">
+        {{ keyType.name | translate }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="control.touched && control?.hasError('required')">
+      {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+    </mat-error>
+  </mat-form-field>
+</ng-container>
+
+<ng-template #keyTypeReadonly>
+  {{ control.value | translate }}
+</ng-template>

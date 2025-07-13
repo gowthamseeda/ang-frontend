@@ -1,0 +1,17 @@
+mat-dialog-content {
+  margin-bottom: 40px;
+  white-space: pre-line;
+}
+
+[mat-dialog-title] {
+  flex: 0.9;
+}
+
+.close-btn-container {
+  flex: 0.1;
+  margin-top: 10px;
+}
+
+[mat-dialog-actions] {
+  margin-bottom: -10px;
+}

@@ -1,0 +1,58 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{ label: 'ADMIN' },
+             { label: 'IAM_MANAGEMENT' }]">
+  </gp-header>
+  <div gpContent>
+    <div gpFxLayout="row"
+         gpFxLayoutGap="10px"
+         gpFxLayoutAlign="space-between">
+      <div gpFxLayoutColumn
+           class="header">
+        <h1>{{ 'IAM_MANAGEMENT' | translate }}</h1>
+        <span>{{ 'IAM_MANAGEMENT_SUBTITLE' | translate }}</span>
+      </div>
+      <div gpFxLayoutColumn>
+        <!--<button (click)="exportIamUsers()"
+                mat-button>
+          {{ 'SEARCH_EXPORT_ALL' | translate }}
+        </button>-->
+        <a mat-icon-button href="{{pdfSource}}" download="GSSN+ Users and Roles.xlsx" target="_blank">
+          <gp-icon name="download"></gp-icon>
+        </a>
+      </div>
+    </div>
+
+    <form [formGroup]="IamManagementForm"
+          (ngSubmit)="submit(IamManagementForm.value)"
+          novalidate>
+      <div gpFxLayout="column">
+        <div gpFxLayout="row"
+             gpFxLayoutGap="30px">
+
+          <mat-form-field gpFxFlex="45">
+            <mat-label>{{ 'IAM_USER_ID' | translate }}</mat-label>
+            <input matInput
+                   formControlName="id"
+                   type="text"/>
+          </mat-form-field>
+
+        </div>
+        <div gpFxLayout="row">
+          <div gpFxFlex>
+            <button type="reset"
+                    mat-button
+                    routerLink="/master">
+              {{ 'CANCEL' | translate }}
+            </button>
+          </div>
+          <button type="submit"
+                  mat-button
+                  [disabled]="IamManagementForm.invalid">
+            {{ 'SEARCH' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</gp-default-layout>

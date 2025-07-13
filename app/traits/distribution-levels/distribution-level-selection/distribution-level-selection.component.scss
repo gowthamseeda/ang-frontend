@@ -1,0 +1,10 @@
+.distribution-level-selection {
+  padding: 5px 0;
+  .mat-mdc-chip-set {
+    margin-right: 5px;
+
+    .mat-mdc-chip.mat-mdc-basic-chip {
+      margin: 4px 8px 4px 4px;
+    }
+  }
+}

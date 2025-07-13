@@ -1,0 +1,16 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.task-footer {
+  height: 80px;
+
+  button {
+    height: 40px !important;
+    min-width: 128px !important;
+    text-transform: uppercase;
+
+    &:disabled [name='close'] {
+      fill: mat.get-color-from-palette($accent, 400);
+    }
+  }
+}

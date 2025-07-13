@@ -1,0 +1,83 @@
+<gp-default-layout>
+  <gp-header header-toolbar [breadcrumbItems]="[{label: 'MASTER_DATA', path: '/master'},
+             {label: 'KEY_TYPE'}]">
+  </gp-header>
+  <div gpContent>
+    <div gpFxLayout='row' gpFxLayoutGap='10px'>
+      <div gpFxLayout='column' class='header'>
+        <h1>{{ 'CREATE_KEY_TYPE' | translate }}</h1>
+        <span>{{ 'CREATE_KEY_TYPE_SUBTITLE' | translate }}</span>
+      </div>
+    </div>
+    <form [formGroup]='keyTypeForm' (ngSubmit)='submit(keyTypeForm.value)'>
+      <div gpFxLayout='column'>
+        <div gpFxLayout='row' gpFxLayoutGap='30px'>
+          <mat-form-field gpFxFlex='70'>
+            <mat-label>{{ 'NAME' | translate }}</mat-label>
+            <input matInput formControlName='name' type='text' required />
+            <mat-error *ngIf="keyTypeForm.get('name')?.hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+            <mat-error *ngIf="keyTypeForm.get('name')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field gpFxFlex>
+            <mat-label>{{ 'ID' | translate }}</mat-label>
+            <input matInput formControlName='id' type='text' required />
+            <mat-error *ngIf="keyTypeForm.get('id')?.hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+            <mat-error *ngIf="keyTypeForm.get('id')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div gpFxLayout='row' gpFxLayoutGap='30px'>
+          <mat-form-field gpFxFlex='70'>
+            <mat-label>{{ 'ADMIN_TABLE_DESCRIPTION' | translate }}</mat-label>
+            <input matInput formControlName='description' type='text' />
+            <mat-error *ngIf="keyTypeForm.get('description')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div gpFxLayout='row' gpFxLayoutGap='100px'>
+          <div gpFxLayout='column' class='header'>
+            <h1>{{ 'KEY_TYPE_SCOPING' | translate }}</h1>
+            <span>{{ 'CREATE_KEY_TYPE_SCOPING' | translate }}</span>
+          </div>
+        </div>
+        <div gpFxLayout='row' gpFxLayoutGap='30px'>
+          <gp-brand-selection [fControl]="keyTypeForm.get('brandRestrictions')"
+                              placeholder="{{ 'CHOOSE_BRANDS' | translate }}" [required]='false' gpFxFlex='48'
+                              style="display: block;">
+          </gp-brand-selection>
+        </div>
+        <div gpFxLayout='row' gpFxLayoutGap='30px'>
+          <gp-product-group-selection [fControl]="keyTypeForm.get('productGroupRestrictions')"
+                                      placeholder="{{ 'CHOOSE_PRODUCT_GROUPS' | translate }}" [required]='false'
+                                      gpFxFlex='48' style="display: block;">
+          </gp-product-group-selection>
+        </div>
+        <div gpFxLayout='row'>
+          <div gpFxFlex style="display: block;">
+            <gp-service-variant-country-drag-drop [countryRestrictions]='countryRestrictionIds'
+                                                  (restrictedCountries)='restrictedCountries($event)'>
+            </gp-service-variant-country-drag-drop>
+          </div>
+        </div>
+        <div gpFxLayout='row'>
+          <div gpFxFlex>
+            <button type='reset' mat-button routerLink='/master'>
+              {{ 'CANCEL' | translate }}
+            </button>
+          </div>
+          <button type='submit' mat-button [disabled]='keyTypeForm.invalid'>
+            {{ 'SAVE' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</gp-default-layout>

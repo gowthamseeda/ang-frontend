@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.address-data-box {
+  padding-bottom: 15px;
+  white-space: pre-line;
+  margin-top: 7.5px;
+  font-size: 14px;
+  color: mat.get-color-from-palette($accent, 50);
+  line-height: 1.35;
+}

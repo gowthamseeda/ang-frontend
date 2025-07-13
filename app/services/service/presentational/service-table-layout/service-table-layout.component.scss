@@ -1,0 +1,84 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+@import '../../../../../styles/commons.scss';
+@import '../../../shared/styles/service-table';
+
+// The first column must be sticky. It is not possible to use opacity.
+$characteristicsBgColor: #f6f9fb; // mat.get-color-from-palette($primary, 100, 0.1)
+$rowColorOnHover: #f7f7f7; // mat.get-color-from-palette(mat.$grey-palette, 100, 0.5);
+
+cdk-virtual-scroll-viewport {
+  height: calc(100vh - 300px);
+  display: block;
+}
+
+.pointer-cursor {
+  cursor: pointer;
+}
+
+.table-container {
+  min-height: 350px;
+
+  .mat-mdc-table {
+    width: 100%;
+
+    .customer {
+      margin-right: 7px;
+    }
+
+    .actions {
+      padding-left: 10px;
+    }
+
+    .border-left {
+      border-left: 1px solid mat.get-color-from-palette($accent, 100);
+    }
+
+    .mat-mdc-header-row {
+      top: -1px;
+      z-index: 2;
+
+      &:last-of-type {
+        .mat-mdc-header-cell {
+          border-bottom: none;
+          -webkit-box-shadow: inset 0px -1px 0px 0px mat.get-color-from-palette($accent, 700);
+          -moz-box-shadow: inset 0px -1px 0px 0px mat.get-color-from-palette($accent, 700);
+          box-shadow: inset 0px -1px 0px 0px mat.get-color-from-palette($accent, 700);
+        }
+      }
+
+      &:nth-child(2) {
+        top: 59px;
+      }
+
+      .name,
+      .actions {
+        height: 60px;
+      }
+    }
+
+    .mat-mdc-row {
+      &.characteristic {
+        background-color: $characteristicsBgColor;
+
+        .name {
+          margin-left: 40px;
+        }
+      }
+
+      &.characteristic:hover,
+      &:hover {
+        background-color: $rowColorOnHover;
+      }
+    }
+
+    .filter-icon {
+      justify-content: flex-end;
+    }
+
+    .metadata-toggle-container {
+      margin: 10px 30px;
+      text-transform: none;
+    }
+  }
+}

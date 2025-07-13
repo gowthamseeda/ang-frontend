@@ -1,0 +1,47 @@
+<form [formGroup]="formGroup">
+  <mat-table [dataSource]="dataSource"
+             formArrayName="openingHours">
+    <ng-container *ngFor="let column of columns"
+                  [matColumnDef]="column.columnDef">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row; let rowIndex = index"
+                [ngClass]="{'readOnly': !isWeekDayEditable(row.value.weekDay) || !column.isEnabled}"
+                [formGroup]="row">
+        <div *ngIf="isFromSpecialOpeningHour(row, column)"
+             class="source-indication"
+             matTooltip="{{ 'SPECIAL_OPENING_HOURS' | translate }}"
+             matTooltipPosition="above">
+        </div>
+        <gp-opening-hour-input class="opening-time-container"
+                               [ngClass]="{'readOnly': !isWeekDayEditable(row.value.weekDay) || !column.isEnabled}"
+                               [locale]="locale"
+                               [column]="column"
+                               [parentRowForm]="row"
+                               [weekDay]="row.value.weekDay"
+                               [tabIndex]="getIndex(row, column)"
+                               [editable]="column.isEnabled && isWeekDayEditable(row.value.weekDay)"
+                               (firstOpeningHourEnabled)="onFirstOpeningHourEnabled($event)"
+                               (firstOpeningHourDisabled)="onFirstOpeningHourDisabled($event)"
+                               (secondOpeningHourEnabled)="onSecondOpeningHourEnabled($event)"
+                               (secondOpeningHourDisabled)="onSecondOpeningHourDisabled($event)"
+                               (thirdOpeningHourEnabled)="onThirdOpeningHourEnabled($event)"
+                               (thirdOpeningHourDisabled)="onThirdOpeningHourDisabled($event)"
+                               (openingHourClosed)="onOpeningHourClosed($event)"
+                               (openingHourOpened)="onOpeningHourOpened($event)"
+                               (openingHourChanged)="onOpeningHourChanged($event)"
+                               (openingHourFormatChanged)="onFormatChange()"
+                               [style.background-color]="setNotificationBackground(row.value.openingHours,
+                               column.columnDef)"
+                               [verification4RTaskExist]="verification4RTaskExist"
+                               [showDataChangeNotification]="showDataChangeNotification">
+        </gp-opening-hour-input>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-hint *ngIf="(verification4RTaskExist) && isMTR"
+            class="verify-data word-size">
+    {{ 'WAITING_FOR_REACTION' | translate }}
+  </mat-hint>
+</form>

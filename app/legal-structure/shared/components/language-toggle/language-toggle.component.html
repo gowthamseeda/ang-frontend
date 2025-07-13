@@ -1,0 +1,8 @@
+<mat-button-toggle-group *ngIf="countryLanguages | async as countryLanguages"
+                         (change)="changeLanguage($event?.value)">
+  <mat-button-toggle *ngFor="let countryLanguage of countryLanguages"
+                     [value]="countryLanguage"
+                     [checked]="countryLanguage === selectedLanguage.languageId || (selectedLanguage.isDefaultLanguage && countryLanguage === defaultLanguageId)">
+    {{ (languages | async)?.get(countryLanguage)?.representation }}
+  </mat-button-toggle>
+</mat-button-toggle-group>

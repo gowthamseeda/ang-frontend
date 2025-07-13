@@ -1,0 +1,76 @@
+<ng-container *ngIf='currentGeneralCommunications; else showEmpty'>
+  <ng-container *ngFor="let generalCommunication of currentGeneralCommunications;">
+    <ng-container *ngIf="{ isFieldChangedCompareWholeData: isChanged(generalCommunication) || (!isChanged(generalCommunication) && !showChangeOnlyToggleInput), isFieldChanged: isChanged(generalCommunication), changeEditor: getChangeEditor(generalCommunication) } as commData; else
+    showNothing">
+      <ul>
+        <!--    communicationFieldId  -->
+        <ng-container *ngIf="{ communicationFieldId: 'communicationFieldId' } as communicationFieldChanges">
+          <li>
+            <span [class.changed]="commData.isFieldChanged">
+              {{"COMMUNICATION_FIELD_ID" | translate}}
+            </span>
+              <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+                <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                {{ commData.isFieldChanged ? '[' + commData.changeEditor + ']' : ''}}
+                </span>:
+              </ng-container>
+              <span [class.changed]="commData.isFieldChanged">
+                {{ commData.isFieldChanged && displayChangesToggleInput ? '[' + (getFieldDataFromComparingData(communicationFieldChanges.communicationFieldId, generalCommunication)| emptyValuePipe) + '] =>' : ''}}
+                {{generalCommunication.communicationFieldId | emptyValuePipe}}
+              </span>
+          </li>
+        </ng-container>
+
+        <!--    brandId  -->
+        <ng-container *ngIf="{ communicationFieldBrandId: 'brandId' } as communicationFieldBrandIdChanges">
+          <li class="hide-bullet" [hidden]='!generalCommunication.brandId'>
+            <span [class.changed]="commData.isFieldChanged">
+              {{"BRAND_ID" | translate}}
+            </span>
+            <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+              <span *ngxPermissionsOnly="['app.historization.editor.show']">
+              {{ commData.isFieldChanged ? '[' + commData.changeEditor + ']' : ''}}
+              </span>:
+            </ng-container>
+            <span [class.changed]="commData.isFieldChanged">
+              {{ commData.isFieldChanged && displayChangesToggleInput ? '[' + (getFieldDataFromComparingData(communicationFieldBrandIdChanges.communicationFieldBrandId,  generalCommunication)| emptyValuePipe) + '] =>' : ''}}
+              {{generalCommunication.brandId | emptyValuePipe}}
+            </span>
+          </li>
+        </ng-container>
+
+        <!--    value  -->
+        <ng-container *ngIf="{ communicationFieldValue: 'value' } as communicationFieldValueChanges">
+          <li class="hide-bullet">
+            <span [class.changed]="commData.isFieldChanged">
+              {{"VALUE" | translate}}
+            </span>
+            <ng-container *ngIf="!hideEditorsToggleInput; else noEditors">
+              <span *ngxPermissionsOnly="['app.historization.editor.show']">
+              {{ commData.isFieldChanged ? '[' + commData.changeEditor + ']' : ''}}
+              </span>:
+            </ng-container>
+            <span [class.changed]="commData.isFieldChanged">
+              {{ commData.isFieldChanged && displayChangesToggleInput ? '[' + (getFieldDataFromComparingData(communicationFieldValueChanges.communicationFieldValue, generalCommunication)| emptyValuePipe) +
+               '] =>' : ''}}
+              {{generalCommunication.value | emptyValuePipe}}
+            </span>
+          </li>
+        </ng-container>
+      </ul>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #showEmpty>
+  {{ '' | emptyValuePipe }}
+</ng-template>
+
+<ng-template #noEditors>
+  <span *ngxPermissionsOnly="['app.historization.editor.show']">
+          {{''}}
+  </span>:
+</ng-template>
+
+<ng-template #showNothing>
+</ng-template>

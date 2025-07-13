@@ -1,0 +1,17 @@
+<gp-task-input-text gpFxFill
+                    label="CITY"
+                    data-cy="address-city"
+                    [required]="required"
+                    [fieldName]="dataField"
+                    [parentForm]="parentForm"
+                    [value]="city"
+                    [dataNotificationChangeFields]="dataNotificationChangeFields"
+                    [isRetailOutlet]="isRetailOutlet"
+                    [dataNotificationChangeFieldsInclusion]="['CITY', 'ADDITIONAL_ADDRESS_CITY']"
+                    [maxLength]="100"
+                    (inputChange)="formControlChange()"
+                    [aggregateField]="aggregateField"
+                    [aggregateName]="aggregateName"
+                    [dataCluster]="dataCluster"
+>
+</gp-task-input-text>

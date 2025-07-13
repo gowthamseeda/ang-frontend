@@ -1,0 +1,129 @@
+
+
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{ label: 'NEW_OUTLET' }]">
+  </gp-header>
+
+  <gp-edit-layout logo="business"
+                  title="{{ 'CREATE_OUTLET_HEADLINE' | translate }}">
+    <ng-container subTitle
+                  *ngIf="!searchInProgress || outlet?.companyId">
+      {{ 'EDIT_BASE_DATA_HEADER_TEXT_PREFIX' | translate }}
+      <a routerLink="."
+         fragment="distributionLevels"
+         (click)="scrollToFragment('distributionLevels')">
+        {{ 'DISTRIBUTION_LEVELS' | translate }} </a>,
+      <a routerLink="."
+         fragment="address"
+         (click)="scrollToFragment('address')">
+        {{ 'ADDRESS' | translate }} </a>,
+      <a routerLink="."
+         fragment="poBox"
+         (click)="scrollToFragment('poBox')">
+        {{ 'PO_BOX' | translate }}
+      </a>
+      {{ 'EDIT_BASE_DATA_HEADER_TEXT_OR' | translate }}
+      <a routerLink="."
+         fragment="gps"
+         (click)="scrollToFragment('gps')">
+        {{ 'GPS_COORDINATES' | translate }}
+      </a>
+    </ng-container>
+
+    <gp-edit-section>
+      <h1></h1>
+      <div class="company-infos"
+           [class.small]="showForm && !searchInProgress">
+        <gp-searchfield [predefinedSearchFilters]="searchFilters | async"
+                        [placeHolderText]="'SEARCH_COMPANY_FIELD_INLINE_PLACEHOLDER'"
+                        [searchResultMessage]="{ singular: 'COMPANY_FOUND', plural: 'COMPANIES_FOUND' }"
+                        [settings]="searchFieldSettings"
+                        (searchItemRetrieved)="applyCompanyValues($event)"
+                        (searchResultsQueried)="searchInProgress = true"
+                        (searchResultsReseted)="searchInProgress = false">
+        </gp-searchfield>
+      </div>
+      <ng-container marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_SEARCH_TEXT' | translate }}</span>
+      </ng-container>
+    </gp-edit-section>
+
+    <div *ngIf="showForm || outlet?.companyId">
+      <gp-edit-section id="distributionLevels">
+        <gp-distribution-level [parentForm]="outletForm"
+                               [registeredOffice]="false"
+                               [testOutlet]="testOutlet"
+                               [isEditPage]="false"
+                               [productResponsible]="productResponsible">
+        </gp-distribution-level>
+        <ng-container marginalContent>
+          <span>{{ 'MARGINAL_CONTENT_DISTRIBUTION_LEVELS_TEXT' | translate }}</span>
+        </ng-container>
+      </gp-edit-section>
+
+      <gp-edit-section>
+        <gp-status [parentForm]="outletForm"
+                   [startOperationDate]="outlet?.startOperationDate"
+                   [closeDownDate]="outlet?.closeDownDate"
+                   [registeredOffice]="true"></gp-status>
+        <ng-container marginalContent>
+          <span>{{ 'MARGINAL_CONTENT_STATUS_TEXT' | translate }}</span>
+        </ng-container>
+      </gp-edit-section>
+
+      <gp-edit-section id="address">
+        <gp-outlet-address [parentForm]="outletForm"
+                           [outlet]="outlet"
+                           [countryEditable]="true"
+                           [addressStreetDataRequired]="addressStreetDataRequired()"
+                           (countryIdSelection)="compareByCountryId($event)">
+        </gp-outlet-address>
+        <ng-container marginalContent>
+          <span>{{ 'MARGINAL_CONTENT_ADDRESS_TEXT' | translate }}</span>
+        </ng-container>
+      </gp-edit-section>
+
+      <gp-edit-section id="additional-address">
+        <gp-additional-content [headline]="'ADDITIONAL_ADDRESS' | translate">
+          <gp-address additional-content
+                      [parentForm]="outletForm"
+                      [address]="outlet?.additionalAddress"
+                      [addressType]="addressType.Additional"
+                      [addressStreetDataRequired]="false"></gp-address>
+        </gp-additional-content>
+        <ng-container marginalContent>
+          <span>{{ 'MARGINAL_CONTENT_ADDITIONAL_ADDRESS_TEXT' | translate }}</span>
+        </ng-container>
+      </gp-edit-section>
+
+      <gp-edit-section id="poBox">
+        <div gpFxFlexFill>
+          <div gpFxLayout>
+            <h1>{{ 'PO_BOX' | translate }}</h1>
+          </div>
+          <gp-po-box [parentForm]="outletForm"></gp-po-box>
+        </div>
+        <ng-container marginalContent>
+          <span>{{ 'MARGINAL_CONTENT_PO_BOX_TEXT' | translate }}</span>
+        </ng-container>
+      </gp-edit-section>
+
+      <gp-edit-section id="gps">
+        <gp-gps [parentForm]="outletForm"> </gp-gps>
+        <ng-container marginalContent>
+          <span>{{ 'MARGINAL_CONTENT_GPS_COORDINATES_TEXT' | translate }}</span>
+        </ng-container>
+      </gp-edit-section>
+    </div>
+  </gp-edit-layout>
+
+  <gp-default-edit-actions footer-toolbar
+                           [permissions]="'legalstructure.businesssite.create'"
+                           [saveButtonDisabled]="outletForm.invalid || outletForm.pristine"
+                           [cancelButtonDisabled]="outletForm.pristine"
+                           [saveButtonTranslationKey]="'CREATE'"
+                           (save)="submitOutlet()"
+                           (cancel)="reset()">
+  </gp-default-edit-actions>
+</gp-default-layout>

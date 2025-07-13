@@ -1,0 +1,13 @@
+<gp-default-layout>
+  <gp-header [breadcrumbItems]="[{ label: 'TASKS' }]"
+             header-toolbar>
+  </gp-header>
+  <gp-edit-layout [marginalColumnDisabled]="true"
+                  title="{{ 'MY_TASKS' | translate }}">
+    <div class="content">
+      <gp-tasks-table [groupedTasks]="tasks | async"
+                      (initTaskList)="initTaskList()"
+                      (saveExpandedStatus)="saveExpandedStatus($event)"></gp-tasks-table>
+    </div>
+  </gp-edit-layout>
+</gp-default-layout>

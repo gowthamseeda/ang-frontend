@@ -1,0 +1,85 @@
+<ng-container *ngIf="taskDiff?.openingHoursDiff">
+  <div class="diff-container"
+       *ngFor="let opening of groupedAndSortedOpeningHours">
+    <gp-task-diff-item *ngIf="opening?.serviceName"
+                       [title]="'SERVICE_NAME' | translate"
+                       [value]="translatedServiceNameBy(opening)"
+                       class="small"></gp-task-diff-item>
+    <gp-task-diff-item [title]="'BRAND' | translate"
+                       [customValue]="true"
+                       class="small">
+      <gp-brand-icon *ngFor="let brandId of opening?.brandProductGroupMap.keys()"
+                     [id]="brandId" class="brand-icon"></gp-brand-icon>
+    </gp-task-diff-item>
+    <gp-task-diff-item [title]="'PRODUCT_GROUP' | translate"
+                       [customValue]="true"
+                       class="small">
+      <div *ngFor="let productGroups of opening?.brandProductGroupMap.values()"
+           gpFxLayout="row">
+        <gp-product-group *ngFor="let productGroupId of productGroups"
+                          [productGroupId]="productGroupId"
+                          tooltipPosition="above">
+        </gp-product-group>
+      </div>
+    </gp-task-diff-item>
+    <gp-task-diff-item [title]="'TASK_DIFF_DAY' | translate"
+                       [customValue]="true"
+                       class="small">
+      <div class="diff-value space">{{ opening.days.join(", ") }}</div>
+      <div *ngIf="opening.startDate"
+           class="chip">
+        <ng-container
+          *ngIf="!opening.endDate || (opening.endDate === opening.startDate); then startOnly; else startAndEnd">
+        </ng-container>
+      </div>
+      <ng-template #startAndEnd>
+        {{ opening.startDate | localeDateTime }}
+        {{ opening.endDate ? ' - ' : '' }}
+        {{ opening.endDate ? (opening.endDate | localeDateTime) : '' }}
+      </ng-template>
+      <ng-template #startOnly>
+        {{ opening.startDate | localeDateTime }}
+      </ng-template>
+    </gp-task-diff-item>
+    <gp-task-diff-item
+      [title]="(opening.startDate ? 'TASK_DIFF_SPECIAL_OLD_DATE' : 'TASK_DIFF_OLD_DATE') | translate"
+      [customValue]="true">
+      <ng-container *ngIf="opening?.diff?.old?.closed; else showOldTimes">
+        <div class="diff-value">{{ 'OPENING_HOURS_CLOSED' | translate }}</div>
+      </ng-container>
+      <ng-template #showOldTimes>
+        <ng-container *ngIf="opening?.diff?.old?.times.length > 0; else showEmptyOldValue">
+          <div *ngFor="let time of opening?.diff?.old?.times | pairs; index as i">
+            <div class="diff-value">{{ formattedTimeBy(time) }}</div>
+          </div>
+        </ng-container>
+        <ng-template #showEmptyOldValue>
+          <div class="diff-value">{{ defaultEmptyValue }}</div>
+        </ng-template>
+      </ng-template>
+    </gp-task-diff-item>
+    <gp-task-diff-item
+      [title]="(opening.startDate ? 'TASK_DIFF_SPECIAL_NEW_DATE' : 'TASK_DIFF_NEW_DATE')  | translate"
+      [customValue]="true"
+      [class.highlight]="highlighted(opening?.diff)"
+      class="last">
+      <ng-container *ngIf="opening?.diff?.new?.closed; else showNewTimes">
+        <div class="diff-value">{{ 'OPENING_HOURS_CLOSED' | translate }}</div>
+      </ng-container>
+      <ng-template #showNewTimes>
+        <ng-container *ngIf="opening?.diff?.new?.times.length > 0; else showEmptyNewValue">
+          <div *ngFor="let time of opening?.diff?.new?.times | pairs; index as i">
+            <div class="diff-value">{{ formattedTimeBy(time) }}</div>
+          </div>
+        </ng-container>
+      </ng-template>
+      <ng-template #showEmptyNewValue>
+        <div class="diff-value">{{ defaultEmptyValue }}</div>
+      </ng-template>
+    </gp-task-diff-item>
+  </div>
+  <div class="diff-container"
+       *ngIf="taskDiff?.openingHoursDiff?.length === 0">
+    {{ 'NO_DATA_CHANGE' | translate }}
+  </div>
+</ng-container>

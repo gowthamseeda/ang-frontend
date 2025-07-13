@@ -1,0 +1,5 @@
+.mat-mdc-chip-set {
+  .mat-mdc-chip.mat-mdc-basic-chip.mat-chip-disabled {
+    pointer-events: none !important;
+  }
+}

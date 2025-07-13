@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+@import '../../../../styles/gssnplus';
+@include gssnplus-theme($gssnplus-theme);
+
+.mat-mdc-chip-set {
+  mat-chip.mat-mdc-chip {
+    min-height: 14px;
+    height: 14px;
+    margin-top: 5px;
+    margin-left: 14px;
+    font-weight: bold;
+    padding-top: 1px !important;
+
+    &.inactive {
+      background-color: mat.get-color-from-palette($accent, 600);
+    }
+  }
+
+  ::ng-deep .mdc-evolution-chip-set__chips {
+    display: block;
+  }
+}

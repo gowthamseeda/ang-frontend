@@ -1,0 +1,39 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.product-group-container {
+  outline: none;
+
+  &:hover {
+    background-color: mat.get-color-from-palette($accent, 100);
+
+    .delete-product-group-container button {
+      visibility: visible;
+
+      .gp-icon:hover {
+        color: mat.get-color-from-palette($accent, 500);
+      }
+    }
+  }
+
+  .product-group-name-container {
+    float: left;
+    max-width: 85%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    .gp-icon {
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+  }
+
+  .delete-product-group-container {
+    float: right;
+
+    .mat-mdc-icon-button {
+      visibility: hidden;
+    }
+  }
+}

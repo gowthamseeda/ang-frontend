@@ -1,0 +1,148 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{ label: 'ADMIN' },
+             { label: 'SCHEDULER_SCHEDULER' }]">
+  </gp-header>
+
+  <mat-accordion>
+    <mat-expansion-panel *ngIf="isAllowViewXmlScheduler() | async"
+                         [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ 'SCHEDULER_XML_SCHEDULER' | translate }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ 'SCHEDULER_JOBS_FOR_XML_SCHEDULER' | translate }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <gp-content-loader [isLoading]="isXmlLoading">
+        <gp-scheduler-table [schedulerType]="schedulerType.XML"
+                            [schedulerJobs]="xmlScheduler"
+                            [editable]="isAllowEditXmlScheduler()"
+                            (triggerRun)="triggerAction($event)"></gp-scheduler-table>
+
+        <div loader
+             xmlns:svg='http://www.w3.org/2000/svg'>
+          <content-loader preserveAspectRatio="none">
+            <svg:rect height="20"
+                      width="400"
+                      x="0"
+                      y="0" />
+
+            <svg:rect height="40"
+                      width="400"
+                      x="0"
+                      y="30" />
+          </content-loader>
+        </div>
+      </gp-content-loader>
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="isAllowViewApiScheduler() | async">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ 'SCHEDULER_API_SCHEDULER' | translate }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ 'SCHEDULER_JOBS_FOR_API_SCHEDULER' | translate }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <gp-content-loader [isLoading]="isApiLoading">
+        <gp-scheduler-table [schedulerType]="schedulerType.API"
+                            [schedulerJobs]="apiScheduler"
+                            [editable]="isAllowEditApiScheduler()"
+                            (triggerRun)="triggerAction($event)"
+                            (deleteScheduler)="deleteSchedulerJob($event)"></gp-scheduler-table>
+
+        <div loader
+             xmlns:svg='http://www.w3.org/2000/svg'>
+          <content-loader preserveAspectRatio="none">
+            <svg:rect height="20"
+                      width="400"
+                      x="0"
+                      y="0" />
+
+            <svg:rect height="40"
+                      width="400"
+                      x="0"
+                      y="30" />
+          </content-loader>
+        </div>
+
+        <button mat-flat-button
+                class="gp-icon-flat-button"
+                routerLink="./api/create">
+          <gp-icon gpIconButtonWithText
+                   name="plus">
+          </gp-icon>
+          {{ 'SCHEDULER_API_ADD_SCHEDULER' | translate }}
+        </button>
+      </gp-content-loader>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="isAllowViewAuditLogCleanScheduler() | async">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ 'SCHEDULER_AUDIT_LOG_CLEAN_SCHEDULER' | translate }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ 'SCHEDULER_JOBS_FOR_AUDIT_LOG_CLEAN_SCHEDULER' | translate }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <gp-content-loader [isLoading]="isAuditLogCleanLoading">
+        <gp-audit-log-clean-scheduler-table
+          [jobDetails]="auditLogCleanDetails"
+        >
+        </gp-audit-log-clean-scheduler-table>
+
+        <div loader
+             xmlns:svg='http://www.w3.org/2000/svg'>
+          <content-loader preserveAspectRatio="none">
+            <svg:rect height="20"
+                      width="400"
+                      x="0"
+                      y="0" />
+
+            <svg:rect height="40"
+                      width="400"
+                      x="0"
+                      y="30" />
+          </content-loader>
+        </div>
+      </gp-content-loader>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="isAllowViewAuditLogCleanScheduler() | async">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ 'SCHEDULER_TASK_USER_CLEAN_SCHEDULER_STATUS' | translate }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ 'STATUS_FOR_TASK_STATUS_CLEAN_SCHEDULER' | translate }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <gp-content-loader [isLoading]="isAuditLogCleanStatusLoading">
+        <gp-user-task-clean-scheduler-status [jobDetails]="auditLogCleanStatus">
+        </gp-user-task-clean-scheduler-status>
+
+        <div loader
+             xmlns:svg='http://www.w3.org/2000/svg'>
+          <content-loader preserveAspectRatio="none">
+            <svg:rect height="20"
+                      width="400"
+                      x="0"
+                      y="0" />
+
+            <svg:rect height="40"
+                      width="400"
+                      x="0"
+                      y="30" />
+          </content-loader>
+        </div>
+      </gp-content-loader>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+</gp-default-layout>

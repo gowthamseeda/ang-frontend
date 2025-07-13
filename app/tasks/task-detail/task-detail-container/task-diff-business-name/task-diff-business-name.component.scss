@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+@import '../task-diff-default/task-diff-default.component';
+
+.diff-value {
+  display: inline-block;
+  border-radius: 15px;
+  margin-right: 8px;
+  font-size: 12px;
+  padding: 4px 10px;
+  color: mat.get-color-from-palette($primary, 50);
+  background-color: mat.get-color-from-palette($primary, 500);
+  overflow-wrap: break-word;
+}

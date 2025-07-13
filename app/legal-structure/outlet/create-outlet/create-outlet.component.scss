@@ -1,0 +1,27 @@
+@import '../../../../styles/progress-bar.scss';
+
+.buttons {
+  padding-top: 30px;
+}
+
+.company-infos {
+  margin-bottom: 10px;
+}
+
+.small {
+  gp-searchfield {
+    ::ng-deep {
+      ng-scrollbar {
+        height: auto;
+      }
+    }
+  }
+}
+
+gp-searchfield {
+  ::ng-deep {
+    ng-scrollbar {
+      height: calc(100vh - 260px);
+    }
+  }
+}

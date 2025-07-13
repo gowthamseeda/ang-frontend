@@ -1,0 +1,9 @@
+<gp-grid-loader *ngIf="isLoading; else logo"></gp-grid-loader>
+
+<ng-template #logo>
+  <a routerLink="/dashboard" fragment="search">
+    <gp-icon name="gssn-plus"
+             size="large"
+             color="white"></gp-icon>
+  </a>
+</ng-template>

@@ -1,0 +1,14 @@
+<div gpFxLayout="row nowrap"
+     style="flex: 0 1 100%"
+     class="container">
+  <div gpFxLayout="column"
+       style="flex: 1 1 auto"
+       tabindex="1">
+    <gp-map
+            [latitude]="latitude"
+            [longitude]="longitude"
+            [tile]="true"
+            (isMapReady)="mapReadyEvent($event)">
+    </gp-map>
+  </div>
+</div>

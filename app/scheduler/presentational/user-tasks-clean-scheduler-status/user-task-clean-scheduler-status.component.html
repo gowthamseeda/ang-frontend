@@ -1,0 +1,61 @@
+<mat-table [dataSource]="jobDetails">
+  <ng-container matColumnDef="id">
+    <mat-header-cell gpFxFlex="16" *matHeaderCellDef>
+      {{ 'ID' | translate }}
+    </mat-header-cell>
+    <mat-cell gpFxFlex="16" gpFxLayoutAlign="center" *matCellDef="let job">
+      {{ job.id }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <mat-header-cell gpFxFlex="16" *matHeaderCellDef>
+      {{ 'NAME' | translate }}
+    </mat-header-cell>
+    <mat-cell gpFxFlex="16" gpFxLayoutAlign="center" *matCellDef="let job">
+      {{ job.name }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="currentStatus">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="16">{{ 'CURRENT_STATUS' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job"
+              gpFxLayoutAlign="center"
+              gpFxFlex="16">{{ job.currentStatus | uppercase }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lastRunningTime">
+    <mat-header-cell gpFxFlex="18" *matHeaderCellDef>
+      {{ 'LAST_RUNNING_TIME' | translate }}
+    </mat-header-cell>
+    <mat-cell gpFxFlex="18" gpFxLayoutAlign="center" *matCellDef="let job">
+      {{ job.lastRunningTime | date:'E MMM dd HH:mm:ss UTC YYYY' }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lastRunningStatus">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="18">{{ 'LAST_RUNNING_STATUS' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job"
+              gpFxLayoutAlign="center"
+              gpFxFlex="18">{{ job.lastRunningStatus | uppercase }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lastDeletedRecords">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="16">{{ 'LAST_DELETE_RECORDS' | translate}}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let job"
+              gpFxLayoutAlign="center"
+              gpFxFlex="16">{{ job.lastDeletedRecords }}
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>

@@ -1,0 +1,54 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+:host {
+  font-size: 11px;
+  border-bottom: 1px solid;
+  border-bottom-color: mat.get-color-from-palette($accent, 300);
+
+  &:hover {
+    background-color: mat.get-color-from-palette($accent, 200);
+  }
+
+  .active {
+    background-color: mat.get-contrast-color-from-palette($accent, 300);
+  }
+
+  *:focus {
+    outline: 0;
+  }
+
+  * {
+    cursor: pointer;
+  }
+}
+
+.outlet-result {
+  padding: 10px 20px;
+}
+
+.outlet-header {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.outlet-id {
+  font-size: 14px;
+}
+
+.block {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+gp-es-highlight::after {
+  content: ' ';
+}
+
+gp-icon {
+  padding: 0px 5px 0px 0px;
+}
+
+::ng-deep .mat-outlet-notification{
+  white-space: pre-line;
+}

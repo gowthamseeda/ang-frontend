@@ -1,0 +1,82 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.cell-container {
+  width: 39px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: mat.get-color-from-palette($primary, 50);
+
+  .cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 27.5px;
+    height: 26px;
+    color: mat.get-color-from-palette($accent, 600);
+    font-weight: normal;
+    line-height: 11px;
+    font-size: 11px;
+
+    &.active {
+      color: mat.get-color-from-palette($accent, 800);
+      font-weight: bold;
+
+      &:hover {
+        border: 2px solid #a6cad8;
+        border-radius: 15px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    }
+
+    &.currentDay {
+      border: 2px solid #a6cad8;
+      border-radius: 15px;
+    }
+
+    &.eventDay {
+      background-color: #a6cad8;
+      border: 2px solid #a6cad8;
+      border-radius: 0px;
+      width: 40px;
+
+      &:hover {
+        border-radius: 0px;
+      }
+
+      &.start {
+        border-radius: 15px 0px 0px 15px;
+        &.end {
+          border-radius: 15px;
+          width: 27.5px;
+        }
+      }
+
+      &.end {
+        border-radius: 0px 15px 15px 0px;
+        &.start {
+          border-radius: 15px;
+          width: 27.5px;
+        }
+      }
+
+      &.selected {
+        color: #ffffff;
+        border-color: #007a93;
+        background-color: #007a93;
+      }
+    }
+
+    &.date {
+      line-height: 14px;
+      font-size: 14px;
+    }
+
+    &.weekDay {
+      text-transform: uppercase;
+    }
+  }
+}

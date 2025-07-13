@@ -1,0 +1,20 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.row-overview-expanded {
+  border-bottom: 0;
+}
+
+.mat-mdc-row.detail-row {
+  height: 0;
+  min-height: 0;
+  padding: 0;
+  border-bottom: 0;
+}
+
+.row-overview {
+  &:hover {
+    background-color: mat.get-color-from-palette($accent, 100, 0.5);
+    cursor: pointer;
+  }
+}

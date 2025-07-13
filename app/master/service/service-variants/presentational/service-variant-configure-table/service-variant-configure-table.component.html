@@ -1,0 +1,59 @@
+<div>
+  <form [formGroup]="serviceVariantsForm">
+    <mat-table matSort [dataSource]="serviceVariantDataSource" formArrayName="serviceVariants"
+               *ngIf="serviceVariantDataSource.data?.length > 0">
+      <ng-container matColumnDef="serviceId">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="25">{{ 'SERVICE' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element" gpFxFlex="25">
+          <gp-service-selector [control]="element.get('serviceId')" (selectionChange)="emitServiceVariant()">
+          </gp-service-selector>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="brandId">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="25">{{ 'BRAND' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element" gpFxFlex="25">
+          <gp-brand-selector [control]="element.get('brandId')" (selectionChange)="emitServiceVariant()">
+          </gp-brand-selector>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="productGroupId">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="25">{{ 'PRODUCT_GROUP' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element" gpFxFlex="25">
+          <gp-product-group-selector [control]="element.get('productGroupId')" (selectionChange)="emitServiceVariant()">
+          </gp-product-group-selector>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="active">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="25">{{ 'ACTIVE' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element" style="line-height: 2.8" gpFxFlex="25">
+          <mat-checkbox [formControl]="element.get('active')" (change)="emitServiceVariant()">
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="8%"></mat-header-cell>
+        <mat-cell *matCellDef="let element" gpFxFlex="8%">
+          <button mat-icon-button (click)="removeServiceVariant(element)">
+            <gp-icon name="trash"></gp-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="serviceVariantDisplayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let element; let i = index; columns: serviceVariantDisplayedColumns"
+               gpFxLayoutAlign="center"></mat-row>
+    </mat-table>
+
+    <div gpFxFlexFill>
+      <button mat-flat-button class="gp-icon-flat-button" gpRoundedIconButton class="add-key"
+              (click)="addNewServiceVariantRow()">
+        <gp-icon gpIconButtonWithText name="plus"></gp-icon>
+        {{ 'ADD_BUTTON' | translate }}
+      </button>
+    </div>
+  </form>
+</div>

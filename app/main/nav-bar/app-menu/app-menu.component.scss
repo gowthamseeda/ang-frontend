@@ -1,0 +1,19 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+mat-divider {
+  &.logout {
+    margin-bottom: 48px;
+  }
+}
+
+.app-version {
+  position: fixed;
+  bottom: 0;
+  max-width: 340px;
+
+  color: mat.get-color-from-palette($accent, 800);
+  font-size: 8pt;
+
+  padding: 1em;
+}

@@ -1,0 +1,42 @@
+<div class="search-result-header">
+  <div gpFxLayout
+       gpFxLayoutAlign="space-between">
+    <h5 gpFxFlexAlign="baseline">{{ 'RESULTS' | translate }}</h5>
+  </div>
+
+  <h1 *ngIf="(searchItems | async)?.length > 0">
+    {{ total }}
+    {{ ((searchItems | async)?.length > 1 ? searchResultMessage.plural : searchResultMessage.singular) | translate }}
+  </h1>
+</div>
+
+<div *ngIf="error; else searchSuccessful"
+     class="search-error">
+  <h1>{{ 'GENERIC_API_ERROR' | translate }}</h1>
+</div>
+
+<ng-template #searchSuccessful>
+  <div *ngIf="(searchItemsWithCheckedStatus)?.length > 0; else noSearchResults">
+    <div *ngFor="let item of searchItemsWithCheckedStatus"
+         gpFxLayout="row"
+         class="search-item"
+         (click)="onSearchItemClick(item.searchItem)"
+         data-cy="search-result-option">
+      <gp-outlet-result [searchItem]="item.searchItem"
+                        [searchFilters]="searchFilters"
+                        [disabledRouting]="disabledRouting"
+                        [active]="item.searchItem.id === selectedOutletId"
+                        gpFxFlex="100"
+                        style="display: block">
+      </gp-outlet-result>
+      <mat-checkbox *ngIf="isMultiSelect"
+                    [checked]="item.checked"
+                    (click)="$event.preventDefault()"
+                    gpFxLayoutAlign="start center"></mat-checkbox>
+    </div>
+  </div>
+
+  <ng-template #noSearchResults>
+    <h1 class="no-search-results">{{ 'NO_SEARCH_RESULTS_MESSAGE' | translate }}</h1>
+  </ng-template>
+</ng-template>

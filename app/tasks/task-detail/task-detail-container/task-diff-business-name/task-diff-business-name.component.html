@@ -1,0 +1,44 @@
+<div *ngIf="!emptyDiff()"
+     class="diff-item"
+     data-test-id="task-diff-old">
+  <h2>{{ 'TASK_OLD' | translate }}</h2>
+  <ng-container *ngIf="!isEmptyOldTask else showEmptyOldValue">
+    <gp-task-diff-item class="diff-keyvalue old"
+                       [class.highlight]="highlighted(old[0], 'old')"
+                       *ngFor="let old of taskOld | pairs; index as i"
+                       [title]="old[0]"
+                       [customValue]="true">
+      <span class="diff-value"
+            *ngFor="let brand of old[1]">
+        {{ brand }}
+      </span>
+    </gp-task-diff-item>
+  </ng-container>
+  <ng-template #showEmptyOldValue>
+    <div>{{ defaultEmptyValue }}</div>
+  </ng-template>
+</div>
+<div *ngIf="!emptyDiff()"
+     class="diff-item"
+     data-test-id="task-diff-new">
+  <h2>{{ 'TASK_NEW' | translate }}</h2>
+  <ng-container *ngIf="!isEmptyNewTask; else showEmptyNewValue">
+    <gp-task-diff-item class="diff-keyvalue"
+                       [class.highlight]="highlighted(new[0], 'new')"
+                       *ngFor="let new of taskNew | pairs; index as i"
+                       [title]="new[0]"
+                       [customValue]="true">
+      <span class="diff-value"
+            *ngFor="let brand of new[1]">
+        {{ brand }}
+      </span>
+    </gp-task-diff-item>
+  </ng-container>
+  <ng-template #showEmptyNewValue>
+    <div>{{ defaultEmptyValue }}</div>
+  </ng-template>
+</div>
+<div class="diff-container"
+     *ngIf="emptyDiff()">
+  {{ 'NO_DATA_CHANGE' | translate }}
+</div>

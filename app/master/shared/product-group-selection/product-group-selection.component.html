@@ -1,0 +1,11 @@
+<div class="product-group-restrictions-select-dialog"
+     gpFxLayout="column">
+  {{ 'MASTER_DATA_KEY_PRODUCT_GROUP_RESTRICTIONS' | translate }}
+  <gp-chips-selection [control]="fControl"
+                      [placeholder]="placeholder"
+                      [required]="required"
+                      [itemList]="allProductGroups"
+                      [floatLabel]='floatLabel'
+                      (changeFunction)="change()">
+  </gp-chips-selection>
+</div>

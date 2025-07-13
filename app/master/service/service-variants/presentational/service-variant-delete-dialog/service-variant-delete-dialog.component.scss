@@ -1,0 +1,11 @@
+.mat-mdc-table {
+  .mat-mdc-row {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .mat-mdc-cell {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  }
+}

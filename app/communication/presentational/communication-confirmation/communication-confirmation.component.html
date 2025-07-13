@@ -1,0 +1,174 @@
+<div gpFxFill
+     gpFxLayout="column">
+  <h2 matDialogTitle> {{ 'SAVE_MULTI_EDIT_ENTRY' | translate }}</h2>
+  <mat-dialog-content gpFxFlex
+                      class="mat-dialog-content">
+
+    <mat-table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="service">
+        <mat-header-cell *matHeaderCellDef
+                         data-cy="communication-confirmation-row-header-service">
+          {{ 'SERVICE' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"
+                  data-cy="communication-confirmation-row-service">
+          <span>{{ element.name }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="brands">
+        <mat-header-cell *matHeaderCellDef
+                         data-cy="communication-confirmation-row-header-brand">
+          {{ 'BRAND' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"
+                  gpFxLayoutColumn
+                  gpFxLayoutAlign="start"
+                  data-cy="communication-confirmation-row-brand"
+        >
+          <div *ngFor="let brandId of element.brandIds"
+               class="brand-product-group"
+               gpFxLayout="row"
+               gpFxLayoutAlign=" center"
+          >
+            <gp-brand-icon [id]="brandId"
+                           tooltipPosition="above">
+            </gp-brand-icon>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="productGroups">
+        <mat-header-cell *matHeaderCellDef
+                         data-cy="communication-confirmation-row-header-product-group">
+          {{ 'PRODUCT_GROUP' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"
+                  gpFxLayoutColumn
+                  gpFxLayoutAlign="start start"
+                  data-cy="communication-confirmation-row-product-group">
+          <div *ngFor="let brand of element.brandIds"
+               gpFxLayout="row"
+               class="brand-product-group"
+               style="flex:1 1 50%"
+          >
+            <div *ngFor="let productGroupId of getProductGroupIds(element.name, brand)">
+              <gp-product-group [productGroupId]="productGroupId"
+                                [readOnly]="true"
+                                tooltipPosition="above"
+                                size="medium"
+                                color="none">
+              </gp-product-group>
+            </div>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row *matRowDef="let element; columns: displayedColumns;"
+               [class.row-disabled]="!element.active"
+               data-cy="communication-confirmation-row">
+      </mat-row>
+
+      <ng-container matColumnDef="noData" *matNoDataRow>
+        <mat-cell>
+          <span>{{ 'NO_OFFERED_SERVICES_FOR_EDIT' | translate }}</span>
+        </mat-cell>
+      </ng-container>
+    </mat-table>
+  </mat-dialog-content>
+<ng-container>
+  <h2 matDialogTitle> {{ 'BLOCKED_MULTI_EDIT_ENTRY_DUE_TO_TASK_PRESENT' | translate }}</h2>
+  <mat-dialog-content gpFxFlex
+                      class="mat-dialog-content">
+
+    <mat-table [dataSource]="blockDataSource">
+
+      <ng-container matColumnDef="service">
+        <mat-header-cell *matHeaderCellDef
+                         data-cy="communication-confirmation-row-header-service">
+          {{ 'SERVICE' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"
+                  data-cy="communication-confirmation-row-service">
+          <span>{{ element.name }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="brands">
+        <mat-header-cell *matHeaderCellDef
+                         data-cy="communication-confirmation-row-header-brand">
+          {{ 'BRAND' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"
+                  gpFxLayoutColumn
+                  gpFxLayoutAlign="start"
+                  data-cy="communication-confirmation-row-brand"
+        >
+          <div *ngFor="let brandId of element.brandIds"
+               class="brand-product-group"
+               gpFxLayout="row"
+               gpFxLayoutAlign=" center"
+          >
+            <gp-brand-icon [id]="brandId"
+                           tooltipPosition="above">
+            </gp-brand-icon>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="productGroups">
+        <mat-header-cell *matHeaderCellDef
+                         data-cy="communication-confirmation-row-header-product-group">
+          {{ 'PRODUCT_GROUP' | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"
+                  gpFxLayoutColumn
+                  gpFxLayoutAlign="start start"
+                  data-cy="communication-confirmation-row-product-group">
+          <div *ngFor="let brand of element.brandIds"
+               gpFxLayout="row"
+               class="brand-product-group"
+               style="flex:1 1 50%"
+          >
+            <div *ngFor="let productGroupId of getBlockProductGroupIds(element.name, brand)">
+              <gp-product-group [productGroupId]="productGroupId"
+                                [readOnly]="true"
+                                tooltipPosition="above"
+                                size="medium"
+                                color="none">
+              </gp-product-group>
+            </div>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row *matRowDef="let element; columns: displayedColumns;"
+               [class.row-disabled]="!element.active"
+               data-cy="communication-confirmation-row">
+      </mat-row>
+
+      <ng-container matColumnDef="noData" *matNoDataRow>
+        <mat-cell>
+          <span>{{ 'NO_BLOCKED_OFFERED_SERVICES' | translate }}</span>
+        </mat-cell>
+      </ng-container>
+
+    </mat-table>
+  </mat-dialog-content>
+</ng-container>
+  <mat-dialog-actions align="center">
+    <gp-default-edit-actions [saveButtonTranslationKey]="'SAVE'"
+                             [showDoNotShowAgainCheckBox]="true"
+                             (save)="save()"
+                             (cancel)="cancel()"
+                             (doNotShowAgainCheckBoxChange)="doNotShowAgainCheckBoxChange()">
+    </gp-default-edit-actions>
+  </mat-dialog-actions>
+</div>

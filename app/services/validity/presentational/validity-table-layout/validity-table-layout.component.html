@@ -1,0 +1,136 @@
+<form *ngIf="(validityTableRows | async)?.length > 0" [formGroup]="validityTableForm">
+
+  <div *ngIf="validityDataSource?.data?.length > 0" class="table-container">
+    <ng-scrollbar track="all">
+      <mat-table [dataSource]="validityDataSource" formArrayName="validities">
+
+        <ng-container matColumnDef="empty">
+          <mat-header-cell *matHeaderCellDef class="no-content" gpFxFlex="650px">
+          </mat-header-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="brands">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="100">
+            <gp-brand-icon *ngFor="let brandId of brandProductGroups | keys" [id]="brandId"
+                           [ngStyle]="{ 'min-width': calculateBrandsColumnWidth(brandId) }" tooltipPosition="above"
+                           class="brands" gpFxLayout="row" gpFxLayoutAlign="center center" style="flex: 0;">
+            </gp-brand-icon>
+          </mat-header-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="application">
+          <mat-header-cell *matHeaderCellDef class="no-content" gpFxFlex="250px">
+          </mat-header-cell>
+
+          <mat-cell *matCellDef="let validityTableRow; let rowIndex = index"
+                    [class.disabled]="isValidityRowDisabled(validityTableRow)" [formGroupName]="rowIndex"
+                    class="application" gpFxFlex="250px">
+            <mat-checkbox #applicantCheckbox (change)="emitApplicationChange($event.checked, rowIndex)"
+                          [checked]="validityTableRow?.application"
+                          [gpDisableControl]="isValidityRowDisabled(validityTableRow)" formControlName="application">
+              <ng-container *ngIf="!applicantCheckbox.checked; else applicantUntil">
+                {{ 'APPLICATION_PROCESS_APPLICANT' | translate }}
+              </ng-container>
+            </mat-checkbox>
+
+            <ng-template #applicantUntil>
+              <mat-form-field gpFxFlexFill>
+                <mat-label>{{ 'APPLICATION_PROCESS_APPLICANT_UNTIL' | translate }}</mat-label>
+                <input (dateChange)="emitApplicationUntilChange($event.value, rowIndex)" gpFxFlex="110px"
+                       [gpDisableControl]="isValidityRowDisabled(validityTableRow)"
+                       [matDatepicker]="pickerApplicantUntil" [max]="subtract1Day(validityTableForm.get(['validities', rowIndex,
+                   'validFrom'])?.value)" formControlName="applicationValidUntil" matInput>
+                <gp-icon *ngIf="isValidityRowDisabled(validityTableRow)" matSuffix name="lock" size="small">
+                </gp-icon>
+                <mat-datepicker-toggle *ngIf="!isValidityRowDisabled(validityTableRow)" [for]="pickerApplicantUntil"
+                                       matSuffix>
+                </mat-datepicker-toggle>
+                <mat-datepicker #pickerApplicantUntil></mat-datepicker>
+              </mat-form-field>
+            </ng-template>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="validity">
+          <mat-header-cell *matHeaderCellDef class="no-content" gpFxFlex="400px">
+          </mat-header-cell>
+
+          <mat-cell *matCellDef="let validityTableRow; let rowIndex = index" [formGroupName]="rowIndex"
+                    gpFxFlex="400px">
+            <div gpFxLayout="row" gpFxLayoutAlign="none center" gpFxLayoutGap="15px" class="validity-container">
+
+              <mat-form-field>
+                <mat-label>{{ 'VALID_FROM' | translate }}</mat-label>
+                <input (dateChange)="emitValidFromChange($event, rowIndex)"
+                       [gpDisableControl]="isValidityRowDisabled(validityTableRow)" [matDatepicker]="pickerValidFrom"
+                       [max]="validityTableForm.get(['validities', rowIndex, 'validUntil'])?.value"
+                       [min]="add1Day(validityTableForm.get(['validities', rowIndex, 'applicationValidUntil'])?.value)"
+                       formControlName="validFrom" matInput />
+                <gp-icon *ngIf="isValidityRowDisabled(validityTableRow)" matSuffix name="lock" size="small">
+                </gp-icon>
+                <mat-datepicker-toggle *ngIf="!isValidityRowDisabled(validityTableRow)" [for]="pickerValidFrom"
+                                       matSuffix>
+                </mat-datepicker-toggle>
+                <mat-datepicker #pickerValidFrom></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>{{ 'VALID_UNTIL' | translate }}</mat-label>
+                <input (dateChange)="emitValidUntilChange($event, rowIndex)"
+                       [gpDisableControl]="isValidityRowDisabled(validityTableRow) ||
+                       !validityTableForm.get(['validities', rowIndex, 'validFrom'])?.value"
+                       [matDatepicker]="pickerValidUntil"
+                       [min]="validityTableForm.get(['validities', rowIndex, 'validFrom'])?.value"
+                       formControlName="validUntil" matInput />
+                <gp-icon *ngIf="isValidityRowDisabled(validityTableRow)" matSuffix name="lock" size="small">
+                </gp-icon>
+                <mat-datepicker-toggle *ngIf="!isValidityRowDisabled(validityTableRow)" [for]="pickerValidUntil"
+                                       matSuffix>
+                </mat-datepicker-toggle>
+                <mat-datepicker #pickerValidUntil></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="offeredServices">
+          <mat-header-cell *matHeaderCellDef class="product-groups" gpFxFlex="100">
+            <div *ngFor="let brandId of brandProductGroups | keys" class="product-groups" gpFxLayout="row"
+                 gpFxLayoutAlign="center center" style="flex: 0;">
+              <div *ngFor="let brandProductGroup of orderBrandProductGroups(brandProductGroups[brandId])"
+                   gpFxLayout="row" gpFxLayoutAlign="center space-evenly">
+                <gp-product-group (arrowDownClick)="changeOfferedServiceValidity($event, ArrowDirection.DOWN)"
+                                  (arrowUpClick)="changeOfferedServiceValidity($event, ArrowDirection.UP)"
+                                  [arrowDownEnabled]="!offeredServiceIsOnlyOneInLastRow(brandProductGroup)"
+                                  [arrowUpEnabled]="!offeredServiceIsInFirstRow(brandProductGroup)" [brandId]="brandId"
+                                  [countryId]="countryId" [productGroupId]="brandProductGroup?.productGroupId"
+                                  tooltipPosition="above">
+                </gp-product-group>
+              </div>
+            </div>
+          </mat-header-cell>
+
+          <mat-cell *matCellDef="let validityTableRow; let rowIndex = index" gpFxFlex="100">
+            <div *ngFor="let brandId of brandProductGroups | keys" class="product-groups" gpFxLayout="row"
+                 gpFxLayoutAlign="center center" style="flex: 0;">
+              <div *ngFor="let brandProductGroup of orderBrandProductGroups(brandProductGroups[brandId])"
+                   class="product-group" gpFxLayout="row" gpFxLayoutAlign="center space-evenly">
+                <gp-icon [disabled]="isProductGroupDisabled(brandProductGroup.brandId,
+                                  brandProductGroup.productGroupId)" [hidden]="!offeredServiceValidityExistsFor(rowIndex, brandProductGroup.brandId,
+                                   brandProductGroup.productGroupId)"
+                         [name]="getIcon(rowIndex, brandProductGroup.brandId, brandProductGroup.productGroupId)"
+                         color="petrol">
+                </gp-icon>
+              </div>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="['empty', 'brands']"></mat-header-row>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </ng-scrollbar>
+  </div>
+</form>

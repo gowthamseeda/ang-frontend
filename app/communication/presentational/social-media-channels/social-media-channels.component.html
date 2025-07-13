@@ -1,0 +1,67 @@
+<mat-button-toggle-group (change)="updateSocialMediaChannelsSelection($event)"
+                         [multiple]="true">
+  <mat-button-toggle *ngFor="let socialMediaChannel of socialMediaChannels"
+                     [value]="socialMediaChannel"
+                     [checked]="socialMediaChannel.selected"
+                     [id]="socialMediaChannel.id"
+                     [disabled]="readOnly">
+    <gp-social-media-icon [socialMediaChannelId]="socialMediaChannel.id"
+                          [active]="socialMediaChannel.selected"
+                          [disabled]="readOnly && !socialMediaChannel.selected"
+                          [tooltip]="socialMediaChannel.name"
+                          tooltipPosition="above">
+    </gp-social-media-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+
+<form [formGroup]="selectedSocialMediaChannelsFormGroup">
+  <div gpFxLayout="column"
+       gpFxLayoutGap="32px"
+       gpFxLayoutAlign="start start">
+    <div *ngFor="let socialMediaChannel of selectedSocialMediaChannels"
+         gpFxLayout="row"
+         gpFxFill>
+      <div gpFxLayout="row"
+           gpFxFlex="66.66"
+           gpFxFlex.lt-md="100">
+        <mat-form-field class="form-field">
+          <mat-label>{{ socialMediaChannel.name + ' *' }}</mat-label>
+          <input #socialMediaChannelInput
+                 matInput
+                 [readonly]="readOnly"
+                 [formControlName]="socialMediaChannel.id"
+                 [placeholder]="socialMediaChannel.template"
+                 (keyup)="changeTrigger.next($event)"/>
+          <mat-error *ngIf="selectedSocialMediaChannelsFormGroup.get(socialMediaChannel.id)?.hasError('required')">
+            {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+          </mat-error>
+          <mat-error *ngIf="selectedSocialMediaChannelsFormGroup.get(socialMediaChannel.id)?.hasError('pattern')">
+            {{ 'VALIDATION_ERROR_URL' | translate }}
+          </mat-error>
+          <mat-error *ngIf="selectedSocialMediaChannelsFormGroup.get(socialMediaChannel.id)?.hasError('validSocialMediaUrl')">
+            {{ 'VALIDATION_ERROR_SOCIAL_MEDIA_URL' | translate }}
+          </mat-error>
+          <gp-icon matSuffix
+                   *ngIf="readOnly"
+                   name="lock"
+                   size="small">
+          </gp-icon>
+        </mat-form-field>
+        <button mat-icon-button
+                type="button"
+                (click)="openLink(socialMediaChannelInput.value)">
+          <gp-icon name="arrow-out"
+                   matTooltip="{{ 'COMMUNICATION_OPEN_NEW_TAB' | translate}}"
+                   matTooltipPosition="above"
+                   size="small"></gp-icon>
+        </button>
+        <button *ngIf="!readOnly"
+                mat-icon-button
+                type="button"
+                (click)="removeSocialMediaChannel(socialMediaChannel.id)">
+          <gp-icon name="trash"></gp-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

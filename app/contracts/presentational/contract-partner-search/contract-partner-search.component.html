@@ -1,0 +1,73 @@
+<div gpFxLayout="column"
+     gpFxLayoutAlign="none start"
+     gpFxFill>
+  <h5 *ngIf="contractPartner?.legalName">
+    {{ 'PARTNER' | translate | uppercase }}
+  </h5>
+  <span gpFxLayout="row"
+        gpFxFill>
+    <span gpFxLayout="column"
+          class="contract-partner"
+          [title]="contractPartnerTooltip"
+          [class.search-opened]="search.isOpened">
+      <ng-container *ngIf="readOnly; else editable">
+        <ng-container *ngTemplateOutlet="Partner"></ng-container>
+      </ng-container>
+    </span>
+
+    <ng-template #Partner>
+      <span gpFxFlex
+            class="partner-name"
+            *ngIf="contractPartner?.legalName; else noPartner">
+        {{ contractPartner?.legalName }}
+      </span>
+      <ng-template #noPartner>
+        <span class="no-partner">
+          {{ 'PARTNER' | translate | uppercase }}
+        </span>
+      </ng-template>
+    </ng-template>
+
+    <ng-template #editable>
+      <span class="editable"
+            (click)="search.openDialog()">
+        <ng-container *ngTemplateOutlet="Partner"></ng-container>
+      </span>
+    </ng-template>
+
+    <button mat-icon-button
+            *ngIf="contractPartner"
+            (click)="emitNavigateToContractPartner(contractPartner?.id)">
+      <gp-icon name="arrow-out"
+               matTooltip="{{ 'COMMUNICATION_OPEN_NEW_TAB' | translate }}"
+               matTooltipPosition="above"
+               size="small"></gp-icon>
+    </button>
+    <button mat-icon-button
+            *ngIf="!readOnly && contractPartner"
+            (click)="emitDeletedContractPartner(contractPartner?.id)">
+      <gp-icon name="trash"></gp-icon>
+    </button>
+  </span>
+  <span>
+    {{ contractPartner?.street }}
+    {{ contractPartner?.streetNumber }}
+  </span>
+  <span>
+    {{ contractPartner?.zipCode }}
+    {{ contractPartner?.city }}
+  </span>
+  <span>{{ contractPartner?.country }}</span>
+
+  <gp-popup #search
+            [title]="'ADD_CONTRACT_PARTNER' | translate">
+    <gp-searchfield *ngIf="search.isOpened"
+                    [predefinedSearchFilters]="searchFilters"
+                    [settings]="getSearchFieldSettings()"
+                    [searchResultMessage]="{singular: 'RESULT_FOUND' , plural: 'RESULTS_FOUND'}"
+                    [placeHolderText]="'SEARCH_CONTRACT_PARTNER_FIELD_INLINE_PLACEHOLDER' | translate"
+                    (searchItemRetrieved)="emitSelectedContractPartnerId($event);search.close();"
+                    (searchResultsReseted)="search.isOkButtonDisabled = true;">
+    </gp-searchfield>
+  </gp-popup>
+</div>

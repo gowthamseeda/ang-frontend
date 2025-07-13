@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+@import '../../../styles-theme.scss';
+
+.mat-expansion-panel {
+  margin-bottom: 10px !important;
+  border-radius: 0 !important;
+  background-color: mat.get-color-from-palette($accent, 100) !important;
+  min-height: 40px;
+  box-shadow: none !important;
+
+  .mat-expansion-panel-header {
+    .mat-expansion-panel-header-title {
+      color: mat.get-color-from-palette($primary, 500) !important;
+      text-transform: uppercase;
+      line-height: 40px;
+    }
+  }
+}
+
+.mat-mdc-dialog-content {
+  white-space: pre-line;
+  max-height: 75vh
+}
+
+pre {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}

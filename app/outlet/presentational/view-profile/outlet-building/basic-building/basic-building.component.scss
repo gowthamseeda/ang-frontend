@@ -1,0 +1,111 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.roof {
+  min-height: 23px;
+  max-height: 23px;
+  margin: 0 0 5px 0;
+
+  background-color: mat.get-color-from-palette($primary, 50);
+
+  display: flex;
+  justify-content: flex-end;
+
+  .roof-title {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    min-height: 26px;
+    max-height: 26px;
+
+    top: -13px;
+    max-width: 45%;
+
+    margin-right: 20px;
+    padding: 0 0 0 14px;
+    text-align: end;
+    white-space: nowrap;
+    overflow: hidden;
+
+    background-color: mat.get-color-from-palette($primary, 700);
+    color: mat.get-color-from-palette($primary, 50);
+    font-size: 16px;
+
+    .roof-title_text {
+      width: calc(100% - 14px);
+    }
+
+    .roof-title__fade-out {
+      min-width: 14px;
+      max-width: 14px;
+      height: 26px;
+      background-image: linear-gradient(to right, transparent, mat.get-color-from-palette($primary, 700));
+    }
+  }
+
+  .roof-title-positioner {
+    min-width: 91px;
+    max-width: 91px;
+  }
+}
+
+.building-base__container {
+  display: flex;
+  flex-direction: row;
+
+  gp-product-group-garage {
+    margin: 0 1px 0 0px;
+  }
+
+  .door__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    min-width: 115px;
+    max-width: 115px;
+    min-height: 98px;
+    max-height: 98px;
+
+    margin: 0 1px 0 0;
+
+    background-color: mat.get-color-from-palette($primary, 50);
+
+    .left-door {
+      border-left: 6px solid mat.get-color-from-palette($primary, 250);
+      border-top: 6px solid mat.get-color-from-palette($primary, 250);
+      border-right: 1px solid mat.get-color-from-palette($primary, 250);
+      height: 80px;
+      width: 43px;
+    }
+
+    .right-door {
+      border-top: 6px solid mat.get-color-from-palette($primary, 250);
+      border-right: 6px solid mat.get-color-from-palette($primary, 250);
+      height: 80px;
+      width: 43px;
+    }
+  }
+
+  .wall-left {
+    min-width: 6px;
+    max-width: 6px;
+    min-height: 98px;
+    max-height: 98px;
+
+    margin: 0 1px 0 14px;
+    background-color: mat.get-color-from-palette($primary, 50);
+  }
+
+  .wall-right {
+    min-width: 6px;
+    max-width: 6px;
+    min-height: 98px;
+    max-height: 98px;
+
+    margin: 0 14px 0 0;
+    background-color: mat.get-color-from-palette($primary, 50);
+  }
+}

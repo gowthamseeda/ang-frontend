@@ -1,0 +1,58 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.assigned-brand-label-table {
+  .mat-mdc-table {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .buttons {
+    padding: 30px 0px 20px 0px;
+  }
+
+  .mat-mdc-table .mat-mdc-row {
+    &:hover {
+      background-color: mat.get-color-from-palette($accent, 100);
+    }
+
+    .mat-column-actions button {
+      visibility: hidden;
+    }
+
+    &:hover .mat-column-actions button {
+      visibility: visible;
+
+      .gp-icon:hover {
+        color: mat.get-color-from-palette($accent, 500);
+      }
+    }
+
+    &.locked {
+      opacity: 0.5;
+
+      .mat-column-actions button {
+        visibility: visible;
+        cursor: default;
+
+        .gp-icon,
+        .gp-icon:hover {
+          color: mat.get-color-from-palette($accent, 600);
+        }
+      }
+    }
+
+    gp-label-selection {
+      width: 100%;
+    }
+
+    gp-brand-selection {
+      width: 100%;
+    }
+  }
+}
+
+[loader] ::ng-deep svg {
+  height: 200px;
+  width: 100%;
+}

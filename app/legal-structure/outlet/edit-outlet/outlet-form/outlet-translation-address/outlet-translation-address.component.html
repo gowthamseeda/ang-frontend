@@ -1,0 +1,73 @@
+<div gpFxFlexFill>
+  <div *ngIf="addressType === 'address'"
+       gpFxLayout>
+    <h1>{{'ADDRESS' | translate}}</h1>
+  </div>
+  <div *ngIf="addressType === 'address'"
+       gpFxLayout
+       gpFxLayoutGap="30px">
+    <gp-legal-name gpFxFlex
+                   [parentForm]="parentForm"
+                   [registeredOffice]="outlet?.registeredOffice"
+                   [countryId]="outlet?.countryId"
+                   [required]="false"
+                   [name]="outletTranslation?.legalName"></gp-legal-name>
+    <gp-name-addition gpFxFlex
+                      [parentForm]="parentForm"
+                      [name]="outletTranslation?.nameAddition"></gp-name-addition>
+  </div>
+  <div [formGroup]="parentForm">
+    <div gpFxLayout="row"
+         gpFxLayoutGap="30px">
+      <gp-street gpFxFlex="70"
+                 [parentForm]="addressTranslationForm"
+                 [street]="address?.street"
+                 (streetChange)="formGroupTranslationsChange()"></gp-street>
+      <gp-street-number gpFxFlex
+                        [parentForm]="addressTranslationForm"
+                        [streetNumber]="address?.streetNumber"
+                        (streetNumberChange)="formGroupTranslationsChange()"></gp-street-number>
+    </div>
+
+    <div gpFxLayout="row">
+      <gp-address-addition gpFxFlex
+                           [parentForm]="addressTranslationForm"
+                           [addressAddition]="address?.addressAddition"></gp-address-addition>
+    </div>
+
+    <div gpFxLayout="row"
+         gpFxLayoutGap="30px">
+      <gp-zip-code gpFxFlex="30"
+                   [parentForm]="parentForm.get(addressType)"
+                   [zipCode]="outlet?.address?.zipCode"
+                   [readonly]="true"
+                   (zipCodeChange)="formGroupTranslationsChange()"></gp-zip-code>
+      <gp-city gpFxFlex
+               [parentForm]="addressTranslationForm"
+               [city]="address?.city"
+               (cityChange)="formGroupTranslationsChange()"></gp-city>
+    </div>
+
+    <div gpFxLayout="row">
+      <gp-district gpFxFlex
+                   [parentForm]="addressTranslationForm"
+                   [district]="address?.district"></gp-district>
+    </div>
+  </div>
+  <div *ngIf="addressType === 'address'"
+       gpFxLayout
+       gpFxLayoutGap="30px">
+    <gp-state gpFxFlex
+              [parentForm]="parentForm"
+              [state]="outletTranslation?.state"></gp-state>
+    <gp-province gpFxFlex
+                 [parentForm]="parentForm"
+                 [province]="outletTranslation?.province"></gp-province>
+  </div>
+  <div *ngIf="addressType === 'address'"
+       gpFxxLayout>
+    <gp-country gpFxFlex
+                [parentForm]="parentForm"
+                [countryId]="outlet?.countryId"></gp-country>
+  </div>
+</div>

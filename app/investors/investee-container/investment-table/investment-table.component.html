@@ -1,0 +1,133 @@
+<gp-content-loader [isLoading]="!isLoaded">
+
+  <h2>{{'SHAREHOLDER' | translate}}</h2>
+
+  <form *ngIf="(investments | async)?.length > 0" [formGroup]="investmentsFormGroup">
+    <mat-table [dataSource]=" investments" formArrayName="investments">
+
+      <ng-container matColumnDef="legalName">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="25">{{'LEGAL_NAME' | translate}}</mat-header-cell>
+        <mat-cell *matCellDef="let investment" [class.inactive]="!investment.active" gpFxFlex="25">
+          <gp-link-out-to-outlet [outletId]="investment.investorId">
+            {{investment.legalName}}
+          </gp-link-out-to-outlet>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="address">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="25">{{'ADDRESS' | translate}}</mat-header-cell>
+        <mat-cell *matCellDef="let investment" [class.inactive]="!investment.active" gpFxFlex="25">
+          <div>
+            {{investment?.street}}
+          </div>
+          <div>
+            {{investment?.zipCode}} {{investment?.city}}
+          </div>
+          <div>
+            {{investment?.countryId}} {{investment?.countryName}}
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="brands">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="25">{{'BRANDS' | translate}}</mat-header-cell>
+        <mat-cell *matCellDef="let investment" [class.inactive]="!investment.active" gpFxFlex="25">todo</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="share">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="10">{{'SHARE' | translate}}</mat-header-cell>
+        <mat-cell *matCellDef="let investment; let rowIndex = index"
+                  [class.inactive]="!investment.active"
+                  [formGroupName]="rowIndex" gpFxFlex="10">
+          <mat-form-field>
+            <mat-label *ngIf="!investment.issuedShare">{{'SHARE' | translate}}</mat-label>
+            <input (change)="updateInvestmentIssuedShare(investment, $event.target.value)"
+                   formControlName="issuedShare"
+                   matInput>
+            <span matSuffix>%</span>
+            <mat-error
+              *ngIf="investmentsFormGroup.get(['investments', rowIndex, 'issuedShare'])?.hasError('max')">
+              {{ "VALIDATION_ERROR_MAX" | translate: { max: 100 } }}
+            </mat-error>
+            <mat-error
+              *ngIf="investmentsFormGroup.get(['investments', rowIndex, 'issuedShare'])?.hasError('numberRequired')">
+              {{ "VALIDATION_ERROR_PATTERN_NUMBER" | translate }}
+            </mat-error>
+            <mat-error
+              *ngIf="investmentsFormGroup.get(['investments', rowIndex, 'issuedShare'])?.hasError('min')">
+              {{ "VALIDATION_ERROR_MIN" | translate: { min: 0 } }}
+            </mat-error>
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="value">
+        <mat-header-cell *matHeaderCellDef gpFxFlex="10">{{'VALUE' | translate}}</mat-header-cell>
+        <mat-cell *matCellDef="let investment; let rowIndex = index"
+                  [class.inactive]="!investment.active"
+                  [formGroupName]="rowIndex" gpFxFlex="10">
+          <mat-form-field>
+            <mat-label
+              *ngIf="!investment.issuedShareCapitalValue">{{'VALUE' | translate}}</mat-label>
+            <input
+              (change)="updateInvestmentIssuedShareCapitalValue(investment, $event.target.value)"
+              formControlName="issuedShareCapitalValue"
+              matInput>
+            <span matSuffix>{{shareCapitalCurrency}}</span>
+            <mat-error
+              *ngIf="investmentsFormGroup.get(['investments', rowIndex, 'issuedShareCapitalValue'])?.hasError('numberRequired')">
+              {{ "VALIDATION_ERROR_PATTERN_NUMBER" | translate }}
+            </mat-error>
+            <mat-error
+              *ngIf="investmentsFormGroup.get(['investments', rowIndex, 'issuedShareCapitalValue'])?.hasError('min')">
+              {{ "VALIDATION_ERROR_MIN" | translate: { min: 0 } }}
+            </mat-error>
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let investment" [class.inactive]="!investment.active">
+          <gp-icon (click)="removeInvestment.emit(investment.investorId)"
+                   [hover]="true"
+                   name="trash">
+          </gp-icon>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="columnsToDisplay | async"></mat-header-row>
+      <mat-row *matRowDef="let investment; columns: columnsToDisplay | async"></mat-row>
+
+    </mat-table>
+  </form>
+
+
+  <button (click)="openInvestorDialog()"
+          gpRoundedIconButton
+          class="gp-icon-flat-button"
+          mat-flat-button>
+    <gp-icon gpIconButtonWithText
+             name="plus"></gp-icon>
+    {{ 'ADD_BUTTON' | translate }}
+  </button>
+
+  <div loader
+       xmlns:svg='http://www.w3.org/2000/svg'>
+    <content-loader preserveAspectRatio="none">
+      <svg:rect height="20"
+                width="400"
+                x="0"
+                y="30"/>
+
+      <svg:rect height="40"
+                width="400"
+                x="0"
+                y="60"/>
+      <svg:rect height="40"
+                width="400"
+                x="0"
+                y="110"/>
+    </content-loader>
+  </div>
+</gp-content-loader>

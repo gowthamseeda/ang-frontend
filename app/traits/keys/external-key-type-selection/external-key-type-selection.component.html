@@ -1,0 +1,21 @@
+<mat-form-field *ngIf="!readonly; else externalKeyTypeReadonly" class="no-label"
+                matTooltip="{{ selectedKeyType && selectedKeyType?.description ? ( selectedKeyType | translateData: currentSelectedLanguage ): ''}}"
+                matTooltipPosition="{{ 'position' | tooltipDefault }}">
+  <mat-select [formControl]="control" [placeholder]="placeholder" [required]="required"
+              (selectionChange)="onChange($event)" data-cy="external-key-type-selection">
+    <mat-option *ngFor="let externalKeyType of availableExternalKeys" [value]="externalKeyType"
+                data-cy="external-key-type-selection-option">
+      <div matTooltip="{{ externalKeyType.description ? (externalKeyType | translateData: currentSelectedLanguage : undefined : translateOutputType.description) :'' }}"
+           matTooltipPosition="{{ 'position' | tooltipDefault }}" data-cy="external-key-type-selection-option-div">
+        {{ externalKeyType.name }}
+      </div>
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="control.hasError('required')">
+    {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+  </mat-error>
+</mat-form-field>
+
+<ng-template #externalKeyTypeReadonly>
+  {{ control.value }}
+</ng-template>

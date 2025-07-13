@@ -1,0 +1,58 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.form-field {
+  padding-bottom: 0 !important;
+  &:not(.mat-form-field-invalid) {
+    padding-bottom: 20px;
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+  }
+}
+
+.flex-item-spacing{
+  padding-bottom: 0 !important;
+}
+
+.flex-item {
+  flex: 1;
+}
+
+@media screen and (max-width: 959px) {
+  .flex-item {
+    flex: 0 0 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+.data-changed-comm {
+  font-size: 90%;
+  font-style: italic;
+  margin-right: 10px;
+}
+
+.data-changed-approved-comm {
+  font-size: 90%;
+  font-style: italic;
+  margin-right: 10px;
+  color: green;
+}
+
+.data-changed-declined-comm {
+  font-size: 90%;
+  font-style: italic;
+  margin-right: 10px;
+  color: red;
+}
+
+.approved-input {
+  background-color: #b6eab6 !important;
+}
+.declined-input {
+  background-color: #f8b6b6 !important;
+}
+.direct-change-input {
+  background-color: #b6eab6 !important;
+}

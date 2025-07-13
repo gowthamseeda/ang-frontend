@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+:host-context(.mat-tree-node:hover, .current-outlet) .mat-mdc-chip {
+  background-color: mat.get-color-from-palette($primary, 50);
+}
+
+.outlet-leading-codes {
+  margin-top: 10px;
+}
+
+::ng-deep .tooltip-class {
+  white-space: pre;
+}

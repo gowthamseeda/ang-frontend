@@ -1,0 +1,49 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+:host-context(.opening-time-container:hover) {
+  .opening-time__splitter {
+    display: block;
+  }
+  .icon-close {
+    display: block;
+  }
+  .icon-closed {
+    display: block;
+  }
+}
+:host-context(.opening-time-container:hover.readOnly:hover) {
+  .opening-time__splitter {
+    display: none;
+  }
+}
+
+.opening-time__closed-container {
+  .opening-time__closed-text {
+    font-style: italic;
+  }
+}
+
+.icon-close {
+  display: none;
+  position: absolute;
+  right: 6px;
+  top: 44px;
+}
+
+.icon-closed {
+  display: none;
+  position: absolute;
+  right: 6px;
+  top: 44px;
+}
+
+.opening-time__splitter {
+  display: none;
+  position: absolute;
+  right: 45px;
+  top: 0;
+  width: 1px;
+  height: 125px;
+  background-color: mat.get-color-from-palette($accent, 400);
+}

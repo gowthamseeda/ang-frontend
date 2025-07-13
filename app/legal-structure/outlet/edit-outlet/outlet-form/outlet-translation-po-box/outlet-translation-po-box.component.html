@@ -1,0 +1,19 @@
+<div gpFxFlexFill>
+  <div gpFxLayout>
+    <h1>{{'PO_BOX' | translate}}</h1>
+  </div>
+  <gp-po-box-number [poBoxForm]="poBoxForm"
+                    [number]="outlet?.poBox?.number"
+                    [readonly]="true"></gp-po-box-number>
+
+  <div gpFxLayout="row"
+       gpFxLayoutGap="30px">
+    <gp-po-box-zip-code gpFxFlex="30"
+                        [poBoxForm]="poBoxForm"
+                        [zipCode]="outlet?.poBox?.zipCode"
+                        [readonly]="true"></gp-po-box-zip-code>
+    <gp-po-box-city gpFxFlex
+                    [poBoxForm]="poBoxForm"
+                    [city]="poBox?.city"></gp-po-box-city>
+  </div>
+</div>

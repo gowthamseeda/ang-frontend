@@ -1,0 +1,129 @@
+<gp-content-loader [isLoading]="isLoading">
+  <div>
+    <mat-table [style.min-width]="calculateTableWidth()"
+               [dataSource]="brandProductGroupsDataDataSource">
+      <ng-container matColumnDef="empty">
+        <mat-header-cell *matHeaderCellDef
+                         class="no-content title"
+                         [style.max-width]="cellWidth"
+                         [style.min-width]="cellWidth">
+          <div gpFxFill
+               gpFxLayout="row"
+               gpFxLayoutAlign="start end">
+            <h5>{{ dataColumnName | translate | uppercase }}</h5>
+          </div>
+        </mat-header-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="brands">
+        <mat-header-cell *matHeaderCellDef
+                         gpFxFlex="100">
+          <gp-brand-icon *ngFor="let brandId of brandProductGroupColumns | keys"
+                         [id]="brandId"
+                         [style.min-width]="calculateBrandsColumnWidth(brandId)"
+                         tooltipPosition="above"
+                         class="brands"
+                         gpFxLayout="row"
+                         gpFxLayoutAlign="center center"
+                         style="flex: 0;"></gp-brand-icon>
+        </mat-header-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="data">
+        <mat-header-cell *matHeaderCellDef
+                         class="no-content"
+                         [style.max-width]="cellWidth"
+                         [style.min-width]="cellWidth">
+
+          <ng-container *ngTemplateOutlet="headerCellTemplate"></ng-container>
+        </mat-header-cell>
+
+        <mat-cell *matCellDef="let rowData; let rowIndex = index"
+                  [style.max-width]="cellWidth"
+                  [style.min-width]="cellWidth">
+          <div gpFxFlex
+               gpFxLayout="column"
+               gpFxLayoutAlign="start start">
+
+            <ng-container
+                          *ngTemplateOutlet="cellTemplate; context: { $implicit: rowData, index: rowIndex }">
+            </ng-container>
+
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="brandProductGroups">
+        <mat-header-cell *matHeaderCellDef
+                         class="product-groups"
+                         gpFxFlex="100">
+          <div *ngFor="let brandId of brandProductGroupColumns | keys"
+               class="product-groups"
+               gpFxLayout="row"
+               gpFxLayoutAlign="center center"
+               style="flex: 0;">
+            <div *ngFor="let brandProductGroup of orderBrandProductGroups(brandProductGroupColumns[brandId])"
+                 gpFxLayout="row"
+                 gpFxLayoutAlign="center space-evenly">
+              <gp-product-group (arrowDownClick)="moveBrandProductGroup($event, ArrowDirection.DOWN)"
+                                (arrowUpClick)="moveBrandProductGroup($event, ArrowDirection.UP)"
+                                [arrowDownEnabled]="isMovementAllowed(brandProductGroup, ArrowDirection.DOWN)"
+                                [arrowUpEnabled]="isMovementAllowed(brandProductGroup, ArrowDirection.UP)"
+                                [brandId]="brandId"
+                                [productGroupId]="brandProductGroup?.productGroupId"
+                                [readOnly]="readOnly"
+                                [permissions]="permissions"
+                                tooltipPosition="above">
+              </gp-product-group>
+            </div>
+          </div>
+        </mat-header-cell>
+
+        <mat-cell *matCellDef="let rowData"
+                  gpFxFlex="100"
+                  gpFxLayout="row">
+          <div *ngFor="let brandId of brandProductGroupColumns | keys"
+               class="product-groups"
+               gpFxLayout="row"
+               gpFxLayoutAlign="center start"
+               style="flex: 0;">
+            <div *ngFor="let brandProductGroup of orderBrandProductGroups(brandProductGroupColumns[brandId])"
+                 gpFxLayout="row"
+                 gpFxLayoutAlign="center space-evenly"
+                 class="product-group">
+              <gp-icon *ngIf="brandProductGroupExistsFor(rowData.brandProductGroupIds, brandId,
+          brandProductGroup.productGroupId)"
+                       [name]="getValidityIcon(brandId, brandProductGroup.productGroupId)"
+                       [color]="getValidityIcon(brandId, brandProductGroup.productGroupId) === 'check' ? null : 'petrol'">
+              </gp-icon>
+            </div>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="['empty', 'brands']"></mat-header-row>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+  </div>
+
+  <div loader
+       xmlns:svg='http://www.w3.org/2000/svg'>
+    <content-loader preserveAspectRatio="none">
+      <svg:rect height="20"
+                width="400"
+                x="0"
+                y="0" />
+      <svg:rect height="40"
+                width="400"
+                x="0"
+                y="30" />
+      <svg:rect height="40"
+                width="400"
+                x="0"
+                y="80" />
+    </content-loader>
+  </div>
+</gp-content-loader>

@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{ 'COMMENT' | translate | titlecase }}</h1>
+
+<mat-dialog-content>
+    <gp-text-area [form]="commentForm" [minHeight]="200" controlName="comment" [readonly]="false"
+                  [required]="!data.isAcceptAll"
+        [maxCharLength]="maxCommentCharLength" [placeHolder]="'VERIFICATION_REQUEST_COMMENT_PLACEHOLDER' | translate">
+    </gp-text-area>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <gp-default-edit-actions saveButtonTranslationKey="SUBMIT" [saveButtonDisabled]="commentForm.invalid"
+        (cancel)="closeDialog()" (save)="onSubmit()"></gp-default-edit-actions>
+</mat-dialog-actions>

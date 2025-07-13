@@ -1,0 +1,13 @@
+<div gpFxLayout="row">
+  <div [style.flex]="getGpFlexValue"
+       [style.max-width]="getGpFlexValue"
+       style="box-sizing: border-box"
+       class="content">
+    <ng-content></ng-content>
+  </div>
+  <div *ngIf="marginalColumnVisible"
+       gpFxFlex="30"
+       class="marginal">
+    <ng-content select="[marginalContent]"></ng-content>
+  </div>
+</div>

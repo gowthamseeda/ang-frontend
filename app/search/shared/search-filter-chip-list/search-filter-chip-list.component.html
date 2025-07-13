@@ -1,0 +1,33 @@
+<mat-chip-grid>
+  <span *ngFor="let searchFilter of searchFilters" class="search-filter">
+    <mat-chip-row *ngIf="searchFilter.name" [class.search-filter-tag-name]="isSearchFilterTag(searchFilter)"
+              [class.search-filter-flag]="isSearchFilterFlag(searchFilter)"
+              (removed)="removeNameFromSearchFilter(searchFilter)">
+
+      <ng-container [ngSwitch]="getFilterFlag(searchFilter)">
+        <ng-container *ngSwitchCase="'brand'">
+          <gp-translated-brand-flag [brandFlag]="searchFilter.name">
+          </gp-translated-brand-flag>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'productGroup'">
+          <gp-translated-product-group-flag [productGroupFlag]="searchFilter.name">
+          </gp-translated-product-group-flag>
+        </ng-container>
+
+        <ng-container *ngSwitchDefault>
+          <span>{{ searchFilter.name | adjustFilter | underscore | uppercase | translate }}</span>
+        </ng-container>
+      </ng-container>
+
+      <gp-icon matChipRemove name="close" size="small"></gp-icon>
+    </mat-chip-row>
+
+    <mat-chip-row *ngIf="searchFilter.value" class="search-filter-value" (removed)="removeSearchFilter(searchFilter)">
+      <span>{{ searchFilter.value }}</span>
+      <gp-icon matChipRemove name="close" size="small"></gp-icon>
+    </mat-chip-row>
+  </span>
+  <ng-content></ng-content>
+</mat-chip-grid>
+

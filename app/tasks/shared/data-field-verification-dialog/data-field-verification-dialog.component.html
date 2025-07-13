@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>{{ 'INITIATE_DATA_VERIFICATION' | translate | titlecase }}</h1>
+
+<mat-dialog-content>
+    <form [formGroup]="form">
+        <div gpFxLayoutColumn>
+            <div gpFxLayoutRow gpFxFlex="35">
+                <div gpFxLayoutColumn>
+                    <h3>{{ 'DUE_DATE' | translate }}</h3>
+                    <mat-form-field class="show-footer no-horizontal-hint-space">
+                        <mat-label>{{ 'CHOOSE_DATE' | translate }}</mat-label>
+                        <input matInput [matDatepicker]="dueDate" [min]="currentDate" formControlName="dueDate">
+                        <mat-hint class="optional">{{ 'OPTIONAL' | translate }}</mat-hint>
+                        <mat-datepicker-toggle [for]="dueDate" matSuffix></mat-datepicker-toggle>
+                        <mat-datepicker #dueDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div gpFxLayoutColumn class="section">
+                <h3>{{ 'Comment' | translate }}</h3>
+                <gp-text-area [form]="form" [minHeight]="130" controlName="comment" [readonly]="false" [maxCharLength]="maxCommentCharLength"
+                    [placeHolder]="'VERIFICATION_REQUEST_COMMENT_PLACEHOLDER' | translate" class="white-bg">
+                </gp-text-area>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <gp-default-edit-actions saveButtonTranslationKey="SUBMIT" [saveButtonDisabled]="form.invalid"
+        (cancel)="closeDialog()" (save)="onSubmit()"></gp-default-edit-actions>
+</mat-dialog-actions>

@@ -1,0 +1,47 @@
+<mat-card>
+  <div gpFxLayout="row">
+    <div [style.flex]="getGpFlexValue" [style.max-width]="getGpFlexValue" style="box-sizing: border-box" class="header">
+      <div gpFxLayout="row" class="aggregate-data-field">
+        <mat-card-header gpFxFlex>
+          <gp-header-image *ngIf="logo" mat-card-avatar [name]="logo"
+            data-cy="edit-layout-header-logo"></gp-header-image>
+          <mat-card-title data-cy="edit-layout-header-title">
+            {{ title }}
+            <gp-data-field-verification-button *ngIf="isForRetailEnabled && isRetailOutlet &&
+             aggregateDataFields.length > 0" [fields]="aggregateDataFields"
+              [shouldShowDialog]="true"></gp-data-field-verification-button>
+          </mat-card-title>
+          <ng-content select="[header-actions]"></ng-content>
+          <mat-card-subtitle data-cy="edit-layout-header-subtitle">
+            <ng-content select="[subTitle]"></ng-content>
+          </mat-card-subtitle>
+          <div  gpFxLayoutAlign="center" class="aggregate-data-field" *ngIf="isForRetailEnabled && taskPresent && isMTR">
+              <gp-opening-hour-task-action-button  [openTasks]="openTasks">
+              </gp-opening-hour-task-action-button>
+          </div>
+        </mat-card-header>
+
+
+        <div class="actions" gpFxFlex="nogrow">
+          <div class="edit-bar">
+            <ng-content select="[extraActions]"></ng-content>
+            <gp-icon (click)="toggleMarginalColumn()" *ngIf="isMarginalColumnExpandable" class="marginalToggle"
+              name="arrow-back" size="small" [hover]="true">
+            </gp-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="marginalColumnVisible" class="marginal" gpFxFlex="30">
+      <div class="actions">
+        <div class="edit-bar">
+          <gp-icon (click)="toggleMarginalColumn()" name="arrow-forward" size="small" [hover]="true"></gp-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <mat-card-content>
+    <ng-content></ng-content>
+  </mat-card-content>
+</mat-card>

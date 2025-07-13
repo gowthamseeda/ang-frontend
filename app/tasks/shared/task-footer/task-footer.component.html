@@ -1,0 +1,35 @@
+<div gpFxFill
+     gpFxLayout="row"
+     gpFxLayoutAlign="space-between">
+  <div gpFxLayout="row"
+       class="task-footer"
+       gpFxLayoutAlign="start center">
+    <ng-content></ng-content>
+  </div>
+  <div *ngIf="!useOnlyContent"
+       class="task-footer"
+       gpFxLayout="row"
+       gpFxLayoutAlign="end center"
+       gpFxLayoutGap="40px">
+    <button (click)="confirmDiscard()"
+            [disabled]="discardButtonDisabled"
+            mat-button
+            type="reset">
+      <gp-icon *ngIf="confirmDiscardAction"
+               color="secondary"
+               name="close"
+               size="small"></gp-icon>
+      {{ discardButtonTranslationKey | translate }}
+    </button>
+    <button (click)="confirmApprove()"
+            [disabled]="confirmButtonDisabled"
+            color="primary"
+            mat-button>
+      <gp-icon *ngIf="!confirmButtonDisabled"
+               color="white"
+               name="check"
+               size="small"></gp-icon>
+      {{ confirmButtonTranslationKey | translate }}
+    </button>
+  </div>
+</div>

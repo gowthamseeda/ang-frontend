@@ -1,0 +1,33 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.pillar-container {
+  background-color: mat.get-color-from-palette($accent, 800);
+  min-height: 168px;
+  max-height: 265px;
+  margin: 0px 0px 0px 20px;
+  padding: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.brand-logos {
+  width: 64px;
+  max-height: 265px;
+
+  .brand {
+    margin: 7px 0 0 6px;
+    background-color: mat.get-color-from-palette($accent, 50);
+    width: 53px;
+    height: 43px;
+
+    gp-brand-icon {
+      text-align: center;
+      margin: 6px auto;
+    }
+  }
+}

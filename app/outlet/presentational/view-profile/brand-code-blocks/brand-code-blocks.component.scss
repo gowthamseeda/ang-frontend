@@ -1,0 +1,20 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.box {
+  min-width: 64px;
+  height: 26px !important;
+  background-color: mat.get-color-from-palette($accent, 50);
+  float: left;
+}
+
+.brand-code {
+  color: mat.get-color-from-palette($accent, 800);
+  font-weight: bold;
+  font-size: 14px;
+  margin: 5px 12px;
+}
+
+.separator {
+  border-left: mat.get-color-from-palette($primary, 250) 1px solid;
+}

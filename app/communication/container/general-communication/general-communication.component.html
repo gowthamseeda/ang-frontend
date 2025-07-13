@@ -1,0 +1,79 @@
+<gp-overlay-layout [toolTipText]="'COMPANY_NAVIGATION_TREE'"
+                   [enableCompanyNavigation]="getEnableCompanyNavigation()">
+  <gp-outlet-header header-toolbar>
+  </gp-outlet-header>
+  <gp-read-only-notification [showMessage]="isTaskPresent | async">
+  </gp-read-only-notification>
+  <gp-edit-layout logo="contact"
+                  title="{{ 'COMMUNICATION' | translate }}">
+    <gp-edit-section>
+      <gp-spoken-language [userIsAuthorizedForOutlet]="userIsAuthorizedForOutlet"
+                          (dataChangedManually)="spokenLanguageDataChanged()">
+      </gp-spoken-language>
+    </gp-edit-section>
+    <gp-edit-section>
+      <h1>{{ 'COMMUNICATION_CHANNELS' | translate }}</h1>
+      <div class="communication-data-container">
+        <ng-scrollbar track="all">
+          <gp-brand-product-groups-data-table (brandProductGroupsChange)="mergeCommunicationDataOfOutlet($event)"
+                                              *ngIf="tableEnabled"
+                                              [brandProductGroupColumns]="groupedBrandProductGroups | async"
+                                              [brandProductGroupsData]="brandProductGroupsCommunicationData | async"
+                                              [isLoading]="isLoadingCommunicationChannels"
+                                              [readOnly]="!(isEditable | async)"
+                                              [permissions]="['communications.generalcommunicationdata.update']">
+            <div *matCellDef="let communicationDataRow"
+                 class="data-row">
+              <gp-communication-channels (communicationChannelsChange)="upsertCommunicationDataOfOutlet($event,
+                                     CommunicationFieldType.STANDARD, communicationDataRow.brandProductGroupIds)"
+                                         [communicationChannels]="communicationDataRow.data | standardCommunicationChannels | async"
+                                         [readOnly]="!(isUserPermittedFor(communicationDataRow.brandProductGroupIds) | async) || !(isEditable | async)"
+                                         [taskType]="Type.DATA_CHANGE">
+              </gp-communication-channels>
+
+              <gp-social-media-channels (communicationChannelsChange)="upsertCommunicationDataOfOutlet($event,
+                                    CommunicationFieldType.SOCIAL_MEDIA, communicationDataRow.brandProductGroupIds)"
+                                        [readOnly]="!(isUserPermittedFor(communicationDataRow.brandProductGroupIds) | async) || !(isEditable | async)"
+                                        [socialMediaChannels]="communicationDataRow.data | socialMediaChannels | async">
+              </gp-social-media-channels>
+            </div>
+          </gp-brand-product-groups-data-table>
+        </ng-scrollbar>
+      </div>
+      <ng-container marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_GENERAL_COMMUNICATION_CHANNELS_TEXT' | translate }}</span>
+      </ng-container>
+    </gp-edit-section>
+  </gp-edit-layout>
+
+  <ng-container *gpOnlyForRetail="outletId | async"
+                footer-toolbar>
+    <gp-task-footer (confirm)="save($event)"
+                    (discard)="reset()"
+                    *ngIf="isEditable | async"
+                    [discardButtonDisabled]="cancelButtonDisabled"
+                    [confirmButtonDisabled]="saveButtonDisabled"
+                    [type]="taskFilter.type">
+    </gp-task-footer>
+  </ng-container>
+
+  <ng-container *gpNotForRetail
+                footer-toolbar>
+    <gp-default-edit-actions (cancel)="reset()"
+                             (save)="save()"
+                             *ngIf="isEditable | async"
+                             [cancelButtonDisabled]="cancelButtonDisabled"
+                             [saveButtonDisabled]="saveButtonDisabled"
+                             footer-toolbar>
+    </gp-default-edit-actions>
+  </ng-container>
+
+  <ng-container overlay>
+    <gp-outlet-tree-navigation gpFxFlex
+                               gpFxFlexXsSm="auto"
+                               style="display: inline"
+                               (outletClicked) = outletNavigationClicked()>
+    </gp-outlet-tree-navigation>
+  </ng-container>
+  <gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>
+</gp-overlay-layout>

@@ -1,0 +1,160 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{ label: 'STRUCTURE' }, { label: 'GENERAL_GROUPS' }]">
+  </gp-header>
+  <gp-edit-layout title="{{ 'GENERAL_GROUPS' | translate }}"
+                  [marginalColumnDisabled]="true">
+    <gp-edit-section>
+      <gp-content-loader [isLoading]="isLoading">
+
+        <mat-form-field>
+          <mat-label>{{ 'TYPE_TO_SEARCH_WITHIN_LIST' | translate }}</mat-label>
+          <gp-icon matPrefix
+                   name="search">
+          </gp-icon>
+          <input matInput
+                 (keyup)="filterTable($event.target.value)"
+                 data-cy="general-groups-filter-input">
+        </mat-form-field>
+
+        <mat-table matSort
+                   [dataSource]="dataSource">
+
+          <ng-container matColumnDef="country">
+            <mat-header-cell *matHeaderCellDef
+                             mat-sort-header
+                             data-cy="general-groups-row-header-country">
+              {{ 'GENERAL_GROUPS_COUNTRY' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"
+                      data-cy="general-groups-row-country">
+              <span>{{ element.country }}</span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef
+                             mat-sort-header
+                             data-cy="general-groups-row-header-name">
+              {{ 'GENERAL_GROUPS_GROUP_NAME' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"
+                      data-cy="general-groups-row-name">
+              <a routerLink="./{{ element.generalGroupId }}/edit">{{element.name}}</a>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="brands">
+            <mat-header-cell *matHeaderCellDef
+                             gpFxLayoutAlign="center center"
+                             gpFxFlex="100px">
+              <span>{{ 'GENERAL_GROUPS_BRAND' | translate }}</span>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"
+                      gpFxLayout="column"
+                      gpFxLayoutAlign="start center"
+                      gpFxFlex="100px"
+                      data-cy="general-groups-row-brand">
+              <div *ngFor="let brand of brandsBy(element.generalGroupId) | async"
+                   gpFxLayoutAlign="center center"
+                   class="brand-product-group">
+                <gp-brand-icon [id]="brand.id"
+                               tooltipPosition="above">
+                </gp-brand-icon>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="productGroups">
+            <mat-header-cell *matHeaderCellDef>
+              {{ 'GENERAL_GROUPS_PRODUCT_GROUP' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"
+                      gpFxLayoutColumn
+                      gpFxLayoutAlign="start start"
+                      data-cy="general-groups-row-product-group">
+              <div *ngFor="let brand of brandsBy(element.generalGroupId) | async"
+                   gpFxLayout="row"
+                   class="brand-product-group">
+                <div *ngFor="let productGroupId of allProductGroupsIds">
+                  <gp-product-group *ngIf="rowContainsProductGroupId(element.generalGroupId, brand.id, productGroupId)"
+                                    [productGroupId]="productGroupId"
+                                    [readOnly]="!element.active"
+                                    tooltipPosition="above"
+                                    size="medium"
+                                    color="none">
+                  </gp-product-group>
+                </div>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef
+                             mat-sort-header
+                             data-cy="general-groups-row-header-status">
+              {{ 'GENERAL_GROUPS_STATUS' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"
+                      data-cy="general-groups-row-status">
+              <span>{{ element.status }}</span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="successor">
+            <mat-header-cell *matHeaderCellDef
+                             mat-sort-header
+                             data-cy="general-groups-row-header-successor">
+              {{ 'SUCCESSOR' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"
+                      data-cy="general-groups-row-successor">
+              <a *ngIf="element.successor"
+                 routerLink="./{{element.successorId}}/edit">{{ element.successor }}
+              </a>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let element; columns: displayedColumns;"
+                   [class.row-disabled]="!element.active"
+                   data-cy="general-groups-row">
+          </mat-row>
+        </mat-table>
+
+        <div loader
+             xmlns:svg='http://www.w3.org/2000/svg'>
+          <content-loader preserveAspectRatio="none">
+            <svg:rect x="0"
+                      y="0"
+                      width="400"
+                      height="20" />
+            <svg:rect x="0"
+                      y="30"
+                      width="400"
+                      height="40" />
+            <svg:rect x="0"
+                      y="80"
+                      width="400"
+                      height="40" />
+          </content-loader>
+        </div>
+      </gp-content-loader>
+    </gp-edit-section>
+  </gp-edit-layout>
+
+  <gp-default-edit-actions footer-toolbar
+                           gpFxFill
+                           *ngIf="isAuthorized | async"
+                           [saveButtonDisabled]="true"
+                           [cancelButtonDisabled]="true">
+    <button mat-flat-button
+            class="gp-icon-flat-button"
+            routerLink="./add"
+            data-cy="add-general-group-button">
+      <gp-icon gpIconButtonWithText
+               name="plus"></gp-icon>
+      {{ 'GENERAL_GROUPS_ADD' | translate }}
+    </button>
+  </gp-default-edit-actions>
+</gp-default-layout>

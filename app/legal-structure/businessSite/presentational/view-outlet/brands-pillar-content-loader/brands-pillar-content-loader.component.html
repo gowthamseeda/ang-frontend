@@ -1,0 +1,25 @@
+<ng-container *ngIf='!isLoading'>
+  <ng-content select="[loader-content]"></ng-content>
+</ng-container>
+<ng-container *ngIf='isLoading'>
+  <div loader
+       class="brands-loader"
+       xmlns:svg='http://www.w3.org/2000/svg'>
+    <content-loader primaryOpacity="0.3"
+                    secondaryOpacity="0.7"
+                    height="890">
+      <svg:rect x="35"
+                y="0"
+                width="330"
+                height="270" />
+      <svg:rect x="35"
+                y="310"
+                width="330"
+                height="270" />
+      <svg:rect x="35"
+                y="620"
+                width="330"
+                height="270" />
+    </content-loader>
+  </div>
+</ng-container>

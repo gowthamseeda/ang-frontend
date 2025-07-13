@@ -1,0 +1,11 @@
+<mat-chip-set>
+  <ng-container *ngFor="let label of labels">
+    <mat-chip>
+      {{ label | translate }}
+    </mat-chip>
+  </ng-container>
+  <mat-chip class="inactive"
+            *ngIf="inactive">
+    {{ 'INACTIVE' | translate }}
+  </mat-chip>
+</mat-chip-set>

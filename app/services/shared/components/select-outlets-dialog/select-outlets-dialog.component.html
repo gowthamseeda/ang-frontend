@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>{{ 'COPY_TO_COMPANY' | translate | titlecase }}</h1>
+
+<mat-dialog-content>
+  <div gpFxLayoutColumn class="select-all-container">
+    Select All
+    <mat-checkbox [checked]="selectAll" (change)="onSelectAllChange()">
+    </mat-checkbox>
+  </div>
+  <gp-outlet-option *ngFor="let outlet of outlets" [outlet]="outlet" [selected]="selectedOutlets.includes(outlet.id)"
+                    (outletSelected)="onSelectOutlet($event)"></gp-outlet-option>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <gp-default-edit-actions saveButtonTranslationKey="OK" (save)="onSave()"
+                           (cancel)="onCancel()">
+  </gp-default-edit-actions>
+</mat-dialog-actions>

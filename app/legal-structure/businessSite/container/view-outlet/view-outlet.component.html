@@ -1,0 +1,138 @@
+<gp-overlay-layout [toolTipText]="'COMPANY_NAVIGATION_TREE'">
+  <gp-outlet-header header-toolbar>
+  </gp-outlet-header>
+
+  <div error-notification>
+    <gp-outlet-error-notification [businessSiteId]="outletId"
+                                  [registeredOfficeId]="(outlet | async)?.companysRegisteredOfficeId">
+    </gp-outlet-error-notification>
+  </div>
+
+  <ng-container *ngIf="outlet | async as outlet">
+    <div>
+      <gp-tile-card [isBanner]="true"
+                    (cardClick)="tilesMenuItemClicked(headerMenu[0])"
+                    [assetForBackgroundImage]="'header-tile-background-gradient.jpg'">
+        <gp-outlet-id-and-status-content-loader tile-title
+                                                [isLoading]="isOutletLoading | async">
+          <gp-outlet-id-and-status outlet-id-status-content
+                                   [outletId]="outlet?.id"
+                                   [active]="outlet?.active">
+          </gp-outlet-id-and-status>
+        </gp-outlet-id-and-status-content-loader>
+        <gp-outlet-menu tile-menu
+                        [items]="headerMenu"
+                        [brightProfile]="true"
+                        (itemClick)="tilesMenuItemClicked($event)">
+        </gp-outlet-menu>
+        <gp-header-tile-content tile-content
+                                class="content-container">
+          <gp-business-names-content-loader name
+                                            [isLoading]="isOutletLoading | async">
+            <gp-business-or-legal-names business-names-content
+                                        [businessNames]="businessNames | async"
+                                        [legalName]="outlet?.legalName">
+            </gp-business-or-legal-names>
+          </gp-business-names-content-loader>
+          <gp-address-lines-content-loader address
+                                           [isLoading]="isOutletLoading | async">
+            <gp-address-lines address-lines-content
+                              [address]="address | async"></gp-address-lines>
+          </gp-address-lines-content-loader>
+          <gp-chips-content-loader tags
+                                   [isLoading]="isOutletLoading | async">
+            <gp-chips chips-content
+                      [tags]="outletChips"
+                      data-cy="view-outlet-outlet-chips"></gp-chips>
+            <gp-chips *gpOnlyOwnCountry="outlet.countryId; permissions: ['traits.distributionlevels.show']"
+                      chips-content
+                      [tags]="distributionLevelChips"
+                      data-cy="view-outlet-distributionLevel-chips"></gp-chips>
+          </gp-chips-content-loader>
+          <img id="factoryimg"
+               image
+               src="assets/tiles/header-tile-background-image.svg" />
+          <gp-brands-pillar-content-loader pillar
+                                           [isLoading]="isOutletLoading | async">
+            <gp-brands-pillar loader-content
+                              [brands]="brands | async"></gp-brands-pillar>
+          </gp-brands-pillar-content-loader>
+        </gp-header-tile-content>
+      </gp-tile-card>
+
+      <div tasks-tile>
+        <gp-tasks-tile *ngIf="hasUserTasksUpdatePermission && tasksFeatureToggleFlag"
+                       [businessSiteId]="outletId">
+        </gp-tasks-tile>
+      </div>
+
+      <div gpFxLayout="row wrap"
+           gpFxLayoutGap="15px">
+        <gp-keys-tile class="tile"
+                      [outletId]="outletId"
+                      [countryId]="countryId"
+                      [authorized]="hasUserUpdatePermission"></gp-keys-tile>
+
+        <gp-tile-card (cardClick)="tilesMenuItemClicked(gpsMenu[0])">
+          <gp-image-and-title tile-title
+                              [assetForIconImage]="'gps'"
+                              [titleText]="'TILE_GPS_HEADER' | translate">
+          </gp-image-and-title>
+          <gp-outlet-menu tile-menu
+                          [items]="gpsMenu"
+                          (itemClick)="tilesMenuItemClicked($event)">
+          </gp-outlet-menu>
+          <gp-gps-tile-content tile-content
+                               [longitude]="outlet?.gps?.longitude"
+                               [latitude]="outlet?.gps?.latitude">
+          </gp-gps-tile-content>
+        </gp-tile-card>
+
+        <gp-tile-card (cardClick)="tilesMenuItemClicked(poBoxMenu[0])">
+          <gp-image-and-title tile-title
+                              [assetForIconImage]="'po-box'"
+                              [titleText]="'TILE_PO_BOX_HEADER' | translate">
+          </gp-image-and-title>
+          <gp-outlet-menu tile-menu
+                          [items]="poBoxMenu"
+                          (itemClick)="tilesMenuItemClicked($event)">
+          </gp-outlet-menu>
+          <gp-po-box-tile-content tile-content>
+            <ng-container *ngIf="!outlet?.poBox?.number">
+              <gp-no-data-info [noDataInfo]="'TILE_PO_BOX_NO_DATA' | translate"
+                               [noDataInfoPrefix]="'TILE_PO_BOX_NO_DATA_PREFIX' | translate"
+                               [noDataInfoLink]="'TILE_PO_BOX_NO_DATA_LINK' | translate"
+                               [noDataInfoPostfix]="'TILE_PO_BOX_NO_DATA_POSTFIX' | translate">
+              </gp-no-data-info>
+            </ng-container>
+            <ng-container *ngIf="outlet?.poBox?.number">
+              <gp-property-value-cell [property]="'TILE_PO_BOX_NUMBER' | translate"
+                                      [value]="outlet.poBox?.number"></gp-property-value-cell>
+              <gp-property-value-cell [property]="'TILE_PO_BOX_ZIPCODE' | translate"
+                                      [value]="outlet.poBox?.zipCode"></gp-property-value-cell>
+              <gp-property-value-cell [property]="'TILE_PO_BOX_CITY' | translate"
+                                      [value]="outlet.poBox?.city"></gp-property-value-cell>
+            </ng-container>
+          </gp-po-box-tile-content>
+        </gp-tile-card>
+
+        <ng-container
+                      *gpOnlyOwnCountry="outlet?.countryId; permissions: ['traits.assignedbrandlabel.read']">
+          <gp-labels-tile class="tile"
+                          [outletId]="outletId"
+                          *ngIf="hasAssignableLabels"
+                          [authorized]="hasUserUpdatePermission"></gp-labels-tile>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container overlay>
+    <gp-outlet-tree-navigation gpFxFlex
+                               gpFxFlexXsSm="auto"
+                               style="display: inline"
+                               [toggleAffiliate]="provideToggleAffiliate"
+                               (toggleAffiliateRequested)="toggleAffiliate($event)">
+    </gp-outlet-tree-navigation>
+  </ng-container>
+</gp-overlay-layout>

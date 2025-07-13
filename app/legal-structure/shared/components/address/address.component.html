@@ -1,0 +1,60 @@
+<div [formGroup]="addressForm">
+  <div gpFxLayout="row"
+       gpFxLayoutGap="30px">
+    <gp-street gpFxFlex="70"
+               [parentForm]="addressForm"
+               [street]="address?.street"
+               [required]="addressStreetDataRequired"
+               (streetChange)="formGroupChange()"
+               [dataNotificationChangeFields]="dataNotificationChangeFields"
+               [isRetailOutlet]="isRetailOutlet"
+               [addressType]="addressType"></gp-street>
+    <gp-street-number gpFxFlex
+                      [parentForm]="addressForm"
+                      [streetNumber]="address?.streetNumber"
+                      (streetNumberChange)="formGroupChange()"
+                      [dataNotificationChangeFields]="dataNotificationChangeFields"
+                      [isRetailOutlet]="isRetailOutlet"
+                      [addressType]="addressType"
+    ></gp-street-number>
+  </div>
+
+  <div gpFxLayout="row">
+    <gp-address-addition gpFxFlex
+                         [parentForm]="addressForm"
+                         [addressAddition]="address?.addressAddition"
+                         [dataNotificationChangeFields]="dataNotificationChangeFields"
+                         [isRetailOutlet]="isRetailOutlet"
+                         [addressType]="addressType"
+    ></gp-address-addition>
+  </div>
+
+  <div gpFxLayout="row"
+       gpFxLayoutGap="30px">
+    <gp-zip-code gpFxFlex="30"
+                 [parentForm]="addressForm"
+                 [zipCode]="address?.zipCode"
+                 [readonly]="false"
+                 (zipCodeChange)="formGroupChange()"
+                 [dataNotificationChangeFields]="dataNotificationChangeFields"
+                 [isRetailOutlet]="isRetailOutlet"
+                 [addressType]="addressType"></gp-zip-code>
+    <gp-city gpFxFlex
+             [parentForm]="addressForm"
+             [city]="address?.city"
+             [required]="addressCityDataRequired"
+             (cityChange)="formGroupChange()"
+             [dataNotificationChangeFields]="dataNotificationChangeFields"
+             [isRetailOutlet]="isRetailOutlet"
+             [addressType]="addressType"></gp-city>
+  </div>
+
+  <div gpFxLayout="row">
+    <gp-district gpFxFlex
+                 [parentForm]="addressForm"
+                 [district]="address?.district"
+                 [dataNotificationChangeFields]="dataNotificationChangeFields"
+                 [isRetailOutlet]="isRetailOutlet"
+                 [addressType]="addressType"></gp-district>
+  </div>
+</div>

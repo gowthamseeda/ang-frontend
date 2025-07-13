@@ -1,0 +1,5 @@
+<gp-icon *ngIf = "!(isAllVerificationTasksAvailable | async)" name="hint-help" size="small"
+         color="darkgray"
+         hover="true"
+         actionable="shouldShowDialog" (click)="onTriggerVerification()"
+    class="action-icon trigger-verification-button"></gp-icon>

@@ -1,0 +1,30 @@
+<gp-message
+  *ngIf="showApprovedNotification"
+  [showAction]=true
+  (actionClick)="onApprovedClick()"
+  [actionText]="approvedActionText">
+  {{ 'OPENING_HOURS_DATA_APPROVED_MESSAGE' | translate }}
+</gp-message>
+<gp-message
+  *ngIf="showDirectChangeNotification"
+  [showAction]=true
+  (actionClick)="onDirectChangedClick()"
+  [actionText]="directChangeActionText">
+  {{ 'OPENING_HOURS_DATA_CHANGE_MESSAGE' | translate }}
+</gp-message>
+<gp-message
+  *ngIf="showDeclineNotification"
+  [showAction]=true
+  (actionClick)="onDeclinedClick()"
+  [actionText]="declinedActionText"
+  [showAction2]=true
+  (actionClick2)="taskCommentPopUp()">
+  {{ 'OPENING_HOURS_DATA_DECLINE_MESSAGE' | translate }}
+</gp-message>
+<gp-message
+  *ngIf="dataChangeTaskAvailable"
+  [showAction]=true
+  (actionClick)="onDataChangeTaskClick()"
+  [actionText]="dataChangeActionText">
+  {{ 'OPENING_HOURS_DATA_CHANGE_TASK_AVAILABLE' | translate }}
+</gp-message>

@@ -1,0 +1,82 @@
+<div gpFxLayout="row"
+     gpFxLayoutAlign="start center"
+     gpFxLayoutGap="4px"
+     class="aggregate-data-field">
+  <h1>{{ title | translate }}</h1>
+  <gp-data-field-verification-button
+    *ngIf="isMTR && verificationTaskStatus === VerificationTaskFormStatus.NOT_PRESENT
+    && isRO && isOutletRetailer && !taskForDisplay.shouldDisplayFutureValue"
+    [fields]="[fieldData]" [shouldShowDialog]="true"></gp-data-field-verification-button>
+</div>
+<mat-hint *ngIf="taskForDisplay.showDirectChangeNotification"
+          class="data-changed word-size">
+  {{ 'DATA_CHANGED_NOTIFICATIONS' | translate }}
+</mat-hint>
+<mat-hint *ngIf="taskForDisplay.showVerificationNotification"
+          class="verify-data word-size">
+  {{ 'VERIFY_FIELD_MESSAGE' | translate }}
+</mat-hint>
+<mat-hint *ngIf="verificationTaskStatus === VerificationTaskFormStatus.PENDING && isUserAuthorizedForVerificationTask"
+          class="verify-data word-size">
+  {{ 'WAITING_FOR_REACTION' | translate }}
+</mat-hint>
+<mat-hint *ngIf="taskForDisplay.showApprovedNotification"
+          class="data-changed-approved">
+  {{ 'DATA_CHANGED_APPROVED' | translate }}
+</mat-hint>
+<mat-hint *ngIf="taskForDisplay.showDeclinedNotification"
+          class="data-changed-declined">
+  <gp-icon name="hint-info"
+           size="small"
+           color="red"
+           (click)="taskCommentPopup()"></gp-icon>
+  {{ 'DATA_CHANGED_DECLINED' | translate }}
+</mat-hint>
+<gp-icon matSuffix
+         *ngIf="taskForDisplay.showVerificationNotification"
+         name="check"
+         color="green"
+         size="small"
+         (click)="onRemainClick('LEGAL_FOOTER')"></gp-icon>
+<div class="hint-allowed"
+     *ngIf="!readonly">
+  {{ 'LEGAL_FOOTER_HINT_ALLOWED' | translate }}
+</div>
+<div class="footer-text__container">
+  <div gpFxLayoutColumn>
+    <span *ngIf="taskForDisplay.shouldDisplayFutureValue">{{ 'ACTUAL'|translate }}:&nbsp;</span>
+    <gp-text-area legal-footer-text
+                  [form]="viewState.legalInformationControl"
+                  [minHeight]="228"
+                  [maxCharLength]="viewState.legalFooterMaxLength"
+                  [readonly]="companyDataReadOnly"
+                  [placeHolder]="companyDataReadOnly ? '' : 'LEGAL_FOOTER_PLACEHOLDER' | translate"
+                  [controlName]="'legalFooter'"
+                  [revertReadonly]="taskForDisplay.shouldDisplayFutureValue"
+                  [verificationTaskStatus]="verificationTasksStatusMap['LEGAL_FOOTER']"
+                  [isBSR]="isBSR"
+                  [isMTR]="isMTR"
+                  (changed)="legalInfoOnChanged()"
+                  [isForRetailEnabled]="isForRetailEnabled"
+                  [taskForDisplay]="taskForDisplay"
+    >
+    </gp-text-area>
+    <div *ngIf="taskForDisplay.shouldDisplayFutureValue"
+         gpFxLayoutRow
+         gpFxLayoutAlign="space-between center"
+         [ngClass]="taskForDisplay.isChanged?'changes-future-value':'no-changes-future-value'">
+      <ng-container *ngIf="taskForDisplay.isChanged; else noValueChange">
+        <div>{{ 'FUTURE'|translate }}:<br />
+          <div class="legal-footer-future-value"
+               [innerText]="taskForDisplay.futureValue"></div>
+        </div>
+      </ng-container>
+      <gp-inplace-task-action-button *ngIf="isMTR"
+                                     [task]="taskForDisplay"></gp-inplace-task-action-button>
+    </div>
+  </div>
+</div>
+
+<ng-template #noValueChange>
+  {{ taskForDisplay.messageForUnchangedValue|translate }}
+</ng-template>

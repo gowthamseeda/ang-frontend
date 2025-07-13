@@ -1,0 +1,111 @@
+
+
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[
+             { label: 'SCHEDULER_SCHEDULER' , path: '/scheduler' },
+             { label: 'SCHEDULER_XML_SCHEDULER' },
+            ]">
+  </gp-header>
+  <gp-edit-layout title="{{ 'EDIT_XML_SCHEDULER_JOB' | translate }}"
+                  marginalColumnDisabled="true">
+
+    <gp-edit-section>
+      <div *ngIf="isJobFound; then thenShowInfo else thenShowNoFound"></div>
+    </gp-edit-section>
+
+  </gp-edit-layout>
+
+  <gp-default-edit-actions footer-toolbar
+                           [saveButtonDisabled]="jobFormGroup.invalid || jobFormGroup.pristine"
+                           [cancelButtonDisabled]="jobFormGroup.pristine"
+                           (save)="save()"
+                           (cancel)="cancel()">
+  </gp-default-edit-actions>
+</gp-default-layout>
+
+<ng-template #thenShowNoFound>
+  <gp-message type="info">
+    {{ 'SCHEDULER_NO_JOB_FOUND' | translate }}
+  </gp-message>
+</ng-template>
+
+<ng-template #thenShowInfo>
+  <gp-job-id-read-only [jobId]="jobId"></gp-job-id-read-only>
+
+  <h2>{{ 'SCHEDULE' | translate }}</h2>
+  <div [formGroup]="jobFormGroup"
+       gpFxLayout="column"
+       gpFxLayoutGap="15px">
+    <div gpFxLayout="row"
+         gpFxLayoutGap="30px"
+         gpFxLayoutAlign="center center">
+      <mat-form-field>
+        <mat-label>{{ 'SECOND' | translate }}</mat-label>
+        <input matInput
+               formControlName="second"
+               type="text"
+               required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'MINUTE' | translate }}</mat-label>
+        <input matInput
+               formControlName="minute"
+               type="text"
+               required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'HOUR' | translate }}</mat-label>
+        <input matInput
+               formControlName="hour"
+               type="text"
+               required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'DAY_OF_MONTH' | translate }}</mat-label>
+        <input matInput
+               formControlName="dayOfMonth"
+               type="text"
+               required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'MONTH' | translate }}</mat-label>
+        <input matInput
+               formControlName="month"
+               type="text"
+               required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'DAY_OF_WEEK' | translate }}</mat-label>
+        <input matInput
+               formControlName="dayOfWeek"
+               type="text"
+               required />
+      </mat-form-field>
+    </div>
+    <div gpFxLayout="row">
+      <mat-slide-toggle formControlName="isActive" color="primary">
+        {{ 'ENABLED' | translate }}
+      </mat-slide-toggle>
+    </div>
+
+    <gp-job-status [type]=schedulerType.XML
+                   [job]="job">
+    </gp-job-status>
+
+    <div gpFxLayout="row"
+         gpFxLayoutGap="5px">
+      <div *ngIf="job?.isRunning; else triggerBtn">
+        <button mat-button
+                type="button"
+                (click)="abort(job?.schedulerId)">{{ 'ABORT' | translate }}</button>
+      </div>
+      <ng-template #triggerBtn>
+        <button mat-button
+                type="button"
+                [disabled]="isDisabledEditAction() |async"
+                (click)="trigger(job?.schedulerId)">{{ 'RUN_NOW' | translate }}</button>
+      </ng-template>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>{{ 'SERVICE_FILTER_TITLE' | translate }}</h1>
+
+<mat-dialog-content>
+  <form [formGroup]="serviceFilterFormGroup">
+    <div gpFxLayout="column">
+
+      <h5>{{ 'PROVIDED_SERVICES' | translate | uppercase }}</h5>
+      <div gpFxFlex>
+        <mat-checkbox formControlName="isOfferedService"
+                      gpFxFlex>
+          {{ 'SERVICE_OFFERED_SERVICES' | translate }}</mat-checkbox>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <gp-default-edit-actions saveButtonTranslationKey="APPLY"
+                           (save)="search()"
+                           cancelButtonTranslationKey="SERVICE_FILTER_RESET"
+                           (cancel)="reset()">
+  </gp-default-edit-actions>
+</mat-dialog-actions>

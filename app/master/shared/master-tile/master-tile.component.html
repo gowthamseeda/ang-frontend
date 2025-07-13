@@ -1,0 +1,46 @@
+<mat-card class="gp-tile-card">
+  <div gpFxLayoutRow gpFxLayoutAlign="space-between center">
+    <div gpFxLayoutRow gpFxLayoutAlign="center" class="title-container">
+      <gp-header-image *ngIf="!!iconLink" [name]="iconLink" [large]="true"></gp-header-image>
+      <mat-card-title>{{ headerText }}</mat-card-title>
+    </div>
+    <div *ngIf="displayBurgerMenu">
+      <button mat-icon-button [matMenuTriggerFor]="actions">
+        <gp-icon name="more" size="small"></gp-icon>
+      </button>
+      <mat-menu #actions="matMenu">
+        <ng-container *ngFor="let detailsLink of detailsLinks">
+          <button mat-menu-item [routerLink]="detailsLink.link">
+            <gp-icon name="arrow-forward" size="small"></gp-icon>
+            {{ detailsLink.text | translate }}
+          </button>
+        </ng-container>
+      </mat-menu>
+    </div>
+  </div>
+
+  <div gpFxLayoutRow gpFxLayoutAlign="space-between" class="search-container">
+    <mat-form-field class="no-bottom-space">
+      <mat-label>{{searchPlaceHolder}}</mat-label>
+      <input matInput (keyup)="search($event)" />
+    </mat-form-field>
+    <button mat-icon-button>
+      <gp-icon name="search"></gp-icon>
+    </button>
+  </div>
+
+  <mat-card-content>
+    <ng-scrollbar class="ng-scroll-content">
+      <ng-content></ng-content>
+    </ng-scrollbar>
+  </mat-card-content>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-actions>
+    <button [routerLink]="componentLink" mat-flat-button class="gp-icon-flat-button">
+      <gp-icon gpIconButtonWithText name="plus"></gp-icon>
+      {{ buttonText }}
+    </button>
+  </mat-card-actions>
+</mat-card>

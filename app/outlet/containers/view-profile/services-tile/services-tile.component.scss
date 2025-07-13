@@ -1,0 +1,29 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.top {
+  height: 239px;
+}
+
+.separator-line {
+  border: mat.get-color-from-palette($accent, 400) 1px solid;
+  height: 1px;
+  margin: 24px 20px 24px 20px;
+}
+
+.main {
+  background-color: mat.get-color-from-palette($primary, 50);
+
+  min-width: 775px;
+  min-height: 473px;
+
+  .bottom {
+    height: 220px;
+    margin: 0 25px 0 25px;
+    justify-content: space-between;
+    .lastColumn {
+      padding-right: 40px;
+      margin: 24px 0 16px 0;
+    }
+  }
+}

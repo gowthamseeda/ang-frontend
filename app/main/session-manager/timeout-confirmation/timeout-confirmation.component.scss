@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+h2 {
+  text-align: center;
+  padding: 10px;
+  background-color: mat.get-color-from-palette($primary, 500);
+  color: white !important;
+}
+
+span {
+  color: mat.get-color-from-palette($primary, 500) !important;
+}
+
+p {
+  text-align: center;
+}
+
+div {
+  justify-content: center;
+  display: flex;
+  padding-top: 30px;
+}

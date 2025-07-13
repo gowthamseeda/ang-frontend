@@ -1,0 +1,68 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+@import '../../../shared/styles/table';
+
+@include structures-table($gssnplus-theme);
+
+a {
+  text-decoration: none;
+}
+
+.row-disabled {
+  .mat-mdc-header-cell, .mat-mdc-cell,
+  a {
+    color: mat.get-color-from-palette($accent, 600);
+  }
+
+  ::ng-deep {
+    .brand-code {
+      background-color: mat.get-color-from-palette($accent, 400);
+    }
+
+    gp-brand-icon img {
+      filter: grayscale(100%) opacity(50%);
+    }
+  }
+
+  gp-icon ::ng-deep svg {
+    fill: mat.get-color-from-palette($accent, 600);
+  }
+}
+
+.non-ro-member {
+  .mat-mdc-cell {
+    &:first-child {
+      padding-right: 60px;
+    }
+  }
+}
+
+.filter {
+  background-color: mat.get-color-from-palette($accent, 50);
+  min-height: 60px;
+  padding: 10px 0;
+
+  .mat-mdc-header-cell {
+    padding: 0;
+
+    .mat-mdc-form-field {
+      padding-right: 15px;
+    }
+  }
+}
+
+.header-row-hide {
+  display: none !important;
+}
+
+.read-only {
+  .mat-mdc-header-cell:last-child,
+  .mat-mdc-cell:last-child {
+    max-width: none;
+  }
+}
+
+.members-table{
+  flex: 0 1 1000px !important; 
+  max-width: 1000px !important;
+}

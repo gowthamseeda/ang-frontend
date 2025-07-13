@@ -1,0 +1,68 @@
+<div class="chips-selection">
+  <ng-container>
+    <mat-form-field [floatLabel]="floatLabel">
+      <mat-label>{{placeholder}}</mat-label>
+      <mat-select [formControl]="control" [errorStateMatcher]="errorStateMatcher"
+                  [required]="required" (selectionChange)="selectionChange()" multiple>
+        <mat-select-trigger>
+          <mat-chip-set>
+            <mat-chip *ngFor="let selectedItem of selectedItems">
+              <span>{{ selectedItem?.name | translate }}</span>
+              <gp-icon (click)="removeItem(selectedItem?.id, $event)"
+                       name="close"
+                       size="small"
+                       matChipRemove></gp-icon>
+            </mat-chip>
+          </mat-chip-set>
+        </mat-select-trigger>
+
+        <div *ngIf="itemEnum; else listTemplate">
+          <mat-option *ngFor="let enum of itemEnum | keyvalue: valueOrder" [value]="enum['key']">
+            {{ enum['value'] | translate }}
+          </mat-option>
+        </div>
+
+        <ng-template #listTemplate>
+          <mat-option *ngFor="let item of itemList" [value]="item.id">
+            <div *ngIf="!isLanguage && !isBrand && !isProductGroup">
+              <gp-icon *ngIf="showIconInDropdown">
+                {{ item.id.toLowerCase() }}
+              </gp-icon>
+              {{ item.name | translate }}
+            </div>
+
+            <div *ngIf="!isLanguage && isBrand && !isProductGroup" gpFxLayout="column">
+              <div gpFxLayout="row">
+                <div gpFxFlex="30">
+                  <gp-brand-icon [id]="item.id"></gp-brand-icon>
+                </div>
+                <div gpFxFlex>
+                  {{ item.name | translate }}
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="!isLanguage && !isBrand && isProductGroup" gpFxLayout="column">
+              <div gpFxLayout="row">
+                <div gpFxFlex="30">
+                  <gp-icon [name]="'pg-' + item.id.toLocaleLowerCase()" size="medium">
+                  </gp-icon>
+                </div>
+                <div gpFxFlex>
+                  {{ item.id | translate }}
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="isLanguage && !isBrand  && !isProductGroup">
+              {{ item.name }} [{{ item.id }}]
+            </div>
+          </mat-option>
+        </ng-template>
+      </mat-select>
+      <mat-error *ngIf="control.hasError('required')">
+        {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+      </mat-error>
+    </mat-form-field>
+  </ng-container>
+</div>

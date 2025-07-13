@@ -1,0 +1,278 @@
+<ng-container *ngTemplateOutlet="recursiveFields; context:{ fields: dataClusterFields?.fields }">
+</ng-container>
+
+<ng-template #recursiveFields let-parentFieldName="parentFieldName" let-fields="fields"
+             let-nestedComparingSnapshot="nestedComparingSnapshot" let-nestedSnapshot="nestedSnapshot">
+  <div *ngFor="let field of fields;">
+    <ng-container *ngIf="!field.children; else loadChild">
+      <ng-container *ngIf="isUserCountryPermitted || !field.isExtendedData">
+        <ng-container
+                      *ngIf="!showChangeOnlyToggleInput || (showChangeOnlyToggleInput && isChanged(field.fieldName, parentFieldName)); else showEmpty">
+          <ng-container *ngIf="shouldDisplayFieldName(field.fieldName,
+            [hideAdditionalTranslationsToggleInput]); else
+           showEmpty">
+            <span [class.changed]="isChanged(field.fieldName, parentFieldName)">
+              {{ field.fieldLabel | translate }}
+            </span>
+            <ng-container *ngIf="!hideEditorsToggleInput && !skipEditorToDisplay(field.fieldName) ; else noEditors">
+              <span *ngxPermissionsOnly="['app.historization.editor.show']">
+                {{ (isChanged(field.fieldName, parentFieldName) && isValidMoveOutlet(field.fieldName, getChangeEditor(field.fieldName, parentFieldName))) ? '['
+                                                                                              +
+                                                                                              'Move outlet, ' +
+                                                                                              moveOutletInitiator + ']' : ''}}
+                {{ (isChanged(field.fieldName, parentFieldName) && !isValidMoveOutlet(field.fieldName, getChangeEditor(field.fieldName, parentFieldName))) ? '['
+                + getChangeEditor(field.fieldName, parentFieldName) + ']' : ''}}
+              </span>:
+            </ng-container>
+          </ng-container>
+          <ng-container [ngSwitch]="field.fieldName">
+            <ng-container *ngSwitchCase="'predecessors'">
+              <ng-container *ngIf="displayChangesToggleInput; else noShowPredecessor">
+                <ng-container *ngIf="isChanged(field.fieldName, parentFieldName); else noChangePredecessor">
+                  <span gpFxLayout="row" gpFxLayoutAlign="center center" gpFxLayoutGap="15px"
+                        [class.changed]="isChanged(field.fieldName, parentFieldName)">
+                    <gp-snapshot-predecessors *ngIf="isChanged(field.fieldName, parentFieldName)"
+                                              [predecessors]="getComparingFieldData(field.fieldName, nestedComparingSnapshot)"
+                                              [isChanged]="isChanged(field.fieldName, parentFieldName)">
+                    </gp-snapshot-predecessors>
+                    <span *ngIf="isChanged(field.fieldName, parentFieldName)">=></span>
+                    <gp-snapshot-predecessors [predecessors]="getFieldData(field.fieldName, nestedSnapshot)"
+                                              [isChanged]="isChanged(field.fieldName, parentFieldName)">
+                    </gp-snapshot-predecessors>
+                  </span>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'successors'">
+              <ng-container *ngIf="displayChangesToggleInput; else noShowPredecessor">
+                <ng-container *ngIf="isChanged(field.fieldName, parentFieldName); else noChangePredecessor">
+                  <span gpFxLayout="row" gpFxLayoutAlign="center center" gpFxLayoutGap="15px"
+                        [class.changed]="isChanged(field.fieldName, parentFieldName)">
+                    <gp-snapshot-predecessors *ngIf="isChanged(field.fieldName, parentFieldName)"
+                                              [predecessors]="getComparingFieldData(field.fieldName, nestedComparingSnapshot)"
+                                              [isChanged]="isChanged(field.fieldName, parentFieldName)">
+                    </gp-snapshot-predecessors>
+                    <span *ngIf="isChanged(field.fieldName, parentFieldName)">=></span>
+                    <gp-snapshot-predecessors [predecessors]="getFieldData(field.fieldName, nestedSnapshot)"
+                                              [isChanged]="isChanged(field.fieldName, parentFieldName)">
+                    </gp-snapshot-predecessors>
+                  </span>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'businessNames'">
+              <gp-snapshot-business-names [businessNames]="getFieldData(field.fieldName, nestedSnapshot)"
+                                          [isChanged]="isChanged(field.fieldName, parentFieldName)">
+              </gp-snapshot-business-names>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              <ng-container *ngIf="displayChangesToggleInput; else noShowDefault">
+                <span [class.changed]="isChanged(field.fieldName, parentFieldName)">
+                  {{ isChanged(field.fieldName, parentFieldName) ? '[' + (getComparingFieldData(field.fieldName,
+                  nestedComparingSnapshot)| emptyValuePipe) + '] =>' : '' }}
+                  {{ isChanged(field.fieldName, parentFieldName) ? '[' : '' }}{{ getFieldData(field.fieldName,
+                  nestedSnapshot) | emptyValuePipe }}{{ isChanged(field.fieldName, parentFieldName) ? ']' : '' }}
+                </span>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'legalFooterTranslation'">
+              <gp-snapshot-legal-footer-translations [legalFooterTranslations]="getFieldData(field.fieldName, nestedSnapshot)"
+                                                     [isChanged]="isChanged(field.fieldName, parentFieldName)">
+              </gp-snapshot-legal-footer-translations>
+            </ng-container>
+            <ng-container *ngSwitchCase="'additionalTranslations'">
+              <gp-snapshot-additional-translations *ngIf="!hideAdditionalTranslationsToggleInput; else showEmpty"
+                                                   [currentAdditionalTranslations]="getFieldData(field.fieldName, nestedSnapshot)"
+                                                   [comparingAdditionalTranslations]="getComparingFieldData(field.fieldName, nestedComparingSnapshot)"
+                                                   [hideEditorsToggleInput]="hideEditorsToggleInput" [changes]="changes"
+                                                   [displayChangesToggleInput]="displayChangesToggleInput"
+                                                   [showChangeOnlyToggleInput]="showChangeOnlyToggleInput"
+                                                   [moveOutletInitiator]="moveOutletInitiator"
+                                                   [isMoveOutlet]="isMoveOutlet">
+              </gp-snapshot-additional-translations>
+            </ng-container>
+            <ng-container *ngSwitchCase="'offeredServices'">
+              <gp-snapshot-offered-services [selectedDate]="selectedDate"
+                                            [comparingOfferedServices]="getComparingFieldData(field.fieldName, nestedComparingSnapshot)"
+                                            [currentOfferedServices]="getFieldData(field.fieldName, nestedSnapshot)"
+                                            [changes]="changes" [displayChangesToggleInput]="displayChangesToggleInput"
+                                            [showChangeOnlyToggleInput]="showChangeOnlyToggleInput"
+                                            [hideEditorsToggleInput]="hideEditorsToggleInput"
+                                            [hideExtraInformationToggleInput]="hideExtraInformationToggleInput"
+                                            [moveOutletInitiator]="moveOutletInitiator"
+                                            [isMoveOutlet]="isMoveOutlet">
+              </gp-snapshot-offered-services>
+            </ng-container>
+            <ng-container *ngSwitchCase="'brandCodes'">
+              <gp-snapshot-assigned-keys-brand-codes [selectedDate]="selectedDate"
+                                                     [comparingBrandCodes]="getComparingFieldData(field.fieldName, nestedComparingSnapshot)"
+                                                     [currentBrandCodes]="getFieldData(field.fieldName, nestedSnapshot)"
+                                                     [changes]="changes"
+                                                     [displayChangesToggleInput]="displayChangesToggleInput"
+                                                     [showChangeOnlyToggleInput]="showChangeOnlyToggleInput">
+              </gp-snapshot-assigned-keys-brand-codes>
+            </ng-container>
+            <ng-container *ngSwitchCase="'externalKeys'">
+              <gp-snapshot-assigned-keys-external-keys [selectedDate]="selectedDate"
+                                                       [comparingExternalKeys]="getComparingFieldData(field.fieldName, nestedComparingSnapshot)"
+                                                       [currentExternalKeys]="getFieldData(field.fieldName, nestedSnapshot)"
+                                                       [changes]="changes"
+                                                       [displayChangesToggleInput]="displayChangesToggleInput"
+                                                       [showChangeOnlyToggleInput]="showChangeOnlyToggleInput">
+              </gp-snapshot-assigned-keys-external-keys>
+            </ng-container>
+            <ng-container *ngSwitchCase="'communicationData'">
+              <gp-snapshot-general-communications [comparingGeneralCommunications]='getComparingFieldData(field.fieldName,nestedComparingSnapshot)'
+                                                  [currentGeneralCommunications]='getFieldData(field.fieldName, nestedSnapshot)'
+                                                  [changes]="changes"
+                                                  [displayChangesToggleInput]="displayChangesToggleInput"
+                                                  [showChangeOnlyToggleInput]="showChangeOnlyToggleInput"
+                                                  [hideEditorsToggleInput]="hideEditorsToggleInput">
+              </gp-snapshot-general-communications>
+            </ng-container>
+            <ng-container *ngSwitchCase="'brandLabels'">
+              <gp-snapshot-assigned-labels [selectedDate]="selectedDate"
+                                           [comparingLabels]="getComparingFieldData(field.fieldName, nestedComparingSnapshot)"
+                                           [currentLabels]="getFieldData(field.fieldName, nestedSnapshot)"
+                                           [changes]="changes" [displayChangesToggleInput]="displayChangesToggleInput"
+                                           [showChangeOnlyToggleInput]="showChangeOnlyToggleInput"
+                                           >
+              </gp-snapshot-assigned-labels>
+            </ng-container>
+            <ng-container *ngSwitchCase="'contractStatus'">
+              <gp-snapshot-legal-contract-status [currentContractStatuses]="getFieldData(field.fieldName, nestedSnapshot)"
+                                                 [comparingContractStatuses]="getComparingFieldData(field.fieldName, nestedComparingSnapshot)"
+                                                 [hideEditorsToggleInput]="hideEditorsToggleInput"
+                                                 [changes]="changes"
+                                                 [displayChangesToggleInput]="displayChangesToggleInput"
+                                                 [showChangeOnlyToggleInput]="showChangeOnlyToggleInput"
+                                                 [moveOutletInitiator]="moveOutletInitiator"
+                                                 [isMoveOutlet]="isMoveOutlet">
+              </gp-snapshot-legal-contract-status>
+            </ng-container>
+            <ng-container *ngSwitchCase="'outletRelationships'">
+              <gp-snapshot-outlet-relationship [selectedDate]="selectedDate"
+                                               [comparingRelationships]="getComparingFieldData(field.fieldName, nestedComparingSnapshot)"
+                                               [currentRelationships]="getFieldData(field.fieldName, nestedSnapshot)"
+                                               [changes]="changes"
+                                               [displayChangesToggleInput]="displayChangesToggleInput"
+                                               [showChangeOnlyToggleInput]="showChangeOnlyToggleInput"
+                                               [hideEditorsToggleInput]="hideEditorsToggleInput">
+              </gp-snapshot-outlet-relationship>
+            </ng-container>
+            <ng-container *ngIf="masterDataChangesFeatureToggle">
+              <ng-container *ngSwitchCase="'countryName'">
+                <ng-container *ngIf="displayChangesToggleInput; else masterDataNoShowDefault">
+                  <span [class.changed]="isChanged(field.fieldName, parentFieldName)">
+                    {{ isChanged(field.fieldName, parentFieldName) ? '[' + (getComparingFieldData(field.fieldName,
+                    nestedComparingSnapshot)| emptyValuePipe) + '] =>' : '' }}
+                    <a class="{{isChanged(field.fieldName, parentFieldName) ? 'popupLinkChanged' : 'popupLink'}}"
+                      (click)="toggleMasterDataByCountryId(this.currentSnapshot?.countryId)">
+                    {{ isChanged(field.fieldName, parentFieldName) ? '[' : '' }}{{ getFieldData(field.fieldName,
+                    nestedSnapshot) | emptyValuePipe }}{{ isChanged(field.fieldName, parentFieldName) ? ']' : '' }}
+                    </a>
+                  </span>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngSwitchCase="'defaultLanguageId'">
+                <ng-container *ngIf="displayChangesToggleInput; else masterDataNoShowDefault">
+                  <span [class.changed]="isChanged(field.fieldName, parentFieldName)">
+                    {{ isChanged(field.fieldName, parentFieldName) ? '[' + (getComparingFieldData(field.fieldName,
+                    nestedComparingSnapshot)| emptyValuePipe) + '] =>' : '' }}
+                    <a class="{{isChanged(field.fieldName, parentFieldName) ? 'popupLinkChanged' : 'popupLink'}}"
+                       (click)="toggleMasterDataByLanguageId(this.currentSnapshot?.defaultLanguageId)">
+                    {{ isChanged(field.fieldName, parentFieldName) ? '[' : '' }}{{ getFieldData(field.fieldName,
+                    nestedSnapshot) | emptyValuePipe }}{{ isChanged(field.fieldName, parentFieldName) ? ']' : '' }}
+                    </a>
+                  </span>
+                </ng-container>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'name'">
+                <ng-container *ngIf="displayChangesToggleInput; else masterDataNoShowDefault">
+                  <span [class.changed]="isChanged(field.fieldName, parentFieldName)">
+                    {{ isChanged(field.fieldName, parentFieldName) ? '[' + (getComparingFieldData(field.fieldName,
+                    nestedComparingSnapshot)| emptyValuePipe) + '] =>' : '' }}
+                    <a class="{{isChanged(field.fieldName, parentFieldName) ? 'popupLinkChanged' : 'popupLink'}}"
+                      (click)="toggleMasterDataByCloseDownReasonId(this.currentSnapshot?.closeDownReason?.id)">
+                    {{ isChanged(field.fieldName, parentFieldName) ? '[' : '' }}{{ getFieldData(field.fieldName,
+                    nestedSnapshot) | emptyValuePipe }}{{ isChanged(field.fieldName, parentFieldName) ? ']' : '' }}
+                    </a>
+                  </span>
+                </ng-container>
+              </ng-container>
+
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    <ng-template #loadChild>
+      <ng-container
+                    *ngTemplateOutlet="recursiveFields; context { parentFieldName: getFullCurrentFieldName(field.fieldName, parentFieldName), fields: field.children, nestedSnapshot: getFieldData(field.fieldName), nestedComparingSnapshot: getComparingFieldData(field.fieldName) }">
+      </ng-container>
+    </ng-template>
+    <ng-template #noChangePredecessor>
+      <ng-container>
+        <gp-snapshot-predecessors [predecessors]="getFieldData(field.fieldName, nestedSnapshot)"
+                                  [isChanged]="isChanged(field.fieldName, parentFieldName)">
+        </gp-snapshot-predecessors>
+      </ng-container>
+    </ng-template>
+    <ng-template #noShowPredecessor>
+      <ng-container>
+        <gp-snapshot-predecessors [predecessors]="getFieldData(field.fieldName, nestedSnapshot)"
+                                  [isChanged]="isChanged(field.fieldName, parentFieldName)">
+        </gp-snapshot-predecessors>
+      </ng-container>
+    </ng-template>
+    <ng-template #noShowDefault>
+      <ng-container>
+        <span [class.changed]="isChanged(field.fieldName, parentFieldName)">
+          {{ getFieldData(field.fieldName, nestedSnapshot) | emptyValuePipe }}
+        </span>
+      </ng-container>
+    </ng-template>
+    <ng-template #noEditors>
+      <span *ngxPermissionsOnly="['app.historization.editor.show']">
+        {{ isChanged(field.fieldName, parentFieldName) ? '' : ''}}
+      </span>:
+    </ng-template>
+    <ng-template #masterDataNoShowDefault>
+      <ng-container [ngSwitch]="field.fieldName">
+        <ng-container *ngSwitchCase="'countryName'">
+          <ng-container>
+            <span>
+              <a class="{{isChanged(field.fieldName, parentFieldName) ? 'popupLinkChanged' : 'popupLink'}}"
+                (click)="toggleMasterDataByCountryId(this.currentSnapshot?.countryId)">
+              {{ getFieldData(field.fieldName, nestedSnapshot) | emptyValuePipe }}
+              </a>
+            </span>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="'defaultLanguageId'">
+          <ng-container>
+            <span>
+              <a class="{{isChanged(field.fieldName, parentFieldName) ? 'popupLinkChanged' : 'popupLink'}}"
+                (click)="toggleMasterDataByLanguageId(this.currentSnapshot?.defaultLanguageId)">
+              {{ getFieldData(field.fieldName, nestedSnapshot) | emptyValuePipe }}
+              </a>
+            </span>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="'name'">
+          <ng-container>
+            <span>
+              <a class="{{isChanged(field.fieldName, parentFieldName) ? 'popupLinkChanged' : 'popupLink'}}"
+                (click)="toggleMasterDataByCloseDownReasonId(this.currentSnapshot?.closeDownReason?.id)">
+              {{ getFieldData(field.fieldName, nestedSnapshot) | emptyValuePipe }}
+              </a>
+            </span>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-template>
+    <ng-template #showEmpty>
+    </ng-template>
+  </div>
+</ng-template>

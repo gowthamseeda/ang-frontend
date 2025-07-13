@@ -1,0 +1,17 @@
+@import '../../../../../styles-theme';
+
+:host {
+  padding: 0 30px 40px 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.diff-item {
+  flex: 1 0 40%;
+  padding-right: 10px;
+}

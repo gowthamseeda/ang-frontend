@@ -1,0 +1,95 @@
+<!--<mat-tab-group animationDuration="0ms">-->
+<!--  <mat-tab label="{{ 'DOWNLOAD' | translate }}">-->
+    <ng-container *ngTemplateOutlet="externalKeysDownload"></ng-container>
+<!--  </mat-tab>-->
+<!--</mat-tab-group>-->
+<ng-template #externalKeysDownload>
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="keyType">
+      <mat-header-cell *matHeaderCellDef gpFxFlex="20">
+        {{ 'KEY_TYPE' | translate }}
+      </mat-header-cell>
+      <mat-cell *matCellDef="let key" style="display: flex" gpFxFlex="20">
+        <div gpFxFlexFill>
+          <gp-key-type-selection [control]="parentForm.controls.externalKeyType"
+                                 placeholder="{{ 'EXTERNAL_KEYS' | translate }}">
+          </gp-key-type-selection>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="brand">
+      <mat-header-cell *matHeaderCellDef gpFxFlex="20" gpFxLayoutAlign="center center">
+        {{ 'BRANDS' | translate }}
+      </mat-header-cell>
+      <mat-cell *matCellDef="let key" gpFxFlex="20" gpFxLayoutAlign="center center">
+        <div gpFxFlexFill>
+          <gp-single-brand-selection [parentForm]="parentForm"
+                                     [required]="false"
+                                     [allowEmptyOption]="true">
+          </gp-single-brand-selection>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="productGroup">
+      <mat-header-cell *matHeaderCellDef gpFxFlex="20" gpFxLayoutAlign="center center">
+        {{ 'PRODUCT_GROUPS' | translate }}
+      </mat-header-cell>
+      <mat-cell *matCellDef="let key" gpFxFlex="20" gpFxLayoutAlign="center center">
+        <div gpFxFlexFill>
+          <gp-product-group-selection [control]="parentForm.controls.productGroup"
+                                      placeholder="{{ 'PRODUCT_GROUP' | translate }}"
+                                      [required]="false"
+                                      [focusEnabled]="false"
+                                      [externalKeyDownload]="true">
+          </gp-product-group-selection>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="country">
+      <mat-header-cell *matHeaderCellDef gpFxFlex="20" gpFxLayoutAlign="center center">
+        {{ 'COUNTRY' | translate }}
+      </mat-header-cell>
+      <mat-cell *matCellDef="let key" gpFxFlex="20" gpFxLayoutAlign="center center">
+        <div gpFxFlexFill>
+        <gp-country-dropdown [parentForm]="parentForm"
+                             [required]='false'
+                             [allowAllOption]="true">
+        </gp-country-dropdown>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="moreOption">
+      <mat-header-cell *matHeaderCellDef gpFxFlex="20" gpFxLayoutAlign="center center">
+        {{ 'MORE_OPTION' | translate }}
+      </mat-header-cell>
+      <mat-cell *matCellDef="let key" gpFxFlex="20" gpFxLayoutAlign="center center">
+        <div [formGroup]="parentForm" class="checkbox-container vertical-layout">
+          <mat-checkbox formControlName="showAddress">
+            {{ 'SHOW_ADDRESS' | translate }}</mat-checkbox>
+          <mat-checkbox formControlName="showCity">
+            {{ 'SHOW_CITY' | translate }}</mat-checkbox>
+          <mat-checkbox formControlName="showCountry">
+            {{ 'SHOW_COUNTRY' | translate }}</mat-checkbox>
+          <mat-checkbox formControlName="excludeNonExistExternalKey">
+            {{ 'EXCLUDE_EMPTY_RESULT' | translate }}</mat-checkbox>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef gpFxFlex="20" gpFxLayoutAlign="center center">
+        {{ 'ACTION' | translate }}
+      </mat-header-cell>
+      <mat-cell *matCellDef="let key" gpFxFlex="20" gpFxLayoutAlign="center center">
+        <button mat-button
+                [disabled]="isDisabled || parentForm.controls.externalKeyType.value === ''
+                  || parentForm.controls.countryId.value === ''"
+                (click)="downloadKeys()">
+          <span>{{ 'DOWNLOAD' | translate }}</span>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</ng-template>

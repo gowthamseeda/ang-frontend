@@ -1,0 +1,43 @@
+<gp-overlay-layout [toolTipText]="'COMPANY_NAVIGATION_TREE'" [enableCompanyNavigation]="getEnableCompanyNavigation()">
+  <gp-outlet-header header-toolbar>
+  </gp-outlet-header>
+
+  <gp-edit-layout [marginalColumnDisabled]="true" logo="business" title="{{ 'VALIDITY' | translate }}">
+    <div class="content">
+      <gp-message *ngIf="!serviceIsAvailable" message="SERVICE_SERVICE_NOT_FOUND" type="info">
+        {{ 'SERVICE_SERVICE_NOT_FOUND' | translate }}
+      </gp-message>
+
+      <div gpFxLayout="row wrap">
+        <ng-container *ngIf="serviceIds && (services | async) as services">
+          <div class="chip-container" *ngFor="let service of services">
+            <gp-services-chip [name]="service | translateData: currentSelectedLanguage"
+                              (mouseenter)="highlightOfferedService(service.id)"
+                              (mouseleave)="highlightOfferedService()">
+            </gp-services-chip>
+          </div>
+        </ng-container>
+      </div>
+
+      <gp-validity-multi-edit-table *ngIf="countryId && outletId && serviceIds" [countryId]="countryId"
+                                    [outletId]="outletId" [pristine]="pristine | async"
+                                    [userHasPermissions]="userHasPermissions" [valid]="valid | async">
+      </gp-validity-multi-edit-table>
+    </div>
+  </gp-edit-layout>
+  <gp-default-edit-actions (cancel)="cancel()" (save)="save()" *ngIf="userHasPermissions | async"
+                           [cancelButtonDisabled]="pristine | async" [saveButtonDisabled]="saveButtonDisabled | async"
+                           footer-toolbar gpFxFill>
+    <button mat-flat-button class="gp-icon-flat-button copy-company-btn" (click)="openCopyToCompanyDialog()">
+      <gp-icon gpIconButtonWithText name="plus"></gp-icon>
+      {{ 'COPY_TO_COMPANY' | translate }}
+    </button>
+    [{{selectedOutletIdsToCopy?.length || 0}} outlet(s) selected]
+  </gp-default-edit-actions>
+  <gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>
+
+  <ng-container overlay>
+    <gp-outlet-tree-navigation gpFxFlex gpFxFlexXsSm="auto" style="display: inline">
+    </gp-outlet-tree-navigation>
+  </ng-container>
+</gp-overlay-layout>

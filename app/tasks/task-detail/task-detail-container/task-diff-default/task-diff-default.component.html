@@ -1,0 +1,39 @@
+<ng-container *ngIf="!emptyDiff()">
+  <div class="diff-item"
+       data-test-id="task-diff-old">
+    <h2>{{ 'TASK_OLD' | translate }}</h2>
+    <ng-container *ngIf="!!fieldName else defaultOldDiff">
+      <gp-task-diff-item class="diff-keyvalue"
+                         [title]="fieldName | snakeCase | translate"
+                         [value]="taskDiff?.old?.toString()"></gp-task-diff-item>
+    </ng-container>
+
+    <ng-template #defaultOldDiff>
+      <gp-task-diff-item class="diff-keyvalue"
+                         *ngFor="let old of diffDisplay?.old | pairs"
+                         [title]="old[0]"
+                         [value]="old[1]"></gp-task-diff-item>
+    </ng-template>
+  </div>
+  <div class="diff-item"
+       data-test-id="task-diff-new">
+    <h2>{{ 'TASK_NEW' | translate }}</h2>
+    <ng-container *ngIf="!!fieldName else defaultNewDiff">
+      <gp-task-diff-item class="diff-keyvalue highlight"
+                         [title]="fieldName  | snakeCase | translate"
+                         [value]="taskDiff?.new?.toString()"></gp-task-diff-item>
+    </ng-container>
+
+    <ng-template #defaultNewDiff>
+      <gp-task-diff-item class="diff-keyvalue"
+                         [class.highlight]="highlighted(new[0])"
+                         *ngFor="let new of diffDisplay?.new | pairs"
+                         [title]="new[0]"
+                         [value]="new[1]"></gp-task-diff-item>
+    </ng-template>
+  </div>
+</ng-container>
+<div class="no-diff-container"
+     *ngIf="emptyDiff()">
+  {{ 'NO_DATA_CHANGE' | translate }}
+</div>

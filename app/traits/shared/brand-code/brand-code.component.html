@@ -1,0 +1,28 @@
+<gp-content-loader [isLoading]="isLoading">
+  <div gpFxLayout="column"
+       gpFxLayoutGap="10px">
+    <div *ngFor="let brandCode of brandCodes"
+         gpFxLayout="row"
+         gpFxLayoutGap="5px"
+         gpFxLayoutAlign="start center">
+      <gp-brand-icon [id]="brandCode.brandId"
+                     tooltipPosition="before"></gp-brand-icon>
+      <span class="brand-code">{{ brandCode.brandCode }}</span>
+    </div>
+  </div>
+
+  <div loader
+       xmlns:svg='http://www.w3.org/2000/svg'>
+    <content-loader preserveAspectRatio="none">
+      <svg:rect x="0"
+                y="0"
+                width="100"
+                height="100" />
+
+      <svg:rect x="120"
+                y="0"
+                height="100"
+                width="200" />
+    </content-loader>
+  </div>
+</gp-content-loader>

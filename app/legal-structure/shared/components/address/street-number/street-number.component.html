@@ -1,0 +1,16 @@
+<gp-task-input-text gpFxFill
+                    label="STREET_NUMBER"
+                    data-cy="address-street-number"
+                    [fieldName]="dataField"
+                    [parentForm]="parentForm"
+                    [value]="streetNumber"
+                    [dataNotificationChangeFields]="dataNotificationChangeFields"
+                    [isRetailOutlet]="isRetailOutlet"
+                    [dataNotificationChangeFieldsInclusion]="['STREET_NUMBER', 'ADDITIONAL_ADDRESS_STREET_NUMBER']"
+                    (inputChange)="formControlChange()"
+                    [maxLength]="15"
+                    [aggregateField]="aggregateField"
+                    [aggregateName]="aggregateName"
+                    [dataCluster]="dataCluster"
+>
+</gp-task-input-text>

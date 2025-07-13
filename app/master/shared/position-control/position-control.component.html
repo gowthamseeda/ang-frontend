@@ -1,0 +1,49 @@
+<div class="position-control">
+  <ng-container>
+    <div class="saving-shade"
+         *ngIf="isSaving">
+      <mat-spinner *ngIf="isSaving"></mat-spinner>
+    </div>
+    <div class="position-control-table"
+         cdkScrollable>
+      <table #table
+             mat-table
+             [dataSource]="dataSource"
+             cdkDropList
+             (cdkDropListDropped)="dropObjectRow($event)">
+        <ng-container *ngIf="imageFolder"
+                      matColumnDef="objectLogo">
+          <ng-container *ngIf="logoTranslation">
+            <mat-header-cell *matHeaderCellDef>{{ logoTranslation | translate }}</mat-header-cell>
+          </ng-container>
+          <mat-cell *matCellDef="let objectRow">
+            <img #image
+                 class="object-logo"
+                 src="{{ getObjectImageUrl(objectRow.id) }}"
+                 (error)="image.hidden = true"
+                 [hidden]="image.hidden" /><span *ngIf="!image.hidden"
+                  class="right-border"></span>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="objectName">
+          <mat-header-cell *matHeaderCellDef>{{ nameTranslation | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let objectRow">
+            {{ objectRow.name }}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="objectPosition">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let objectRow">
+            <div *ngIf="!objectRow.position"
+                 class="no-position-object">{{ 'NO_POSITION' | translate }}</div>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let objectRow; let i = index; columns: displayedColumns"
+                 cdkDrag
+                 [cdkDragData]="objectRow">
+        </mat-row>
+      </table>
+    </div>
+  </ng-container>
+</div>

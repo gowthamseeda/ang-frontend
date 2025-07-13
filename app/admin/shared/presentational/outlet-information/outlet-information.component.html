@@ -1,0 +1,48 @@
+<div gpFxFill
+     gpFxLayoutColumn>
+  <h2 matDialogTitle> {{ 'ADMIN_OUTLET_INFORMATION_SELECTION_HEADER' | translate }}</h2>
+  <mat-dialog-content gpFxFlex
+                      class="mat-dialog-content">
+
+    <div gpFxLayout="row"
+         gpFxLayoutAlign="space-between">
+      <div *ngFor="let column of columns" gpFxLayoutColumn>
+        <div *ngFor="let cell of column">
+          <h3>{{ cell.label | translate }}</h3>
+          <div *ngFor="let def of cell.outletInformation | keyvalue">
+            <ng-container [ngTemplateOutlet]="checkboxesTemplate"
+                          [ngTemplateOutletContext]="{$implicit: def}">
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+    <gp-default-edit-actions [saveButtonTranslationKey]="'UPDATE'"
+                             (save)="update()"
+                             (cancel)="cancel()">
+    </gp-default-edit-actions>
+  </mat-dialog-actions>
+</div>
+
+<ng-template #checkboxesTemplate
+             let-def>
+  <mat-checkbox [checked]="current[def.key]?.value"
+                [disabled]="current[def.key]?.disabled"
+                (change)="setAll(def.key, $event.checked, true)">
+    {{ def.value.label | translate }}
+  </mat-checkbox>
+  <ng-container *ngIf="def.value.outletInformation">
+    <ul>
+      <ng-container *ngFor="let cell of def.value.outletInformation | keyvalue">
+        <li>
+          <ng-container [ngTemplateOutlet]="checkboxesTemplate"
+                        [ngTemplateOutletContext]="{$implicit: cell}">
+          </ng-container>
+        </li>
+      </ng-container>
+    </ul>
+  </ng-container>
+</ng-template>

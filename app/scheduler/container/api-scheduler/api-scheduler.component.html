@@ -1,0 +1,101 @@
+<gp-default-layout>
+  <gp-header header-toolbar [breadcrumbItems]="[
+             { label: 'SCHEDULER_SCHEDULER' , path: '/scheduler' },
+             { label: 'SCHEDULER_API_SCHEDULER' }
+            ]">
+  </gp-header>
+
+  <gp-edit-layout title="{{ (isCreate ? 'CREATE_API_SCHEDULER_JOB' : 'EDIT_API_SCHEDULER_JOB') | translate}}"
+                  marginalColumnDisabled="true">
+    <gp-edit-section>
+      <div *ngIf="isJobFound; then thenShowInfo else thenShowNoFound"></div>
+    </gp-edit-section>
+  </gp-edit-layout>
+
+  <gp-default-edit-actions footer-toolbar [saveButtonDisabled]="formGroup.invalid || formGroup.pristine"
+                           [cancelButtonDisabled]="formGroup.pristine" (save)="isCreate ? create() : update()"
+                           (cancel)="cancel()">
+  </gp-default-edit-actions>
+</gp-default-layout>
+
+<ng-template #thenShowNoFound>
+  <gp-message type="info">
+    {{ 'SCHEDULER_NO_JOB_FOUND' | translate }}
+  </gp-message>
+</ng-template>
+
+<ng-template #thenShowInfo>
+  <div [formGroup]="formGroup" gpFxLayout="column" gpFxLayoutGap="15px">
+
+    <div gpFxLayout="row">
+      <mat-form-field gpFxFlex="30%">
+        <mat-label>{{'SCHEDULER_JOB' | translate}}</mat-label>
+        <mat-select formControlName="schedulerJob" (selectionChange)="onSchedulerJobTypeChange($event.value)">
+          <mat-option *ngFor="let type of jobTypes" [value]="type">{{type | translate}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="isByCountry" gpFxLayout="row">
+      <mat-form-field gpFxFlex="30%">
+        <mat-label>{{'COUNTRY' | translate}}</mat-label>
+        <mat-select formControlName="jobParameters" multiple>
+          <mat-select-trigger>{{formGroup.controls['jobParameters'].value}}</mat-select-trigger>
+          <mat-option *ngFor="let country of countries" [value]="country.id">
+            {{country.name + " (" + country.id + ")"}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <h2>{{ 'SCHEDULE' | translate }}</h2>
+
+    <div gpFxLayout="row" gpFxLayoutGap="30px" gpFxLayoutAlign="center center">
+      <mat-form-field>
+        <mat-label>{{ 'SECOND' | translate }}</mat-label>
+        <input matInput formControlName="second" type="text" required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'MINUTE' | translate }}</mat-label>
+        <input matInput formControlName="minute" type="text" required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'HOUR' | translate }}</mat-label>
+        <input matInput formControlName="hour" type="text" required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'DAY_OF_MONTH' | translate }}</mat-label>
+        <input matInput formControlName="dayOfMonth" type="text" required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'MONTH' | translate }}</mat-label>
+        <input matInput formControlName="month" type="text" required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'DAY_OF_WEEK' | translate }}</mat-label>
+        <input matInput formControlName="dayOfWeek" type="text" required />
+      </mat-form-field>
+    </div>
+
+    <ng-container *ngIf="!isCreate">
+      <div gpFxLayout="row">
+        <mat-slide-toggle color="primary" formControlName="isActive">
+          {{ 'ENABLED' | translate }}
+        </mat-slide-toggle>
+      </div>
+
+      <gp-job-status [type]=schedulerType.API [job]="job">
+      </gp-job-status>
+
+      <div gpFxLayout="row" gpFxLayoutGap="5px">
+        <div *ngIf="job?.isRunning; else triggerButton">
+          <button mat-button type="button" (click)="abort()">{{ 'ABORT' | translate }}</button>
+        </div>
+        <ng-template #triggerButton>
+          <button mat-button type="button" [disabled]="!(isAuthorized() | async)" (click)="trigger()">{{ 'RUN_NOW' |
+            translate }}</button>
+        </ng-template>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>

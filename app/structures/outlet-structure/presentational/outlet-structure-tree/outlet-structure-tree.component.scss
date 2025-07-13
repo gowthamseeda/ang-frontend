@@ -1,0 +1,59 @@
+@import '../../../../../styles-theme';
+
+:host {
+  min-width: 0;
+}
+nav {
+  *:focus {
+    outline: 0;
+    outline: none;
+  }
+
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+
+  .navigation-container {
+    padding: 20px 15px 20px 30px;
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+
+    .tree-container {
+      flex: 1 1 auto;
+      display: flex;
+    }
+
+    .scroll-vertical {
+      position: relative;
+      flex: 1 0 100%;
+      width: 100%;
+
+      .structure-tree-node {
+        display: block;
+        width: 95%;
+
+        .structure-tree-node {
+          padding-left: 40px;
+        }
+      }
+
+      ::ng-deep gp-outlet-structure-node {
+        margin-top: 10px;
+      }
+
+      ::ng-deep gp-outlet-structure-node .mat-mdc-icon-button {
+        width: 25px;
+        line-height: 20px;
+        height: 20px;
+        padding-left: 5px;
+      }
+
+      ::ng-deep .cdk-virtual-scroll-content-wrapper {
+        padding-right: 20px;
+        width: 100%;
+        contain: none;
+      }
+    }
+  }
+}

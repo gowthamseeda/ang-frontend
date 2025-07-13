@@ -1,0 +1,109 @@
+<mat-table [dataSource]="dataSource" (matSortChange)="sortChange($event)" multiTemplateDataRows matSort
+           style="flex:0 1 1000px;" [class.read-only]="readOnly || disabled">
+
+  <ng-container matColumnDef="filter">
+    <mat-header-cell *matHeaderCellDef style="flex: 0 1 600px; max-width: 600px">
+      <mat-form-field gpFxFlex="70%">
+        <mat-label>{{ 'SEARCH_OUTLETS_PLACEHOLDER' | translate }}</mat-label>
+        <input matInput (keyup)="filterTable($event.target.value)" type="text">
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="expansionIndicator">
+    <mat-header-cell *matHeaderCellDef gpFxFlex="50px">
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" gpFxFlex="50px">
+      <ng-container *ngIf="isExpandable(element?.row.id)">
+        <gp-icon *ngIf="!element.show" color="petrol" name="accordion"></gp-icon>
+        <gp-icon *ngIf="element.show" color="petrol" name="accordion-open"></gp-icon>
+      </ng-container>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="legalName">
+    <mat-header-cell *matHeaderCellDef gpFxFlex="20" mat-sort-header="legalName">
+      {{ 'LEGAL_NAME' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" gpFxLayoutColumn gpFxLayoutAlign="start start" gpFxFlex="25"
+              style="display: flex;">
+      <a routerLink="/outlet/{{element?.row.id}}" (click)="$event.stopPropagation()">{{element?.row.legalName}}</a>
+      <div gpFxLayout="row wrap" gpFxLayoutGap="10px">
+        <span>{{element.row.companyId}}</span>
+        <span>{{element.row.id}}</span>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="address">
+    <mat-header-cell *matHeaderCellDef gpFxFlex="23" mat-sort-header="address">
+      {{ 'ADDRESS' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" gpFxLayoutColumn gpFxFlex="25" gpFxLayoutAlign="start start"
+              style="display: flex;">
+      <span>{{element?.row.address?.street}} {{element?.row.address?.streetNumber}}</span>
+      <span>{{element?.row.address?.city}}</span>
+      <span>{{ element?.row.country?.id | translateCountry | async }}</span>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="brandCode">
+    <mat-header-cell *matHeaderCellDef gpFxFlex="23">
+      {{ 'BRAND_CODE' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" gpFxFlex="25">
+      <gp-brand-code [outletId]="element?.row.id" [brandCodesInput]="element?.row.brandCodes"></gp-brand-code>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef mat-sort-header="type">
+      {{ 'TYPE' | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <mat-basic-chip *ngIf="element?.row.isRegisteredOffice" disabled>
+        RO
+      </mat-basic-chip>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="cancel">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let element" gpFxLayoutColumn gpFxLayoutAlign="center center" style="display: flex;">
+      <ng-container *ngIf="isExpandable(element?.row.id)">
+        <button mat-icon-button [disabled]="disabled || readOnly" (click)="removeMemberWithRO(element?.row.id)"
+                matTooltip="{{ 'STRUCTURES_REMOVE_RO_AND_OUTLETS' | translate }}" matTooltipPosition="after">
+          <gp-icon name="trash"></gp-icon>
+        </button>
+      </ng-container>
+      <button mat-icon-button [disabled]="disabled || readOnly" (click)="removeMember(element?.row.id)" matTooltip="{{ (isExpandable(element?.row.id)
+              ? 'STRUCTURES_REMOVE_RO_ONLY'
+              : 'STRUCTURES_REMOVE_MEMBER') | translate }}" matTooltipPosition="after">
+        <gp-icon name="minus"></gp-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="expandedDetail">
+    <div *matCellDef="let element" gpFxFill>
+      <div gpFxFlex="50px"></div>
+      <gp-members-table [members]="getROMemberDetails(element?.row.id)" [disabled]="disabled" [readOnly]="readOnly"
+                        [hideHeader]="true" (memberRemoved)="removeMember($event)" gpFxFlex="auto">
+      </gp-members-table>
+    </div>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns" [class.detail-row-disabled]="disabled">
+  </mat-header-row>
+  <mat-header-row *matHeaderRowDef="['filter']" [class.header-row-hide]="(membersWithRO && membersWithoutRO &&
+                  (membersWithRO.length + membersWithoutRO.length) <= 1)" class="filter">
+  </mat-header-row>
+  <mat-row *matRowDef="let element; columns: displayedColumns" (click)="showDetail(element)"
+           [class.detail-row]="getROMemberDetails(element.row.id)?.length"
+           [class.detail-row-disabled]="disabled || !element.row.active">
+  </mat-row>
+  <mat-row *matRowDef="let element; columns: ['expandedDetail']"
+           [@detailExpand]="element.show ? 'expanded' : 'collapsed'" [class.expanded-detail-row-hide]="!element.show "
+           class="expanded-detail-row">
+  </mat-row>
+</mat-table>

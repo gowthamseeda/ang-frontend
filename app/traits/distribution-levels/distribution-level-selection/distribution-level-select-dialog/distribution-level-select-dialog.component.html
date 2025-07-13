@@ -1,0 +1,56 @@
+<div gpFxLayoutAlign="space-between center">
+  <h1 mat-dialog-title>{{'DISTRIBUTION_LEVEL_ASSIGNMENT' | translate }}</h1>
+  <button mat-icon-button mat-dialog-close class="dialog-close-button" tabindex="-1" (click)="dialogRef.close(false)">
+    <gp-icon name="close" size="small"></gp-icon>
+  </button>
+</div>
+
+<mat-dialog-content>
+  <div class="distribution-level-select-dialog" gpFxLayout="column">
+
+    <ng-container *ngIf="data.assignedDistributionLevelControl.disabled; else selectfield">
+      <mat-chip-listbox>
+        <mat-basic-chip gpInactiveChip
+                        *ngFor="let selectedDistributionLevel of data.assignedDistributionLevelControl.value">
+          {{ selectedDistributionLevel | translate }}
+        </mat-basic-chip>
+      </mat-chip-listbox>
+    </ng-container>
+
+    <ng-template #selectfield>
+      <mat-form-field>
+        <mat-label>{{'DISTRIBUTION_LEVEL_SELECT_DIALOG' | translate}}</mat-label>
+        <mat-select [formControl]="data.assignedDistributionLevelControl" multiple>
+
+          <mat-select-trigger>
+            <mat-chip-listbox>
+              <mat-basic-chip
+                              *ngFor="let selectedDistributionLevel of data.assignedDistributionLevelControl.value">
+                <span>{{ selectedDistributionLevel | translate}}</span>
+                <gp-icon *ngIf="isEditable(selectedDistributionLevel) && !isTestOutletDisable(selectedDistributionLevel)"
+                         (click)="removeDistributionLevel(selectedDistributionLevel, $event)" name="close" size="small"
+                         [hover]="true">
+                </gp-icon>
+              </mat-basic-chip>
+            </mat-chip-listbox>
+          </mat-select-trigger>
+
+          <mat-option *ngFor="let distributionLevel of data.distributionLevels" [value]="distributionLevel" [disabled]="!isEditable(distributionLevel) ||
+                isTestOutletDisable(distributionLevel)">
+            {{distributionLevel | translate}}
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="data.assignedDistributionLevelControl.hasError('required')">
+          {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </ng-template>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions gpFxLayout="column">
+  <button mat-button gpFxFlexAlign="end" (click)="dialogRef.close()">
+    {{'OK' | translate}}
+  </button>
+</mat-dialog-actions>

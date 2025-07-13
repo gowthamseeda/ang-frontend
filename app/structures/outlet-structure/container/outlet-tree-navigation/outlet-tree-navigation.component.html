@@ -1,0 +1,48 @@
+<gp-outlet-structure-tree>
+  <ng-template #nodeComponent
+               let-node>
+    <gp-outlet-structure-node (click)="outletNodeClicked(node.businessSiteId)"
+                              [businessSiteId]="node.businessSiteId"
+                              [city]="node.city"
+                              [inactive]="!node.active"
+                              [selected]="node.businessSiteId ===
+                              selectedOutletNode?.businessSiteId"
+                              [subOutlet]="node.subOutlet"
+                              [lastOutlet]="node.lastOutlet">
+      <gp-outlet-structure-node-chips tags
+                                      [tags]="node.outletTags"
+                                      [inactive]="!node.active">
+      </gp-outlet-structure-node-chips>
+      <gp-outlet-structure-node-chips *gpOnlyOwnCountry="node.countryId; permissions: ['traits.distributionlevels.show']"
+                                      tags
+                                      [tags]="node.distributionLevelTags"
+                                      [inactive]="!node.active">
+      </gp-outlet-structure-node-chips>
+      <ng-container lock
+                    *ngIf="
+          selectedOutletNode?.businessSiteId !== node.businessSiteId ||
+          !hasUserUpdatePermission">
+        <gp-icon style="padding-left: 5px"
+                 name="lock"
+                 size="small"
+                 color="white"></gp-icon>
+      </ng-container>
+      <ng-container menu
+                    *ngIf="
+          selectedOutletNode?.businessSiteId === node.businessSiteId &&
+          hasUserUpdatePermission">
+        <gp-outlet-menu [items]="selectedOutletMenuItems"
+                        [brightProfile]="true"
+                        (click)="$event.stopPropagation()"
+                        (itemClick)="menuItemClicked($event)">
+        </gp-outlet-menu>
+      </ng-container>
+      <ng-container leadingCodes>
+        <gp-outlet-leading-code [businessNames]="node.businessNames"
+                                [brandCodes]="node.brandCodes"
+                                [allBrands]="allBrands">
+        </gp-outlet-leading-code>
+      </ng-container>
+    </gp-outlet-structure-node>
+  </ng-template>
+</gp-outlet-structure-tree>

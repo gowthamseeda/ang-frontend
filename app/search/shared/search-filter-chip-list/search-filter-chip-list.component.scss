@@ -1,0 +1,30 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+@import '../../../../styles/gssnplus';
+@include gssnplus-theme($gssnplus-theme);
+
+.search-filter {
+  .search-filter-tag-name {
+    background-color: mat.get-color-from-palette($accent, 600) !important;
+    padding-right: 20px !important;
+  }
+
+  .search-filter-tag-name + .search-filter-value {
+    margin-left: -18px;
+  }
+
+  .gp-icon {
+    fill: #c8c8c8;
+  }
+}
+
+.mat-mdc-form-field {
+  margin-bottom: 0 !important;
+
+  ::ng-deep {
+
+    .mat-mdc-input-element::placeholder {
+      color: mat.get-color-from-palette($accent, 400) !important;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+<mat-form-field [formGroup]="parentForm">
+  <mat-label>{{(uppercaseLabel ? (placeholderTranslation | translate | uppercase) : (placeholderTranslation |
+    translate)) }}</mat-label>
+  <mat-select formControlName="countryId" (selectionChange)="emitChange($event)" [required]="required"
+              data-cy="country-dropdown">
+    <mat-option *ngIf="allowEmptyOption" [value]="null">
+    </mat-option>
+    <mat-option *ngIf="allowAllOption" value="All">
+      {{ 'ALL' | translate }}
+    </mat-option>
+    <mat-option *ngFor="let country of countries | async" [value]="country.id" data-cy="country-dropdown-option">
+      {{ country | translateData: currentSelectedLanguage: true }}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="parentForm.get('countryId')?.hasError('required')">{{
+    'VALIDATION_ERROR_REQUIRED' | translate }}
+  </mat-error>
+</mat-form-field>

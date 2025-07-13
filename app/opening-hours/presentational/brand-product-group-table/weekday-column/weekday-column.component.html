@@ -1,0 +1,8 @@
+<div class="header-cell"></div>
+<ng-container *ngFor="let dayCell of dayCells">
+  <div class="cell"
+       [ngClass]="{ 'editable': dayCell.editable }"
+       [ngStyle]="{ 'height': getCellHeight(dayCell.weekDay) }">
+    {{ dayCell.label }}
+  </div>
+</ng-container>

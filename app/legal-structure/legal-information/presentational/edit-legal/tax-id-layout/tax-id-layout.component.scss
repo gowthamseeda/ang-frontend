@@ -1,0 +1,11 @@
+.tax-ids__row {
+  display: flex;
+  justify-content: space-between;
+  max-width: 536px;
+  min-width: 410px;
+
+  .tax-id_column {
+    width: 200px;
+    min-width: 200px;
+  }
+}

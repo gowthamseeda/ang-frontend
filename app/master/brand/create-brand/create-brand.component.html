@@ -1,0 +1,68 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{label: 'MASTER_DATA', path: '/master'},
+             {label: 'BRANDS'}]">
+  </gp-header>
+  <div gpContent>
+    <div gpFxLayout="row"
+         gpFxLayoutGap="10px">
+      <gp-header-image [name]="'brands'"
+                       [large]="true"></gp-header-image>
+      <div gpFxLayout="column"
+           class="header">
+        <h1>{{ 'CREATE_BRAND' | translate }}</h1>
+        <span>{{ 'CREATE_BRAND_SUBTITLE' | translate }}</span>
+      </div>
+    </div>
+    <form [formGroup]="brandForm"
+          (ngSubmit)="submit(brandForm.value)">
+      <div gpFxLayout="column">
+        <div gpFxLayout="row"
+             gpFxLayoutGap="30px">
+          <mat-form-field gpFxFlex="70">
+            <mat-label>{{ 'NAME' | translate }}</mat-label>
+            <input matInput
+                   formControlName="name"
+                   type="text"
+                   required />
+            <mat-error *ngIf="brandForm.get('name')?.hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field gpFxFlex>
+            <mat-label>{{ 'ID' | translate }}</mat-label>
+            <input matInput
+                   formControlName="id"
+                   type="text"
+                   required />
+            <mat-error *ngIf="brandForm.get('id')?.hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+            <mat-error *ngIf="brandForm.get('id')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+            <mat-error *ngIf="brandForm.get('id')?.hasError('pattern')">
+              {{ 'VALIDATION_ERROR_PATTERN' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div gpFxLayout="row">
+          <div gpFxFlex>
+            <button type="reset"
+                    mat-button
+                    routerLink="/master">
+              {{ 'CANCEL' | translate }}
+            </button>
+          </div>
+          <button type="submit"
+                  mat-button
+                  [disabled]="brandForm.invalid">
+            {{ 'CREATE' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</gp-default-layout>

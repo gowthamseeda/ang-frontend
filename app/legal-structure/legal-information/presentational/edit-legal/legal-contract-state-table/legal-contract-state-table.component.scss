@@ -1,0 +1,75 @@
+@use '@angular/material' as mat;
+@import '../../../../../../styles-theme';
+
+.mat-mdc-table {
+  width: 100%;
+
+  & .mat-mdc-row {
+    &.locked {
+      color: mat.get-color-from-palette($accent, 600) !important;
+      opacity: 0.5;
+    }
+
+    & .mat-mdc-cell {
+      display: flex;
+
+      & .contract-entry-per-language_no {
+        color: mat.get-color-from-palette($accent, 700);
+        font-style: italic;
+        padding-left: 11px;
+        padding-right: 11px;
+      }
+
+      & .contract-entry-per-language_container {
+        min-width: 33.33%;
+        max-width: 33.33%;
+        font-size: 14px;
+        padding: 15px 11px 0 11px;
+
+        & textarea {
+          resize: none;
+          height: 69px;
+        }
+
+        & textarea::placeholder {
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  & .mat-column-contract-brand {
+    min-width: 90px;
+    max-width: 90px;
+  }
+
+  & .mat-column-contract-company-relation {
+    min-width: 135px;
+    max-width: 135px;
+  }
+
+  & .mat-column-contract-required {
+    min-width: 135px;
+    max-width: 135px;
+  }
+
+  & .contract-entry-per-language_container.language {
+    min-width: 20% !important;
+    max-width: 20% !important;
+  }
+
+  & .contract-entry-per-language_container.status {
+    min-width: 40% !important;
+    max-width: 40% !important;
+  }
+
+  & .contract-entry-per-language_container.disclosure {
+    min-width: 40% !important;
+    max-width: 40% !important;
+  }
+
+  & .mat-column-contract-actions {
+    min-width: 45px;
+    max-width: 45px;
+  }
+}

@@ -1,0 +1,17 @@
+<h1>{{ 'PREDECESSOR' | translate}}</h1>
+
+<gp-predecessors-table [predecessorItems]="predecessorItems"
+                       (addPredecessorItem)="addPredecessorItem($event)"
+                       (removePredecessorItem)="removePredecessorItem($event)"
+                       [isLoaded]="isLoaded | async"
+                       [isSuccessor]="false"
+                       [isDisable]="parentForm.disabled || !(userHasPermissions)">
+</gp-predecessors-table>
+
+<h1 [hidden]="!(isEmptySuccessor| async)">{{ 'SUCCESSOR' | translate}}</h1>
+
+<gp-predecessors-table [predecessorItems]="successorItems"
+                       [isLoaded]="isLoaded | async"
+                       [isSuccessor]="true"
+                       [isDisable]="parentForm.disabled || !(userHasPermissions)">
+</gp-predecessors-table>

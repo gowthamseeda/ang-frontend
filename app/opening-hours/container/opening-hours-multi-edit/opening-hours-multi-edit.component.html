@@ -1,0 +1,148 @@
+<gp-overlay-layout [toolTipText]="'COMPANY_NAVIGATION_TREE'"
+                   [enableCompanyNavigation]="getEnableCompanyNavigation()"
+                   class="page">
+
+  <gp-outlet-header header-toolbar>
+  </gp-outlet-header>
+
+  <div class="content">
+    <div>
+      <gp-edit-layout [logo]="'opening-hours'"
+                      [title]="'OPENING_HOURS' | translate">
+        <gp-edit-section>
+          <div class="services-chip-container" gpFxLayout="row">
+            <ng-container *ngIf="serviceIds && (services | async) as services">
+              <div *ngFor="let service of services" class="chip-container">
+                <gp-services-chip
+                (mouseenter)="highlightOfferedServiceProductGroup(service.id)"
+                (mouseleave)="highlightOfferedServiceProductGroup()"
+                [name]="service | translateData: currentSelectedLanguage">
+                </gp-services-chip>
+              </div>
+            </ng-container>
+          </div>
+          <div gpFxLayout="row">
+            <div class="table-chips">
+              <div class="sub-header-row"
+                   gpFxLayout="row">
+<!--                <ng-container *ngIf="useSpecialOpeningHours(); then special; else overall">-->
+<!--                </ng-container>-->
+                <ng-container *ngIf="overall">
+                </ng-container>
+                <ng-template #overall>
+                  <div class="overall-text">
+                    {{ 'OVERALL_OPENING_HOURS' | translate }}
+                  </div>
+                </ng-template>
+                <ng-template #special>
+                  <gp-special-opening-hours-chip (closed)="onSelectedSpecialHourClose()"
+                                                 [endDate]="selectedEndDate"
+                                                 [startDate]="selectedStartDate">
+                  </gp-special-opening-hours-chip>&nbsp;
+                </ng-template>
+              </div>
+
+              <div class="table-container"
+                   gpFxLayout="row">
+                <gp-weekday-column [editableWeekDays]="editableWeekDays"
+                                   [translationLocale]="translationLocale | async"
+                                   [weekDays]="localizedWeekDays">
+                </gp-weekday-column>
+                <ng-scrollbar [autoHeightDisabled]="false"
+                              style="width: calc(100vw - 600px)"
+                              track="horizontal">
+                  <gp-brand-product-group-table-grouped-header (moveProductGroupLeft)="moveProductGroupLeftClicked($event)"
+                                                               (moveProductGroupRight)="moveProductGroupRightClicked($event)"
+                                                               [columns]="groupedOpeningHourColumns"
+                                                               [offeredServices]="offeredServices | async">
+                  </gp-brand-product-group-table-grouped-header>
+                  <gp-brand-product-group-table (formValidityChanged)="formValidityChanged($event)"
+                                                (weekdaysOpeningHoursChange)="showUpdatedOpeningHours($event)"
+                                                [weekDays]="localizedWeekDays"
+                                                [editableWeekDays]="editableWeekDays"
+                                                [groupedOpeningHourColumns]="groupedOpeningHourColumns"
+                                                [selectedEndDate]="selectedEndDate"
+                                                [selectedStartDate]="selectedStartDate"
+                                                [supportAutoComplete]="!useSpecialOpeningHours()"
+                                                [weekdaysOpeningHours]="weekdaysOpeningHours"
+                                                [locale]="locale">
+                  </gp-brand-product-group-table>
+                </ng-scrollbar>
+              </div>
+            </div>
+
+<!-- TODO: for future if required to enable special opening hours in multiedit screen-->
+
+<!--            <div class="stretch"></div>-->
+<!--            <div class="calendar-block">-->
+<!--              <div class="calendar-header-text">-->
+<!--                {{ 'SPECIAL_OPENING_HOURS' | translate }}-->
+<!--              </div>-->
+<!--              <div class="calendar-sub-header-text">-->
+<!--                {{ 'OPENING_HOURS_CALENDAR_TEXT' | translate }}-->
+<!--              </div>-->
+<!--              <div class="calendar-container">-->
+<!--                <gp-calendar (daySelected)="calenderFreeDayClicked($event)"-->
+<!--                             (eventDaySelected)="calendarDayOfEventClicked($event)"-->
+<!--                             [date]="calendarDate"-->
+<!--                             [events]="calendarEvents"-->
+<!--                             [numberOfMonths]="numberOfMonths"-->
+<!--                             [translationLocale]="translationLocale | async">-->
+<!--                </gp-calendar>-->
+<!--              </div>-->
+<!--              <div class="event-list-container">-->
+<!--                <perfect-scrollbar>-->
+<!--                  <ng-container *ngFor="let listEvent of listEvents">-->
+<!--                    <gp-event-list-item (eventDeleted)="-->
+<!--                      listEvent.containsRestrictedColumns-->
+<!--                        ? specialOpeningHourEventReset($event)-->
+<!--                        : specialOpeningHourEventDeleted($event)"-->
+<!--                                        (eventSelected)="specialOpeningHourEventSelected($event)"-->
+<!--                                        [event]="listEvent.eventListItem">-->
+<!--                    </gp-event-list-item>-->
+<!--                  </ng-container>-->
+<!--                </perfect-scrollbar>-->
+<!--              </div>-->
+<!--            </div>-->
+          </div>
+          <ng-container marginalContent>
+            <span>{{ 'MARGINAL_CONTENT_OPENING_HOURS' | translate }}</span>
+          </ng-container>
+        </gp-edit-section>
+      </gp-edit-layout>
+    </div>
+  </div>
+  <ng-container *gpOnlyForRetail="(businessSiteId|async)"
+                footer-toolbar>
+    <gp-task-footer (confirm)="saveButtonClicked($event)"
+                    (discard)="cancelButtonClicked()"
+                    *ngIf="isEditable"
+                    [discardButtonDisabled]="isCancelButtonDisabled()"
+                    [confirmButtonDisabled]="isSaveButtonDisabled()"
+                    [type]="taskTypeDataChange">
+    </gp-task-footer>
+  </ng-container>
+
+  <ng-container *gpNotForRetail>
+    <gp-default-edit-actions (cancel)="cancelButtonClicked()"
+                             (save)="saveButtonClicked()"
+                             *ngIf="isEditable"
+                             [cancelButtonDisabled]="isCancelButtonDisabled()"
+                             [saveButtonDisabled]="isSaveButtonDisabled()"
+                             footer-toolbar gpFxFill>
+      <button mat-flat-button class="gp-icon-flat-button copy-company-btn" (click)="openCopyToCompanyDialog()">
+        <gp-icon gpIconButtonWithText name="plus"></gp-icon>
+        {{ 'COPY_TO_COMPANY' | translate }}
+      </button>
+      [{{selectedOutletIdsToCopy?.length || 0}} outlet(s) selected]
+    </gp-default-edit-actions>
+  </ng-container>
+  <gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>
+
+  <ng-container overlay>
+    <gp-outlet-tree-navigation gpFxFlex
+                               gpFxFlexXsSm="auto"
+                               style="display: inline">
+    </gp-outlet-tree-navigation>
+  </ng-container>
+</gp-overlay-layout>

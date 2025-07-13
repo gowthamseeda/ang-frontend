@@ -1,0 +1,55 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.content {
+  padding: 0px 30px 20px 30px;
+
+  ::ng-deep {
+    h1 {
+      margin-bottom: 10px;
+
+      &:after {
+        background-color: mat.get-color-from-palette($primary, 100);
+        content: '';
+        display: inline-block;
+        height: 2px;
+        position: absolute;
+        vertical-align: middle;
+        width: 10px;
+        left: 0px;
+      }
+    }
+  }
+}
+
+.marginal {
+  background-color: mat.get-color-from-palette($primary, 100);
+  padding: 0px 30px 20px 30px;
+  font-size: 13px;
+  word-wrap: break-word;
+  white-space: pre-line;
+
+  ::ng-deep {
+    h1 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    h1,
+    span {
+      position: relative;
+
+      &:after {
+        background-color: mat.get-color-from-palette($primary, 50);
+        content: '';
+        display: inline-block;
+        height: 2px;
+        position: absolute;
+        vertical-align: middle;
+        width: 10px;
+        left: -30px;
+        top: 0;
+      }
+    }
+  }
+}

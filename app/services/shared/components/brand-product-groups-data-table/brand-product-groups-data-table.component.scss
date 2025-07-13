@@ -1,0 +1,64 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+@import '../../styles/service-table';
+
+ng-scrollbar {
+  padding-right: 15px;
+  padding-bottom: 15px;
+}
+
+.mat-mdc-table {
+  min-width: unset; // Overwrite value from @import '../../styles/service-table';
+
+  .mat-mdc-header-row {
+    position: sticky;
+    top: -1px;
+    z-index: 2;
+
+    &:nth-child(2) {
+      top: 59px;
+    }
+  }
+
+  .mat-mdc-row,
+  .mat-mdc-header-row {
+    height: 100% !important;
+    max-height: 100% !important;
+    align-items: stretch;
+
+    .mat-mdc-cell,
+    .mat-mdc-header-cell {
+      line-height: 20px;
+      max-height: 100%;
+
+      &:first-of-type {
+        padding: 12px;
+      }
+    }
+
+    .mat-mdc-header-cell:first-of-type {
+      font-size: 15px;
+      color: mat.get-contrast-color-from-palette($accent, 500);
+      text-transform: none;
+    }
+  }
+
+  .mat-mdc-row .product-groups {
+    height: 100%;
+    padding-top: 22px;
+
+    .product-group {
+      width: 60px;
+    }
+  }
+
+  h5 {
+    font-size: 12px;
+    margin: 0;
+  }
+}
+
+[loader] ::ng-deep svg {
+  height: 200px;
+  width: 100%;
+}

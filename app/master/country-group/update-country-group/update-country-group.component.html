@@ -1,0 +1,77 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{label: 'MASTER_DATA', path: '/master'},
+             {label: 'COUNTRY_GROUP'},
+             {label: countryGroupName}]">
+  </gp-header>
+  <div gpContent>
+    <div gpFxLayout="row"
+         gpFxLayoutGap="10px">
+      <div gpFxLayout="column"
+           class="header">
+        <h1>{{ countryGroupName }}</h1>
+        <span>{{ 'UPDATE_COUNTRY_GROUP_SUBTITLE' | translate }}</span>
+      </div>
+    </div>
+    <form [formGroup]="countryGroupForm"
+          (ngSubmit)="submit(countryGroupForm.value)">
+      <div gpFxLayout="column">
+        <div gpFxLayout="row"
+             gpFxLayoutGap="10px">
+          <mat-form-field gpFxFlex="70">
+            <mat-label>{{ 'NAME' | translate }}</mat-label>
+            <input matInput
+                   formControlName="name"
+                   type="text"
+                   required />
+            <mat-error *ngIf="countryGroupForm.get('name')?.hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+            <mat-error *ngIf="countryGroupForm.get('name')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field gpFxFlex>
+            <mat-label>{{ 'ID' | translate }}</mat-label>
+            <input matInput
+                   formControlName="id"
+                   type="text"
+                   required />
+            <gp-icon matSuffix
+                     *ngIf="countryGroupForm.get('id')?.disabled"
+                     name="lock"
+                     size="small"></gp-icon>
+          </mat-form-field>
+        </div>
+        <div gpFxLayout="row"
+             gpFxLayoutGap="10px">
+          <div gpFxFlex style="display: block;">
+            <gp-chips-selection placeholder="{{ 'COUNTRIES' | translate }}"
+                                [control]="countryGroupForm.get('countryIds')"
+                                [isLanguage]="true"
+                                [itemList]="countries">
+            </gp-chips-selection>
+          </div>
+        </div>
+
+        <gp-translation-table [translations]="countryGroupForm.get('translations')?.value">
+        </gp-translation-table>
+
+        <div gpFxLayout="row">
+          <div gpFxFlex>
+            <button type="reset"
+                    mat-button
+                    routerLink="/master">
+              {{ 'CANCEL' | translate }}
+            </button>
+          </div>
+          <button type="submit"
+                  mat-button
+                  [disabled]="countryGroupForm.invalid">
+            {{ 'SAVE' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</gp-default-layout>

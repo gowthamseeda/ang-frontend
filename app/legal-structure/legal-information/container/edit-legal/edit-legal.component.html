@@ -1,0 +1,168 @@
+<gp-overlay-layout [toolTipText]="'COMPANY_NAVIGATION_TREE'">
+  <gp-outlet-header header-toolbar>
+  </gp-outlet-header>
+
+  <gp-read-only-notification [showMessage]="isTaskPresent && !isForRetailEnabled">
+  </gp-read-only-notification>
+
+  <ng-container *ngIf="isVerificationTaskPresent && retailVerifyData && isForRetailEnabled">
+    <gp-verify-data-notification *gpOnlyForRetail="viewState.businessSiteId"
+                                 [showMessage]="isVerificationTaskPresent">
+    </gp-verify-data-notification>
+  </ng-container>
+
+  <ng-container *ngIf="dataDirectChangeAvailable">
+    <gp-data-changed-notification [showMessage]="dataDirectChangeAvailable"
+                                  (viewDataChanged)="viewButtonClicked()">
+    </gp-data-changed-notification>
+  </ng-container>
+
+  <ng-container *ngIf="isMTR && isForRetailEnabled">
+    <gp-review-changes-made-notification [openTasks]="openTasks"></gp-review-changes-made-notification>
+  </ng-container>
+
+  <gp-edit-layout [logo]="'legal-info'"
+                  [title]="'LEGAL_INFO' | translate"
+                  id="legalInfo">
+    <ng-container extraActions>
+      <gp-language-toggle *ngIf="viewState.initialized"
+                          [countryId]="viewState.countryId"
+                          [defaultLanguageId]="viewState.defaultLanguageId">
+      </gp-language-toggle>
+    </ng-container>
+
+    <ng-container *ngIf="viewState.initialized">
+      <form [formGroup]="viewState.legalInformationControl">
+        <gp-edit-section>
+          <gp-tax-id-layout [title]="'LEGAL_TAX_ID' | translate">
+            <gp-tax-number-input national-tax-number
+                                 [formGroup]="viewState.legalInformationControl"
+                                 [readonly]="outletDataReadOnly"
+                                 [verificationTaskStatus]="verificationTasksStatusMap['TAX_NO']"
+                                 [retailVerifyData]="retailVerifyData"
+                                 [isUserAuthorizedForVerificationTask]="isUserAuthorizedForVerificationTask"
+                                 [isOutletRetailer]="isOutletRetailer"
+                                 (remain)="legalInfoOnRemain('TAX_NO')"
+                                 (changed)="legalInfoOnChanged('TAX_NO')"
+                                 [isMTR]="isMTR"
+                                 [isBSR]="isBSR"
+                                 [activeTasks]="activeTasks"
+                                 [dataNotification]="dataNotification"
+                                 [taskNumber]="dataDeclinedNotificationsMap['TAX_NO']"
+            >
+            </gp-tax-number-input>
+            <gp-vat-number-input vat-number
+                                 [formGroup]="viewState.legalInformationControl"
+                                 [readonly]="companyDataReadOnly"
+                                 [verificationTaskStatus]="verificationTasksStatusMap['VAT_NO']"
+                                 [retailVerifyData]="retailVerifyData"
+                                 [isUserAuthorizedForVerificationTask]="isUserAuthorizedForVerificationTask"
+                                 (remain)="legalInfoOnRemain('VAT_NO')"
+                                 (changed)="legalInfoOnChanged('VAT_NO')"
+                                 [isMTR]="isMTR"
+                                 [isBSR]="isBSR"
+                                 [activeTasks]="activeTasks"
+                                 [dataNotification]="dataNotification"
+                                 [isOutletRetailer]="isOutletRetailer"
+                                 [isRO]="isRO"
+                                 [taskNumber]="dataDeclinedNotificationsMap['VAT_NO']"
+            >
+            </gp-vat-number-input>
+          </gp-tax-id-layout>
+          <ng-container marginalContent>
+            <span>{{ 'MARGINAL_CONTENT_TAX_ID_TEXT' | translate }}</span>
+          </ng-container>
+        </gp-edit-section>
+
+        <gp-edit-section>
+          <gp-legal-footer-layout [title]="'LEGAL_FOOTER' | translate"
+                                  [verificationTaskStatus]="verificationTasksStatusMap['LEGAL_FOOTER']"
+                                  [retailVerifyData]="retailVerifyData"
+                                  [isUserAuthorizedForVerificationTask]="isUserAuthorizedForVerificationTask"
+                                  (remain)="legalInfoOnRemain('LEGAL_FOOTER')"
+                                  [isMTR]="isMTR"
+                                  [isBSR]="isBSR"
+                                  [viewState]="viewState"
+                                  [companyDataReadOnly]="companyDataReadOnly"
+                                  [verificationTasksStatusMap]="verificationTasksStatusMap"
+                                  [activeTasks]="activeTasks"
+                                  [dataNotification]="dataNotification"
+                                  [isForRetailEnabled]="isForRetailEnabled"
+                                  [isOutletRetailer]="isOutletRetailer"
+                                  [isRO]="isRO"
+                                  [taskNumber]="dataDeclinedNotificationsMap['LEGAL_FOOTER']"
+          >
+          </gp-legal-footer-layout>
+          <ng-container marginalContent>
+            <span>{{ 'MARGINAL_CONTENT_LEGAL_FOOTER_TEXT' | translate }}</span>
+          </ng-container>
+        </gp-edit-section>
+
+        <ng-container *ngIf="hasRequiredDistributionLevel">
+          <gp-edit-section *gpOnlyOwnCountry="outletCountryId; permissions: contractStatusReadPermissions">
+            <gp-contract-state-layout [title]="'LEGAL_CONTRACT_STATUS' | translate">
+              <gp-legal-contract-state-table *ngIf="legalContractHasData"
+                                             legal-contract-state-table
+                                             [contractStatusDowntimeEnabled]="contractStatusDowntimeEnabled"
+                                             [focusEnabled]="focusEnabled"
+                                             [formArray]="viewState.legalContractsControl"
+                                             [availableRequiredSelections]="contractRequiredAllowedOptions"
+                                             [availableLanguageSelections]="contractLanguageAllowedOptions"
+                                             [availableBrandSelections]="contractBrandAllowedOptions"
+                                             [availableCompanyRelationSelections]="contractCompanyRelationAllowedOptions"
+                                             (contractRemoved)="contractStateRemoveButtonClicked($event)"
+                                             (contractUpdated)="contractStateChanged($event)">
+              </gp-legal-contract-state-table>
+
+              <gp-message *ngIf="!legalContractHasData"
+                          type="info"
+                          legal-contract-state-table>
+                {{ 'LEGAL_CONTRACT_STATUS_TABLE_EMPTY' | translate }}
+              </gp-message>
+
+              <gp-add-button *ngxPermissionsOnly="contractStatusUpdatePermissions"
+                             legal-contract-state-add
+                             [title]="'LEGAL_CONTRACT_STATUS_ADD'"
+                             (clicked)="contractStateAddButtonClicked()"
+                             [disabled]="contractStatusDowntimeEnabled"></gp-add-button>
+            </gp-contract-state-layout>
+            <ng-container marginalContent>
+              <span>{{ 'MARGINAL_CONTENT_LEGAL_CONTRACT_STATUS_TEXT' | translate }}</span>
+            </ng-container>
+          </gp-edit-section>
+        </ng-container>
+      </form>
+    </ng-container>
+  </gp-edit-layout>
+
+  <ng-container *gpOnlyForRetail="viewState.businessSiteId"
+                footer-toolbar>
+    <gp-task-footer *ngIf="!outletDataReadOnly || !companyDataReadOnly"
+                    (confirm)="saveButtonClicked($event)"
+                    (discard)="cancelButtonClicked()"
+                    [discardButtonDisabled]="cancelButtonDisabled"
+                    [confirmButtonDisabled]="saveButtonDisabled"
+                    [multipleVerificationTasks]="true"
+                    [type]="taskType">
+    </gp-task-footer>
+  </ng-container>
+
+  <ng-container *gpNotForRetail
+                footer-toolbar>
+    <gp-default-edit-actions *ngIf="!outletDataReadOnly || !companyDataReadOnly"
+                             [permissions]="requiredPermissions"
+                             [saveButtonDisabled]="saveButtonDisabled"
+                             [cancelButtonDisabled]="cancelButtonDisabled"
+                             (save)="saveButtonClicked()"
+                             (cancel)="cancelButtonClicked()">
+    </gp-default-edit-actions>
+  </ng-container>
+
+  <ng-container overlay>
+    <gp-outlet-tree-navigation gpFxFlex
+                               gpFxFlexXsSm="auto"
+                               style="display: inline">
+    </gp-outlet-tree-navigation>
+  </ng-container>
+</gp-overlay-layout>
+

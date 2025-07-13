@@ -1,0 +1,14 @@
+<div class="brand-selection">
+  <mat-form-field class="no-label">
+    <mat-select [formControl]="control"
+                [required]="true"
+                (selectionChange)="onChange($event)">
+      <mat-option *ngFor="let brand of brands"
+                  [value]="brand.id">{{ brand.name }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="control.hasError('required')">
+      {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+    </mat-error>
+  </mat-form-field>
+</div>

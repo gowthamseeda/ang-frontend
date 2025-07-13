@@ -1,0 +1,6 @@
+<gp-searchfield [settings]="searchFieldSettings"
+                [predefinedSearchFilters]="searchFilters"
+                [placeHolderText]="'SEARCH_OUTLET_FIELD_INLINE_PLACEHOLDER'"
+                [searchResultMessage]="{ singular: 'OUTLET_FOUND', plural: 'OUTLETS_FOUND' }"
+                (searchItemRetrieved)="closeDialog($event)">
+</gp-searchfield>

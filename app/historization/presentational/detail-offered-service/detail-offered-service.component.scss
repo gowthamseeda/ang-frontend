@@ -1,0 +1,33 @@
+@import 'src/styles/default-scrollbar';
+
+th {
+  text-align: left;
+  width: 15%;
+}
+
+td {
+  text-align: left;
+}
+
+h2 {
+  text-align: center;
+  padding: 10px;
+}
+
+ul.circle {
+  list-style-type: circle;
+  margin-top: 0px;
+  padding-left: 10px;
+}
+
+ul.square {
+  list-style-type: square;
+  margin-top: 0px;
+  padding-left: 24px;
+}
+
+.mat-mdc-cell:last-child,
+.mat-mdc-footer-cell:last-child,
+.mat-mdc-header-cell:last-child {
+  max-width: none;
+}

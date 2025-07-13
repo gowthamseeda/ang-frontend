@@ -1,0 +1,38 @@
+<div gpFxLayout
+     class="headline aggregate-data-field"
+     >
+  <h1 id="additionalAddress">{{ headline }}</h1>
+  <gp-icon *ngIf="expanded"
+           name="caret-down"
+           size="small"
+           [hover]="true"
+           (click)="toggleAdditionalContent()"></gp-icon>
+  <gp-icon *ngIf="!expanded"
+           name="caret-right"
+           size="small"
+           [hover]="true"
+           data-cy="additional-content-expand"
+           (click)="toggleAdditionalContent()"></gp-icon>
+  <gp-inplace-task-action-button *ngIf="isForRetailEnabled && isRetailOutlet && isMarketResponsible"
+                                 fieldsStartName='additionalAddress'
+                                 [outletId]="outletId"
+                                 class="icon-padding"
+  >
+  </gp-inplace-task-action-button>
+  <gp-data-field-verification-button *ngIf="isForRetailEnabled && isRetailOutlet && isMarketResponsible"
+                                     fieldsStartName='additionalAddress'
+                                     [shouldShowDialog]="true"
+                                     class="icon-padding"
+  >
+  </gp-data-field-verification-button>
+
+  <gp-data-field-verification-remain-button [isBusinessSiteResponsible]="isBusinessSiteResponsible"
+                                            [aggregateFields]="additionalAddressAggregateFields"
+                                            class="icon-padding"
+  >
+  </gp-data-field-verification-remain-button>
+</div>
+<div class="content"
+     [ngClass]="{'expanded' : expanded }">
+  <ng-content select="[additional-content]"></ng-content>
+</div>

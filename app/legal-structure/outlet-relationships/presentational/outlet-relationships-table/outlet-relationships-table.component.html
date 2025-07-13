@@ -1,0 +1,61 @@
+<gp-content-loader [isLoading]="isLoading">
+  <form [formGroup]="form">
+
+    <ng-container *ngIf="dataSource.data.length === 0; else showTable">
+      <gp-message type="info" class="no-relationship">
+        {{ 'NO_OUTLET_RELATIONSHIP_ESTABLISHED_YET' | translate }}
+      </gp-message>
+    </ng-container>
+    <ng-template #showTable>
+      <h1>{{ 'OUTLET_RELATIONSHIPS' | translate }}</h1>
+
+      <mat-table matSort formArrayName="outletRelationships" [dataSource]="dataSource"
+                 [class.display-none]="dataSource.data.length === 0">
+
+        <ng-container matColumnDef="relatedBusinessSiteId">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="46" mat-sort-header>
+            {{ 'BUSINESS_SITE_ID' | translate }}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element" gpFxFlex="46">
+            <mat-form-field class="no-label">
+              <input matInput [formControl]="element.get('relatedBusinessSiteId')"
+                     [value]="element.get('relatedBusinessSiteId').value" [placeholder]="'CHOOSE_OUTLET' | translate"
+                     (click)="isEditable && openOutletsDialog(element)" readonly>
+            </mat-form-field>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="relationshipDefCode">
+          <mat-header-cell *matHeaderCellDef mat-sort-header gpFxFlex="46">
+            {{ 'OUTLET_RELATIONSHIPS_RELATIONSHIP_DEF_CODE' | translate }}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element" gpFxFlex="46">
+            <gp-outlet-relationships-dropdown [control]="element.get('relationshipDefCode')">
+            </gp-outlet-relationships-dropdown>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="8%"></mat-header-cell>
+          <mat-cell *matCellDef="let element" gpFxFlex="8%">
+            <button *ngIf="isEditable" mat-icon-button (click)="removeOutletRelationship(element.get('nonce').value)">
+              <gp-icon name="trash"></gp-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns" gpFxLayoutAlign="center">
+        </mat-row>
+
+      </mat-table>
+    </ng-template>
+
+    <div *ngIf="isEditable" gpFxFlexFill>
+      <button mat-flat-button class="gp-icon-flat-button" gpRoundedIconButton (click)="addOutletRelationship()">
+        <gp-icon gpIconButtonWithText name="plus"></gp-icon>
+        {{ 'ADD_BUTTON' | translate }}
+      </button>
+    </div>
+  </form>
+</gp-content-loader>

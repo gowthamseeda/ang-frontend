@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+@import '../../shared/styles/master-detail.scss';
+
+.mat-mdc-form-field {
+  .mat-mdc-input-element {
+    &:disabled {
+      color: mat.get-color-from-palette($accent, 600) !important;
+    }
+  }
+}
+
+.checkbox-container {
+  margin-bottom: 30px;
+}

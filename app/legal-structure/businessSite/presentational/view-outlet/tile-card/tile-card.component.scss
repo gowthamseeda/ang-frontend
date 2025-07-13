@@ -1,0 +1,40 @@
+@import 'src/styles-theme';
+
+.mat-mdc-card {
+  height: 250px;
+  width: 310px;
+  padding: 16px 16px 16px 16px;
+  border-radius: 0px;
+  background-size: cover !important;
+  margin-bottom: 30px;
+
+  .tile-card-content {
+    margin: 10px 0px 0px 4px;
+  }
+
+  .icon-right {
+    margin-left: 5px;
+    font-size: 14px;
+  }
+
+  .icon-left {
+    margin-right: 10px;
+    font-size: 14px;
+  }
+}
+
+.banner {
+  min-height: 345px;
+  height: auto;
+  width: 100%;
+  min-width: 540px;
+  padding: 0px 8px 0px 8px;
+
+  .tile-card-content {
+    margin: 0px;
+  }
+}
+
+.label:hover {
+  cursor: pointer;
+}

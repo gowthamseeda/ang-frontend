@@ -1,0 +1,13 @@
+.mat-mdc-chip-set {
+  .mat-mdc-chip.mat-mdc-basic-chip.mat-chip-disabled {
+    pointer-events: none !important;
+  }
+}
+
+.product-group-restrictions-select-dialog {
+  .mat-mdc-chip-set {
+    .mat-mdc-chip.mat-mdc-basic-chip {
+      margin: 4px 8px 4px 4px;
+    }
+  }
+}

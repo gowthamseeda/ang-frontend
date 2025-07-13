@@ -1,0 +1,21 @@
+<mat-menu #childMenu="matMenu">
+  <ng-container *ngFor="let item of breadcrumbItems">
+
+    <ng-container *ngIf="item.children && item.children.length > 0; else noChildren">
+      <button mat-menu-item [matMenuTriggerFor]="menu.childMenu">
+        {{item.label}}
+      </button>
+      <gp-breadcrumb-item #menu [breadcrumbItems]="item.children">
+      </gp-breadcrumb-item>
+    </ng-container>
+
+    <ng-template #noChildren>
+      <button mat-menu-item
+              [routerLink]="item.path"
+              [queryParams]="item.queryParams">
+        {{item.label | translate}}
+      </button>
+    </ng-template>
+
+  </ng-container>
+</mat-menu>

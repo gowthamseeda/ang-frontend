@@ -1,0 +1,22 @@
+<div>
+  <ng-container *ngIf="readonly; else selectfield">
+    {{ (getLabel) ? (getLabel | translateData: currentLanguage) : ('NOT_FOUND' | translate) }}
+  </ng-container>
+  <ng-template #selectfield>
+    <mat-form-field class="no-label">
+      <mat-select placeholder="{{'LABEL' | translate}}"
+                  [formControl]="control"
+                  [errorStateMatcher]="errorStateMatcher"
+                  data-cy="label-selection">
+        <mat-option *ngFor="let label of availableLabels"
+                    [value]="label.id"
+                    data-cy="label-selection-option">
+          {{ label | translateData: currentLanguage }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="control.hasError('required')">
+        {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+      </mat-error>
+    </mat-form-field>
+  </ng-template>
+</div>

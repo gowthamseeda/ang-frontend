@@ -1,0 +1,51 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.month-navigation {
+  display: flex;
+  justify-content: center;
+  padding: 27px 0 27px 0;
+
+  .month-name {
+    font-size: 21px;
+    color: mat.get-color-from-palette($accent, 800);
+  }
+
+  &.enabled {
+    justify-content: space-between;
+
+    i {
+      border: solid mat.get-color-from-palette($accent, 600);
+      border-width: 0 2px 2px 0;
+      display: inline-block;
+      padding: 3px;
+    }
+
+    .prev-action {
+      width: 20px;
+      padding-left: 15px;
+
+      .arrow-left {
+        transform: rotate(135deg);
+        -webkit-transform: rotate(135deg);
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .next-action {
+      width: 20px;
+
+      .arrow-right {
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

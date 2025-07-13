@@ -1,0 +1,13 @@
+.match {
+  font-weight: bold;
+  color: #00677f;
+}
+
+.inverted-highlighting {
+  font-weight: bold;
+
+  &.match {
+    font-weight: normal;
+    color: black;
+  }
+}

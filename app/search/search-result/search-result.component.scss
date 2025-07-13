@@ -1,0 +1,22 @@
+@use '@angular/material' as mat;
+@import '../../../styles-theme';
+
+.search-result-header {
+  border-top: 1px solid mat.get-color-from-palette($accent, 100);
+  padding-left: 20px;
+}
+
+.search-error,
+.no-search-results {
+  padding: 0 20px 30px 20px;
+}
+
+.search-item {
+  &:hover {
+    background-color: mat.get-color-from-palette($accent, 200);
+  }
+
+  mat-checkbox {
+    margin-right: 20px;
+  }
+}

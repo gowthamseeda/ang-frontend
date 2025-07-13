@@ -1,0 +1,157 @@
+<ng-container *ngIf="brandProductGroups && serviceTableRows">
+  <div *ngIf="serviceTableRows?.data?.length > 0" class="table-container">
+    <cdk-virtual-scroll-viewport>
+      <mat-table [virtualDataSource]="serviceTableRows" fixedLayout [ngStyle]="{ 'min-width': tableWidth + 'px' }">
+        <ng-container matColumnDef="name" sticky>
+          <mat-header-cell *matHeaderCellDef class="name" gpFxFlex="20">
+            <mat-form-field [formGroup]="searchFormGroup">
+              <mat-label>{{ 'SEARCH' | translate }}</mat-label>
+              <input #input formControlName="search" (keyup)="onKeyUp($event)" matInput
+                     placeholder="{{'SEARCH_SERVICES' | translate}}" data-cy="search-services">
+              <gp-icon matSuffix name="search" size="small">
+              </gp-icon>
+            </mat-form-field>
+          </mat-header-cell>
+          <mat-cell (mouseenter)="setHoverServiceId(serviceTableRow.entry.id, true)"
+                    (mouseleave)="setHoverServiceId(serviceTableRow.entry.id, false)" *matCellDef="let serviceTableRow"
+                    gpFxFlex="20" data-cy="service-item">
+            <gp-service-table-name-cell [serviceTableRow]="serviceTableRow"
+                                        [ngClass]="{'pointer-cursor': copyOfferedServiceToggleStatus}"
+                                        (click)="copyOfferedServiceToggleStatus ? selectServiceId(serviceTableRow.entry.id) : null">
+            </gp-service-table-name-cell>
+            <div *ngxPermissionsOnly="['services.service.detaildescription.read']">
+              <gp-icon *ngIf="showServicesDetailsIcon(serviceTableRow?.entry)"
+                       name="hint-info"
+                       size="small"
+                       color="petrol"
+                       matTooltip="{{ (canUpdate?'SERVICE_DETAIL_DESCRIPTION':'SERVICE_DESCRIPTION') | translate }}"
+                       matTooltipPosition="above"
+                       (click)="openServiceDetailDescriptionDialog(serviceTableRow?.entry.id)">
+              </gp-icon>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="brandProductGroups">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="60">
+            <div *ngFor="let brandId of brandProductGroups | keys" class="product-groups" gpFxLayout="row"
+                 gpFxLayoutAlign="center center" style="flex: 0;">
+              <div *ngFor="let productGroup of orderBy(brandProductGroups[brandId])" gpFxLayout="row"
+                   gpFxLayoutAlign="center space-evenly">
+                <gp-product-group [brandId]="brandId" [countryId]="countryId"
+                                  [productGroupId]="productGroup?.productGroupId" tooltipPosition="above"
+                                  [ngClass]="{'pointer-cursor': copyOfferedServiceToggleStatus}"
+                                  (click)="copyOfferedServiceToggleStatus ? selectBrandProductGroup(brandId, productGroup?.productGroupId) : null">
+                </gp-product-group>
+              </div>
+            </div>
+          </mat-header-cell>
+          <mat-cell (mouseenter)="setHoverServiceId(serviceTableRow.entry.id, true)"
+                    (mouseleave)="setHoverServiceId(serviceTableRow.entry.id, false)" *matCellDef="let serviceTableRow"
+                    gpFxFlex="60">
+            <div *ngFor="let brandId of brandProductGroups | keys" class="product-groups" gpFxLayout="row"
+                 gpFxLayoutAlign="center center" style="flex: 0;">
+              <div *ngFor="let brandProductGroup of orderBy(brandProductGroups[brandId])" gpFxLayout="row"
+                   gpFxLayoutAlign="center space-evenly">
+                <div gpFxLayoutAlign="center center">
+                  <gp-offered-service *ngIf="!copyOfferedServiceToggleStatus else multiSelectOfferedServices"
+                                      (add)="addOfferedService.emit($event)"
+                                      (remove)="removeOfferedService.emit($event)" [brandId]="brandProductGroup.brandId"
+                                      [countryId]="countryId" [outletId]="outletId"
+                                      [productGroupId]="brandProductGroup.productGroupId"
+                                      [serviceId]="serviceTableRow?.entry.id"
+                                      [showAddIcon]="showIcon(serviceTableRow?.entry.id)">
+                  </gp-offered-service>
+                  <ng-template #multiSelectOfferedServices>
+                    <gp-copy-offered-service [brandId]="brandProductGroup.brandId" [countryId]="countryId"
+                                             [outletId]="outletId" [productGroupId]="brandProductGroup.productGroupId"
+                                             [serviceId]="serviceTableRow?.entry.id">
+                    </gp-copy-offered-service>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions" stickyEnd>
+          <mat-header-cell *matHeaderCellDef class="actions border-left" gpFxFlex="20">
+            <gp-service-action-tabs [countryId]="countryId" [outletId]="outletId">
+            </gp-service-action-tabs>
+          </mat-header-cell>
+
+          <mat-cell (mouseenter)="setHoverServiceId(serviceTableRow.entry.id, true)"
+                    (mouseleave)="setHoverServiceId(serviceTableRow.entry.id, false)" *matCellDef="let serviceTableRow"
+                    class="actions border-left" gpFxFlex="20">
+            <gp-service-action-icons *ngIf="!copyOfferedServiceToggleStatus else multiSelectActions"
+                                     [serviceId]="serviceTableRow?.entry?.id"
+                                     [serviceSupportsClockAction]="serviceTableRow?.entry?.openingHoursSupport"
+                                     [serviceTableRowHovered]="showIcon(serviceTableRow?.entry.id)"
+                                     [serviceTableSaved]="serviceTableSaved" [countryId]="countryId"
+                                     [outletId]="outletId" [showUnmaintainedInfo]="showUnmaintainedInfo">
+            </gp-service-action-icons>
+            <ng-template #multiSelectActions>
+              <gp-multi-select-service-icons [serviceId]="serviceTableRow?.entry?.id"
+                                             [serviceSupportsClockAction]="serviceTableRow?.entry?.openingHoursSupport"
+                                             [serviceTableRowHovered]="showIcon(serviceTableRow?.entry.id)"
+                                             [serviceTableSaved]="serviceTableSaved" [countryId]="countryId"
+                                             [outletId]="outletId" [showUnmaintainedInfo]="true">
+              </gp-multi-select-service-icons>
+            </ng-template>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="empty-left" sticky>
+          <mat-header-cell *matHeaderCellDef class="no-content filter-icon" gpFxFlex="20">
+            <ng-container *ngIf="!copyOfferedServiceToggleStatus">
+              <button mat-icon-button type="button" (click)="openServiceFilterDialog()">
+                <gp-icon name="filter" size="medium"></gp-icon>
+              </button>
+            </ng-container>
+          </mat-header-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="brands">
+          <mat-header-cell *matHeaderCellDef gpFxFlex="60">
+            <gp-brand-icon *ngFor="let brandId of brandProductGroups | keys" [id]="brandId"
+                           [ngStyle]="{ 'min-width': brandProductGroupColumnWidthBy(brandId) + 'px' }"
+                           [ngClass]="{'pointer-cursor': copyOfferedServiceToggleStatus}"
+                           tooltipPosition="above" class="brands" gpFxLayout="row" gpFxLayoutAlign="center center"
+                           style="flex: 0;"
+                           (click)="copyOfferedServiceToggleStatus ? selectBrand(brandId) : null"></gp-brand-icon>
+          </mat-header-cell>
+        </ng-container>
+        <ng-container matColumnDef="empty-right" stickyEnd>
+          <mat-header-cell *matHeaderCellDef class="no-content border-left" gpFxFlex="20"
+                           gpFxLayoutAlign="flex-start flex-end">
+            <div class="metadata-toggle-container">
+              <ng-container *ngIf="!copyOfferedServiceToggleStatus">
+                <form [formGroup]=unmaintainedInfoToggleFormGroup>
+                  <mat-slide-toggle labelPosition="after" color="primary" formControlName="unmaintainedInfo" gpFxFlex
+                                    data-cy="unmaintainedToggle">
+                    {{ 'SERVICE_SHOW_UNMAINTAINED_INFO' | translate }}</mat-slide-toggle>
+                </form>
+              </ng-container>
+              <!-- <ng-template #multiMode>
+                <form [formGroup]=multiEditFormGroup>
+                  <mat-slide-toggle labelPosition="after"
+                                    formControlName="mode"
+                                    gpFxFlex>
+                    {{(this.multiSelectDataService.mode | async) ? 'EDIT':'COPY' }}
+                  </mat-slide-toggle>
+                </form>
+              </ng-template> -->
+            </div>
+          </mat-header-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedTopColumns; sticky: true">
+        </mat-header-row>
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+
+        <mat-row *matRowDef="let element; columns: displayedColumns"></mat-row>
+
+      </mat-table>
+    </cdk-virtual-scroll-viewport>
+  </div>
+</ng-container>

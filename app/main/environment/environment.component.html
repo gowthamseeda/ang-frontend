@@ -1,0 +1,8 @@
+<div *ngIf="getEnvironment()"
+     class="environment"
+     matTooltip="The environment's name"
+     matTooltipPosition="{{ 'position' | tooltipDefault }}"
+     matTooltipShowDelay="{{ 'showDelay' | tooltipDefault }}"
+     matTooltipHideDelay="{{ 'hideDelay' | tooltipDefault }}">
+  {{ getEnvironment() }}
+</div>

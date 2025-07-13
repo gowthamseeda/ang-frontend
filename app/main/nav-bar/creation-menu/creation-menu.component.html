@@ -1,0 +1,18 @@
+<mat-list>
+  <mat-list-item
+    *ngxPermissionsOnly="['legalstructure.company.create']"
+    routerLink="/outlet/company"
+  >
+    <gp-icon matListItemIcon name="plus" size="small"></gp-icon>
+    <div matListItemTitle>{{ 'CREATE_COMPANY' | translate }}</div>
+  </mat-list-item>
+
+  <mat-divider></mat-divider>
+
+  <mat-list-item *ngxPermissionsOnly="['legalstructure.businesssite.create']" routerLink="/outlet">
+    <gp-icon matListItemIcon name="plus" size="small"></gp-icon>
+    <div matListItemTitle>{{ 'CREATE_OUTLET' | translate }}</div>
+  </mat-list-item>
+
+  <mat-divider></mat-divider>
+</mat-list>

@@ -1,0 +1,59 @@
+<gp-default-layout>
+  <gp-header header-toolbar [breadcrumbItems]="[{ label: 'STRUCTURE' },
+             { label: 'GENERAL_GROUPS' , path: '../' },
+             { label: 'GENERAL_GROUPS_ADD' }]">
+  </gp-header>
+
+  <gp-edit-layout title="{{ 'GENERAL_GROUPS_ADD' | translate }}" marginalColumnDisabled="true">
+    <gp-edit-section>
+
+      <div [formGroup]="generalGroupFormGroup" gpFxLayout="column">
+
+        <div gpFxLayout="row" style="margin-bottom: 15px">
+          <div gpFxLayout="row" gpFxLayoutGap="15px" gpFxLayoutAlign="start center" style="flex:0 1 600px;">
+            <mat-form-field gpFxFlex="70%">
+              <mat-label>{{ 'GENERAL_GROUPS_GROUP_NAME' | translate | uppercase }}</mat-label>
+              <input matInput type="text" formControlName="name" data-cy="add-general-group-name-input"
+                     [required]="true" />
+              <mat-error>
+                {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <gp-country-dropdown gpFxFlex="30%" [parentForm]="generalGroupFormGroup">
+            </gp-country-dropdown>
+          </div>
+        </div>
+
+        <gp-brand-productgroups-services-table style="margin-bottom: 15px"
+                                               [brandProductGroupsServicesRows]="brandProductGroupsServicesRows"
+                                               [countryId]="this.generalGroupFormGroup.value.countryId"
+                                               [disabled]="this.generalGroupFormGroup.value.countryId.length === 0"
+                                               (brandProductGroupServiceIdsChange)="updateBrandProductGroupServicesControl($event)">
+        </gp-brand-productgroups-services-table>
+
+        <h2 style="margin-bottom: 15px">{{'STRUCTURES_MEMBERS' | translate}}</h2>
+
+        <gp-members-table [members]="generalGroupMembers" [readOnly]="false"
+                          (memberRemoved)="removeGeneralGroupMember($event)">
+        </gp-members-table>
+
+      </div>
+
+    </gp-edit-section>
+  </gp-edit-layout>
+
+  <gp-default-edit-actions footer-toolbar gpFxFill
+                           [saveButtonDisabled]="generalGroupFormGroup.invalid || generalGroupFormGroup.pristine"
+                           [cancelButtonDisabled]="generalGroupFormGroup.valid && generalGroupFormGroup.pristine"
+                           (save)="save()" (cancel)="reset()">
+    <button mat-flat-button class="gp-icon-flat-button"
+            [disabled]="this.generalGroupFormGroup.value.countryId.length === 0" (click)="openGeneralGroupMembersList()"
+            data-cy="add-general-group-add-members-button">
+      <gp-icon gpIconButtonWithText name="plus"></gp-icon>
+      {{ 'STRUCTURES_ADD_MEMBERS' | translate }}
+    </button>
+  </gp-default-edit-actions>
+</gp-default-layout>
+
+<gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>

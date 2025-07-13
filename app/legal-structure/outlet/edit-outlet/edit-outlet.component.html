@@ -1,0 +1,155 @@
+<gp-overlay-layout [toolTipText]="'COMPANY_NAVIGATION_TREE'">
+  <gp-outlet-header header-toolbar>
+  </gp-outlet-header>
+
+  <gp-verify-data-notification *gpOnlyForRetail="outletId"
+                               [showMessage]="isVerificationTaskPresent && isForRetailEnabled">
+  </gp-verify-data-notification>
+
+  <gp-read-only-notification [showMessage]="isTaskPresent && !isForRetailEnabled">
+  </gp-read-only-notification>
+  <gp-review-changes-made-notification [openTasks]="openDataChangeTask"
+                                       *ngIf="isMarketResponsible"
+  >
+  </gp-review-changes-made-notification>
+
+  <gp-message *ngIf="showDataChangeMessage"
+              type="info"
+              [showAction]=true
+              (actionClick)="onActionClick()"
+              actionText="MASTER_DATA_SERVICE_VARIANT_MULTI_VIEW">
+    {{ 'DATA_CHANGED_NOTIFICATIONS_BANNER' | translate }}
+  </gp-message>
+
+  <div error-notification>
+    <gp-outlet-error-notification [businessSiteId]="outletId"
+                                  [registeredOfficeId]="outlet?.companysRegisteredOfficeId">
+    </gp-outlet-error-notification>
+  </div>
+
+  <gp-edit-layout *ngIf="outletLoaded"
+                  closeLink="/outlet/{{ outletId }}"
+                  logo="business"
+                  title="{{ 'BASE_DATA' | translate }}"
+                  [isForRetailEnabled]="isForRetailEnabled && isMarketResponsible"
+                  [aggregateDataFields]="aggregateDataFields"
+                  [isRetailOutlet]="isRetailOutlet"
+                  >
+    <ng-container subTitle>
+      {{ 'EDIT_BASE_DATA_HEADER_TEXT_PREFIX' | translate }}
+      <a class="scroll-to-fragment-link"
+         (click)="scrollToFragment('distributionLevels')">
+        <span>{{ 'DISTRIBUTION_LEVELS' | translate }}</span>
+      </a>{{ ', ' }}
+      <a class="scroll-to-fragment-link"
+         (click)="scrollToFragment('address')">
+        <span>{{ 'ADDRESS' | translate }}</span>
+      </a>{{ ', ' }}
+      <a class="scroll-to-fragment-link"
+         (click)="scrollToFragment('poBox')">
+        <span>{{ 'PO_BOX' | translate }}</span>
+      </a>{{ ', ' }}
+      <a class="scroll-to-fragment-link"
+         (click)="scrollToFragment('gps')">
+        <span>{{ 'GPS_COORDINATES' | translate }}</span>
+      </a>
+      <span *ngIf="!outletForm.disabled || !isBusinessNameTableEmpty()">
+        {{ ' ' + ('EDIT_BASE_DATA_HEADER_TEXT_OR' | translate) + ' ' }}
+        <a class="scroll-to-fragment-link"
+           (click)="scrollToFragment('businessNames')">
+          <span>{{ 'BUSINESS_NAMES' | translate }}</span>
+        </a>
+      </span>
+    </ng-container>
+
+    <ng-container extraActions>
+      <gp-language-toggle [countryId]="outlet?.countryId"
+                          [defaultLanguageId]="outlet?.defaultLanguageId">
+      </gp-language-toggle>
+    </ng-container>
+
+    <gp-edit-section *ngIf="!outlet?.active">
+      <gp-message message="OUTLET_CLOSED"
+                  type="warning">
+        {{ 'OUTLET_CLOSED' | translate }}
+      </gp-message>
+    </gp-edit-section>
+
+    <gp-edit-section
+      *gpOnlyOwnCountry="outlet.countryId; permissions: ['traits.distributionlevels.show']">
+      <gp-distribution-level [outletId]="outletId"
+                             [parentForm]="outletForm"
+                             [registeredOffice]="outlet?.registeredOffice"
+                             [productResponsible]="isProductResponsible"
+                             [marketResponsible]="isMarketResponsible"
+                             id="distributionLevels"
+                             data-cy="edit-outlet-distribution-Level">
+      </gp-distribution-level>
+      <ng-container marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_DISTRIBUTION_LEVELS_TEXT' | translate }}</span>
+      </ng-container>
+    </gp-edit-section>
+
+    <gp-outlet-form [outlet]="outlet"
+                    [parentForm]="outletForm"
+                    [isTestOutlet]="isTestOutlet"
+                    (isDataChanged)="showDataChangeNotification($event)"
+                    [dataChangeViewClicked]="dataChangeViewClicked"
+                    [isRetailOutlet]="isRetailOutlet"
+                    [isMarketResponsible]="isMarketResponsible"
+                    [isBusinessSiteResponsible]="isBusinessSiteResponsible"></gp-outlet-form>
+    <gp-edit-section>
+      <div gpFxFlexFill
+           id="businessNames"
+           data-cy="outlet-business-names">
+        <div *ngIf="!readonly || !isBusinessNameTableEmpty()"
+             gpFxLayout>
+          <h1>{{ 'BUSINESS_NAMES' | translate }}</h1>
+        </div>
+        <gp-business-name-table (hasChange)="setButtonStatuses()"
+                                [countryLanguages]="countryLanguages"
+                                [currentLanguage]="activeTranslation.languageId"
+                                [defaultLanguageId]="outlet?.defaultLanguageId"
+                                [disabled]="readonly"
+                                [isInTranslationEditMode]="!activeTranslation.isDefaultLanguage"
+                                [outletId]="outletId">
+        </gp-business-name-table>
+      </div>
+      <ng-container *ngIf="!outletForm.disabled || !isBusinessNameTableEmpty()"
+                    marginalContent>
+        <span>{{ 'MARGINAL_CONTENT_BUSINESS_NAMES_TEXT' | translate }}</span>
+      </ng-container>
+    </gp-edit-section>
+  </gp-edit-layout>
+
+  <ng-container *gpOnlyForRetail="outletId"
+                footer-toolbar>
+    <gp-task-footer (confirm)="confirmButtonClicked($event)"
+                    (discard)="cancelButtonClicked()"
+                    *ngIf="!readonly"
+                    [discardButtonDisabled]="cancelButtonDisabled"
+                    [confirmButtonDisabled]="saveButtonDisabled"
+                    [multipleVerificationTasks]="true"
+                    [type]="taskType">
+    </gp-task-footer>
+  </ng-container>
+
+  <ng-container *gpNotForRetail
+                footer-toolbar>
+    <gp-default-edit-actions (cancel)="cancelButtonClicked()"
+                             (save)="saveButtonClicked()"
+                             *ngIf="!readonly"
+                             [cancelButtonDisabled]="cancelButtonDisabled"
+                             [saveButtonDisabled]="saveButtonDisabled">
+    </gp-default-edit-actions>
+  </ng-container>
+
+  <gp-outlet-tree-navigation [changed]="outletOrBusinessNameOrDistributionLevelChanged"
+                             gpFxFlex
+                             gpFxFlexXsSm="auto"
+                             style="display: inline"
+                             overlay>
+  </gp-outlet-tree-navigation>
+</gp-overlay-layout>
+
+<gp-message-on-leave [showMessage]="canDeactivate()"></gp-message-on-leave>

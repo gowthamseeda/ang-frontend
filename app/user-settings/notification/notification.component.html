@@ -1,0 +1,5 @@
+<gp-message *ngIf="isNotificationAlreadyRead() && isNotificationTranslated()"
+            [typeIconVisible]="false"
+            (messageClose)="closeNotification()">
+  {{message | translate}}
+</gp-message>

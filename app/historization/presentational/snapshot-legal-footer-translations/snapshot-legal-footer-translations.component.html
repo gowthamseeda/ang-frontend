@@ -1,0 +1,10 @@
+<ng-container *ngIf="legalFooterTranslations; else showEmpty">
+  <ul *ngFor="let translation of legalFooterTranslations">
+    <li [class.changed]="isChanged">
+      [{{ translation?.languageId | emptyValuePipe }}] {{ translation?.translation | emptyValuePipe }}
+  </ul>
+</ng-container>
+
+<ng-template #showEmpty>
+  {{ '' | emptyValuePipe }}
+</ng-template>

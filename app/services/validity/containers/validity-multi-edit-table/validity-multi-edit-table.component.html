@@ -1,0 +1,14 @@
+<gp-validity-multi-edit-table-layout (applicationChange)="applicationChange($event)"
+                                     (applicationUntilChange)="applicationUntilChange($event)"
+                                     (pristineChange)="pristineChange($event)"
+                                     (validChange)="validChange($event)"
+                                     (validFromChange)="validFromChange($event)"
+                                     (validUntilChange)="validUntilChange($event)"
+                                     (validityChange)="validityChange($event)"
+                                     [brandProductGroups]="brandProductGroups | async"
+                                     [brandRestrictions]="brandRestrictions | async"
+                                     [countryId]="countryId"
+                                     [productGroupRestrictions]="productGroupRestrictions | async"
+                                     [userHasPermissions]="userHasPermissions | async"
+                                     [validityTableRows]="validityTableRows | async">
+</gp-validity-multi-edit-table-layout>

@@ -1,0 +1,87 @@
+<gp-task-expandable-table [columnsToDisplay]="columnsToDisplay"
+                          [data]="groupedTasks"
+                          (saveExpandedStatus)="saveExpandedStatus.emit($event)">
+
+  <ng-container matColumnDef="expansionIndicator">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="5">
+    </mat-header-cell>
+    <mat-cell *matCellDef="let data"
+              gpFxFlex="5">
+      <gp-icon *ngIf="!data.show"
+               color="petrol"
+               name="accordion"></gp-icon>
+      <gp-icon *ngIf="data.show"
+               color="petrol"
+               name="accordion-open"></gp-icon>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="legalName">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="20">{{ 'LEGAL_NAME' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let data"
+              gpFxFlex="20">
+      {{ data?.row.businessSite?.legalName }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="address">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="20">{{ 'ADDRESS' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let data"
+              gpFxFlex="20">
+      <div>
+        {{ data?.row.businessSite?.address?.street }}
+        {{ data?.row.businessSite?.address?.streetNumber }}
+      </div>
+      <div>{{ data?.row.businessSite?.address?.zipCode }}
+        {{ data?.row.businessSite?.address?.city }}</div>
+      <div>
+        {{ data?.row.businessSite?.address?.countryId | translateCountry | async }}
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="outletId">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="15">{{ 'OUTLET_ID' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let data"
+              gpFxFlex="15">
+      {{ data?.row.businessSite.businessSiteId }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="brandCodes">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="15">{{ 'BRAND_CODES' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let data"
+              gpFxFlex="15">
+      <gp-brand-code [outletId]="data?.row.businessSite?.businessSiteId">
+      </gp-brand-code>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lastEdited">
+    <mat-header-cell *matHeaderCellDef
+                     gpFxFlex="15">{{ 'CREATED_LAST_EDITED' | translate }}</mat-header-cell>
+    <mat-cell *matCellDef="let data"
+              gpFxFlex="15"
+              x-ms-format-detection="none">
+      {{ data.row.lastChanged | localeDateTime: 'mediumDate' }} -
+      {{ data.row.lastChanged | localeDateTime: 'shortTime' }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="expandedDetail">
+    <mat-cell *matCellDef="let data"
+              class="expanded-cell">
+      <div class="element-detail">
+        <gp-task-info [tasks]="data?.row.tasks"
+                      [isLinkEnabled]="true"
+                      (initTaskList)="initTaskList.emit()">
+        </gp-task-info>
+      </div>
+    </mat-cell>
+  </ng-container>
+</gp-task-expandable-table>

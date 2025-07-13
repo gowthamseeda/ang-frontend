@@ -1,0 +1,141 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.mat-mdc-table {
+  & .mat-mdc-header-row {
+    .country-cpi {
+      width: 100%;
+      padding-right: 20px;
+      text-align: end;
+      color: mat.get-color-from-palette($accent, 600);
+    }
+  }
+
+  & .mat-mdc-row {
+    & .center-name {
+      color: mat.get-color-from-palette($accent, 500);
+      font-size: 16px;
+    }
+
+    & .countries-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      font-size: 16px;
+      line-height: 16px;
+
+      & .country-cpi {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 6px;
+
+        .cpi {
+          color: mat.get-color-from-palette($accent, 600);
+          padding-right: 20px;
+        }
+      }
+    }
+
+    & .address-container,
+    .categories-container {
+      display: flex;
+      flex-direction: column;
+      line-height: 14px;
+
+      & div {
+        margin-bottom: 4px;
+        word-break: break-all;
+      }
+    }
+
+    & .brand-codes_container {
+      display: flex;
+      flex-direction: column;
+
+      & .brand-code_container {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 6px;
+
+        & .brand-code {
+          width: 64px;
+          line-height: 32px;
+          margin-left: 15px;
+          font-size: 14px;
+          text-align: center;
+          background-color: mat.get-color-from-palette($accent, 450);
+          color: mat.get-contrast-color-from-palette($accent, 450);
+        }
+
+        & .brand-code:hover {
+          cursor: default;
+        }
+      }
+
+      & .brand-code_container:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+
+    & .type-container {
+      display: flex;
+      line-height: 20px;
+      font-size: 11px;
+
+      & .left-circle {
+        width: 15px;
+        border: 1px solid mat.get-color-from-palette($accent, 400);
+        border-right: none;
+        border-top-left-radius: 50%;
+        border-bottom-left-radius: 50%;
+      }
+
+      & .type_ro {
+        width: 15px;
+        text-align: center;
+        border: 1px solid mat.get-color-from-palette($accent, 400);
+        border-left: none;
+        border-right: none;
+      }
+
+      & .right-circle {
+        width: 15px;
+        border: 1px solid mat.get-color-from-palette($accent, 400);
+        border-left: none;
+        border-top-right-radius: 50%;
+        border-bottom-right-radius: 50%;
+      }
+    }
+  }
+
+  & .mat-column-name {
+    min-width: 350px;
+  }
+
+  & .mat-column-country {
+    min-width: 250px;
+    max-width: 350px;
+  }
+
+  & .mat-column-address {
+    min-width: 250px;
+  }
+
+  & .mat-column-brand {
+    min-width: 135px;
+    max-width: 135px;
+  }
+
+  & .mat-column-type {
+    min-width: 90px;
+    max-width: 90px;
+  }
+
+  & .mat-column-category {
+    min-width: 145px;
+    max-width: 145px;
+  }
+}

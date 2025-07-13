@@ -1,0 +1,18 @@
+@use '@angular/material' as mat;
+@import '../../../styles-theme';
+
+.message {
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.warning {
+  background: mat.get-color-from-palette($warn, 300);
+  color: mat.get-contrast-color-from-palette($warn, 300);
+}
+
+[mat-icon-button] {
+  height: inherit;
+  width: inherit;
+  line-height: inherit;
+}

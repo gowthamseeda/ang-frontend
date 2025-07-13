@@ -1,0 +1,54 @@
+<ng-container *gpNotForRetail>
+  <mat-form-field [formGroup]="parentForm">
+    <mat-label>{{'LEGAL_NAME' | translate}}</mat-label>
+    <input matInput
+           formControlName="legalName"
+           type="text"
+           required="{{ required }}"
+           [readonly]="!isControlEditable()"
+           data-cy="address-legal-name"
+           [ngClass]="{'data-changed-notification':isDataChanged}">
+    <ng-container matSuffix>
+      <gp-icon *ngIf="!isControlEditable()"
+               name="lock"
+               size="small">
+      </gp-icon>
+    </ng-container>
+    <mat-error *ngIf="parentForm.get('legalName')?.hasError('maxlength')">
+      {{ 'VALIDATION_ERROR_MAX_CHARS' | translate:{ value: '256' } }}
+    </mat-error>
+    <mat-error *ngIf="parentForm.get('legalName')?.hasError('required')">
+      {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+    </mat-error>
+    <mat-hint *ngIf="isDataChanged"
+              class="data-changed">
+      {{ 'DATA_CHANGED_NOTIFICATIONS' | translate }}
+    </mat-hint>
+  </mat-form-field>
+</ng-container>
+<ng-container *gpOnlyForRetail>
+  <mat-form-field [formGroup]="parentForm" class="show-footer">
+    <mat-label>{{'LEGAL_NAME' | translate}}</mat-label>
+    <input matInput
+           formControlName="legalName"
+           type="text"
+           required="{{ required }}"
+           [readonly]="true"
+           [ngClass]="{'data-changed-notification':isDataChanged}">
+    <ng-container matSuffix>
+      <gp-icon name="lock"
+               size="small">
+      </gp-icon>
+    </ng-container>
+    <mat-error *ngIf="parentForm.get('legalName')?.hasError('maxlength')">
+      {{ 'VALIDATION_ERROR_MAX_CHARS' | translate:{ value: '256' } }}
+    </mat-error>
+    <mat-error *ngIf="parentForm.get('legalName')?.hasError('required')">
+      {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+    </mat-error>
+    <mat-hint *ngIf="isDataChanged"
+              class="data-changed">
+      {{ 'DATA_CHANGED_NOTIFICATIONS' | translate }}
+    </mat-hint>
+  </mat-form-field>
+</ng-container>

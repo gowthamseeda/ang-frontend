@@ -1,0 +1,25 @@
+<gp-master-tile headerText="{{ 'ADMIN_OUTLET_INFORMATION_RELATIONSHIP' | translate }}"
+                searchPlaceHolder="{{ 'SEARCH_OUTLET_RELATIONSHIP_FIELD_INLINE_PLACEHOLDER' | translate }}"
+                buttonText="{{ 'ADD_OUTLET_RELATIONSHIP_BUTTON' | translate }}"
+                componentLink="/master/outletRelationship"
+                (searchText)="searchOutletRelationshipName($event)">
+  <div gpFxLayout="column">
+    <div class="outlet-relationship-container"
+         *ngFor="let outletRelationship of outletRelationships | filter: searchText"
+         routerLink="/master/outletRelationship/{{ outletRelationship.id }}"
+         matTooltip="{{ outletRelationship && outletRelationship?.description ? outletRelationship?.description : '' }}"
+         matTooltipPosition="{{ 'position' | tooltipDefault }}">
+      <div class="outlet-relationship-name-container">
+        {{ outletRelationship.name }}
+      </div>
+      <div class="delete-outlet-relationship-container"
+           (click)="$event.stopPropagation()">
+        <button mat-icon-button
+                (click)="deleteOutletRelationship(outletRelationship.id)"
+        >
+          <gp-icon name="trash"></gp-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</gp-master-tile>

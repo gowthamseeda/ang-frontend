@@ -1,0 +1,13 @@
+<div gpFxLayout="row"
+     gpFxLayoutAlign="space-between center">
+  <gp-breadcrumb [breadcrumbItems]="breadcrumbItems">
+  </gp-breadcrumb>
+
+  <div gpFxLayout="row"
+       gpFxLayoutAlign="end center"
+       gpFxLayoutGap="20px">
+    <gp-link-out-tpro *gpShowByPermissions="['app.tpro.show']"></gp-link-out-tpro>
+    <gp-switch-language></gp-switch-language>
+  </div>
+</div>
+

@@ -1,0 +1,7 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.changed {
+  font-weight: bold;
+  color: mat.get-color-from-palette($accent, 500);
+}

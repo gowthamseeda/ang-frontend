@@ -1,0 +1,59 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.offered-service {
+  margin: 0;
+  width: 60px;
+
+  .product-group {
+    color: mat.get-color-from-palette(mat.$grey-palette, 500);
+    cursor: pointer;
+    visibility: hidden;
+
+    &.read-only {
+      cursor: default;
+    }
+
+    &.show-add-icon {
+      visibility: visible;
+      color: mat.get-color-from-palette($primary, 500);
+    }
+
+    span {
+      display: block;
+      position: relative;
+    }
+
+    .offered {
+      visibility: visible;
+
+      &.read-only {
+        background-color: mat.get-color-from-palette(mat.$grey-palette, 500, 0.5);
+      }
+
+      &.expired {
+        visibility: visible;
+        height: 60px;
+        width: 58px;
+        background-color: mat.get-color-from-palette(mat.$grey-palette, 200, 0.5);
+
+        .expired-text {
+          position: relative;
+          left: -19px;
+          font-size: 10px;
+          font-weight: bold;
+          color: mat.get-color-from-palette($primary);
+
+          &.read-only {
+            color: mat.get-color-from-palette(mat.$grey-palette, 500, 0.5);
+          }
+        }
+
+        .expired-icon {
+          position: relative;
+          top: -10px;
+        }
+      }
+    }
+  }
+}

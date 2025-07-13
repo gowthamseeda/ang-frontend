@@ -1,0 +1,23 @@
+<mat-card gpFxLayout="column"
+          [ngStyle]="{ background: pathBackgroundImage }"
+          [class.banner]="isBanner">
+  <div gpFxLayout="row nowrap"
+       style="flex: 0 0 auto">
+    <div class="pointer title"
+         style="flex: 1 1 100%"
+         (click)="emitCardClickedEvent()">
+      <ng-content select="[tile-title]"></ng-content>
+    </div>
+    <div class="menu"
+         style="flex: 0 0 auto"
+         gpFxLayoutAlign="end center">
+      <ng-content select="[tile-menu]"></ng-content>
+    </div>
+  </div>
+  <div class="tile-card-content pointer "
+       gpFxLayout="column"
+       style="flex: 1 1 auto"
+       (click)="emitCardClickedEvent()">
+    <ng-content select="[tile-content]"></ng-content>
+  </div>
+</mat-card>

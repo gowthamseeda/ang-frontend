@@ -1,0 +1,18 @@
+<ng-template #popup>
+  <div gpFxFill
+       gpFxLayout="column">
+    <h2 matDialogTitle> {{ title }} </h2>
+    <mat-dialog-content gpFxFlex
+                        class="mat-dialog-content">
+      <ng-content></ng-content>
+    </mat-dialog-content>
+    <mat-dialog-actions *ngIf="showDialogActions"
+                        align="end">
+      <gp-default-edit-actions [saveButtonTranslationKey]="saveButtonText"
+                               [saveButtonDisabled]="!showDialogActions || isOkButtonDisabled"
+                               (save)="save()"
+                               (cancel)="cancel()">
+      </gp-default-edit-actions>
+    </mat-dialog-actions>
+  </div>
+</ng-template>

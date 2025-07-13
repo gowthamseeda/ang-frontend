@@ -1,0 +1,44 @@
+<h1 mat-dialog-title>{{ 'GENERAL_GROUPS_ADD_BRAND_PRODUCTGROUPS_AND_SERVICES' | translate }}</h1>
+
+<mat-dialog-content>
+  <form [formGroup]="brandProductGroupsServicesFormGroup">
+    <div gpFxLayout="row" gpFxLayoutGap="15px">
+      <mat-form-field gpFxFlex="85px" class="center">
+        <mat-select formControlName="brandId" (selectionChange)="resetProductGroupSelection()"
+                    data-cy="add-brand-product-group-services-brand-dropdown">
+          <mat-select-trigger *ngIf="brandProductGroupsServicesFormGroup.get('brandId') as selectedBrandId">
+            <gp-brand-icon *ngIf="selectedBrandId.value" [id]="selectedBrandId.value"
+                           tooltipPosition="above"></gp-brand-icon>
+          </mat-select-trigger>
+          <mat-option *ngFor="let brandId of allBrandIds" [value]="brandId"
+                      data-cy="add-brand-product-group-services-brand-option">
+            <gp-brand-icon [id]="brandId"></gp-brand-icon>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div gpFxLayoutColumn gpFxLayoutAlign="center" *ngFor="let productGroupId of allProductGroupIds">
+        <gp-product-group [productGroupId]="productGroupId" [readOnly]="!isProductGroupAllowed(productGroupId)"
+                          tooltipPosition="above" size="medium" color="none">
+        </gp-product-group>
+        <mat-checkbox (change)="update($event, productGroupId)" [disabled]="!isProductGroupAllowed(productGroupId)"
+                      data-cy="add-brand-product-group-services-product-group-checkbox"></mat-checkbox>
+      </div>
+    </div>
+
+    <h5>{{ 'PROVIDED_SERVICES' | translate | uppercase }}</h5>
+    <mat-selection-list formControlName="serviceIds">
+      <mat-list-option *ngFor="let service of allowedServices" [value]="service.id" checkboxPosition="before"
+                       [disabled]="!isAllowedEditService" data-cy="add-brand-product-group-services-service-checkbox">
+        {{ service.name }}
+      </mat-list-option>
+    </mat-selection-list>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <gp-default-edit-actions saveButtonTranslationKey="OK" [saveButtonDisabled]="
+      brandProductGroupsServicesFormGroup.invalid || brandProductGroupsServicesFormGroup.pristine
+    " (save)="dialogRef.close(brandProductGroupServiceIds)" (cancel)="dialogRef.close(false)">
+  </gp-default-edit-actions>
+</mat-dialog-actions>

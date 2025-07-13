@@ -1,0 +1,14 @@
+<span class="listItem">{{ 'ERROR_NOTIFICATION_MESSAGE_PREFIX' | translate }}
+  <a [routerLink]="pageLink">{{ 'KEYS' | translate }}</a>
+  : {{ 'KEYS_DUPLICATE_WARNING' | translate }}</span>
+<ul>
+  <li *ngFor="let entry of duplicateBrandCodes | keyvalue">
+    {{ entry.key }} ({{ 'BRAND_CODE' | translate }}: {{ entry.value }})
+  </li>
+  <li *ngFor="let entry of duplicateAdamIds | keyvalue">
+    {{ entry.key }} ({{ 'ADAM_ID' | translate }}: {{ entry.value }})
+  </li>
+  <li *ngFor="let entry of duplicateFederalIds | keyvalue">
+    {{ entry.key }} ({{ 'FEDERAL_ID' | translate }}: {{ entry.value }})
+  </li>
+</ul>

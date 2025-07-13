@@ -1,0 +1,20 @@
+<div gpFxLayout="row nowrap"
+     style="flex: 1 1 100%"
+     class="container">
+  <div gpFxLayout="column"
+       style="width: 100%; flex: 1 1 auto;">
+    <ng-content select="[name]"></ng-content>
+    <ng-content select="[address]"></ng-content>
+    <ng-content select="[tags]"></ng-content>
+    <div style="flex: 1 0 auto; display: flex;"
+         gpFxLayoutAlign="flex-end flex-end">
+      <ng-content select="[image]"></ng-content>
+    </div>
+  </div>
+  <div gpFxLayout="row nowrap"
+       gpFxLayoutAlign="flex-start flex-end"
+       style="flex: 0 0 auto"
+       class="no-overflow">
+    <ng-content select="[pillar]"></ng-content>
+  </div>
+</div>

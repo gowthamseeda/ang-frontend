@@ -1,0 +1,131 @@
+<gp-default-layout>
+  <gp-header header-toolbar [breadcrumbItems]="[{label: 'MASTER_DATA', path: '/master'},
+             {label: 'SERVICES'},
+             {label: serviceName}]">
+  </gp-header>
+  <div gpContent>
+    <div gpFxLayout="row" gpFxLayoutGap="10px">
+      <div gpFxLayout="column" class="header">
+        <h1>{{ serviceName }}</h1>
+        <span>{{ 'UPDATE_SERVICE_SUBTITLE' | translate }}</span>
+      </div>
+    </div>
+    <form [formGroup]="serviceForm" (ngSubmit)="submit(serviceForm.value)">
+      <div gpFxLayout="column">
+        <div gpFxLayout="row" gpFxLayoutGap="30px">
+          <mat-form-field gpFxFlex="70">
+            <mat-label>{{ 'NAME' | translate }}</mat-label>
+            <input matInput formControlName="name" type="text" required />
+            <mat-error *ngIf="serviceForm.get('name')?.hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+            <mat-error *ngIf="serviceForm.get('name')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field gpFxFlex>
+            <mat-label>{{ 'ID' | translate }}</mat-label>
+            <input matInput formControlName="id" type="text" required />
+            <gp-icon matSuffix *ngIf="serviceForm.get('id')?.disabled" name="lock" size="small"></gp-icon>
+          </mat-form-field>
+        </div>
+
+        <div gpFxLayout="column">
+          <gp-distribution-selection [fControl]="serviceForm.get('allowedDistributionLevels')"
+                                     placeholder="{{ 'DISTRIBUTION_LEVELS' | translate }}">
+          </gp-distribution-selection>
+        </div>
+
+        <div fxLayout="column">
+          <mat-form-field fxFlex>
+            <mat-label>{{ 'DESCRIPTION' | translate }}</mat-label>
+            <input matInput formControlName="description" type="text" />
+            <mat-error *ngIf="serviceForm.get('description')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <ng-template #popContent>
+          <div class="custom-popover"
+               [innerHTML]="getDetailDescription() | safeHtml">
+          </div>
+        </ng-template>
+        <div style="min-height: 30px ; padding-bottom: 15px; display:inline-flex">
+            <span [ngbPopover]="popContent"
+                  [disablePopover]="detailDescriptionEmpty()"
+                  triggers="mouseenter:mouseleave"
+                  placement="right"
+                  closeDelay="500"
+                  style="padding-top: 8px">
+           {{ 'DETAIL_DESCRIPTION' | translate }}
+            </span>
+          <span *ngIf="!showDetailDescription">
+            <gp-icon *ngIf="detailDescriptionEmpty()"
+                     (click)="openDetailDescription()"
+                     name='plus'>
+            </gp-icon>
+            <gp-icon *ngIf="!detailDescriptionEmpty()"
+                     (click)="openDetailDescription()"
+                     name='caret-down'
+                     size="small"
+                     style="padding-top: 6px; padding-left:6px">
+            </gp-icon>
+            </span>
+          <gp-icon *ngIf="showDetailDescription"
+                   (click)="closeDetailDescription()"
+                   name='caret-up'
+                   size="small"
+                   style="padding-top: 6px; padding-left:6px">
+          </gp-icon>
+        </div>
+        <div *ngIf="showDetailDescription" >
+          <form [formGroup]="formGroup">
+            <quill-editor formControlName="content"
+                          format="html"
+                          bounds="self"
+                          [modules]="quillModules"
+                          [placeholder]="null"
+                          (onContentChanged)="contentChanged($event)">
+            </quill-editor>
+          </form>
+        </div>
+
+        <div class="checkbox-container">
+          <mat-checkbox formControlName="active">
+            {{ 'SERVICE_ACTIVE' | translate }}</mat-checkbox>
+        </div>
+
+        <div class="checkbox-container">
+          <mat-checkbox formControlName="openingHoursSupport">
+            {{ 'SERVICE_OPENING_HOURS_SUPPORT' | translate }}</mat-checkbox>
+        </div>
+
+        <div class="checkbox-container">
+          <mat-checkbox formControlName="retailerVisibility">
+            {{ 'SERVICE_RETAILER_VISISBILITY' | translate }}</mat-checkbox>
+        </div>
+
+        <gp-translation-table [translations]="serviceForm.get('translations')?.value" [IsActionRequired]=true
+                              (removeTranslationByLanguages)="removeSingleTranslation($event)"
+                              (edit)="editTranslation($event)">
+        </gp-translation-table>
+        <button mat-flat-button gpRoundedIconButton class="gp-icon-flat-button gp-add-translation"
+                (click)="addNewTranslation($event)">
+          <gp-icon gpIconButtonWithText name="plus"></gp-icon>
+          {{ 'ADD_TRANSLATION_BUTTON' | translate }}
+        </button>
+        <div gpFxLayout="row">
+          <div gpFxFlex>
+            <button type="reset" mat-button routerLink="/master">
+              {{ 'CANCEL' | translate }}
+            </button>
+          </div>
+          <button type="submit" mat-button [disabled]="serviceForm.invalid || serviceForm.pristine || saveDisabled">
+            {{ 'SAVE' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</gp-default-layout>

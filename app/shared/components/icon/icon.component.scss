@@ -1,0 +1,74 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+:host {
+  fill: mat.get-color-from-palette($accent, 700);
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+svg {
+  fill: inherit;
+  height: 32px;
+  width: 32px;
+
+  &.tiny {
+    height: 12px;
+    width: 12px;
+  }
+
+  &.small {
+    height: 18px;
+    width: 18px;
+  }
+
+  &.medium {
+    height: 40px;
+    width: 40px;
+  }
+
+  &.large {
+    height: 60px;
+    width: 60px;
+  }
+
+  &.color-darkgray {
+    fill: mat.get-color-from-palette($accent, 800);
+  }
+
+  &.color-petrol {
+    fill: mat.get-color-from-palette($primary, 500);
+  }
+
+  &.color-warn {
+    fill: mat.get-color-from-palette($warn, 500);
+  }
+
+  &.color-white {
+    fill: mat.get-contrast-color-from-palette($primary, 500);
+  }
+  &.color-red {
+    fill: mat.get-color-from-palette($warn, 500);
+  }
+
+  &.color-green {
+    fill: #4caf50;
+  }
+
+  &.hover {
+    cursor: pointer;
+  }
+
+  &.hover:hover {
+    filter: brightness(0.66);
+  }
+
+  &.disabled {
+    filter: grayscale(1) brightness(1.75);
+  }
+
+  &.actionable:hover {
+    fill: mat.get-color-from-palette($primary, 500);
+  }
+}

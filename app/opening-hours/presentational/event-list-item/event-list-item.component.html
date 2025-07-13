@@ -1,0 +1,24 @@
+<div  *ngIf="event" class="item-container">
+  <div [gpScrollToView]="'date-range-selected'" [className]="event.selected ? 'date-range-selected' : 'date-range'" (click)="emitEventSelected()">
+    <ng-container *ngIf="isSingleDay(); then startOnly; else startAndEnd"></ng-container>
+  </div>
+  <div class="actions">
+    <gp-icon
+      *ngIf="event.deletable"
+      (click)="emitEventDeleted()"
+      [actionable]="true"
+      [hover]="true"
+      name="trash">
+    </gp-icon>
+  </div>
+</div>
+
+<ng-template #startAndEnd>
+  {{ event.start | localeDateTime }}
+  {{ ' - ' }}
+  {{ event.end | localeDateTime }}
+</ng-template>
+
+<ng-template #startOnly>
+  {{ event.start | localeDateTime }}
+</ng-template>

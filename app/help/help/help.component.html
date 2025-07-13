@@ -1,0 +1,48 @@
+<ng-container>
+  <gp-default-layout>
+    <gp-header [breadcrumbItems]="[{ label: 'HELP_HEADER' }]"
+               header-toolbar>
+    </gp-header>
+    <gp-edit-layout [marginalColumnDisabled]="true"
+                    title="{{ 'HELP_CENTER_HEADER' | translate }}">
+      <ng-container *gpNotForRetail>
+        <gp-help-training-support></gp-help-training-support>
+      </ng-container>
+      <div gpFxLayout="row wrap"
+           gpFxLayoutGap="24px"
+           class="help-section-container">
+        <div gpFxFlex style="display: block;">
+          <h1>{{ 'HELP_VIDEO_TUTORIALS_SUBHEADER' | translate }}</h1>
+          <div gpFxLayout="column"
+               gpFxLayoutGap="9px">
+            <ng-container *ngFor="let video of videos">
+              <gp-help-video [video]="video"
+                             (playEvent)="playVideo($event)"></gp-help-video>
+            </ng-container>
+          </div>
+        </div>
+        <div gpFxFlex style="display: block;">
+          <h1>{{ 'HELP_USER_GUIDE_DOWNLOADS_SUBHEADER' | translate }}</h1>
+          <div gpFxLayout="column"
+               gpFxLayoutGap="4px">
+            <ng-container *ngFor="let pdf of pdfs; let i = index">
+              <gp-help-pdf [pdf]="pdf"
+                           [language]="language"></gp-help-pdf>
+              <hr *ngIf="i < pdfs.length - 1" />
+            </ng-container>
+          </div>
+        </div>
+        <div gpFxFlex style="display: block;">
+          <h1>{{ 'HELP_YOUR_CONTACTS_SUBHEADER' | translate }}</h1>
+          <div gpFxLayout="column"
+               gpFxLayoutGap="24px"
+               class="content-container">
+            <ng-container *ngFor="let contact of contacts">
+              <gp-help-contact [contact]="contact"></gp-help-contact>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </gp-edit-layout>
+  </gp-default-layout>
+</ng-container>

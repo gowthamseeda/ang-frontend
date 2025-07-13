@@ -1,0 +1,45 @@
+<div gpFxLayout="row"
+     gpFxLayoutAlign="start center"
+     class="message {{type}}">
+
+  <ng-container *ngIf="typeIconVisible">
+    <gp-icon *ngIf="type === 'info'"
+             gpFxFlex="30px"
+             name="hint-info"
+             size="small"></gp-icon>
+    <gp-icon *ngIf="type === 'warning'"
+             gpFxFlex="30px"
+             name="hint-error"
+             size="small"></gp-icon>
+  </ng-container>
+
+  <div gpFxFlex
+       gpFxLayout="column">
+    <ng-content></ng-content>
+  </div>
+
+  <button *ngIf="showClose"
+          mat-icon-button
+          gpFxFlexAlign="start"
+          (click)="messageClose.emit()">
+    <gp-icon name="close"
+             size="small"></gp-icon>
+  </button>
+
+  <button *ngIf="showAction2"
+          mat-button
+          gpFxFlexAlign="start"
+          style="margin-right: 0.2%"
+          (click)="actionClick2.emit()"
+          class="action-button">
+    {{ actionText2 | translate}}
+  </button>
+
+  <button *ngIf="showAction"
+          mat-button
+          gpFxFlexAlign="end"
+          (click)="actionClick.emit()"
+          class="action-button">
+    {{actionText | translate}}
+  </button>
+</div>

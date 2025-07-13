@@ -1,0 +1,201 @@
+<div *ngIf="!is4RNotificationLoading && !is4RVerificationLoading">
+<gp-edit-section *ngIf="outlet?.registeredOffice || outlet?.affiliate">
+  <gp-legal-status-of-company [affiliate]="outlet?.affiliate"
+                              [parentForm]="parentForm"
+                              [registeredOffice]="outlet?.registeredOffice"
+                              [readonly]="!(companyUpdateIsAllowed | async)"
+                              data-cy="outlet-legal-status">
+  </gp-legal-status-of-company>
+  <ng-container marginalContent>
+    <span>{{ 'MARGINAL_CONTENT_LEGAL_STATUS_OF_COMPANY_TEXT' | translate }}</span>
+  </ng-container>
+</gp-edit-section>
+
+<gp-edit-section *gpNotForRetail>
+  <ng-container *ngIf="activeTranslation.isDefaultLanguage && (messages | async) as message">
+    <gp-message *ngIf="message['startOperationDateChanged']"
+                type="warning">
+      {{'CHANGE_AFFECTS_BUSINESS_SITES' | translate}}
+      {{'(' + affectedBusinessSites + ')'}}
+    </gp-message>
+    <gp-message *ngIf="message['startOperationDateChangeRejected']"
+                type="warning">
+      {{'CHANGE_COMPANY_START_OPERATION_REJECTED' | translate}}
+      {{'(' + rejectingBusinessSites + ')'}}
+    </gp-message>
+  </ng-container>
+
+  <gp-status [parentForm]="parentForm"
+             [outletId]="outlet?.id"
+             [companyId]="outlet?.companyId"
+             [registeredOffice]="outlet?.registeredOffice"
+             [closeDownReason]="outlet?.closeDownReason"
+             [closeDownDate]="outlet?.closeDownDate"
+             [startOperationDate]="outlet?.startOperationDate"
+             [readonly]="!activeTranslation.isDefaultLanguage"
+             (affectedBusinessSites)="setAffectedBusinessSites($event)"
+             data-cy="outlet-status">
+  </gp-status>
+  <ng-container marginalContent>
+    <span>{{'MARGINAL_CONTENT_STATUS_TEXT' | translate}}</span>
+  </ng-container>
+</gp-edit-section>
+
+<ng-container *ngIf="activeTranslation.isDefaultLanguage">
+  <gp-edit-section
+                   *gpOnlyOwnCountry="outlet.countryId; permissions: ['legalstructure.predecessor.read']">
+    <gp-predecessor-container [parentForm]="parentForm"
+                              data-cy="outlet-predecessor">
+    </gp-predecessor-container>
+    <ng-container marginalContent>
+      <span>{{'MARGINAL_CONTENT_PREDECESSOR_TEXT' | translate}}</span>
+    </ng-container>
+  </gp-edit-section>
+</ng-container>
+
+<gp-edit-section *ngIf="(messages | async) as message">
+  <ng-container *ngIf="activeTranslation.isDefaultLanguage">
+    <gp-message *ngIf="message['gpsCoordinatesUpdated']"
+                type="warning">
+      {{'GPS_COORDINATES_UPDATED_BASED_ON_ADDRESS' | translate}}
+    </gp-message>
+    <gp-message *ngIf="message['stateUpdated']"
+                type="warning">
+      {{'STATE_UPDATED_BASED_ON_ADDRESS' | translate}}
+    </gp-message>
+    <gp-message *ngIf="message['provinceUpdated']"
+                type="warning">
+      {{'PROVINCE_UPDATED_BASED_ON_ADDRESS' | translate}}
+    </gp-message>
+  </ng-container>
+
+  <ng-container *ngIf="!activeTranslation.isDefaultLanguage">
+    <gp-message *ngIf="message['translatedStateUpdated']"
+                type="warning">
+      {{'STATE_UPDATED_BASED_ON_ADDRESS' | translate}}
+    </gp-message>
+    <gp-message *ngIf="message['translatedProvinceUpdated']"
+                type="warning">
+      {{'PROVINCE_UPDATED_BASED_ON_ADDRESS' | translate}}
+    </gp-message>
+  </ng-container>
+</gp-edit-section>
+
+<gp-edit-section id="address">
+  <gp-outlet-address [hidden]="!activeTranslation.isDefaultLanguage"
+                     [parentForm]="parentForm"
+                     [outlet]="outlet"
+                     [addressStreetDataRequired]="this.addressStreetDataRequired()"
+                     [dataNotification]="this.addressDataNotifications"
+                     [isRetailOutlet]="isRetailOutlet"
+                     [isForRetailEnabled]="isForRetailEnabled"
+                     [isMarketResponsible]="isMarketResponsible"
+                     [isBusinessSiteResponsible]="isBusinessSiteResponsible"
+                     data-cy="outlet-address">
+  </gp-outlet-address>
+  <ng-container *ngFor="let translation of translations">
+    <gp-outlet-translation-address [parentForm]="translation.formGroup"
+                                   [outlet]="outlet"
+                                   [outletTranslation]="translation.formData"
+                                   [addressType]="addressType.Main"
+                                   [languageId]="activeTranslation.languageId"
+                                   [hidden]="translation.languageId !== activeTranslation.languageId">
+    </gp-outlet-translation-address>
+  </ng-container>
+  <ng-container marginalContent>
+    <span>{{'MARGINAL_CONTENT_ADDRESS_TEXT' | translate}}</span>
+  </ng-container>
+</gp-edit-section>
+
+<gp-edit-section id="additional-address"
+                 data-cy="outlet-additional-address">
+  <gp-additional-content [headline]="'ADDITIONAL_ADDRESS' | translate"
+                         [isRetailOutlet]="isRetailOutlet"
+                         [isForRetailEnabled]="isForRetailEnabled"
+                         [isMarketResponsible]="isMarketResponsible"
+                         [isBusinessSiteResponsible]="isBusinessSiteResponsible"
+                         [outletId]="outlet.id">
+    <div additional-content>
+      <gp-address [hidden]="!activeTranslation.isDefaultLanguage"
+                  [parentForm]="parentForm"
+                  [address]="outlet?.additionalAddress"
+                  [addressType]="addressType.Additional"
+                  [addressStreetDataRequired]="false"
+                  [dataNotification]="this.additionalAddressDataNotifications"
+                  [isRetailOutlet]="isRetailOutlet"></gp-address>
+      <ng-container *ngFor="let translation of translations">
+        <gp-outlet-translation-address [parentForm]="translation.formGroup"
+                                       [outlet]="outlet"
+                                       [outletTranslation]="translation.formData"
+                                       [addressType]="addressType.Additional"
+                                       [hidden]="translation.languageId !== activeTranslation.languageId">
+        </gp-outlet-translation-address>
+      </ng-container>
+    </div>
+  </gp-additional-content>
+  <ng-container marginalContent>
+    <span>{{ 'MARGINAL_CONTENT_ADDITIONAL_ADDRESS_TEXT' | translate }}</span>
+  </ng-container>
+</gp-edit-section>
+
+<gp-country-structure-form *gpOnlyOwnCountry="outlet.countryId; permissions: ['structures.countrystructure.read', 'structures.countrystructuredescription.read']"
+                           [hidden]="!activeTranslation.isDefaultLanguage"
+                           [countryId]="outlet.countryId"
+                           [businessSiteId]="outlet.id"
+                           [parentForm]="parentForm"></gp-country-structure-form>
+
+<gp-edit-section id="poBox">
+  <div gpFxFlexFill
+       [hidden]="!activeTranslation.isDefaultLanguage">
+    <div gpFxLayout="row" gpFxLayoutAlign="none center" class="aggregate-data-field">
+      <h1>{{'PO_BOX' | translate}}</h1>
+      <gp-inplace-task-action-button *ngIf="isForRetailEnabled && isRetailOutlet && isMarketResponsible"
+                                     fieldsStartName='poBox'
+                                     [outletId]="outlet?.id"
+                                     class="icon-padding"
+      >
+      </gp-inplace-task-action-button>
+      <gp-data-field-verification-button *ngIf="isForRetailEnabled && isRetailOutlet && isMarketResponsible"
+                                         fieldsStartName='poBox'
+                                         [shouldShowDialog]="true"
+                                         class="icon-padding"
+      >
+      </gp-data-field-verification-button>
+      <gp-data-field-verification-remain-button [isBusinessSiteResponsible]="isBusinessSiteResponsible"
+                                                [aggregateFields]="poBoxAggregateFields"
+                                                class="icon-padding"
+      >
+      </gp-data-field-verification-remain-button>
+    </div>
+    <gp-po-box [parentForm]="parentForm"
+               [poBox]="outlet?.poBox"
+               [countryId]="outlet?.countryId"
+               [dataNotification]="this.poBoxDataNotifications"
+               data-cy="outlet-po-box"
+               [isRetailOutlet]="isRetailOutlet"></gp-po-box>
+  </div>
+  <ng-container *ngFor="let translation of translations">
+    <gp-outlet-translation-po-box [outlet]="outlet"
+                                  [parentForm]="translation.formGroup"
+                                  [poBox]="translation.formData.poBox"
+                                  [hidden]="translation.languageId !== activeTranslation.languageId">
+    </gp-outlet-translation-po-box>
+  </ng-container>
+  <ng-container marginalContent>
+    <span>{{'MARGINAL_CONTENT_PO_BOX_TEXT' | translate}}</span>
+  </ng-container>
+</gp-edit-section>
+
+<gp-edit-section id="gps">
+  <gp-gps [parentForm]="parentForm"
+          [gps]="outlet?.gps"
+          [readonly]="!activeTranslation.isDefaultLanguage"
+          [dataNotification]="this.gpsDataNotifications"
+          [isRetailOutlet]="isRetailOutlet"
+          data-cy="outlet-gps">
+  </gp-gps>
+  <ng-container marginalContent>
+    <span>{{'MARGINAL_CONTENT_GPS_COORDINATES_TEXT' | translate}}</span>
+  </ng-container>
+</gp-edit-section>
+</div>

@@ -1,0 +1,35 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.country-container {
+  outline: none;
+
+  &:hover {
+    background-color: mat.get-color-from-palette($accent, 100);
+
+    .delete-country-container button {
+      visibility: visible;
+
+      .gp-icon:hover {
+        color: mat.get-color-from-palette($accent, 500);
+      }
+    }
+  }
+
+  .country-name-container {
+    float: left;
+    margin-top: 12px;
+    max-width: 85%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .delete-country-container {
+    float: right;
+
+    .mat-mdc-icon-button {
+      visibility: hidden;
+    }
+  }
+}

@@ -1,0 +1,42 @@
+<ng-scrollbar (reachedBottom)="onScrolledToEnd($event)" [reachedOffset]="1" style="max-height:
+calc(100% - 40px)">
+  <form [formGroup]="searchForm" style="padding-top: 10px;">
+    <gp-search-filter-chip-list [(searchFilters)]="selectedSearchFilters" (searchFiltersChange)="search(true, true)">
+      <mat-form-field class="no-label no-underline">
+        <input #searchTagInput gpFocus matInput formControlName="searchField" autocomplete="off"
+               [matChipInputFor]="searchFilterChipList?.matChipList" (blur)="toggleTopMatchesList(false, $event)"
+               (focus)="toggleTopMatchesList(true)" (keyup.arrowdown)="onKeyupArrowdown($event)"
+               data-cy="searchfield-input" />
+      </mat-form-field>
+    </gp-search-filter-chip-list>
+
+    <button gpFxFlex="none" gpFxFlexAlign="center" type="submit" mat-icon-button color="primary"
+            [disabled]="selectedSearchFilters.length === 0" class="search-icon-container">
+      <gp-icon name="search"></gp-icon>
+    </button>
+
+    <button *ngIf="searchTagInput.value.length > 0 || selectedSearchFilters.length > 0" gpFxFlex="none"
+            gpFxFlexAlign="center" mat-icon-button color="primary" (click)="resetSearchInput()">
+      <gp-icon name="trash" [hover]="true"></gp-icon>
+    </button>
+  </form>
+
+  <mat-progress-bar *ngIf="searchInProgress" mode="indeterminate"></mat-progress-bar>
+
+  <gp-autocomplete *ngIf="!hideResults" [inputVal]="searchTagInput.value.toLowerCase()" [listItems]="sortedTopMatches"
+                   [isHidden]="topMatchesListActive && searchTagInput.value.length > 0"
+                   [keyupArrowdownEvent]="keyupArrowdownEvent" (itemSelect)="onTopMatchesItemSelect($event)">
+  </gp-autocomplete>
+
+  <gp-suggested-filter *ngIf="!hideResults" [suggestedFilters]="filterOptions" [isHidden]="!topMatchesListActive"
+                       (filterSelect)="onFilterSelect($event)">
+  </gp-suggested-filter>
+
+  <gp-search-result *ngIf="showSearchResults && !hideResults" [searchItems]="searchItems.asObservable()"
+                    [checkedSearchItems]="checkedSearchItems" [total]="total" [searchFilters]="selectedSearchFilters"
+                    [disabledRouting]="settings.searchResultItemClickAction !== 'routing'"
+                    [searchResultMessage]="searchResultMessage" [error]="searchBusinessSitesError"
+                    [isMultiSelect]="settings.searchResultItemClickAction === 'multiselect'"
+                    (searchItemsClicked)="onSearchItemClick($event)">
+  </gp-search-result>
+</ng-scrollbar>

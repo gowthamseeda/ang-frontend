@@ -1,0 +1,37 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+:host {
+  margin: 0;
+  width: 60px;
+  position: relative;
+}
+
+.circle{
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: mat.get-color-from-palette($primary, 500);
+}
+
+.arrow {
+  position: absolute;
+  height: 18px;
+  width: 18px;
+
+  &.up {
+    top: -12px;
+  }
+
+  &.down {
+    bottom: -8px;
+  }
+
+  &:hover {
+    background-color: mat.get-color-from-palette($primary, 500);
+    border-radius: 70%;
+    fill: mat.get-contrast-color-from-palette($primary, 500);
+    cursor: pointer;
+  }
+}

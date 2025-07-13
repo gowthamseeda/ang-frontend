@@ -1,0 +1,27 @@
+<script src="product-group.component.ts"></script>
+<div gpFxLayout="column"
+     gpFxLayoutAlign="center center">
+
+  <gp-icon (click)="emitArrowUpClick()"
+           *ngIf="arrowUpEnabled && (userHasPermission | async) && !readOnly"
+           class="arrow up"
+           name="caret-up"
+           size="small">
+  </gp-icon>
+
+  <gp-icon [name]="'pg-' + productGroupId.toLocaleLowerCase()"
+           [disabled]="!(userHasPermission | async) || readOnly"
+           [matTooltip]="tooltip | async"
+           [matTooltipPosition]="tooltipPosition"
+           [size]="size"
+           [color]="getColor()"
+           [class.circle]="isHover">
+  </gp-icon>
+
+  <gp-icon (click)="emitArrowDownClick()"
+           *ngIf="arrowDownEnabled && (userHasPermission | async) && !readOnly"
+           class="arrow down"
+           name="caret-down"
+           size="small">
+  </gp-icon>
+</div>

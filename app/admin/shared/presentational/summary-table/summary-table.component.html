@@ -1,0 +1,74 @@
+<h1>{{ 'ADMIN_STATUS' | translate }}</h1>
+
+<div *ngIf="isLoading; then thenShowLoading else thenShowStatus"></div>
+<ng-template #thenShowLoading>
+  <div gpFxLayout="row">
+    {{ 'ADMIN_CHECKING' | translate }}...
+  </div>
+</ng-template>
+<ng-template #thenShowStatus>
+  <div gpFxLayout="row"
+       gpFxLayoutAlign="start"
+       class="main-container">
+    <div gpFxFlexFill>
+      <mat-table [dataSource]="tableData"
+                 class="summary-table">
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef
+                           gpFxFlex="10">{{ 'ADMIN_TABLE_STATUS' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element"
+                    gpFxFlex="10">
+            <div *ngIf="element.isPassed; then thenPass else thenFail"></div>
+          </mat-cell>>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef
+                           gpFxFlex="30">{{ 'ADMIN_TABLE_DESCRIPTION' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element"
+                    gpFxFlex="30"> <b>{{element.translatedType}}</b> </mat-cell>>
+        </ng-container>
+
+        <ng-container matColumnDef="details">
+          <mat-header-cell *matHeaderCellDef
+                           gpFxFlex="60">{{ 'ADMIN_TABLE_DETAILS' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element"
+                    gpFxFlex="60"
+                    class="wrap-content">
+            <div gpFxLayout="row"
+                 gpFxLayoutAlign="space-between"
+                 gpFxLayoutGap="8px"
+                 *ngFor="let item of element.ids;let isLast=last">
+              <a (click)="goTo(element.type,item)">
+                {{item}}
+              </a>
+              {{isLast ? '' : ' , '}}
+              &nbsp;
+            </div>
+            <ng-container *ngIf="element.type === constraintTypeOther">
+              <ul>
+                <li *ngFor="let message of element.messages">
+                  {{ message }}
+                </li>
+              </ul>
+            </ng-container>
+          </mat-cell>>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>>
+      </mat-table>
+    </div>
+  </div>
+</ng-template>
+<ng-template #thenPass>
+  <gp-icon color="petrol"
+           name="check"
+           size="small">
+  </gp-icon>
+</ng-template>
+<ng-template #thenFail>
+  <gp-icon color="warn"
+           name="close"
+           size="small">
+  </gp-icon>
+</ng-template>

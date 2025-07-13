@@ -1,0 +1,72 @@
+<h1 mat-dialog-title>{{ 'MASTER_DATA_SERVICE_VARIANT_COUNTRY_RESTRICTION' | translate }}</h1>
+
+<mat-dialog-content>
+  <br />
+  <mat-table [dataSource]="dataSource"
+             multiTemplateDataRows>
+    <ng-container matColumnDef="service">
+      <mat-header-cell *matHeaderCellDef>{{'SERVICE' | translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let serviceVariant">
+        <div>{{serviceVariant.service}}</div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="brand">
+      <mat-header-cell *matHeaderCellDef
+                       gpFxLayoutAlign="center"
+                       gpFxFlex="20%">{{'BRAND' | translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let serviceVariant"
+                gpFxLayout="row"
+                gpFxLayoutAlign="center center"
+                gpFxFlex="20%">
+        <gp-brand-icon [id]="serviceVariant?.brand"></gp-brand-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="productGroup">
+      <mat-header-cell *matHeaderCellDef
+                       gpFxLayoutAlign="center"
+                       gpFxFlex="25%">{{'PRODUCT_GROUP' | translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let serviceVariant"
+                gpFxLayout="row"
+                gpFxLayoutAlign="center center"
+                gpFxFlex="25%">
+        <div>
+          <gp-product-group [productGroupId]="serviceVariant?.productGroup.toLocaleLowerCase()"
+                            size="medium"
+                            color="none">
+          </gp-product-group>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="countryRestrictions">
+      <mat-cell *matCellDef="let serviceVariant">
+        {{ 'MASTER_DATA_SERVICE_VARIANT_COUNTRY_RESTRICTION' | translate }} :
+        <div
+             *ngIf="serviceVariant.countryRestrictions?.length > 0; else countriesRestrictionsEmpty">
+          <div class="countries"
+               *ngFor="let item of serviceVariant.countryRestrictions; let index = index"
+               flex> <span> - </span> {{serviceVariant.countryRestrictions[index]}} </div>
+
+        </div>
+        <ng-template #countriesRestrictionsEmpty>
+          {{ 'MASTER_DATA_SERVICE_VARIANT_ALL_COUNTRIES' | translate }}
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedCountryRestriction;"></mat-row>
+
+  </mat-table>
+</mat-dialog-content>
+<div mat-dialog-actions
+     gpFxLayout="column">
+  <button mat-button
+          gpFxFlexAlign="end"
+          (click)="dialogRef.close()">
+    {{'OK' | translate}}
+  </button>
+</div>

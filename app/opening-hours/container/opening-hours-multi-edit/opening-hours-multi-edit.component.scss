@@ -1,0 +1,93 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.page {
+  max-width: 100vw;
+  max-height: 100vh;
+
+  .content {
+    .header-text {
+      padding-left: 20px;
+      padding-top: 17px;
+      font-size: 26px;
+      color: mat.get-color-from-palette($accent, 800);
+      width: 100%;
+    }
+
+    .overall-text {
+      font-size: 21px;
+      color: mat.get-color-from-palette($accent, 800);
+      height: 30px;
+    }
+
+    .services-chip-container {
+      margin: 30px 0 0 0;
+    }
+
+    .table-chips {
+      min-width: 410px;
+    }
+
+    .calendar-block {
+      min-width: 350px;
+    }
+
+    .sub-header-row {
+      max-height: 30px;
+      margin: 42px 0 35px 0;
+    }
+
+    .table-container {
+      border-right: 1px solid mat.get-color-from-palette($accent, 400);
+
+      ng-scrollbar {
+        min-width: 70%;
+      }
+    }
+
+    .help-image {
+      align-content: end;
+      height: 30px;
+      width: 30px;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .calendar-header-text {
+      height: 30px;
+      margin: 42px 0 35px 13px;
+      font-size: 21px;
+      color: mat.get-color-from-palette($accent, 800);
+    }
+
+    .calendar-sub-header-text {
+      padding-left: 13px;
+      font-size: 16px;
+      color: mat.get-color-from-palette($accent, 800);
+    }
+
+    .calendar-container {
+      min-height: 640px;
+    }
+
+    .event-list-container {
+      position: relative;
+      height: 126px;
+      padding-left: 13px;
+      font-size: 16px;
+      color: mat.get-color-from-palette($accent, 800);
+    }
+
+    .stretch {
+      flex: 1 1 auto;
+      min-width: 20px;
+      margin: 107px 0px 94px;
+    }
+    ::ng-deep .ng-scroll-content {
+      display: block;
+      min-width: 100%;
+    }
+  }
+}

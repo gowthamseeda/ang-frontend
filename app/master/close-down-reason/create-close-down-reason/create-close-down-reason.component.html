@@ -1,0 +1,71 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{label: 'MASTER_DATA', path: '/master'},
+             {label: 'CLOSE_DOWN_REASONS'}]">
+  </gp-header>
+  <div gpContent>
+    <div gpFxLayout="row"
+         gpFxLayoutGap="10px">
+      <gp-header-image [name]="'close-down-reasons'"
+                       [large]="true"></gp-header-image>
+      <div gpFxLayout="column"
+           class="header">
+        <h1>{{ 'CREATE_CLOSE_DOWN_REASON' | translate }}</h1>
+        <span>{{ 'CREATE_CLOSE_DOWN_REASON_SUBTITLE' | translate }}</span>
+      </div>
+    </div>
+    <form [formGroup]="closeDownReasonForm"
+          (ngSubmit)="submit(closeDownReasonForm.value)">
+      <div gpFxLayout="column">
+        <div gpFxLayout="row"
+             gpFxLayoutGap="30px">
+          <mat-form-field gpFxFlex="70">
+            <mat-label>{{ 'NAME' | translate }}</mat-label>
+            <input matInput
+                   formControlName="name"
+                   type="text"
+                   required />
+            <mat-error *ngIf="closeDownReasonForm.get('name')?.hasError('required')">
+              {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+            </mat-error>
+            <mat-error *ngIf="closeDownReasonForm.get('name')?.hasError('maxlength')">
+              {{ 'VALIDATION_ERROR_MAX_LENGTH' | translate }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field gpFxFlex>
+            <mat-label>{{ 'ID' | translate }}</mat-label>
+            <input matInput
+                   formControlName="id"
+                   type="number"/>
+            <gp-icon matSuffix
+                     *ngIf="closeDownReasonForm.get('id')?.disabled"
+                     name="lock"
+                     size="small"></gp-icon>
+          </mat-form-field>
+        </div>
+
+        <gp-chips-selection placeholder="{{ 'VALIDITY' | translate }}"
+                            [control]="closeDownReasonForm.get('validity')"
+                            [itemEnum]="validities"
+                            required>
+        </gp-chips-selection>
+
+        <div gpFxLayout="row">
+          <div gpFxFlex>
+            <button type="reset"
+                    mat-button
+                    routerLink="/master">
+              {{ 'CANCEL' | translate }}
+            </button>
+          </div>
+          <button type="submit"
+                  mat-button
+                  [disabled]="closeDownReasonForm.invalid">
+            {{ 'CREATE' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</gp-default-layout>

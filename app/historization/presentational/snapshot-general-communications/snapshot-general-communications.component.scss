@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.changed {
+  font-weight: bold;
+  color: mat.get-color-from-palette($accent, 500);
+}
+
+.hide-bullet {
+  list-style: none;
+}
+
+.hide-field {
+  visibility: hidden;
+}

@@ -1,0 +1,10 @@
+<mat-form-field [formGroup]="parentForm" class="show-footer">
+       <mat-label>{{'COUNTRY' | translate}}</mat-label>
+       <input matInput type="text" formControlName="countryName" readonly data-cy="address-country"
+              [ngClass]="{'data-changed-notification':isDataChanged}">
+       <gp-icon matSuffix name="lock" size="small"></gp-icon>
+  <mat-hint *ngIf="isDataChanged"
+            class="data-changed">
+    {{ 'DATA_CHANGED_NOTIFICATIONS' | translate }}
+  </mat-hint>
+</mat-form-field>

@@ -1,0 +1,21 @@
+<gp-default-layout>
+  <gp-header header-toolbar
+             [breadcrumbItems]="[{label: 'MASTER_DATA'}]">
+  </gp-header>
+  <h1>{{ 'MASTER_DATA_MANAGEMENT' | translate }}</h1>
+  <div gpFxLayout="row wrap"
+       gpFxLayoutGap="15px"
+       style="gap: 0px 15px;">
+    <gp-country-tile class="tile"></gp-country-tile>
+    <gp-country-group-tile class="tile"></gp-country-group-tile>
+    <gp-retail-country-tile class="tile"></gp-retail-country-tile>
+    <gp-brand-tile class="tile"></gp-brand-tile>
+    <gp-product-group-tile class="tile"></gp-product-group-tile>
+    <gp-language-tile class="tile"></gp-language-tile>
+    <gp-service-tile class="tile"></gp-service-tile>
+    <gp-close-down-reason-tile class="tile"></gp-close-down-reason-tile>
+    <gp-label-tile class="tile"></gp-label-tile>
+    <gp-key-tile class="tile"></gp-key-tile>
+    <gp-outlet-relationship-tile class="tile"></gp-outlet-relationship-tile>
+  </div>
+</gp-default-layout>

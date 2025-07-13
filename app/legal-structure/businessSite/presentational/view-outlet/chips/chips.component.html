@@ -1,0 +1,10 @@
+<ng-container *ngIf="tags.length > 0">
+  <mat-chip-set gpFxFlex
+                 class="outlet-tags-box">
+    <ng-container *ngFor="let tag of tags">
+      <mat-chip class="outlet-tag">
+        <span>{{ tag | translate }}</span>
+      </mat-chip>
+    </ng-container>
+  </mat-chip-set>
+</ng-container>

@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.title {
+  color: mat.get-color-from-palette($accent, 400);
+}
+
+.row-height {
+  height: 40px;
+}
+
+.padding-right {
+  padding-right: 15px;
+}

@@ -1,0 +1,12 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.affiliate-toggle {
+  font-size: 14px;
+  color: mat.get-color-from-palette($accent, 700);
+
+  gp-icon {
+    font-size: 12px;
+    margin-left: 5px;
+  }
+}

@@ -1,0 +1,71 @@
+<div class="brand-selection">
+  <ng-container>
+    <div *ngIf="multiple && (readonly || control.disabled); else selectfield">
+      <mat-chip-set>
+        <mat-chip gpInactiveChip
+                        *ngFor="let selectedBrand of selectedBrands">
+          {{ brandBy(selectedBrand.brandId)?.name }}
+        </mat-chip>
+      </mat-chip-set>
+    </div>
+  </ng-container>
+
+  <ng-template #selectfield>
+    <mat-form-field class="no-label">
+      <mat-select *ngIf="multiple; else singleBrandSelection"
+                  [placeholder]="placeholder"
+                  [formControl]="control"
+                  [errorStateMatcher]="errorStateMatcher"
+                  [compareWith]="compareFn"
+                  multiple
+                  [required]="required"
+                  data-cy="brand-selection-select">
+
+        <mat-select-trigger>
+          <mat-chip-set data-cy="brand-selection-selected-brands">
+            <mat-chip *ngFor="let selectedBrand of selectedBrands">
+              <span>{{ brandBy(selectedBrand.brandId)?.name }}</span>
+              <gp-icon *ngIf="!selectedBrand.readonly"
+                       name="close"
+                       size="small"
+                       color="white"
+                       [hover]="true"
+                       (click)="removeBrand(selectedBrand.brandId, $event)"
+                       data-cy="brand-selection-remove-brand"
+                       matChipRemove>
+              </gp-icon>
+            </mat-chip>
+          </mat-chip-set>
+        </mat-select-trigger>
+
+        <mat-option *ngFor="let brand of selectableBrands"
+                    [value]="traitsBrandBy(brand)"
+                    [disabled]="isDisabled(brand)"
+                    data-cy="brand-selection-selectable-brands">
+          {{ brand?.name }}
+        </mat-option>
+      </mat-select>
+
+      <ng-template #singleBrandSelection>
+        <mat-select [placeholder]="placeholder"
+                    [formControl]="control"
+                    [errorStateMatcher]="errorStateMatcher"
+                    [compareWith]="compareFn"
+                    [required]="required"
+                    data-cy="brand-selection-single-select">
+
+          <mat-option *ngIf="!required"></mat-option>
+          <mat-option *ngFor="let brand of selectableBrands"
+                      [value]="traitsBrandBy(brand)"
+                      [disabled]="isDisabled(brand)"
+                      data-cy="brand-selection-single-select-option">
+            {{ brand?.name }}
+          </mat-option>
+        </mat-select>
+      </ng-template>
+      <mat-error *ngIf="control.hasError('required')">
+        {{ 'VALIDATION_ERROR_REQUIRED' | translate }}
+      </mat-error>
+    </mat-form-field>
+  </ng-template>
+</div>

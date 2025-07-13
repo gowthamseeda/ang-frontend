@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+@import '../../../../styles-theme';
+
+.chip {
+  border-radius: 20px;
+  border: 1px solid mat.get-color-from-palette($primary, 500);
+  padding: 4.5px 0 4.5px 0;
+  flex: 1 1 auto;
+  align-self: center;
+  font-size: 21px;
+  width: 241px;
+  text-align: center;
+  color: mat.get-color-from-palette($primary, 500);
+}

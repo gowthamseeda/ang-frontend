@@ -1,0 +1,16 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.categories {
+  color: mat.get-color-from-palette($primary, 500);
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  font-size: 21px;
+
+  margin: 32px 27px 16px 27px;
+
+  .category {
+    margin-right: 24px;
+  }
+}

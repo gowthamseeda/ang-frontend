@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+@mixin structures-table($theme) {
+  $accent: map-get($theme, accent);
+
+  .mat-mdc-table {
+    .mat-mdc-row {
+      padding-top: 0;
+      padding-bottom: 0;
+
+      .mat-mdc-cell {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-right: 1px solid mat.get-color-from-palette($accent, 100);
+      }
+
+      .mat-mdc-cell:last-child {
+        border-right: none;
+      }
+    }
+  }
+}

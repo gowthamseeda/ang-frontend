@@ -1,0 +1,8 @@
+<div class="pylone__container">
+  <ng-container *ngFor="let brandId of brandIds; let currentIndex = index">
+    <div class="pylone__brand-block">
+      <gp-brand-icon [id]="brandId"
+                     [monowhite]="true"></gp-brand-icon>
+    </div>
+  </ng-container>
+</div>

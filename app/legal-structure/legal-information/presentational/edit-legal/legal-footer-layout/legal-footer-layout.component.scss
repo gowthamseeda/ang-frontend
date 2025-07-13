@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+@import 'src/styles-theme';
+
+.hint-allowed {
+  padding: 10px 0 8px 0;
+  color: mat.get-color-from-palette($accent, 700);
+}
+.footer-text__container {
+  margin-bottom: 25px;
+}
+
+.word-size {
+  font-size: 12px;
+}

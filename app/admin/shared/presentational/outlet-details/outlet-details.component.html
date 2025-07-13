@@ -1,0 +1,103 @@
+<div gpFxLayout="row">
+  <div gpFxLayout
+       gpFxLayoutRow
+       gpFxLayoutAlign="center">
+    <h2> {{ description.previousHeader | translate }}</h2>
+    <div *ngIf="selectedOutlet.previous === null; then thenAddPrevious else thenRemovePrevious"></div>
+  </div>
+  <div gpFxLayout
+       gpFxLayoutRow
+       gpFxLayoutAlign="center">
+    <h2>
+      {{ description.currentHeader | translate }}
+    </h2>
+    <div *ngIf="selectedOutlet.current === null; then thenAddCurrent else thenRemoveCurrent"></div>
+  </div>
+</div>
+<div gpFxLayout="row">
+  <div gpFxFlex
+       gpFxLayout="column"
+       gpFxLayoutAlign="center">
+    {{selectedOutlet.previous?.legalName}}
+    <div *ngIf="selectedOutlet.previous" gpFxFill>
+      {{selectedOutlet.previous?.companyId}} -
+      <gp-link-out-to-outlet [outletId]="selectedOutlet.previous?.outletId">
+        {{selectedOutlet.previous?.outletId}}
+      </gp-link-out-to-outlet>
+      <mat-chip class="mat-chip"
+                *ngIf="!selectedOutlet.previous.isActive"
+                matTooltip="{{ 'INACTIVE_TOOLTIP' | translate }}">
+        <span>{{ 'INACTIVE' | translate }}</span>
+      </mat-chip>
+      <br>
+      {{selectedOutlet.previous?.street}} {{selectedOutlet.previous?.streetNumber}}<br>
+      {{selectedOutlet.previous?.city}}<br>
+      {{selectedOutlet.previous?.countryName}}<br>
+    </div>
+  </div>
+  <div gpFxFlex
+       gpFxLayout="column"
+       gpFxLayoutAlign="center">
+    {{selectedOutlet.current?.legalName}}
+    <div *ngIf="selectedOutlet.current" gpFxFill>
+      {{selectedOutlet.current?.companyId}} -
+      <gp-link-out-to-outlet [outletId]="selectedOutlet.current?.outletId">
+        {{selectedOutlet.current?.outletId}}
+      </gp-link-out-to-outlet>
+      <mat-chip *ngIf="!selectedOutlet.current.isActive"
+                matTooltip="{{ 'INACTIVE_TOOLTIP' | translate }}">
+        <span>{{ 'INACTIVE' | translate }}</span>
+      </mat-chip>
+      <br>
+      {{selectedOutlet.current?.street}} {{selectedOutlet.current?.streetNumber}}<br>
+      {{selectedOutlet.current?.city}}<br>
+
+      <div *ngIf="selectedOutlet.previous !== null &&
+           (selectedOutlet.previous?.countryName !== selectedOutlet.current?.countryName );
+           then thenShowHighlighted else thenShowNoHighlighted ">
+      </div>
+    </div>
+
+    <ng-template #thenShowNoHighlighted>
+      {{selectedOutlet.current?.countryName}}
+    </ng-template>
+    <ng-template #thenShowHighlighted>
+      <div class="highlight"> {{selectedOutlet.current?.countryName}}</div>
+    </ng-template>
+
+    <ng-template #thenAddPrevious>
+      <button mat-icon-button
+              [disabled]="disabledAllButton"
+              (click)="plusPreviousOutlet()"
+              matTooltip="{{ description.previousAddIconTooltip | translate }}"
+              matTooltipPosition="after">
+        <gp-icon name="plus"></gp-icon>
+      </button>
+    </ng-template>
+    <ng-template #thenRemovePrevious>
+      <button mat-icon-button
+              [disabled]="disabledAllButton"
+              (click)="minusPreviousOutlet()"
+              matTooltip="{{ description.previousRemoveIconTooltip | translate }}"
+              matTooltipPosition="after">
+        <gp-icon name="minus"></gp-icon>
+      </button>
+    </ng-template>
+    <ng-template #thenAddCurrent>
+      <button mat-icon-button
+              [disabled]="disabledAllButton"
+              (click)="plusCurrentOutlet()"
+              matTooltip="{{ description.currentAddIconTooltip | translate }}"
+              matTooltipPosition="after">
+        <gp-icon name="plus"></gp-icon>
+      </button>
+    </ng-template>
+    <ng-template #thenRemoveCurrent>
+      <button mat-icon-button
+              [disabled]="disabledAllButton"
+              (click)="minusCurrentOutlet()"
+              matTooltip="{{ description.currentRemoveIconTooltip | translate }}"
+              matTooltipPosition="after">
+        <gp-icon name="minus"></gp-icon>
+      </button>
+    </ng-template>

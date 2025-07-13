@@ -1,0 +1,13 @@
+<gp-overlay-layout [toolTipText]="'COMPANY_NAVIGATION_TREE'">
+  <div>
+    <gp-outlet-tile></gp-outlet-tile>
+    <gp-services-tile></gp-services-tile>
+  </div>
+
+  <ng-container overlay>
+    <gp-outlet-tree-navigation gpFxFlex
+                               gpFxFlexXsSm=auto"
+                               style="display: inline;">
+    </gp-outlet-tree-navigation>
+  </ng-container>
+</gp-overlay-layout>

@@ -1,0 +1,16 @@
+@use '@angular/material' as mat;
+@import '../../../../../styles-theme';
+
+.page {
+  min-height: 500px;
+  padding-left: 22px;
+  padding-right: 30px;
+  background-color: mat.get-color-from-palette($primary, 50);
+  color: mat.get-color-from-palette($accent, 800);
+
+  & h1 {
+    font-size: 26px;
+    padding-top: 10px;
+    color: mat.get-color-from-palette($accent, 800);
+  }
+}
