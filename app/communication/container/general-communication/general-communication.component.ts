@@ -27,7 +27,7 @@ import {
   BusinessSiteTaskService,
   TaskQueryParams
 } from '../../../tasks/shared/business-site-task.service';
-import { DataCluster, Status, TaskFooterEvent, Type } from '../../../tasks/task.model';
+import { DataCluster, Status, TaskFooterEvent, Type, TaskForDisplay, CommunicationDiff, CommunicationData as TaskCommunicationData } from '../../../tasks/task.model';
 import { DistributionLevelsService } from '../../../traits/distribution-levels/distribution-levels.service';
 import { BrandCode } from '../../../traits/shared/brand-code/brand-code.model';
 import { BrandCodeService } from '../../../traits/shared/brand-code/brand-code.service';
@@ -78,6 +78,10 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
   @ViewChild(SpokenLanguageComponent)
   spokenLanguageComponent: SpokenLanguageComponent;
 
+  openDataChangeTask: TaskForDisplay;
+  taskRetrieved: boolean = false;
+  communicationDiffList: TaskCommunicationData[] = [];
+
   private unsubscribe = new Subject<void>();
   private communicationDataOfOutlet: GeneralCommunicationData[];
   private subcomponentValidationStatus = new Map<CommunicationFieldType, boolean>();
@@ -101,6 +105,46 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
     this.initGroupedBrandProductGroups();
     this.initGeneralCommunicationData();
     this.initUserAuthorization();
+    this.initDataChangeTasks();
+  }
+
+  initDataChangeTasks(): void {
+    this.outletId.pipe(take(1)).subscribe(outletId => {
+      if (!this.taskRetrieved) {
+        this.businessSiteTaskService
+          .getByOutletId(outletId)
+          .pipe(take(1))
+          .subscribe(data => {
+            this.communicationDiffList = [];
+            data.filter(
+              task =>
+                task.type === Type.DATA_CHANGE &&
+                task.status === Status.OPEN &&
+                task.dataCluster === DataCluster.GENERAL_COMMUNICATION_CHANNELS
+            ).forEach(task => {
+              this.openDataChangeTask = this.convertTaskToTaskForDisplay(task);
+              const commDiff = task.diff as CommunicationDiff;
+              if (commDiff && Array.isArray(commDiff.communicationDataDiff)) {
+                this.communicationDiffList = commDiff.communicationDataDiff.map(diff => ({
+                  brandId: diff.brandId,
+                  communicationFieldId: diff.communicationFieldId,
+                  diff: {
+                    old: diff.diff?.old ?? '',
+                    new: diff.diff?.new ?? '',
+                  }
+                }));
+              }
+            });
+            this.taskRetrieved = true;
+          });
+      }
+    });
+  }
+
+  convertTaskToTaskForDisplay(task: any): TaskForDisplay {
+    const display = new TaskForDisplay();
+    display.taskId = task.taskId;
+    return display;
   }
 
   ngOnDestroy(): void {
@@ -299,7 +343,17 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
           });
         } else {
           brandProductGroupsCommunicationData.push({
-            data: generalCommunicationData,
+            data: generalCommunicationData.map(commData => {
+              const diff = this.communicationDiffList.find(d =>
+                d.communicationFieldId === commData.communicationFieldId &&
+                d.brandId === (commData.brandId ?? 'BRANDLESS')
+              );
+              return {
+                ...commData,
+                oldvalue: diff ? diff.diff?.old : commData.value,
+                newvalue: diff ? diff.diff?.new : commData.value
+              };
+            }),
             brandProductGroupIds: [
               {
                 brandId: generalCommunicationData[0].brandId ?? 'BRANDLESS',
