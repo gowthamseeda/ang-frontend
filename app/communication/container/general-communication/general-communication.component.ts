@@ -360,8 +360,8 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
                 d.brandId === (commData.brandId ?? 'BRANDLESS')
               );
               console.log('🔍 buildBrandProductGroupsCommunicationData: Found diff =', diff)
-              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.old =', diff?.old)
-              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.new =', diff?.new);
+              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.old =', diff?.diff?.old)
+              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.new =', diff?.diff?.new);
               
               const hasChanges = diff && diff.diff?.old !== diff.diff?.new;
               console.log('🔍 buildBrandProductGroupsCommunicationData: hasChanges =', hasChanges);
