@@ -21,7 +21,7 @@
               <div gpFxLayout="column">
                 <div gpFxLayout="row" gpFxLayoutAlign="center center">
                   <span class="actual-block" style="margin-right: 8px;"
-                  *ngIf="taskType === Type.DATA_CHANGE && channel.get('futureValue').value && 
+                  *ngIf="taskType === Type.DATA_CHANGE && channel.get('futureValue')?.value && 
                   channel.get('futureValue').value !== channel.get('value').value">
                   {{ 'ACTUAL' | translate }}:
                 </span>
@@ -37,8 +37,12 @@
                 </gp-icon>
               </div>
             <div gpFxLayout="row"
-              *ngIf="taskType === Type.DATA_CHANGE && channel.get('futureValue').value && channel.get('futureValue').value !== channel.get('value').value"
+              *ngIf="taskType === Type.DATA_CHANGE && channel.get('futureValue')?.value && channel.get('futureValue').value !== channel.get('value').value"
               [ngClass]="'changes-future-value'">
+                <div gpFxFlexFill>{{ 'FUTURE' | translate }}:
+                  {{ channel.get('futureValue').value }}
+                </div>
+              </div>
               <span class="future-block">
                 {{ 'FUTURE' | translate }}: {{ channel.get('futureValue').value }}
               </span>

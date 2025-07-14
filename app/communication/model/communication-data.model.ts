@@ -28,6 +28,8 @@ export interface ServiceCommunicationData extends CommunicationData {
 
 export interface GeneralCommunicationData extends CommunicationData {
   brandId?: string;
+  futureValue?: string;
+  hasChanges?: boolean;
 }
 
 export interface CommunicationDataGroupedByOfferedServiceId {

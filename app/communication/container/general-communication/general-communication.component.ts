@@ -348,10 +348,13 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
                 d.communicationFieldId === commData.communicationFieldId &&
                 d.brandId === (commData.brandId ?? 'BRANDLESS')
               );
+              const hasChanges = diff && diff.diff?.old !== diff.diff?.new;
               return {
                 ...commData,
                 oldvalue: diff ? diff.diff?.old : commData.value,
-                newvalue: diff ? diff.diff?.new : commData.value
+                newvalue: diff ? diff.diff?.new : commData.value,
+                futureValue: hasChanges ? diff.diff?.new : undefined,
+                hasChanges: hasChanges
               };
             }),
             brandProductGroupIds: [
