@@ -180,11 +180,11 @@ export class CommunicationData {
   diff: CommunicationDataDiffData;
 }
 
-export class GeneralCommunicationDataDiff {
+export interface GeneralCommunicationDataDiff {
   generalCommunicationDataDiff: GeneralCommunicationData[];
 }
 
-export class GeneralCommunicationData {
+export interface GeneralCommunicationData {
   brandId?: string;
   productGroupId?: string;
   communicationFieldId: string;
