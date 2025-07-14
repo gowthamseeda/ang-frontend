@@ -109,21 +109,30 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
   }
 
   initDataChangeTasks(): void {
+    console.log('🔍 initDataChangeTasks: Starting to retrieve tasks');
     this.outletId.pipe(take(1)).subscribe(outletId => {
+      console.log('🔍 initDataChangeTasks: outletId =', outletId);
       if (!this.taskRetrieved) {
         this.businessSiteTaskService
           .getByOutletId(outletId)
           .pipe(take(1))
           .subscribe(data => {
+            console.log('🔍 initDataChangeTasks: Raw task data =', data);
             this.communicationDiffList = [];
-            data.filter(
+            const filteredTasks = data.filter(
               task =>
                 task.type === Type.DATA_CHANGE &&
                 task.status === Status.OPEN &&
                 task.dataCluster === DataCluster.GENERAL_COMMUNICATION_CHANNELS
-            ).forEach(task => {
+            );
+            console.log('🔍 initDataChangeTasks: Filtered tasks =', filteredTasks);
+            
+            filteredTasks.forEach(task => {
+              console.log('🔍 initDataChangeTasks: Processing task =', task);
               this.openDataChangeTask = this.convertTaskToTaskForDisplay(task);
               const commDiff = task.diff as CommunicationDiff;
+              console.log('🔍 initDataChangeTasks: Task diff =', commDiff);
+              
               if (commDiff && Array.isArray(commDiff.communicationDataDiff)) {
                 this.communicationDiffList = commDiff.communicationDataDiff.map(diff => ({
                   brandId: diff.brandId,
@@ -133,6 +142,7 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
                     new: diff.diff?.new ?? '',
                   }
                 }));
+                console.log('🔍 initDataChangeTasks: Mapped communicationDiffList =', this.communicationDiffList);
               }
             });
             this.taskRetrieved = true;
@@ -344,18 +354,25 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
         } else {
           brandProductGroupsCommunicationData.push({
             data: generalCommunicationData.map(commData => {
+              console.log('🔍 buildBrandProductGroupsCommunicationData: Processing commData =', commData);
               const diff = this.communicationDiffList.find(d =>
                 d.communicationFieldId === commData.communicationFieldId &&
                 d.brandId === (commData.brandId ?? 'BRANDLESS')
               );
+              console.log('🔍 buildBrandProductGroupsCommunicationData: Found diff =', diff);
+              
               const hasChanges = diff && diff.diff?.old !== diff.diff?.new;
-              return {
+              console.log('🔍 buildBrandProductGroupsCommunicationData: hasChanges =', hasChanges);
+              
+              const result = {
                 ...commData,
                 oldvalue: diff ? diff.diff?.old : commData.value,
                 newvalue: diff ? diff.diff?.new : commData.value,
                 futureValue: hasChanges ? diff.diff?.new : undefined,
                 hasChanges: hasChanges
               };
+              console.log('🔍 buildBrandProductGroupsCommunicationData: Final result =', result);
+              return result;
             }),
             brandProductGroupIds: [
               {
