@@ -133,8 +133,8 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
               const commDiff = task.diff as CommunicationDiff;
               console.log('🔍 initDataChangeTasks: Task diff =', commDiff);
               
-              if (commDiff && Array.isArray(commDiff.communicationDataDiff)) {
-                this.communicationDiffList = commDiff.communicationDataDiff.map(diff => ({
+              if (commDiff && Array.isArray(commDiff.generalCommunicationDataDiff)) {
+                this.communicationDiffList = commDiff.generalCommunicationDataDiff.map(diff => ({
                   brandId: diff.brandId,
                   communicationFieldId: diff.communicationFieldId,
                   diff: {
