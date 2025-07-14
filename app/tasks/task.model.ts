@@ -198,6 +198,7 @@ export class CommunicationDataDiffData {
 
 export class CommunicationDiff {
   communicationDataDiff: CommunicationData[];
+  generalCommunicationDataDiff?: GeneralCommunicationData[];
 }
 
 export class BusinessNameDiff {
