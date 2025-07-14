@@ -27,7 +27,7 @@ import {
   BusinessSiteTaskService,
   TaskQueryParams
 } from '../../../tasks/shared/business-site-task.service';
-import { DataCluster, Status, TaskFooterEvent, Type, TaskForDisplay, CommunicationDiff, CommunicationData as TaskCommunicationData } from '../../../tasks/task.model';
+import { DataCluster, Status, TaskFooterEvent, Type, TaskForDisplay, GeneralCommunicationDataDiff, GeneralCommunicationData as TaskCommunicationData } from '../../../tasks/task.model';
 import { DistributionLevelsService } from '../../../traits/distribution-levels/distribution-levels.service';
 import { BrandCode } from '../../../traits/shared/brand-code/brand-code.model';
 import { BrandCodeService } from '../../../traits/shared/brand-code/brand-code.service';
@@ -130,7 +130,7 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
             filteredTasks.forEach(task => {
               console.log('🔍 initDataChangeTasks: Processing task =', task);
               this.openDataChangeTask = this.convertTaskToTaskForDisplay(task);
-              const commDiff = task.diff as CommunicationDiff;
+              const commDiff = task.diff as GeneralCommunicationDataDiff;
               console.log('🔍 initDataChangeTasks: Task diff =', commDiff);
               
               if (commDiff && Array.isArray(commDiff.generalCommunicationDataDiff)) {
