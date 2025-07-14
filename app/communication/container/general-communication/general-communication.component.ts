@@ -355,10 +355,23 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
           brandProductGroupsCommunicationData.push({
             data: generalCommunicationData.map(commData => {
               console.log('🔍 buildBrandProductGroupsCommunicationData: Processing commData =', commData);
-              const diff = this.communicationDiffList.find(d =>
-                d.communicationFieldId === commData.communicationFieldId &&
-                d.brandId === (commData.brandId ?? 'BRANDLESS')
-              );
+              console.log('🔍 buildBrandProductGroupsCommunicationData: Looking for brandId =', commData.brandId ?? 'BRANDLESS');
+              console.log('🔍 buildBrandProductGroupsCommunicationData: Looking for communicationFieldId =', commData.communicationFieldId);
+              console.log('🔍 buildBrandProductGroupsCommunicationData: Available diffs =', this.communicationDiffList);
+              
+              const targetBrandId = commData.brandId ?? 'BRANDLESS';
+              const diff = this.communicationDiffList.find(d => {
+                const matches = d.communicationFieldId === commData.communicationFieldId &&
+                               (d.brandId ?? 'BRANDLESS') === targetBrandId;
+                console.log('🔍 Comparing diff item:', {
+                  diffBrandId: d.brandId ?? 'BRANDLESS',
+                  targetBrandId: targetBrandId,
+                  diffFieldId: d.communicationFieldId,
+                  targetFieldId: commData.communicationFieldId,
+                  matches: matches
+                });
+                return matches;
+              });
               console.log('🔍 buildBrandProductGroupsCommunicationData: Found diff =', diff)
               console.log('🔍 buildBrandProductGroupsCommunicationData: diff.old =', diff?.diff?.old)
               console.log('🔍 buildBrandProductGroupsCommunicationData: diff.new =', diff?.diff?.new);
