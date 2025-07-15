@@ -328,6 +328,9 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
     communicationData: GeneralCommunicationData[],
     brandCodes: BrandCode[]
   ): BrandProductGroupsData<GeneralCommunicationData[]>[] {
+    console.log('🔍 buildBrandProductGroupsCommunicationData: Starting with communicationData =', communicationData);
+    console.log('🔍 buildBrandProductGroupsCommunicationData: communicationDiffList =', this.communicationDiffList);
+    
     const brandProductGroupsCommunicationData: BrandProductGroupsData<
       GeneralCommunicationData[]
     >[] = [];
@@ -355,25 +358,36 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
           brandProductGroupsCommunicationData.push({
             data: generalCommunicationData.map(commData => {
               console.log('🔍 buildBrandProductGroupsCommunicationData: Processing commData =', commData);
-              console.log('🔍 buildBrandProductGroupsCommunicationData: Looking for brandId =', commData.brandId ?? 'BRANDLESS');
-              console.log('🔍 buildBrandProductGroupsCommunicationData: Looking for communicationFieldId =', commData.communicationFieldId);
+              console.log('🔍 buildBrandProductGroupsCommunicationData: commData type =', typeof commData);
+              console.log('🔍 buildBrandProductGroupsCommunicationData: commData keys =', Object.keys(commData || {}));
+              console.log('🔍 buildBrandProductGroupsCommunicationData: Looking for brandId =', commData?.brandId ?? 'BRANDLESS');
+              console.log('🔍 buildBrandProductGroupsCommunicationData: Looking for communicationFieldId =', commData?.communicationFieldId);
               console.log('🔍 buildBrandProductGroupsCommunicationData: Available diffs =', this.communicationDiffList);
 
-              const targetBrandId = commData.brandId ?? 'BRANDLESS';
-              const diff = this.communicationDiffList.find(d => {
-                const matches = d.communicationFieldId === commData.communicationFieldId &&
-                               (d.brandId ?? 'BRANDLESS') === targetBrandId;
+              const targetBrandId = commData?.brandId ?? 'BRANDLESS';
+              const diff = this.communicationDiffList?.find(d => {
+                console.log('🔍 Examining diff item:', d);
+                console.log('🔍 Diff item type:', typeof d);
+                console.log('🔍 Diff item keys:', Object.keys(d || {}));
+                
+                const matches = d?.communicationFieldId === commData?.communicationFieldId &&
+                               (d?.brandId ?? 'BRANDLESS') === targetBrandId;
                 console.log('🔍 Comparing diff item:', {
-                  diffBrandId: d.brandId ?? 'BRANDLESS',
+                  diffBrandId: d?.brandId ?? 'BRANDLESS',
                   targetBrandId: targetBrandId,
-                  diffFieldId: d.communicationFieldId,
-                  targetFieldId: commData.communicationFieldId,
+                  diffFieldId: d?.communicationFieldId,
+                  targetFieldId: commData?.communicationFieldId,
                   matches: matches
                 });
                 return matches;
               });
-              console.log('🔍 buildBrandProductGroupsCommunicationData: Found diff =', diff)
-              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.old =', diff?.diff?.old)
+              console.log('🔍 buildBrandProductGroupsCommunicationData: Found diff =', diff);
+              console.log('🔍 buildBrandProductGroupsCommunicationData: diff type =', typeof diff);
+              console.log('🔍 buildBrandProductGroupsCommunicationData: diff keys =', Object.keys(diff || {}));
+              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.diff =', diff?.diff);
+              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.diff type =', typeof diff?.diff);
+              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.diff keys =', Object.keys(diff?.diff || {}));
+              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.old =', diff?.diff?.old);
               console.log('🔍 buildBrandProductGroupsCommunicationData: diff.new =', diff?.diff?.new);
 
               const hasChanges = diff && diff.diff?.old !== diff.diff?.new;
@@ -381,8 +395,8 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
 
               const result = {
                 ...commData,
-                oldvalue: diff ? diff.diff?.old : commData.value,
-                newvalue: diff ? diff.diff?.new : commData.value,
+                oldvalue: diff ? diff.diff?.old : commData?.value,
+                newvalue: diff ? diff.diff?.new : commData?.value,
                 futureValue: hasChanges ? diff.diff?.new : undefined,
                 hasChanges: hasChanges
               };
