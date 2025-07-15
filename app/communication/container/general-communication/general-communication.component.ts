@@ -134,14 +134,19 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
               console.log('🔍 initDataChangeTasks: Task diff =', commDiff);
 
               if (commDiff && Array.isArray(commDiff.generalCommunicationDataDiff)) {
-                this.communicationDiffList = commDiff.generalCommunicationDataDiff.map(diff => ({
-                  brandId: diff.brandId,
-                  communicationFieldId: diff.communicationFieldId,
-                  diff: {
-                    old: diff.diff?.old ?? '',
-                    new: diff.diff?.new ?? '',
-                  }
-                }));
+                this.communicationDiffList = commDiff.generalCommunicationDataDiff.map(diff => {
+                  console.log('🔍 initDataChangeTasks: Processing individual diff =', diff);
+                  console.log('🔍 initDataChangeTasks: diff.diff =', diff.diff);
+                  
+                  return {
+                    brandId: diff.brandId,
+                    communicationFieldId: diff.communicationFieldId,
+                    diff: {
+                      old: diff.diff?.old || '',
+                      new: diff.diff?.new || '',
+                    }
+                  };
+                });
                 console.log('🔍 initDataChangeTasks: Mapped communicationDiffList =', this.communicationDiffList);
               }
             });
@@ -357,41 +362,20 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
         } else {
           brandProductGroupsCommunicationData.push({
             data: generalCommunicationData.map(commData => {
-              console.log('🔍 buildBrandProductGroupsCommunicationData: Processing commData =', commData);
-              console.log('🔍 buildBrandProductGroupsCommunicationData: commData type =', typeof commData);
-              console.log('🔍 buildBrandProductGroupsCommunicationData: commData keys =', Object.keys(commData || {}));
-              console.log('🔍 buildBrandProductGroupsCommunicationData: Looking for brandId =', commData?.brandId ?? 'BRANDLESS');
-              console.log('🔍 buildBrandProductGroupsCommunicationData: Looking for communicationFieldId =', commData?.communicationFieldId);
-              console.log('🔍 buildBrandProductGroupsCommunicationData: Available diffs =', this.communicationDiffList);
-
               const targetBrandId = commData?.brandId ?? 'BRANDLESS';
               const diff = this.communicationDiffList?.find(d => {
-                console.log('🔍 Examining diff item:', d);
-                console.log('🔍 Diff item type:', typeof d);
-                console.log('🔍 Diff item keys:', Object.keys(d || {}));
-                
-                const matches = d?.communicationFieldId === commData?.communicationFieldId &&
-                               (d?.brandId ?? 'BRANDLESS') === targetBrandId;
-                console.log('🔍 Comparing diff item:', {
-                  diffBrandId: d?.brandId ?? 'BRANDLESS',
-                  targetBrandId: targetBrandId,
-                  diffFieldId: d?.communicationFieldId,
-                  targetFieldId: commData?.communicationFieldId,
-                  matches: matches
-                });
-                return matches;
+                return d?.communicationFieldId === commData?.communicationFieldId &&
+                       (d?.brandId ?? 'BRANDLESS') === targetBrandId;
               });
-              console.log('🔍 buildBrandProductGroupsCommunicationData: Found diff =', diff);
-              console.log('🔍 buildBrandProductGroupsCommunicationData: diff type =', typeof diff);
-              console.log('🔍 buildBrandProductGroupsCommunicationData: diff keys =', Object.keys(diff || {}));
-              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.diff =', diff?.diff);
-              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.diff type =', typeof diff?.diff);
-              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.diff keys =', Object.keys(diff?.diff || {}));
-              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.old =', diff?.diff?.old);
-              console.log('🔍 buildBrandProductGroupsCommunicationData: diff.new =', diff?.diff?.new);
+              
+              console.log('🔍 buildBrandProductGroupsCommunicationData: Processing commData =', {
+                brandId: targetBrandId,
+                fieldId: commData?.communicationFieldId,
+                foundDiff: !!diff,
+                diffData: diff ? { old: diff.diff?.old, new: diff.diff?.new } : null
+              });
 
               const hasChanges = diff && diff.diff?.old !== diff.diff?.new;
-              console.log('🔍 buildBrandProductGroupsCommunicationData: hasChanges =', hasChanges);
 
               const result = {
                 ...commData,
@@ -400,7 +384,6 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
                 futureValue: hasChanges ? diff.diff?.new : undefined,
                 hasChanges: hasChanges
               };
-              console.log('🔍 buildBrandProductGroupsCommunicationData: Final result =', result);
               return result;
             }),
             brandProductGroupIds: [
