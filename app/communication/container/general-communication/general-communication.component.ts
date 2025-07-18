@@ -384,6 +384,10 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
                 futureValue: hasChanges ? diff.diff?.new : undefined,
                 hasChanges: hasChanges
               };
+              console.log('🔍 buildBrandProductGroupsCommunicationData: Final result object =', result);
+              console.log('🔍 buildBrandProductGroupsCommunicationData: result.oldvalue =', result.oldvalue);
+              console.log('🔍 buildBrandProductGroupsCommunicationData: result.newvalue =', result.newvalue);
+              console.log('🔍 buildBrandProductGroupsCommunicationData: result.hasChanges =', result.hasChanges);
               return result;
             }),
             brandProductGroupIds: [
