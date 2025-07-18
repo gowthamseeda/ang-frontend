@@ -375,7 +375,7 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
                 diffData: diff ? { old: diff.diff?.old, new: diff.diff?.new } : null
               });
 
-              const hasChanges = diff && diff.diff?.old !== diff.diff?.new;
+              const hasChanges = diff && diff.diff?.old !== diff.diff?.new && diff.diff?.old !== undefined && diff.diff?.new !== undefined;
 
               const result = {
                 ...commData,
