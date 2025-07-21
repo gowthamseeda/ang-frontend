@@ -85,7 +85,7 @@ export class StandardCommunicationChannelsPipe implements PipeTransform {
 
       const name = communicationField ? this.getNameTranslation(communicationField) : '';
 
-      return {
+      const result = {
         id: communicationData.communicationFieldId,
         format: communicationField?.format,
         uiFieldSize: communicationField?.uiFieldSize,
@@ -99,6 +99,12 @@ export class StandardCommunicationChannelsPipe implements PipeTransform {
         oldvalue: (communicationData as any).oldvalue,
         newvalue: (communicationData as any).newvalue
       };
+      
+      console.log('🔍 StandardCommunicationChannelsPipe: Transformed channel =', result);
+      console.log('🔍 StandardCommunicationChannelsPipe: futureValue =', result.futureValue);
+      console.log('🔍 StandardCommunicationChannelsPipe: hasChanges =', result.hasChanges);
+      
+      return result;
     };
   }
 
