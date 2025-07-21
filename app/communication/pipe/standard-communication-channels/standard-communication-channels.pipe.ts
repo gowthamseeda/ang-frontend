@@ -93,7 +93,11 @@ export class StandardCommunicationChannelsPipe implements PipeTransform {
         name: name,
         notification: communicationData.dataNotification,
         taskId: communicationData.taskId,
-        newValue: (communicationData as any).newvalue
+        newValue: (communicationData as any).newvalue,
+        futureValue: (communicationData as any).futureValue,
+        hasChanges: (communicationData as any).hasChanges,
+        oldvalue: (communicationData as any).oldvalue,
+        newvalue: (communicationData as any).newvalue
       };
     };
   }
