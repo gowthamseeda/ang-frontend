@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { groupBy } from 'ramda';
 import { combineLatest, iif, Observable, of, Subject, zip } from 'rxjs';
 import {
@@ -99,7 +99,8 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
     private distributionLevelsService: DistributionLevelsService,
     private userAuthorizationService: UserAuthorizationService,
     private businessSiteTaskService: BusinessSiteTaskService,
-    private appConfigProvider: AppConfigProvider
+    private appConfigProvider: AppConfigProvider,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
