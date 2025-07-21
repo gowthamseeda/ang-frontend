@@ -101,7 +101,12 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
     private businessSiteTaskService: BusinessSiteTaskService,
     private appConfigProvider: AppConfigProvider,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    // Initialize properties to prevent undefined errors
+    this.communicationDiffList = [];
+    this.taskRetrieved = false;
+    this.openDataChangeTask = null;
+  }
 
   ngOnInit(): void {
     this.outletId = this.legalStructureRoutingService.outletIdChanges;

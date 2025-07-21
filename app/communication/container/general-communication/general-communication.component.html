@@ -13,14 +13,14 @@
       
       <div style="margin-bottom: 10px;">
         <strong>communicationDiffList length:</strong> 
-        <span [style.color]="communicationDiffList?.length > 0 ? 'green' : 'red'">
-          {{ communicationDiffList?.length || 0 }}
+        <span [style.color]="(communicationDiffList && communicationDiffList.length > 0) ? 'green' : 'red'">
+          {{ communicationDiffList ? communicationDiffList.length : 0 }}
         </span>
       </div>
       
       <div style="margin-bottom: 10px;">
         <strong>taskRetrieved:</strong> 
-        <span [style.color]="taskRetrieved ? 'green' : 'red'">{{ taskRetrieved }}</span>
+        <span [style.color]="taskRetrieved ? 'green' : 'red'">{{ taskRetrieved || false }}</span>
       </div>
       
       <div style="margin-bottom: 10px;">
@@ -28,7 +28,7 @@
         <span [style.color]="openDataChangeTask ? 'green' : 'red'">
           {{ openDataChangeTask ? 'Present' : 'null' }}
         </span>
-        <div *ngIf="openDataChangeTask" style="font-size: 12px; color: #666;">
+        <div *ngIf="openDataChangeTask && openDataChangeTask.taskId" style="font-size: 12px; color: #666;">
           TaskId: {{ openDataChangeTask.taskId }}
         </div>
       </div>
