@@ -23,6 +23,7 @@ import { ApiError } from '../../../shared/services/api/api.service';
 import { ObjectStatus } from '../../../shared/services/api/objectstatus.model';
 import { ProgressBarService } from '../../../shared/services/progress-bar/progress-bar.service';
 import { SnackBarService } from '../../../shared/services/snack-bar/snack-bar.service';
+import { LeaveComponent } from '../../../shared/components/leave-component/leave-component.component';
 import {
   BusinessSiteTaskService,
   TaskQueryParams
@@ -46,27 +47,6 @@ import { SpokenLanguageComponent } from '../spoken-language/spoken-language.comp
 import { GENERAL_COMMUNICATION_AGGREGATES } from '../../../shared/model/constants';
 import minusBrandProductGroupIds = BrandProductGroupId.minusBrandProductGroupIds;
 import hasEqualFieldsAndValues = CommunicationData.hasEqualFieldsAndValues;
-import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  shareReplay,
-  switchMap,
-  take,
-  tap
-} from 'rxjs/operators';
-
-import { FeatureToggleService } from '../../../shared/directives/feature-toggle/feature-toggle.service';
-import { ApiService } from '../../../shared/services/api/api.service';
-import { LeaveComponent } from '../../../shared/components/leave-component/leave-component.component';
-import { CanComponentDeactivate } from '../../../shared/guards/can-deactivate-guard.model';
-import * as fromLegalStructure from '../../../legal-structure/store';
-import { LanguageService } from '../../../geography/language/language.service';
 
 @Component({
   selector: 'gp-general-communication',
@@ -87,8 +67,6 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
   brandCodes: Observable<BrandCode[]>;
   CommunicationFieldType = CommunicationFieldType;
   Type = Type;
-  taskFilter: TaskQueryParams;
-  openDataChangeTask: TaskForDisplay;
   showNotification: boolean = true;
   userIsAuthorizedForOutlet: Observable<boolean>;
   isTaskPresent: Observable<boolean>;
@@ -99,6 +77,7 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
     dataClusters: [DataCluster.GENERAL_COMMUNICATION_CHANNELS],
     status: Status.OPEN
   };
+  
   @ViewChild(SpokenLanguageComponent)
   spokenLanguageComponent: SpokenLanguageComponent;
 
