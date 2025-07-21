@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { groupBy } from 'ramda';
 import { combineLatest, iif, Observable, of, Subject, zip } from 'rxjs';
 import {
@@ -23,7 +23,6 @@ import { ApiError } from '../../../shared/services/api/api.service';
 import { ObjectStatus } from '../../../shared/services/api/objectstatus.model';
 import { ProgressBarService } from '../../../shared/services/progress-bar/progress-bar.service';
 import { SnackBarService } from '../../../shared/services/snack-bar/snack-bar.service';
-import { LeaveComponent } from '../../../shared/components/leave-component/leave-component.component';
 import {
   BusinessSiteTaskService,
   TaskQueryParams
@@ -48,12 +47,13 @@ import { GENERAL_COMMUNICATION_AGGREGATES } from '../../../shared/model/constant
 import minusBrandProductGroupIds = BrandProductGroupId.minusBrandProductGroupIds;
 import hasEqualFieldsAndValues = CommunicationData.hasEqualFieldsAndValues;
 
+
 @Component({
   selector: 'gp-general-communication',
   templateUrl: './general-communication.component.html',
   styleUrls: ['./general-communication.component.scss']
 })
-export class GeneralCommunicationComponent extends LeaveComponent implements OnInit, OnDestroy, CanDeactivateComponent {
+export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeactivateComponent {
   readonly generalCommunicationAggregates: string[] = GENERAL_COMMUNICATION_AGGREGATES;
   saveButtonDisabled = true;
   cancelButtonDisabled = true;
@@ -66,8 +66,6 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
   outletId: Observable<string>;
   brandCodes: Observable<BrandCode[]>;
   CommunicationFieldType = CommunicationFieldType;
-  Type = Type;
-  showNotification: boolean = true;
   userIsAuthorizedForOutlet: Observable<boolean>;
   isTaskPresent: Observable<boolean>;
   isEditable: Observable<boolean>;
@@ -77,7 +75,6 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
     dataClusters: [DataCluster.GENERAL_COMMUNICATION_CHANNELS],
     status: Status.OPEN
   };
-  
   @ViewChild(SpokenLanguageComponent)
   spokenLanguageComponent: SpokenLanguageComponent;
 
@@ -99,14 +96,8 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
     private distributionLevelsService: DistributionLevelsService,
     private userAuthorizationService: UserAuthorizationService,
     private businessSiteTaskService: BusinessSiteTaskService,
-    private appConfigProvider: AppConfigProvider,
-    private cdr: ChangeDetectorRef
-  ) {
-    // Initialize properties to prevent undefined errors
-    this.communicationDiffList = [];
-    this.taskRetrieved = false;
-    this.openDataChangeTask = null;
-  }
+    private appConfigProvider: AppConfigProvider
+  ) {}
 
   ngOnInit(): void {
     this.outletId = this.legalStructureRoutingService.outletIdChanges;
@@ -146,7 +137,7 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
                 this.communicationDiffList = commDiff.generalCommunicationDataDiff.map(diff => {
                   console.log('🔍 initDataChangeTasks: Processing individual diff =', diff);
                   console.log('🔍 initDataChangeTasks: diff.diff =', diff.diff);
-
+                  
                   return {
                     brandId: diff.brandId,
                     communicationFieldId: diff.communicationFieldId,
@@ -156,23 +147,10 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
                     }
                   };
                 });
-                console.log('🔍 initDataChangeTasks: Final communicationDiffList =', this.communicationDiffList);
-                console.log('🔍 initDataChangeTasks: Final communicationDiffList length =', this.communicationDiffList.length);
-                
-                // Trigger change detection manually
-                setTimeout(() => {
-                  console.log('🔍 After timeout - communicationDiffList length =', this.communicationDiffList.length);
-                }, 0);
-              } else {
-                console.log('🔍 initDataChangeTasks: No generalCommunicationDataDiff found in task diff');
-                console.log('🔍 initDataChangeTasks: commDiff =', commDiff);
+                console.log('🔍 initDataChangeTasks: Mapped communicationDiffList =', this.communicationDiffList);
               }
             });
             this.taskRetrieved = true;
-            
-            // Refresh the communication data now that we have the diffs
-            console.log('🔍 initDataChangeTasks: Refreshing communication data with loaded diffs');
-            this.initGeneralCommunicationData();
           });
       }
     });
@@ -328,21 +306,15 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
         ([communicationData]) =>
           (this.communicationDataOfOutlet = this.adjustCommunicationData(communicationData))
       ),
-      map(([communicationData, brandCodes]) => {
-        console.log('🔍 updateBrandProductGroupsCommunicationData: About to build with communicationDiffList =', this.communicationDiffList);
-        return this.buildBrandProductGroupsCommunicationData(communicationData, brandCodes);
-      }),
+      map(([communicationData, brandCodes]) =>
+        this.buildBrandProductGroupsCommunicationData(communicationData, brandCodes)
+      ),
       catchError(error => {
         this.isLoadingCommunicationChannels = false;
         this.snackBarService.showError(error);
         return [];
       }),
-      tap(() => (this.isLoadingCommunicationChannels = false)),
-      tap((result) => {
-        console.log('🔍 updateBrandProductGroupsCommunicationData: Final result =', result);
-        // Force change detection
-        this.cdr.detectChanges();
-      })
+      tap(() => (this.isLoadingCommunicationChannels = false))
     );
   }
 
@@ -363,7 +335,7 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
   ): BrandProductGroupsData<GeneralCommunicationData[]>[] {
     console.log('🔍 buildBrandProductGroupsCommunicationData: Starting with communicationData =', communicationData);
     console.log('🔍 buildBrandProductGroupsCommunicationData: communicationDiffList =', this.communicationDiffList);
-
+    
     const brandProductGroupsCommunicationData: BrandProductGroupsData<
       GeneralCommunicationData[]
     >[] = [];
@@ -395,7 +367,7 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
                 return d?.communicationFieldId === commData?.communicationFieldId &&
                        (d?.brandId ?? 'BRANDLESS') === targetBrandId;
               });
-
+              
               console.log('🔍 buildBrandProductGroupsCommunicationData: Processing commData =', {
                 brandId: targetBrandId,
                 fieldId: commData?.communicationFieldId,
