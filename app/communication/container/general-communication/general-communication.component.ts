@@ -138,7 +138,7 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
                 this.communicationDiffList = commDiff.generalCommunicationDataDiff.map(diff => {
                   console.log('🔍 initDataChangeTasks: Processing individual diff =', diff);
                   console.log('🔍 initDataChangeTasks: diff.diff =', diff.diff);
-                  
+
                   return {
                     brandId: diff.brandId,
                     communicationFieldId: diff.communicationFieldId,
@@ -336,7 +336,7 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
   ): BrandProductGroupsData<GeneralCommunicationData[]>[] {
     console.log('🔍 buildBrandProductGroupsCommunicationData: Starting with communicationData =', communicationData);
     console.log('🔍 buildBrandProductGroupsCommunicationData: communicationDiffList =', this.communicationDiffList);
-    
+
     const brandProductGroupsCommunicationData: BrandProductGroupsData<
       GeneralCommunicationData[]
     >[] = [];
@@ -368,7 +368,7 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
                 return d?.communicationFieldId === commData?.communicationFieldId &&
                        (d?.brandId ?? 'BRANDLESS') === targetBrandId;
               });
-              
+
               console.log('🔍 buildBrandProductGroupsCommunicationData: Processing commData =', {
                 brandId: targetBrandId,
                 fieldId: commData?.communicationFieldId,
