@@ -27,10 +27,7 @@
               <gp-communication-channels (communicationChannelsChange)="upsertCommunicationDataOfOutlet($event,
                                      CommunicationFieldType.STANDARD, communicationDataRow.brandProductGroupIds)"
                                          [communicationChannels]="communicationDataRow.data | standardCommunicationChannels | async"
-                                         [readOnly]="!(isUserPermittedFor(communicationDataRow.brandProductGroupIds) | async) || !(isEditable | async)"
-                                         [taskType]="Type.DATA_CHANGE"
-                                         [task]="openDataChangeTask"
-                                         [showNotification]="showNotification">
+                                         [readOnly]="!(isUserPermittedFor(communicationDataRow.brandProductGroupIds) | async) || !(isEditable | async)">
               </gp-communication-channels>
 
               <gp-social-media-channels (communicationChannelsChange)="upsertCommunicationDataOfOutlet($event,

@@ -1,227 +1,67 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Output
-} from '@angular/core';
-import { AbstractControl, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
-import {
-  CommunicationChannel,
-  CommunicationChannelsChange
-} from '../../model/communication-channel.model';
-import { Type, TaskForDisplay } from '../../../tasks/task.model';
-import { CommunicationFieldFormat } from '../../model/communication-field-format';
-import { CommunicationChannelsValidators } from '../../../shared/validators/communication-channels-validators';
-import { MatDialog } from '@angular/material/dialog';
-import { TaskDataService } from '../../../tasks/task/store/task-data.service';
-import { TaskCommentComponent } from '../../../shared/components/task-comment/task-comment.component';
-import { CommunicationChannelsService } from '../../communication-channels.service';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
-export const DEFAULT_COMMUNICATION_FIELD_UI_FIELD_SIZE = 3;
+import { CommunicationChannel } from '../../model/communication-channel.model';
+
+export interface CommunicationChannelsChange {
+  invalid: boolean;
+  value: CommunicationChannel[];
+}
 
 @Component({
   selector: 'gp-communication-channels',
   templateUrl: './communication-channels.component.html',
-  styleUrls: ['./communication-channels.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./communication-channels.component.scss']
 })
-export class CommunicationChannelsComponent implements OnChanges, OnDestroy {
+export class CommunicationChannelsComponent implements OnInit {
   @Input() communicationChannels: CommunicationChannel[] = [];
-  @Input() readOnly: Boolean = false;
+  @Input() readOnly = false;
+
   @Output() communicationChannelsChange = new EventEmitter<CommunicationChannelsChange>();
-  @Input() taskType: Type;
-  @Input() task: TaskForDisplay;
-  @Input() showNotification: Boolean = false;
-  isPristine = true;
-  private unsubscribe = new Subject<void>();
-  Type = Type;
 
-  communicationChannelsForm: UntypedFormGroup;
-  communicationChannelsArray: UntypedFormArray;
+  form: FormGroup;
 
-  constructor(
-    private formBuilder: UntypedFormBuilder,
-    private matDialog: MatDialog,
-    private taskDataService: TaskDataService,
-    private communicationChannelsService: CommunicationChannelsService
-  ) {}
-
-  ngOnChanges(): void {
-    this.communicationChannelsForm = this.formBuilder.group({
+  constructor(private formBuilder: FormBuilder) {
+    this.form = this.formBuilder.group({
       channels: this.formBuilder.array([])
     });
-
-    this.initCommunicationForm();
-    this.communicationChannelsForm.markAllAsTouched();
   }
 
-  ngOnDestroy(): void {
-    this.communicationChannelsService.resetServices();
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+  ngOnInit(): void {
+    this.initializeForm();
   }
 
-  get channelsFormArray(): UntypedFormArray {
-    return this.communicationChannelsForm?.get('channels') as UntypedFormArray;
-  }
+  private initializeForm(): void {
+    const channelsArray = this.form.get('channels') as FormArray;
+    channelsArray.clear();
 
-  initCommunicationForm(): void {
-    this.communicationChannels?.forEach(communicationChannel => {
-      this.addChannelToFormArray(communicationChannel);
-    });
-
-    this.communicationChannelsForm.valueChanges
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((value: { channels: CommunicationChannel[] }) => {
-        this.communicationChannelsChange.emit({
-          value: value.channels,
-          invalid: this.communicationChannelsForm.invalid
-        } as CommunicationChannelsChange);
+    this.communicationChannels.forEach(channel => {
+      const channelGroup = this.formBuilder.group({
+        communicationFieldId: [channel.communicationFieldId],
+        value: [channel.value]
       });
-  }
-
-  isLinkOutAllowed(value: string, format: string): boolean {
-    if (!value || !format) {
-      return false;
-    }
-
-    return format === CommunicationFieldFormat.URL || format === CommunicationFieldFormat.EMAIL;
-  }
-
-  openLink(link: string, format: string): void {
-    let target = '';
-
-    if (format === CommunicationFieldFormat.EMAIL) {
-      link = 'mailto:' + link;
-    }
-
-    if (format === CommunicationFieldFormat.URL) {
-      // Append http:// to the URL if it does not exists. Angular treats URLs with http or https
-      // as URLs of external websites otherwise they are treated as routes
-      if (!/^http[s]?:\/\//.test(link)) {
-        link = 'http://' + link;
-        target = '_blank';
-      }
-    }
-
-    window.open(link, target);
-  }
-
-  getFieldSizeFor(field: any): String {
-    return ((field?.uiFieldSize ?? DEFAULT_COMMUNICATION_FIELD_UI_FIELD_SIZE) * 10) + "%";
-  }
-
-  private getCommunicationChannelFormGroup(channel: CommunicationChannel): UntypedFormGroup {
-    const formGroup = this.formBuilder.group({
-      id: channel.id,
-      value: channel.value,
-      name: channel.name,
-      uiFieldSize: channel.uiFieldSize,
-      format: channel.format,
-      notification: channel.notification,
-      taskId: channel.taskId,
-      actualValue: channel.value,
-      futureValue: channel.newValue
+      channelsArray.push(channelGroup);
     });
 
-    formGroup.controls['value'].setValidators(this.getValidators(channel.format));
-    formGroup.controls['value'].updateValueAndValidity();
-
-    return formGroup;
+    this.form.valueChanges.subscribe(() => {
+      this.emitChange();
+    });
   }
 
-  private addChannelToFormArray(channel: CommunicationChannel): void {
-    this.communicationChannelsArray = this.communicationChannelsForm.get('channels') as UntypedFormArray;
-      const formGroup = this.getCommunicationChannelFormGroup(channel);
-      this.communicationChannelsArray.push(formGroup);
+  private emitChange(): void {
+    const formValue = this.form.value;
+    const channels: CommunicationChannel[] = formValue.channels.map((channel: any) => ({
+      communicationFieldId: channel.communicationFieldId,
+      value: channel.value
+    }));
 
-    formGroup.controls['value'].valueChanges
-        .pipe(takeUntil(this.unsubscribe))
-        .subscribe(newValue => {
-          formGroup.controls['futureValue'].setValue(newValue, { emitEvent: false });
-        });
-
-#      if (newValue !== oldValue) {
-#        const task = {
-#          type: Type.DATA_CHANGE,
-#          status: 'OPEN',
-#          dataCluster: 'COMMUNICATION_CHANNELS',
-#          communicationDataDiff: [
-#            {
-#              communicationFieldId: channel.id,
-#              offeredServiceId: channel.offerServiceId,
-#              serviceName: channel.name,
-#              diff: {
-#                old: oldValue,
-#                new: newValue
-#              }
-#            }
-#          ]
-#        };
-#
-#        this.taskDataService.create(task).subscribe();
-#      }
-#    });
+    this.communicationChannelsChange.emit({
+      invalid: this.form.invalid,
+      value: channels
+    });
   }
 
-  private getValidators(format?: CommunicationFieldFormat): ValidatorFn[] {
-    const validators: ValidatorFn[] = [Validators.maxLength(256)];
-
-    switch (format) {
-      case CommunicationFieldFormat.EMAIL:
-        validators.push(Validators.email);
-        break;
-      case CommunicationFieldFormat.TEL:
-        validators.push(CommunicationChannelsValidators.telephoneNumberValidator());
-        break;
-      case CommunicationFieldFormat.URL:
-        validators.push(CommunicationChannelsValidators.urlValidator());
-        break;
-    }
-
-    return validators;
+  get channelsFormArray(): FormArray {
+    return this.form.get('channels') as FormArray;
   }
-
-  taskCommentPopup(taskId?: number): void {
-    if (taskId != undefined)
-      this.taskDataService.getById(taskId)
-        .pipe(take(1))
-        .subscribe(task => {
-            this.matDialog.open(TaskCommentComponent, {
-              data: task.comments
-            });
-          }
-        );
-  }
-
-  getNotificationClass(channel: AbstractControl): string {
-    if (
-      channel.value.notification === 'APPROVED' &&
-      this.showNotification &&
-      channel.get('value')?.pristine
-    ) {
-      return 'approved-input';
-    }
-    if (
-      channel.value.notification === 'DECLINED' &&
-      this.showNotification &&
-      channel.get('value')?.pristine
-    ) {
-      return 'declined-input';
-    }
-    if (
-      channel.value.notification === 'DIRECT_CHANGE' &&
-      this.showNotification &&
-      channel.get('value')?.pristine
-    ) {
-      return 'direct-change-input';
-    }
-    return '';
-  }
-
 }
