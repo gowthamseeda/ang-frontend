@@ -163,6 +163,10 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
               }
             });
             this.taskRetrieved = true;
+            
+            // Refresh the communication data now that we have the diffs
+            console.log('🔍 initDataChangeTasks: Refreshing communication data with loaded diffs');
+            this.initGeneralCommunicationData();
           });
       }
     });
@@ -318,15 +322,21 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
         ([communicationData]) =>
           (this.communicationDataOfOutlet = this.adjustCommunicationData(communicationData))
       ),
-      map(([communicationData, brandCodes]) =>
-        this.buildBrandProductGroupsCommunicationData(communicationData, brandCodes)
-      ),
+      map(([communicationData, brandCodes]) => {
+        console.log('🔍 updateBrandProductGroupsCommunicationData: About to build with communicationDiffList =', this.communicationDiffList);
+        return this.buildBrandProductGroupsCommunicationData(communicationData, brandCodes);
+      }),
       catchError(error => {
         this.isLoadingCommunicationChannels = false;
         this.snackBarService.showError(error);
         return [];
       }),
-      tap(() => (this.isLoadingCommunicationChannels = false))
+      tap(() => (this.isLoadingCommunicationChannels = false)),
+      tap((result) => {
+        console.log('🔍 updateBrandProductGroupsCommunicationData: Final result =', result);
+        // Force change detection
+        this.cdr.detectChanges();
+      })
     );
   }
 
