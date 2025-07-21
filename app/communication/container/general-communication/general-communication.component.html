@@ -6,6 +6,35 @@
   </gp-read-only-notification>
   <gp-edit-layout logo="contact"
                   title="{{ 'COMMUNICATION' | translate }}">
+    
+    <!-- DEBUG OUTPUT -->
+    <div style="background: #f0f8ff; border: 2px solid #007bff; padding: 15px; margin: 10px 0; border-radius: 5px;">
+      <h3 style="color: #007bff; margin: 0 0 10px 0;">🔍 DEBUG INFO</h3>
+      
+      <div style="margin-bottom: 10px;">
+        <strong>communicationDiffList length:</strong> {{ communicationDiffList?.length || 0 }}
+      </div>
+      
+      <div style="margin-bottom: 10px;">
+        <strong>taskRetrieved:</strong> {{ taskRetrieved }}
+      </div>
+      
+      <div style="margin-bottom: 10px;">
+        <strong>openDataChangeTask:</strong> {{ openDataChangeTask | json }}
+      </div>
+      
+      <div style="margin-bottom: 10px;">
+        <strong>communicationDiffList raw data:</strong>
+        <pre style="background: white; padding: 10px; border: 1px solid #ccc; overflow: auto; max-height: 200px;">{{ communicationDiffList | json }}</pre>
+      </div>
+      
+      <div style="margin-bottom: 10px;">
+        <strong>brandProductGroupsCommunicationData:</strong>
+        <pre style="background: white; padding: 10px; border: 1px solid #ccc; overflow: auto; max-height: 200px;">{{ (brandProductGroupsCommunicationData | async) | json }}</pre>
+      </div>
+    </div>
+    <!-- END DEBUG OUTPUT -->
+    
     <gp-edit-section>
       <gp-spoken-language [userIsAuthorizedForOutlet]="userIsAuthorizedForOutlet"
                           (dataChangedManually)="spokenLanguageDataChanged()">
