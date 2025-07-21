@@ -12,20 +12,40 @@
       <h3 style="color: #007bff; margin: 0 0 10px 0;">🔍 DEBUG INFO</h3>
       
       <div style="margin-bottom: 10px;">
-        <strong>communicationDiffList length:</strong> {{ communicationDiffList?.length || 0 }}
+        <strong>communicationDiffList length:</strong> 
+        <span [style.color]="communicationDiffList?.length > 0 ? 'green' : 'red'">
+          {{ communicationDiffList?.length || 0 }}
+        </span>
       </div>
       
       <div style="margin-bottom: 10px;">
-        <strong>taskRetrieved:</strong> {{ taskRetrieved }}
+        <strong>taskRetrieved:</strong> 
+        <span [style.color]="taskRetrieved ? 'green' : 'red'">{{ taskRetrieved }}</span>
       </div>
       
       <div style="margin-bottom: 10px;">
-        <strong>openDataChangeTask:</strong> {{ openDataChangeTask | json }}
+        <strong>openDataChangeTask:</strong> 
+        <span [style.color]="openDataChangeTask ? 'green' : 'red'">
+          {{ openDataChangeTask ? 'Present' : 'null' }}
+        </span>
+        <div *ngIf="openDataChangeTask" style="font-size: 12px; color: #666;">
+          TaskId: {{ openDataChangeTask.taskId }}
+        </div>
       </div>
       
-      <div style="margin-bottom: 10px;">
-        <strong>communicationDiffList raw data:</strong>
-        <pre style="background: white; padding: 10px; border: 1px solid #ccc; overflow: auto; max-height: 200px;">{{ communicationDiffList | json }}</pre>
+      <div style="margin-bottom: 10px;" *ngIf="communicationDiffList?.length > 0">
+        <strong>communicationDiffList items:</strong>
+        <div *ngFor="let item of communicationDiffList; index as i" style="margin: 5px 0; padding: 5px; background: #f9f9f9; font-size: 12px;">
+          <div><strong>Item {{ i + 1 }}:</strong></div>
+          <div>BrandId: {{ item.brandId || 'BRANDLESS' }}</div>
+          <div>FieldId: {{ item.communicationFieldId }}</div>
+          <div>Old: {{ item.diff?.old || 'empty' }}</div>
+          <div>New: {{ item.diff?.new || 'empty' }}</div>
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 10px;" *ngIf="communicationDiffList?.length === 0 && taskRetrieved">
+        <span style="color: orange;"><strong>⚠️ No communication diffs found in task data</strong></span>
       </div>
       
       <div style="margin-bottom: 10px;">

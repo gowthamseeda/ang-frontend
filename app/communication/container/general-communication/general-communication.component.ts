@@ -150,7 +150,16 @@ export class GeneralCommunicationComponent extends LeaveComponent implements OnI
                     }
                   };
                 });
-                console.log('🔍 initDataChangeTasks: Mapped communicationDiffList =', this.communicationDiffList);
+                console.log('🔍 initDataChangeTasks: Final communicationDiffList =', this.communicationDiffList);
+                console.log('🔍 initDataChangeTasks: Final communicationDiffList length =', this.communicationDiffList.length);
+                
+                // Trigger change detection manually
+                setTimeout(() => {
+                  console.log('🔍 After timeout - communicationDiffList length =', this.communicationDiffList.length);
+                }, 0);
+              } else {
+                console.log('🔍 initDataChangeTasks: No generalCommunicationDataDiff found in task diff');
+                console.log('🔍 initDataChangeTasks: commDiff =', commDiff);
               }
             });
             this.taskRetrieved = true;
