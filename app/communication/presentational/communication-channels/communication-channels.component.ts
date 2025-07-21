@@ -40,7 +40,6 @@ export class CommunicationChannelsComponent implements OnChanges, OnDestroy {
   isPristine = true;
   private unsubscribe = new Subject<void>();
   Type = Type;
-  @Input() taskType :string = '';
 
   communicationChannelsForm: UntypedFormGroup;
   communicationChannelsArray: UntypedFormArray;
