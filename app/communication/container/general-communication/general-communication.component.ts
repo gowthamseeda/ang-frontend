@@ -67,6 +67,9 @@ export class GeneralCommunicationComponent implements OnInit, OnDestroy, CanDeac
   brandCodes: Observable<BrandCode[]>;
   CommunicationFieldType = CommunicationFieldType;
   Type = Type;
+  taskFilter: TaskQueryParams;
+  openDataChangeTask: TaskForDisplay;
+  showNotification: boolean = true;
   userIsAuthorizedForOutlet: Observable<boolean>;
   isTaskPresent: Observable<boolean>;
   isEditable: Observable<boolean>;
