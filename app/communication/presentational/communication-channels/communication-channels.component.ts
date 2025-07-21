@@ -14,7 +14,7 @@ import {
   CommunicationChannel,
   CommunicationChannelsChange
 } from '../../model/communication-channel.model';
-import { Type } from '../../../tasks/task.model';
+import { Type, TaskForDisplay } from '../../../tasks/task.model';
 import { CommunicationFieldFormat } from '../../model/communication-field-format';
 import { CommunicationChannelsValidators } from '../../../shared/validators/communication-channels-validators';
 import { MatDialog } from '@angular/material/dialog';
@@ -34,6 +34,8 @@ export class CommunicationChannelsComponent implements OnChanges, OnDestroy {
   @Input() communicationChannels: CommunicationChannel[] = [];
   @Input() readOnly: Boolean = false;
   @Output() communicationChannelsChange = new EventEmitter<CommunicationChannelsChange>();
+  @Input() taskType: Type;
+  @Input() task: TaskForDisplay;
   @Input() showNotification: Boolean = false;
   isPristine = true;
   private unsubscribe = new Subject<void>();
