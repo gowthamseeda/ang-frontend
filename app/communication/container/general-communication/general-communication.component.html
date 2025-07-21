@@ -6,107 +6,6 @@
   </gp-read-only-notification>
   <gp-edit-layout logo="contact"
                   title="{{ 'COMMUNICATION' | translate }}">
-    
-    <!-- COMPREHENSIVE DEBUG OUTPUT -->
-    <div style="background: #f0f8ff; border: 2px solid #007bff; padding: 15px; margin: 10px 0; border-radius: 5px;">
-      <h3 style="color: #007bff; margin: 0 0 10px 0;">🔍 COMPREHENSIVE DEBUG INFO</h3>
-      
-      <!-- Basic Status -->
-      <div style="background: #fff3cd; padding: 10px; margin: 10px 0; border-radius: 3px;">
-        <h4>📊 Basic Status</h4>
-        <div><strong>communicationDiffList length:</strong> 
-          <span [style.color]="(communicationDiffList && communicationDiffList.length > 0) ? 'green' : 'red'">
-            {{ communicationDiffList ? communicationDiffList.length : 0 }}
-          </span>
-        </div>
-        <div><strong>taskRetrieved:</strong> 
-          <span [style.color]="taskRetrieved ? 'green' : 'red'">{{ taskRetrieved || false }}</span>
-        </div>
-        <div><strong>openDataChangeTask exists:</strong> 
-          <span [style.color]="openDataChangeTask ? 'green' : 'red'">
-            {{ openDataChangeTask ? 'YES' : 'NO' }}
-          </span>
-        </div>
-      </div>
-
-      <!-- Task Details -->
-      <div style="background: #e7f3ff; padding: 10px; margin: 10px 0; border-radius: 3px;" *ngIf="openDataChangeTask">
-        <h4>📋 Task Details</h4>
-        <div><strong>Task ID:</strong> {{ openDataChangeTask.taskId }}</div>
-        <div><strong>Task Type:</strong> {{ openDataChangeTask.type }}</div>
-        <div><strong>Data Cluster:</strong> {{ openDataChangeTask.dataCluster }}</div>
-        <div><strong>Task Status:</strong> {{ openDataChangeTask.status }}</div>
-        <div><strong>Outlet ID:</strong> {{ openDataChangeTask.outletId }}</div>
-      </div>
-
-      <!-- Complete Task Object -->
-      <div style="background: #fff2e6; padding: 10px; margin: 10px 0; border-radius: 3px;">
-        <h4>🗂️ Complete Task Object</h4>
-        <pre style="background: white; padding: 10px; border: 1px solid #ccc; overflow: auto; max-height: 300px; font-size: 11px;">{{ openDataChangeTask | json }}</pre>
-      </div>
-
-      <!-- Task Diff Details -->
-      <div style="background: #f0f9ff; padding: 10px; margin: 10px 0; border-radius: 3px;" *ngIf="openDataChangeTask">
-        <h4>🔄 Task Diff Analysis</h4>
-        <div><strong>Has diff property:</strong> {{ openDataChangeTask.diff ? 'YES' : 'NO' }}</div>
-        <div *ngIf="openDataChangeTask.diff">
-          <div><strong>Diff keys:</strong> {{ Object.keys(openDataChangeTask.diff || {}).join(', ') }}</div>
-          <div><strong>Has generalCommunicationDataDiff:</strong> {{ openDataChangeTask.diff?.generalCommunicationDataDiff ? 'YES' : 'NO' }}</div>
-          <div *ngIf="openDataChangeTask.diff?.generalCommunicationDataDiff">
-            <strong>generalCommunicationDataDiff length:</strong> {{ openDataChangeTask.diff.generalCommunicationDataDiff.length }}
-          </div>
-          <div><strong>Has communicationDataDiff:</strong> {{ openDataChangeTask.diff?.communicationDataDiff ? 'YES' : 'NO' }}</div>
-          <div *ngIf="openDataChangeTask.diff?.communicationDataDiff">
-            <strong>communicationDataDiff length:</strong> {{ openDataChangeTask.diff.communicationDataDiff.length }}
-          </div>
-        </div>
-      </div>
-
-      <!-- Complete Diff Object -->
-      <div style="background: #fdf2e6; padding: 10px; margin: 10px 0; border-radius: 3px;" *ngIf="openDataChangeTask?.diff">
-        <h4>📊 Complete Diff Object</h4>
-        <pre style="background: white; padding: 10px; border: 1px solid #ccc; overflow: auto; max-height: 300px; font-size: 11px;">{{ openDataChangeTask.diff | json }}</pre>
-      </div>
-
-      <!-- Communication Diff List -->
-      <div style="background: #e6f7ff; padding: 10px; margin: 10px 0; border-radius: 3px;" *ngIf="communicationDiffList?.length > 0">
-        <h4>📋 Communication Diff List Items</h4>
-        <div *ngFor="let item of communicationDiffList; index as i" style="margin: 5px 0; padding: 5px; background: #f9f9f9; font-size: 12px; border-left: 3px solid #007bff;">
-          <div><strong>Item {{ i + 1 }}:</strong></div>
-          <div>BrandId: {{ item.brandId || 'BRANDLESS' }}</div>
-          <div>FieldId: {{ item.communicationFieldId }}</div>
-          <div>Old: {{ item.diff?.old || 'empty' }}</div>
-          <div>New: {{ item.diff?.new || 'empty' }}</div>
-        </div>
-      </div>
-
-      <!-- Warning if no diffs -->
-      <div style="background: #fff3cd; padding: 10px; margin: 10px 0; border-radius: 3px; border-left: 4px solid #ffc107;" *ngIf="communicationDiffList?.length === 0 && taskRetrieved">
-        <h4>⚠️ No Communication Diffs Found</h4>
-        <p>Task was retrieved but no communication diffs were found. This could mean:</p>
-        <ul style="margin: 5px 0; padding-left: 20px;">
-          <li>No changes were made to communication data</li>
-          <li>The task is not a communication data change task</li>
-          <li>The diff structure is different than expected</li>
-        </ul>
-      </div>
-
-      <!-- Outlet and Route Info -->
-      <div style="background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 3px;">
-        <h4>🌐 Route & Context Info</h4>
-        <div><strong>Current Outlet ID:</strong> {{ outletId | async }}</div>
-        <div><strong>Is Editable:</strong> {{ (isEditable | async) ? 'YES' : 'NO' }}</div>
-        <div><strong>Is Task Present:</strong> {{ (isTaskPresent | async) ? 'YES' : 'NO' }}</div>
-      </div>
-
-      <!-- Brand Product Groups Data -->
-      <div style="background: #f0f8ff; padding: 10px; margin: 10px 0; border-radius: 3px;">
-        <h4>📊 Brand Product Groups Communication Data</h4>
-        <pre style="background: white; padding: 10px; border: 1px solid #ccc; overflow: auto; max-height: 200px; font-size: 11px;">{{ (brandProductGroupsCommunicationData | async) | json }}</pre>
-      </div>
-    </div>
-    <!-- END COMPREHENSIVE DEBUG OUTPUT -->
-    
     <gp-edit-section>
       <gp-spoken-language [userIsAuthorizedForOutlet]="userIsAuthorizedForOutlet"
                           (dataChangedManually)="spokenLanguageDataChanged()">
@@ -128,7 +27,8 @@
               <gp-communication-channels (communicationChannelsChange)="upsertCommunicationDataOfOutlet($event,
                                      CommunicationFieldType.STANDARD, communicationDataRow.brandProductGroupIds)"
                                          [communicationChannels]="communicationDataRow.data | standardCommunicationChannels | async"
-                                         [readOnly]="!(isUserPermittedFor(communicationDataRow.brandProductGroupIds) | async) || !(isEditable | async)">
+                                         [readOnly]="!(isUserPermittedFor(communicationDataRow.brandProductGroupIds) | async) || !(isEditable | async)"
+                                         [taskType]="Type.DATA_CHANGE">
               </gp-communication-channels>
 
               <gp-social-media-channels (communicationChannelsChange)="upsertCommunicationDataOfOutlet($event,
@@ -153,7 +53,7 @@
                     *ngIf="isEditable | async"
                     [discardButtonDisabled]="cancelButtonDisabled"
                     [confirmButtonDisabled]="saveButtonDisabled"
-                    [type]="Type.DATA_CHANGE">
+                    [type]="taskFilter.type">
     </gp-task-footer>
   </ng-container>
 
